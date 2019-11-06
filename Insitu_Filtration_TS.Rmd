@@ -34,12 +34,14 @@ data_directory = "./data_time_series"
 velocity_data_directory = "./data_velocity_depth_etc"
 manual_correction_directory = "./manual_corrections"
 output_directory = "./output"
-
+functions_directory = "./"
 
 
 ######################################################################
 # Source/import required files 
 ######################################################################
+# Source the functions
+source(file.path(functions_directory, "functions.R"))
 
 # Create the required output directories
 createOutputDirectories()
