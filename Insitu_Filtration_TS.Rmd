@@ -27,21 +27,19 @@ library(hms)
 #2) velocity_data_directory : Additional files required to pair filtration time stamps by Velocity to be kept here
 #3) manual_correction_directory: Put the manual correction files here. Can be the same as velocity_data_directory
 #4) output_directory: This is the directory where the output will be created 
-#5) code_directory : The directory where this code and the functions file are stored
+#5) functions_directory : The directory where this code and the functions file are stored
 ######################################################################
 
 data_directory = "./data_time_series"
 velocity_data_directory = "./data_velocity_depth_etc"
 manual_correction_directory = "./manual_corrections"
 output_directory = "./output"
-functions_directory = "./"
-
 
 ######################################################################
 # Source/import required files 
 ######################################################################
 # Source the functions
-source(file.path(functions_directory, "functions.R"))
+source("functions.R"))
 
 # Create the required output directories
 createOutputDirectories()
@@ -160,5 +158,11 @@ for(file in 1 : length(all_files))
 fwrite(sbs_correction_summary,file.path(sbs_summary_output_directory,
                                         "sbs_correction_summary.csv"))
   
+
+```
+
+```{R}
+# Create Filtration summary table
+
 
 ```
