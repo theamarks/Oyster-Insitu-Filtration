@@ -33,5 +33,39 @@ exclude_low_deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(!(Site == 
 exclude_low_deanza + geom_point(size=4) + 
   labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC", subtitle = "Excluding NPD 4/18/19") + 
   theme_classic() +
-  geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T) 
+  geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
+```
+Plot individual Sites TPM vs OC
+```{r}
+############ Deanza #############
+Deanza_only <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")), aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date))
+
+Deanza_only + geom_point(size=4, color = '#F8766D') + 
+  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC Deanza") + 
+  theme_classic() +
+  geom_text(aes(label=Date), nudge_x = 0.0003, nudge_y = 0, check_overlap = T)
+
+############ Shellmaker ##########
+Shellmaker_only <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Shellmaker")), aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date))
+
+Shellmaker_only + geom_point(size=4, color = '#C77CFF') + 
+  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC Shellmaker") + 
+  theme_classic() +
+  geom_text(aes(label=Date), nudge_x = 0.0002, nudge_y = 0, check_overlap = T)
+
+############ San Rafael ##########
+SR_only <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "San Rafael")), aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date))
+
+SR_only + geom_point(size=4, color = '#00BFC4') + 
+  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC San Rafael") + 
+  theme_classic() +
+  geom_text(aes(label=Date), nudge_x = 0.005, nudge_y = 0, check_overlap = T)
+
+############ Morro Bay ##########
+MB_only <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay")), aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date))
+
+MB_only + geom_point(size=4, color = '#7CAE00') + 
+  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC Morr Bay") + 
+  theme_classic() +
+  geom_text(aes(label=Date), nudge_x = 0.0005, nudge_y = 0, check_overlap = T)
 ```
