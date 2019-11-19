@@ -36,8 +36,32 @@ createOutputDirectories = function()
   {
     dir.create(filtration_calc_output_directory)
   }
+  
+  filtration_summary_output_directory <<- file.path(filtration_calc_output_directory,"Filtration_Summary")
+  if(!dir.exists(filtration_summary_output_directory))
+  {
+    dir.create(filtration_summary_output_directory)
+  }
+  
+  graph_output_directory <<- file.path(output_directory,"0_Graph_Output")
+  if(!dir.exists(graph_output_directory))
+  {
+    dir.create(graph_output_directory)
+  }
+  
+  orig_graphs_directory <<- file.path(graph_output_directory,"Graphs_Before_Corrections")
+  if(!dir.exists(orig_graphs_directory))
+  {
+    dir.create(orig_graphs_directory)
+  } 
+  
+  corrected_graphs_directory <<- file.path(graph_output_directory,"Graphs_After_Corrections")
+  if(!dir.exists(corrected_graphs_directory))
+  {
+    dir.create(corrected_graphs_directory)
+  } 
+  
 }
-
 ######################################################################################
 ## This function standardizes the column names and values (for site, experiment and position)
 ######################################################################################
@@ -76,7 +100,7 @@ standardizeNamesAndColumns = function(aTimeSeriesFile)
 ######################################################################################
 ## This function creates time series plot 
 ######################################################################################
-createTimeSeriesPlot = function(aTimeSeriesFile, aFileName)
+createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
 {  
   aFile_Mod = aTimeSeriesFile %<>%
     dplyr::mutate(Time = as.hms(Time),
@@ -96,6 +120,8 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName)
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     labs(x = "")
   
+  one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
+  ggsave(one_graph_name, one_plot, dpi = 600, width = 11.5, height = 7, units = "in", device = "pdf", aGraphOutputDirectory)
   return(one_plot)
 
 }
@@ -329,3 +355,22 @@ calculateFilterationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
   return(combined_water_quality_df)
 
 }
+
+######################################################################################
+## This function summarizes the filtration
+######################################################################################
+createFilterationSummary = function(aFilterationFile, aFileName)
+{
+  data_only_numeric = dplyr::select_if(aFilterationFile, is.numeric)
+  data_mean =  data.frame(t(data.frame(value = round(colMeans(data_only_numeric), 2))))
+  rownames(data_mean) <- c()
+  
+  data_mean$File_Name = aFileName
+  data_mean %<>%
+    dplyr::select(File_Name, everything())
+  
+  data_mean[sapply(data_mean, is.infinite)] = "Inf"
+  
+  return(data_mean)
+}
+

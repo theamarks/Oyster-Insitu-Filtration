@@ -16,7 +16,7 @@ library(lubridate)
 # Set Up Directory and read in TPM Data
 ######################################################################
 
-TPM_directory = "./TPM_POM_PIM"
+TPM_directory = "./Data"
 
 TPM_data = fread(file.path(TPM_directory, "Insitu_Filter_POM_PIM_Data.csv"))
 
@@ -42,7 +42,7 @@ Avg_TPM_summary_table <- TPM_summary_table %>%
 # Create TPM Output folder
 ######################################################################
 
-TPM_output_directory <<- file.path(output_directory,"6_TPM_OC_Summary")
+TPM_output_directory <<- file.path(output_directory,"5_TPM_OC_Summary")
 if(!dir.exists(TPM_output_directory))
 {
   dir.create(TPM_output_directory)
@@ -56,4 +56,16 @@ TPM_output_directory
 write_csv(TPM_summary_table, file.path(TPM_output_directory, "TPM_summary_table.csv"))
 write_csv(Avg_TPM_summary_table, file.path(TPM_output_directory, "Avg_TPM_summary_table.csv"))
 
-          
+#####################################################################
+# Density 
+#######################################################################
+# San Rafael Bivalve Density - only oyster found in survey
+SR_Density_directory = "./Data/bivalve_density_community"
+SR_density_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_density.csv"))
+
+SR_2017_oyster_desnity <- mean(SR_density_data$density_m2)      
+
+# Newport Density
+NPD_Density_directory = "./Data/bivalve_density_community"
+NPD_density_data = fread(file.path(NPD_Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
+NPD_excavation_quad_area = 0.0625

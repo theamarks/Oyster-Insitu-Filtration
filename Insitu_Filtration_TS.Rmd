@@ -27,11 +27,11 @@ library(hms)
 #2) velocity_data_directory : Additional files required to pair filtration time stamps by Velocity to be kept here
 #3) manual_correction_directory: Put the manual correction files here. Can be the same as velocity_data_directory
 #4) output_directory: This is the directory where the output will be created 
-#5) functions_directory : The directory where this code and the functions file are stored
+#5) code_directory : The directory where this code and the functions file are stored
 ######################################################################
 
-data_directory = "./data_time_series"
-velocity_data_directory = "./data_velocity_depth_etc"
+data_directory = "./Data/sonde_time_series"
+velocity_data_directory = "./Data"
 manual_correction_directory = "./manual_corrections"
 output_directory = "./output"
 
@@ -39,7 +39,7 @@ output_directory = "./output"
 # Source/import required files 
 ######################################################################
 # Source the functions
-source("functions.R")
+source( "functions.R")
 
 # Create the required output directories
 createOutputDirectories()
@@ -84,7 +84,7 @@ for(file in 1 : length(all_files))
   one_file = standardizeNamesAndColumns(one_file)
  
   # 4) Plot the graph 
-  plot(createTimeSeriesPlot(one_file, file_name))
+  plot(createTimeSeriesPlot(one_file, file_name, orig_graphs_directory, "Bef_Corr"))
   
   ## save the modified file 
   fwrite(one_file, file.path(output_dir_file_cleaning, file_name))
@@ -103,7 +103,7 @@ Plots After Corrections
 ######################################################################
 # empty data frame to store sbs correction summary  
 sbs_correction_summary = data.frame()
-
+filteration_summary_table = data.frame()
 
 #loop through files and apply manual corrections
 for(file in 1 : length(all_files))
@@ -122,7 +122,7 @@ for(file in 1 : length(all_files))
   one_file = applyManualCorrections(one_file, file_name, manual_correction_df, output_dir_manual_corrections)
     
   # plot the time series agains
-  plot(createTimeSeriesPlot(one_file, file_name))
+  plot(createTimeSeriesPlot(one_file, file_name, corrected_graphs_directory, "After_Corr"))
     
   fwrite(one_file, file.path(output_dir_manual_corrections, file_name))
   
@@ -145,13 +145,23 @@ for(file in 1 : length(all_files))
 ######################################################################
   one_file = adjustDownSondeTimeStamp(water_vel_summary, one_file)
   one_file = calculateFilterationForPairedData(one_file, water_vel_summary)
-
+  
+  if(nrow(one_file) > 0)
+  {  
+    one_filteration_summary = createFilterationSummary(one_file, file_name)
+    filteration_summary_table = rbind(filteration_summary_table, one_filteration_summary)
+  }
   # save the filtration calculations
   fwrite(one_file, file.path(filtration_calc_output_directory, file_name))
 
 }
 
 # Save the correction summary
-fwrite(sbs_correction_summary,file.path(sbs_summary_output_directory,
+fwrite(sbs_correction_summary, file.path(sbs_summary_output_directory,
                                         "sbs_correction_summary.csv"))
+
+fwrite(filteration_summary_table, file.path(filtration_summary_output_directory,
+                                        "filtration_summary.csv"))
+  
+
 ```
