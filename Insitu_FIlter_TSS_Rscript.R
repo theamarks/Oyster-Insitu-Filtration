@@ -63,9 +63,40 @@ write_csv(Avg_TPM_summary_table, file.path(TPM_output_directory, "Avg_TPM_summar
 SR_Density_directory = "./Data/bivalve_density_community"
 SR_density_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_density.csv"))
 
-SR_2017_oyster_desnity <- mean(SR_density_data$density_m2)      
+SR_2017_olympia_m2 <- mean(SR_density_data$density_m2)      
 
-# Newport Density
-NPD_Density_directory = "./Data/bivalve_density_community"
-NPD_density_data = fread(file.path(NPD_Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
-NPD_excavation_quad_area = 0.0625
+# Morro Bay Bivlave Density - only Crassostrea gigas - number from talking to Morro Bay Oyster Company
+MB_gigas_m2 = 600
+
+# Newport total bivalve Density
+NP_Density_directory = "./Data/bivalve_density_community"
+NP_density_data = fread(file.path(NPD_Density_directory, "Insitu_filter_NP_may18_survey_counts.csv"))
+NP_excavation_quad_area = 0.0625
+
+NPD_may18_bivalve_den <- NP_density_data %>% 
+  filter(Site == 'Deanza') %>% 
+  select(1:10, 12) %>% 
+  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
+         key = 'Species',
+         value = 'n_individuals') %>% 
+  group_by(Quadrat) %>% 
+  summarise(n_bivalves = sum(n_individuals),
+            quad_den = n_bivalves / NP_excavation_quad_area)
+  
+NPD_may18_avg_m2 <- mean(NPD_may18_bivalve_den$quad_den)
+
+  
+##### Figure ####### -->> breakdown by species
+NPD_may18_species_den <- NP_density_data %>% 
+  filter(Site == 'Deanza') %>% 
+  select(1:10, 12) %>% 
+  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
+         key = 'Species',
+         value = 'n_individuals') %>% 
+  group_by(Species) %>% 
+  summarise(n_individuals = sum(n_individuals) / n(),
+            species_den_m2 = n_individuals / NP_excavation_quad_area)
+
+
+##### FIgure ####### -->> biomass comparison among species
+  
