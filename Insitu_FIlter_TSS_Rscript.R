@@ -12,6 +12,9 @@
 library(tidyverse)
 library(lubridate)
 
+# Graph Color Palette: Color blind palette with black:
+cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
 ######################################################################
 # Set Up Directory and read in TPM Data
 ######################################################################
@@ -57,13 +60,13 @@ write_csv(TPM_summary_table, file.path(TPM_output_directory, "TPM_summary_table.
 write_csv(Avg_TPM_summary_table, file.path(TPM_output_directory, "Avg_TPM_summary_table.csv"))
 
 #####################################################################
-# Density 
+# Total Bivalve Density
 #######################################################################
 # San Rafael Bivalve Density - only oyster found in survey
 SR_Density_directory = "./Data/bivalve_density_community"
 SR_density_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_density.csv"))
 
-SR_2017_olympia_m2 <- mean(SR_density_data$density_m2)      
+SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
 
 # Morro Bay Bivlave Density - only Crassostrea gigas - number from talking to Morro Bay Oyster Company
 MB_gigas_m2 = 600
@@ -83,7 +86,7 @@ NPD_may18_bivalve_den <- NP_density_data %>%
   summarise(n_bivalves = sum(n_individuals),
             quad_den = n_bivalves / NP_excavation_quad_area)
   
-NPD_may18_avg_m2 <- mean(NPD_may18_bivalve_den$quad_den)
+NPD_may18_avg_m2 <- mean(NPD_may18_bivalve_den$quad_den) # Total Average bivalve density
 
 # Newport Shellmaker total bivalve density
 
@@ -97,9 +100,12 @@ NPSM_may18_bivalve_den <- NP_density_data %>%
   summarise(n_bivalves = sum(n_individuals),
             quad_den = n_bivalves / NP_excavation_quad_area)
 
-NPSM_may18_avg_m2 <- mean(NPSM_may18_bivalve_den$quad_den)
+NPSM_may18_avg_m2 <- mean(NPSM_may18_bivalve_den$quad_den) # Total Average bivalve density
   
-##### Figure ####### -->> breakdown by species
+#####################################################################
+# Densities by Bivalve Species
+######################################################################
+# breakdown density by species - Deanza
 NPD_may18_species_den <- NP_density_data %>% 
   filter(Site == 'Deanza') %>% 
   select(1:10, 12) %>% 
@@ -110,11 +116,24 @@ NPD_may18_species_den <- NP_density_data %>%
   summarise(n_individuals = sum(n_individuals) / n(),
             species_den_m2 = n_individuals / NP_excavation_quad_area)
 
-# Color blind palette with black:
-cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+# breakdown density by species - Shellmaker
+NPSM_may18_species_den <- NP_density_data %>% 
+  filter(Site == 'Shellmaker') %>% 
+  select(1:10, 12) %>% 
+  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
+         key = 'Species',
+         value = 'n_individuals') %>% 
+  group_by(Species) %>% 
+  summarise(n_individuals = sum(n_individuals) / n(),
+            species_den_m2 = n_individuals / NP_excavation_quad_area)
 
+#####################################################################
+# Graph Bivalve Species Densities
+######################################################################
 # Graph Density by Species, exclude absent species
-Graph_NPD_species_den <- ggplot(NPD_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
+
+# Newport Deanza
+(Graph_NPD_species_den <- ggplot(NPD_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
                                aes(Species, species_den_m2, fill = Species)) + 
   geom_col() + # columns
   theme_classic() + 
@@ -122,12 +141,21 @@ Graph_NPD_species_den <- ggplot(NPD_may18_species_den[which(NPD_may18_species_de
         y = 'Density (individuals / m^2)', 
         title = 'Newport Deanza Bivalve Density',
         subtitle = 'May 2018 Survey') +
-  guides(fill=FALSE) + # removes color legend
-  geom_text(aes(label = species_den_m2), vjust = -0.5) # able to round values? 
-                                                                       
-plot_NPD_species_den
+  guides(fill = FALSE) + # removes color legend
+  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
+                                                                      
+# Newport Shellmaker
+(Graph_NPSM_species_den <- ggplot(NPSM_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
+                                 aes(Species, species_den_m2, fill = Species)) + 
+  geom_col() + # columns
+  theme_classic() + 
+  labs (x = 'Bivlave Species', 
+        y = 'Density (individuals / m^2)', 
+        title = 'Newport Shellmaker Bivalve Density',
+        subtitle = 'May 2018 Survey') +
+  guides(fill = FALSE) + # removes color legend
+  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
 
-Graph_NPSM_species_den <- 
 # Create plot output directory
 Bivlave_density_graph_directory <<- file.path(graph_output_directory,"Graphs_Bivalve_Density")
 if(!dir.exists(Bivlave_density_graph_directory))
@@ -135,7 +163,9 @@ if(!dir.exists(Bivlave_density_graph_directory))
   dir.create(Bivlave_density_graph_directory)
 }
 # Save graph to "./0_Graph_Output/Graphs_Bivalve_Density"
-ggsave(file.path(Bivlave_density_graph_directory, "NPD_may18_bivalve_species_density.pdf"), plot_NPD_species_den )
+######### May need to reformat .pdf  ###########
+ggsave(file.path(Bivlave_density_graph_directory, "NPD_may18_bivalve_species_density.pdf"), Graph_NPD_species_den )
+ggsave(file.path(Bivlave_density_graph_directory, "NPSM_may18_bivalve_species_density.pdf"), Graph_NPSM_species_den )
 
 ##### FIgure ####### -->> biomass comparison among species
   
