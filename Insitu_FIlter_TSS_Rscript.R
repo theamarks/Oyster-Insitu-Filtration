@@ -68,7 +68,7 @@ SR_density_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster
 
 SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
 
-# Morro Bay Bivlave Density - only Crassostrea gigas - number from talking to Morro Bay Oyster Company
+# Morro Bay total bivalve density
 MB_gigas_m2 = 600
 
 # Newport Deanza total bivalve Density
@@ -105,28 +105,43 @@ NPSM_may18_avg_m2 <- mean(NPSM_may18_bivalve_den$quad_den) # Total Average bival
 #####################################################################
 # Densities by Bivalve Species
 ######################################################################
-# breakdown density by species - Deanza
+# dataframe density by species - Deanza
 NPD_may18_species_den <- NP_density_data %>% 
   filter(Site == 'Deanza') %>% 
   select(1:10, 12) %>% 
   gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
          key = 'Species',
          value = 'n_individuals') %>% 
-  group_by(Species) %>% 
-  summarise(n_individuals = sum(n_individuals) / n(),
-            species_den_m2 = n_individuals / NP_excavation_quad_area)
+  group_by(Species, Site) %>% 
+  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area)
 
-# breakdown density by species - Shellmaker
+# dataframe density by species - Shellmaker
 NPSM_may18_species_den <- NP_density_data %>% 
   filter(Site == 'Shellmaker') %>% 
   select(1:10, 12) %>% 
   gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
          key = 'Species',
          value = 'n_individuals') %>% 
-  group_by(Species) %>% 
-  summarise(n_individuals = sum(n_individuals) / n(),
-            species_den_m2 = n_individuals / NP_excavation_quad_area)
+  group_by(Species, Site) %>% 
+  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area)
 
+# dataframe density by species - San Rafael
+SR_nov18_species_den <- SR_density_data %>% 
+  mutate(Species = "O. lurida") %>% 
+  group_by(Species, Site) %>% 
+  summarise(species_den_m2 = mean(density_m2))
+    
+  
+# dataframe density by species - numbers from Morro Bay Oyster Company
+MB_species_den <- tibble(Species = "C. gigas", 
+                         Site = "Morro Bay",
+                         species_den_m2 = 600)
+
+# combine species density dataframes - All sites
+Species_density_summary <- bind_rows(NPD_may18_species_den,
+                                           NPSM_may18_species_den,
+                                           SR_nov18_species_den,
+                                           MB_species_den, .id = NULL)
 #####################################################################
 # Graph Bivalve Species Densities
 ######################################################################
