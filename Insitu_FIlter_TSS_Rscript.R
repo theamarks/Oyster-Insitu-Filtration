@@ -73,7 +73,7 @@ MB_gigas_m2 = 600
 
 # Newport Deanza total bivalve Density
 NP_Density_directory = "./Data/bivalve_density_community"
-NP_density_data = fread(file.path(NPD_Density_directory, "Insitu_filter_NP_may18_survey_counts.csv"))
+NP_density_data = fread(file.path(NP_Density_directory, "Insitu_filter_NP_may18_survey_counts.csv"))
 NP_excavation_quad_area = 0.0625
 
 NPD_may18_bivalve_den <- NP_density_data %>% 
@@ -139,9 +139,10 @@ MB_species_den <- tibble(Species = "C. gigas",
 
 # combine species density dataframes - All sites
 Species_density_summary <- bind_rows(NPD_may18_species_den,
-                                           NPSM_may18_species_den,
-                                           SR_nov18_species_den,
-                                           MB_species_den, .id = NULL)
+                                     NPSM_may18_species_den,
+                                     SR_nov18_species_den,
+                                     MB_species_den, .id = NULL)
+
 #####################################################################
 # Graph Bivalve Species Densities
 ######################################################################
