@@ -61,6 +61,19 @@ createOutputDirectories = function()
     dir.create(corrected_graphs_directory)
   } 
   
+  # Create plot output directory
+  Bivlave_density_graph_directory <<- file.path(graph_output_directory,"Graphs_Bivalve_Density")
+  if(!dir.exists(Bivlave_density_graph_directory))
+  {
+    dir.create(Bivlave_density_graph_directory)
+  }
+  
+  TPM_output_directory <<- file.path(output_directory,"5_TPM_OC_Summary")
+  if(!dir.exists(TPM_output_directory))
+  {
+    dir.create(TPM_output_directory)
+  }
+  
 }
 ######################################################################################
 ## This function standardizes the column names and values (for site, experiment and position)
