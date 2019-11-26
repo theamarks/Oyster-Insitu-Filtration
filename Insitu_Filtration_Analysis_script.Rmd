@@ -295,6 +295,16 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
 ```
 
 ```{r}
+##############################################################
+# Create Master Analysis Table
+##############################################################
+Master_analysis_table <- filteration_summary_table %>% 
+  select(1:9, 16:21) %>% 
+  left_join(filteration_summary_table, select(TPM_summary_table, !(3:8)), by = c("Date", "Site"))
+```
+
+This chunker is for Figures
+```{r}
 # Graph Color Palette: Color blind palette with black:
 cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
