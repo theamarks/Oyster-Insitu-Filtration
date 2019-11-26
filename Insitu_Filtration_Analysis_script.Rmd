@@ -13,6 +13,7 @@ editor_options:
 
 ## Import the libraries and functions
 library(dplyr)
+library(tidyr)
 library(data.table)
 library(magrittr)
 library(lubridate)
@@ -166,6 +167,7 @@ fwrite(filteration_summary_table, file.path(filtration_summary_output_directory,
 
 ```
 
+
 ```{r}
 
 #######################################################################
@@ -208,8 +210,8 @@ Avg_TPM_summary_table <- TPM_summary_table %>%
 # Export Summary Tables to project Output folder
 ######################################################################
 
-write_csv(TPM_summary_table, file.path(TPM_output_directory, "TPM_summary_table.csv"))
-write_csv(Avg_TPM_summary_table, file.path(TPM_output_directory, "Avg_TPM_summary_table.csv"))
+fwrite(TPM_summary_table, file.path(TPM_output_directory, "TPM_summary_table.csv"))
+fwrite(Avg_TPM_summary_table, file.path(TPM_output_directory, "Avg_TPM_summary_table.csv"))
 
 #####################################################################
 # Total Bivalve Density
