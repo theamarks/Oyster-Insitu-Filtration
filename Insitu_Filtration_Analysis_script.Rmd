@@ -201,10 +201,10 @@ TPM_summary_table <- TPM_data %>%
 
 Avg_TPM_summary_table <- TPM_summary_table %>% 
   group_by(Date, Site, sample_type) %>% 
-  summarize(Avg_TPM = mean(TPM),
-            Avg_PIM = mean(PIM),
-            Avg_POM = mean(POM),
-            Avg_OC_Ratio = mean(Organic_Content_Ratio)) 
+  summarize(Avg_TPM = round(mean(TPM), 4),
+            Avg_PIM = round(mean(PIM), 4),
+            Avg_POM = round(mean(POM), 4),
+            Avg_OC_Ratio = round(mean(Organic_Content_Ratio), 4)) 
 
 #####################################################################
 # Export Summary Tables to project Output folder
@@ -299,8 +299,8 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
 # Create Master Analysis Table
 ##############################################################
 Master_analysis_table <- filteration_summary_table %>% 
-  select(1:9, 16:21) %>% 
-  left_join(filteration_summary_table, select(TPM_summary_table, !(3:8)), by = c("Date", "Site"))
+  inner_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
+  select(1:11, 19:23, 25:28) # Exclude upstream average WQ values 
 ```
 
 This chunker is for Figures
