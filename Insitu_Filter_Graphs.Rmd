@@ -8,6 +8,49 @@ output: html_document
 ```{r}
 library(ggplot2)
 
+# Graph Color Palette: Color blind palette with black:
+cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+```
+
+Basic Analysis Graphs
+```{r}
+
+# FR vs TPM (Filtration Trials only)
+(FR_TPM_graph <- ggplot(Master_analysis_table %>% 
+                          filter(Experiment == "Filtration"), 
+                        aes(Avg_TPM, L_hr_m2, color = Site)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Total Particulate Matter (ug/L)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'All Filtration Trials') +
+  guides(fill = FALSE))
+
+# Fit line 
+(FR_TPM_graph_best_line <- ggplot(Master_analysis_table %>% 
+                                      filter(Experiment == "Filtration"), 
+                                    aes(Avg_TPM, L_hr_m2)) +
+  geom_point() +
+  geom_smooth() +
+  theme_classic() +
+  labs(x = 'Total Particulate Matter (ug/L)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'All Filtration Trials with best fit line') +
+  guides(fill = FALSE))
+```
+
+
+```{r}
+(FR_OC_graph <- ggplot(Master_analysis_table %>% 
+                          filter(Experiment == "Filtration"), 
+                        aes(Avg_OC_Ratio, L_hr_m2, color = Site)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Organic Content of Seston (fraction)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'All Filtration Trials') +
+  guides(fill = FALSE))
+
 ```
 
 ```{r}
