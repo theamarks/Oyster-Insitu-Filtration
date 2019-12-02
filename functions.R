@@ -375,11 +375,11 @@ createFilterationSummary = function(aFilterationFile, aFileName)
 {
   data_only_numeric = dplyr::select_if(aFilterationFile, is.numeric)
   filtration_sub_df =  aFilterationFile %>% 
-    dplyr::select(c(names(data_only_numeric), "Experiment"))
+    dplyr::select(c(names(data_only_numeric), "Experiment", "Date", "Site"))
   
   filtration_sub_df = filtration_sub_df %>%
     dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
-    dplyr::group_by(Experiment) %>%
+    dplyr::group_by(Experiment, Date, Site) %>%
     dplyr::summarise_all(mean) %>%
     data.frame() %>%
     dplyr::mutate_if(is.numeric, round, 3) %>%
