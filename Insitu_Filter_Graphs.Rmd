@@ -128,21 +128,20 @@ Filtration Rates (L/hr/m^2) predicted by Organic Content of seston
   guides(fill = FALSE)) +
   geom_smooth()
 ```
-Filtration Rate (L/hr/m^2) predicted by Water Quality (Linear Model, 95% CI)
+Filtration Rate (L/hr/m^2) predicted by Temperature (Linear Model, 95% CI)
 ```{r FR vs Water Quality, echo=FALSE}
-# Temperature
-(FR_Temp <- ggplot(Master_analysis_table %>% 
-                     filter(Experiment == "Filtration"),
-                   aes(Temp_C_Up, L_hr_m2, color = Site)) +
+
+Filter_data <- Master_analysis_table %>% 
+                     filter(Experiment == "Filtration")
+
+(FR_Temp <- ggplot(Filter_data, aes(Temp_C_Up, L_hr_m2, color = Site)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Temperature Upstream (C)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'Filtration predicted by Temprature - All Sites'))
 
-(FR_Temp_bestfit <- ggplot(Master_analysis_table %>% 
-                     filter(Experiment == "Filtration"),
-                   aes(Temp_C_Up, L_hr_m2)) +
+(FR_Temp_bestfit <- ggplot(Filter_data, aes(Temp_C_Up, L_hr_m2)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Temperature Upstream (C)',
@@ -150,19 +149,22 @@ Filtration Rate (L/hr/m^2) predicted by Water Quality (Linear Model, 95% CI)
        title = 'Filtration predicted by Temprature - All Sites') +
   geom_smooth(method=lm, se=TRUE, level=0.95))
 
-# Salinity
-(FR_Sal <- ggplot(Master_analysis_table %>% 
-                         filter(Experiment == "Filtration"),
-                       aes(Sal_ppt_Up, L_hr_m2, color = Site)) +
+FR_temp_lm <- lm(data = Filter_data, L_hr_m2 ~ Temp_C_Up)
+summary(FR_temp_lm)
+par(mfrow=c(2,2))
+plot(FR_temp_lm)
+```
+Filtration Rate (L/hr/m^2) predicted by Salinity (Linear Model, 95% CI)
+```{r}
+
+(FR_Sal <- ggplot(Filter_data, aes(Sal_ppt_Up, L_hr_m2, color = Site)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Salinity Upstream (ppt)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'Filtration predicted by Salinity - All Sites')) 
   
-(FR_Sal_bestfit <- ggplot(Master_analysis_table %>% 
-                         filter(Experiment == "Filtration"),
-                       aes(Sal_ppt_Up, L_hr_m2)) +
+(FR_Sal_bestfit <- ggplot(Filter_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Salinity Upstream (ppt)',
@@ -170,19 +172,22 @@ Filtration Rate (L/hr/m^2) predicted by Water Quality (Linear Model, 95% CI)
        title = 'Filtration predicted by Salinity - All Sites') +
   geom_smooth(method=lm, se=TRUE, level=0.95))
 
+FR_Sal_lm <- lm(data = Filter_data, L_hr_m2 ~ Sal_ppt_Up)
+summary(FR_Sal_lm)
+par(mfrow=c(2,2))
+plot(FR_Sal_lm)
+```
+
+```{r}
 # Chlorophyll 
-(FR_Chl <- ggplot(Master_analysis_table %>% 
-                            filter(Experiment == "Filtration"),
-                          aes(Chl_ug_L_Up, L_hr_m2, color = Site)) +
+(FR_Chl <- ggplot(Filter_data, aes(Chl_ug_L_Up, L_hr_m2, color = Site)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Chlorophyll Upstream (ug/L)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'Filtration predicted by Chlrophyll - All Sites')) 
   
-(FR_Chl_bestfit <- ggplot(Master_analysis_table %>% 
-                          filter(Experiment == "Filtration"),
-                        aes(Chl_ug_L_Up, L_hr_m2)) +
+(FR_Chl_bestfit <- ggplot(Filter_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Chlorophyll Upstream (ug/L)',
@@ -190,6 +195,13 @@ Filtration Rate (L/hr/m^2) predicted by Water Quality (Linear Model, 95% CI)
        title = 'Filtration predicted by Chlorophyll - All Sites') +
   geom_smooth(method=lm, se=TRUE, level=0.95))
 
+FR_Chl_lm <- lm(data = Filter_data, L_hr_m2 ~ Chl_ug_L_Up)
+summary(FR_Chl_lm)
+par(mfrow=c(2,2))
+plot(FR_Chl_lm)
+```
+
+```{r}
 # Turbidity
 (FR_Turbidity <- ggplot(Master_analysis_table %>% 
                             filter(Experiment == "Filtration"),
