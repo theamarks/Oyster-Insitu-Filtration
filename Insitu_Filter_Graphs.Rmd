@@ -128,7 +128,7 @@ Filtration Rates (L/hr/m^2) predicted by Organic Content of seston
   guides(fill = FALSE)) +
   geom_smooth()
 ```
-Filtration Rate (L/hr/m^2) predicted by Water Quality
+Filtration Rate (L/hr/m^2) predicted by Water Quality (Linear Model, 95% CI)
 ```{r FR vs Water Quality, echo=FALSE}
 # Temperature
 (FR_Temp <- ggplot(Master_analysis_table %>% 
@@ -148,7 +148,7 @@ Filtration Rate (L/hr/m^2) predicted by Water Quality
   labs(x = 'Temperature Upstream (C)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'Filtration predicted by Temprature - All Sites') +
-  geom_smooth())
+  geom_smooth(method=lm, se=TRUE, level=0.95))
 
 # Salinity
 (FR_Sal <- ggplot(Master_analysis_table %>% 
@@ -168,7 +168,7 @@ Filtration Rate (L/hr/m^2) predicted by Water Quality
   labs(x = 'Salinity Upstream (ppt)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'Filtration predicted by Salinity - All Sites') +
-  geom_smooth())
+  geom_smooth(method=lm, se=TRUE, level=0.95))
 
 # Chlorophyll 
 (FR_Chl <- ggplot(Master_analysis_table %>% 
@@ -188,7 +188,7 @@ Filtration Rate (L/hr/m^2) predicted by Water Quality
   labs(x = 'Chlorophyll Upstream (ug/L)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'Filtration predicted by Chlorophyll - All Sites') +
-  geom_smooth())
+  geom_smooth(method=lm, se=TRUE, level=0.95))
 
 # Turbidity
 (FR_Turbidity <- ggplot(Master_analysis_table %>% 
@@ -208,7 +208,7 @@ Filtration Rate (L/hr/m^2) predicted by Water Quality
   labs(x = 'Tubidity Upstream (NTU)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'Filtration predicted by Turbidity - All Sites') +
-  geom_smooth())
+  geom_smooth(method=lm, se=TRUE, level=0.95))
 ```
 
 TPM vs OC
@@ -317,12 +317,12 @@ NPD_oly <- NPD_density %>%
   as_tibble() %>%
   select(species, length_mm, tissue_dry_weight_g)
 
-(Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
+Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Shell Length (mm)',
        y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA')) +
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA') +
   geom_smooth()
 
 # Remove outlier / data error
@@ -333,6 +333,41 @@ NPD_oly <- NPD_density %>%
   theme_classic() +
   labs(x = 'Shell Length (mm)',
        y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA')) +
-  geom_smooth()
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA') +
+  geom_smooth(method=lm, se=TRUE, level=0.95))
+
+# log transform both axes
+(Oly_shell_DTW_log <- ggplot(NPD_oly %>% 
+                              filter(!(tissue_dry_weight_g > 1)),
+                            aes(log10(length_mm), log10(tissue_dry_weight_g))) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'log10 Shell Length (mm)',
+       y = 'log10 Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA') +
+  geom_smooth(method=lm, se=TRUE, level=0.95))
+
+#log transform y axis
+(Oly_shell_DTW_log <- ggplot(NPD_oly %>% 
+                              filter(!(tissue_dry_weight_g > 1)),
+                            aes(length_mm, log10(tissue_dry_weight_g))) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Shell Length (mm)',
+       y = 'log10 Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA') +
+  geom_smooth(method=lm, se=TRUE, level=0.95))
 ```
+Build Simple model to predict Olympia DTW
+```{r}
+Oly_DTW_lm <- lm(data = NPD_oly, tissue_dry_weight_g ~ length_mm)
+summary(Oly_DTW_lm)
+par(mfrow=c(2,2))
+plot(Oly_DTW_lm)
+
+Oly_DTW_lm_log <- lm(data = NPD_oly, log10(tissue_dry_weight_g) ~ log10(length_mm))
+summary(Oly_DTW_lm_log)
+par(mfrow=c(2,2))
+plot(Oly_DTW_lm_log)
+```
+
