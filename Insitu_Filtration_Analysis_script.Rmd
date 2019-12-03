@@ -291,58 +291,13 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
                                      NPSM_may18_species_den,
                                      SR_nov18_species_den,
                                      MB_species_den, .id = NULL)
-  
-```
 
-```{r}
 ##############################################################
 # Create Master Analysis Table
 ##############################################################
 Master_analysis_table <- filteration_summary_table %>% 
   inner_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
   select(1:11, 19:23, 25:28) # Exclude upstream average WQ values 
+
+fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
 ```
-
-This chunker is for Figures
-```{r}
-# Graph Color Palette: Color blind palette with black:
-cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
-#####################################################################
-# Graph Bivalve Species Densities
-######################################################################
-# Graph Density by Species, exclude absent species
-
-# Newport Deanza
-(Graph_NPD_species_den <- ggplot(NPD_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
-                               aes(Species, species_den_m2, fill = Species)) + 
-  geom_col() + # columns
-  theme_classic() + 
-  labs (x = 'Bivlave Species', 
-        y = 'Density (individuals / m^2)', 
-        title = 'Newport Deanza Bivalve Density',
-        subtitle = 'May 2018 Survey') +
-  guides(fill = FALSE) + # removes color legend
-  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
-                                                                      
-# Newport Shellmaker
-(Graph_NPSM_species_den <- ggplot(NPSM_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
-                                 aes(Species, species_den_m2, fill = Species)) + 
-  geom_col() + # columns
-  theme_classic() + 
-  labs (x = 'Bivlave Species', 
-        y = 'Density (individuals / m^2)', 
-        title = 'Newport Shellmaker Bivalve Density',
-        subtitle = 'May 2018 Survey') +
-  guides(fill = FALSE) + # removes color legend
-  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
-
-
-# Save graph to "./0_Graph_Output/Graphs_Bivalve_Density"
-######### May need to reformat .pdf  ###########
-ggsave(file.path(Bivlave_density_graph_directory, "NPD_may18_bivalve_species_density.pdf"), Graph_NPD_species_den )
-ggsave(file.path(Bivlave_density_graph_directory, "NPSM_may18_bivalve_species_density.pdf"), Graph_NPSM_species_den )
-
-##### FIgure ####### -->> biomass comparison among species
-```
-
