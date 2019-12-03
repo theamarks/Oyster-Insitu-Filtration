@@ -2,22 +2,36 @@
 title: "Insitu_Filter Graphs"
 author: "Althea Marks"
 date: "11/12/2019"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
-```{r}
+```{r include=FALSE}
+library(dplyr)
+library(tidyr)
+library(data.table)
+library(magrittr)
+library(lubridate)
 library(ggplot2)
+library(ggthemes)
+library(stringr)
+library(hms)
+
+Master_analysis_table <- fread(file.path('./Data', "Master_Filtration_analysis_table.csv"))
+Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
+Density_directory = "./Data/bivalve_density_community"
+NPD_density = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
 
 # Graph Color Palette: Color blind palette with black:
 cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
 
-Basic Analysis Graphs
-```{r}
-
+Filtration Rates (L/hr/m^2) predicted by Total Particulate Matter (ug/L) of seston
+```{r FR vs TPM, echo=FALSE}
 # FR vs TPM (Filtration Trials only)
-(FR_TPM_graph <- ggplot(Master_analysis_table %>% 
-                          filter(Experiment == "Filtration"), 
+(FR_TPM_graph <- ggplot((Master_analysis_table %>% 
+                          filter(Experiment == "Filtration")), 
                         aes(Avg_TPM, L_hr_m2, color = Site)) +
   geom_point() +
   theme_classic() +
@@ -39,8 +53,8 @@ Basic Analysis Graphs
   guides(fill = FALSE))
 ```
 
-
-```{r}
+Filtration Rates (L/hr/m^2) predicted by Organic Content of seston
+```{r FR vs OC, echo=FALSE}
 (FR_OC_graph <- ggplot(Master_analysis_table %>% 
                           filter(Experiment == "Filtration"), 
                         aes(Avg_OC_Ratio, L_hr_m2, color = Site)) +
@@ -51,10 +65,154 @@ Basic Analysis Graphs
        title = 'All Filtration Trials') +
   guides(fill = FALSE))
 
+(FR_OC_graph_bestfit <- ggplot(Master_analysis_table %>% 
+                          filter(Experiment == "Filtration"), 
+                        aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Organic Content of Seston (fraction)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'All Filtration Trials with best fit line') +
+  guides(fill = FALSE)) +
+  geom_smooth()
+
+# Deanza only
+(FR_OC_NPD_graph <- ggplot(Master_analysis_table %>% 
+                             filter(Experiment == "Filtration",
+                                    Site == "Deanza"),
+                           aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Organic Content of Seston (fraction)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Newport Deanza Filtration Trials with best fit line') +
+  guides(fill = FALSE)) +
+  geom_smooth()
+
+# Morro Bay only
+(FR_OC_MB_graph <- ggplot(Master_analysis_table %>% 
+                             filter(Experiment == "Filtration",
+                                    Site == "Morro Bay"),
+                           aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Organic Content of Seston (fraction)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Morro Bay Filtration Trials with best fit line') +
+  guides(fill = FALSE)) +
+  geom_smooth()
+
+# San Rafael only
+(FR_OC_NPSM_graph <- ggplot(Master_analysis_table %>% 
+                             filter(Experiment == "Filtration",
+                                    Site == "San Rafael"),
+                           aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Organic Content of Seston (fraction)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'San Rafael Filtration Trials with best fit line') +
+  guides(fill = FALSE)) +
+  geom_smooth()
+
+# Shellmaker only
+(FR_OC_NPSM_graph <- ggplot(Master_analysis_table %>% 
+                             filter(Experiment == "Filtration",
+                                    Site == "Shellmaker"),
+                           aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Organic Content of Seston (fraction)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Shellmaker Filtration Trials with best fit line') +
+  guides(fill = FALSE)) +
+  geom_smooth()
+```
+Filtration Rate (L/hr/m^2) predicted by Water Quality
+```{r FR vs Water Quality, echo=FALSE}
+# Temperature
+(FR_Temp <- ggplot(Master_analysis_table %>% 
+                     filter(Experiment == "Filtration"),
+                   aes(Temp_C_Up, L_hr_m2, color = Site)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Temperature Upstream (C)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Filtration predicted by Temprature - All Sites'))
+
+(FR_Temp_bestfit <- ggplot(Master_analysis_table %>% 
+                     filter(Experiment == "Filtration"),
+                   aes(Temp_C_Up, L_hr_m2)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Temperature Upstream (C)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Filtration predicted by Temprature - All Sites') +
+  geom_smooth())
+
+# Salinity
+(FR_Sal <- ggplot(Master_analysis_table %>% 
+                         filter(Experiment == "Filtration"),
+                       aes(Sal_ppt_Up, L_hr_m2, color = Site)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Salinity Upstream (ppt)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Filtration predicted by Salinity - All Sites')) 
+  
+(FR_Sal_bestfit <- ggplot(Master_analysis_table %>% 
+                         filter(Experiment == "Filtration"),
+                       aes(Sal_ppt_Up, L_hr_m2)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Salinity Upstream (ppt)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Filtration predicted by Salinity - All Sites') +
+  geom_smooth())
+
+# Chlorophyll 
+(FR_Chl <- ggplot(Master_analysis_table %>% 
+                            filter(Experiment == "Filtration"),
+                          aes(Chl_ug_L_Up, L_hr_m2, color = Site)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Chlorophyll Upstream (ug/L)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Filtration predicted by Chlrophyll - All Sites')) 
+  
+(FR_Chl_bestfit <- ggplot(Master_analysis_table %>% 
+                          filter(Experiment == "Filtration"),
+                        aes(Chl_ug_L_Up, L_hr_m2)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Chlorophyll Upstream (ug/L)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Filtration predicted by Chlorophyll - All Sites') +
+  geom_smooth())
+
+# Turbidity
+(FR_Turbidity <- ggplot(Master_analysis_table %>% 
+                            filter(Experiment == "Filtration"),
+                          aes(Turbidity_NTU_Up, L_hr_m2, color = Site)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Turbidity Upstream (NTU)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Filtration predicted by Turbidity - All Sites')) 
+  
+(FR_Turbidity_bestfit <- ggplot(Master_analysis_table %>% 
+                                    filter(Experiment == "Filtration"),
+                                aes(Turbidity_NTU_Up, L_hr_m2)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Tubidity Upstream (NTU)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Filtration predicted by Turbidity - All Sites') +
+  geom_smooth())
 ```
 
-```{r}
-
+TPM vs OC
+```{r TPM vs OC, echo=FALSE}
 TPM_OC_base <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio, color = Site, label = Date))
 
 TPM_OC_base + geom_point(size=4) + 
@@ -62,15 +220,7 @@ TPM_OC_base + geom_point(size=4) +
   theme_classic() +
   geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
 
-
-#+ geom_label(data = Avg_TPM_summary_table, aes(label = Date))
-
-
-
-```
-
-```{r}
-
+# Exclude low deanza value
 exclude_low_deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(!(Site == "Deanza") | !(Date == "4/18/19"))), aes(x = Avg_TPM, y = Avg_OC_Ratio, color = Site, label = Date))
 
 exclude_low_deanza + geom_point(size=4) + 
@@ -79,7 +229,7 @@ exclude_low_deanza + geom_point(size=4) +
   geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
 ```
 Plot individual Sites TPM vs OC
-```{r}
+```{r TPM vs OC - Individual Sites, echo=FALSE}
 ############ Deanza #############
 Deanza_only <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")), aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date))
 
@@ -111,4 +261,69 @@ MB_only + geom_point(size=4, color = '#7CAE00') +
   labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC Morr Bay") + 
   theme_classic() +
   geom_text(aes(label=Date), nudge_x = 0.0005, nudge_y = 0, check_overlap = T)
+```
+Bivalve Density Graphs
+```{r eval=FALSE, include=FALSE}
+# Graph Density by Species, exclude absent species
+
+############## Newport Deanza ###################
+(Graph_NPD_species_den <- ggplot(NPD_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
+                               aes(Species, species_den_m2, fill = Species)) + 
+  geom_col() + # columns
+  theme_classic() + 
+  labs (x = 'Bivlave Species', 
+        y = 'Density (individuals / m^2)', 
+        title = 'Newport Deanza Bivalve Density',
+        subtitle = 'May 2018 Survey') +
+  guides(fill = FALSE) + # removes color legend
+  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
+                                                                      
+############## Newport Shellmaker ##############
+(Graph_NPSM_species_den <- ggplot(NPSM_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
+                                 aes(Species, species_den_m2, fill = Species)) + 
+  geom_col() + # columns
+  theme_classic() + 
+  labs (x = 'Bivlave Species', 
+        y = 'Density (individuals / m^2)', 
+        title = 'Newport Shellmaker Bivalve Density',
+        subtitle = 'May 2018 Survey') +
+  guides(fill = FALSE) + # removes color legend
+  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
+
+
+# Save graph to "./0_Graph_Output/Graphs_Bivalve_Density"
+# Not needed Whit Rmd Knit yet
+######### May need to reformat .pdf  ###########
+#ggsave(file.path(Bivlave_density_graph_directory, "NPD_may18_bivalve_species_density.pdf"), Graph_NPD_species_den )
+#ggsave(file.path(Bivlave_density_graph_directory, "NPSM_may18_bivalve_species_density.pdf"), Graph_NPSM_species_den )
+
+##### FIgure ####### -->> biomass comparison among species
+```
+
+Olympia DTW predicted by Shell Length - Newport, CA
+```{r}
+NPD_oly <- NPD_density %>% 
+  filter(species == "O. lurida") %>% 
+  drop_na() %>% 
+  as_tibble() %>%
+  select(species, length_mm, tissue_dry_weight_g)
+
+(Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA')) +
+  geom_smooth()
+# Looks like data error / outlier accidental 1. instead of 0. Remove?
+
+(Oly_shell_DTW <- ggplot(NPD_oly %>% 
+                           filter(!(tissue_dry_weight_g > 1)),
+                         aes(length_mm, tissue_dry_weight_g)) +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA')) +
+  geom_smooth()
 ```
