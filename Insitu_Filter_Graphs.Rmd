@@ -28,11 +28,12 @@ cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2"
 ```
 
 Filtration Rates (L/hr/m^2) predicted by Total Particulate Matter (ug/L) of seston
-```{r FR vs TPM, echo=FALSE}
+```{r FR vs TPM, echo=FALSE, message=FALSE}
+Filter_data <- Master_analysis_table %>% 
+                     filter(Experiment == "Filtration")
+
 # FR vs TPM (Filtration Trials only)
-(FR_TPM_graph <- ggplot((Master_analysis_table %>% 
-                          filter(Experiment == "Filtration")), 
-                        aes(Avg_TPM, L_hr_m2, color = Site)) +
+(FR_TPM_graph <- ggplot((Filter_data), aes(Avg_TPM, L_hr_m2, color = Site)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Total Particulate Matter (ug/L)',
@@ -41,23 +42,25 @@ Filtration Rates (L/hr/m^2) predicted by Total Particulate Matter (ug/L) of sest
   guides(fill = FALSE))
 
 # Fit line 
-(FR_TPM_graph_best_line <- ggplot(Master_analysis_table %>% 
-                                      filter(Experiment == "Filtration"), 
-                                    aes(Avg_TPM, L_hr_m2)) +
+(FR_TPM_lm_graph <- ggplot(Filter_data, aes(Avg_TPM, L_hr_m2)) +
   geom_point() +
-  geom_smooth() +
+  geom_smooth(method=lm, se=TRUE, level=0.95) +
   theme_classic() +
   labs(x = 'Total Particulate Matter (ug/L)',
        y = 'Clearence Rate (L/hr/m^2)',
-       title = 'All Filtration Trials with best fit line') +
+       title = 'All Filtration Trials with lm') +
   guides(fill = FALSE))
+
+FR_TPM_lm <- lm(data = Filter_data, L_hr_m2 ~ Avg_TPM)
+summary(FR_TPM_lm)
+par(mfrow=c(2,2))
+plot(FR_TPM_lm)
+
 ```
 
 Filtration Rates (L/hr/m^2) predicted by Organic Content of seston
 ```{r FR vs OC, echo=FALSE}
-(FR_OC_graph <- ggplot(Master_analysis_table %>% 
-                          filter(Experiment == "Filtration"), 
-                        aes(Avg_OC_Ratio, L_hr_m2, color = Site)) +
+(FR_OC_graph <- ggplot(Filter_data, aes(Avg_OC_Ratio, L_hr_m2, color = Site)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
@@ -65,74 +68,90 @@ Filtration Rates (L/hr/m^2) predicted by Organic Content of seston
        title = 'All Filtration Trials') +
   guides(fill = FALSE))
 
-(FR_OC_graph_bestfit <- ggplot(Master_analysis_table %>% 
-                          filter(Experiment == "Filtration"), 
-                        aes(Avg_OC_Ratio, L_hr_m2)) +
+(FR_OC_graph_bestfit <- ggplot(Filter_data, aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'All Filtration Trials with best fit line') +
-  guides(fill = FALSE)) +
-  geom_smooth()
+  guides(fill = FALSE) +
+  geom_smooth(method=lm, se=TRUE, level=0.95))
+
+FR_OC_lm <- lm(data = Filter_data, L_hr_m2 ~ Avg_OC_Ratio)
+summary(FR_OC_lm)
+par(mfrow=c(2,2))
+plot(FR_OC_lm)
 
 # Deanza only
-(FR_OC_NPD_graph <- ggplot(Master_analysis_table %>% 
-                             filter(Experiment == "Filtration",
-                                    Site == "Deanza"),
+(FR_OC_NPD_graph <- ggplot(Filter_data %>% 
+                             filter(Site == "Deanza"),
                            aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'Newport Deanza Filtration Trials with best fit line') +
-  guides(fill = FALSE)) +
-  geom_smooth()
+  guides(fill = FALSE) +
+  geom_smooth(method=lm, se=TRUE, level=0.95))
+
+FR_OC_NPD_lm <- lm(data = (Filter_data %>% filter(Site == "Deanza")), L_hr_m2 ~ Avg_OC_Ratio)
+summary(FR_OC_NPD_lm)
+par(mfrow=c(2,2))
+plot(FR_OC_NPD_lm)
 
 # Morro Bay only
-(FR_OC_MB_graph <- ggplot(Master_analysis_table %>% 
-                             filter(Experiment == "Filtration",
-                                    Site == "Morro Bay"),
+(FR_OC_MB_graph <- ggplot(Filter_data %>% 
+                             filter(Site == "Morro Bay"),
                            aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Morro Bay Filtration Trials with best fit line') +
-  guides(fill = FALSE)) +
-  geom_smooth()
+       title = 'Morro Bay Filtration Trials with lm') +
+  guides(fill = FALSE) +
+  geom_smooth(method=lm, se=TRUE, level=0.95))
+
+FR_OC_MB_lm <- lm(data = (Filter_data %>% filter(Site == "Morro Bay")), L_hr_m2 ~ Avg_OC_Ratio)
+summary(FR_OC_MB_lm)
+par(mfrow=c(2,2))
+plot(FR_OC_NPD_lm)
 
 # San Rafael only
 (FR_OC_NPSM_graph <- ggplot(Master_analysis_table %>% 
-                             filter(Experiment == "Filtration",
-                                    Site == "San Rafael"),
+                             filter(Site == "San Rafael"),
                            aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = 'Clearence Rate (L/hr/m^2)',
-       title = 'San Rafael Filtration Trials with best fit line') +
-  guides(fill = FALSE)) +
-  geom_smooth()
+       title = 'San Rafael Filtration Trials with lm') +
+  guides(fill = FALSE) +
+  geom_smooth(method=lm, se=TRUE, level=0.95))
+
+FR_OC_SR_lm <- lm(data = (Filter_data %>% filter(Site == "San Rafael")), L_hr_m2 ~ Avg_OC_Ratio)
+summary(FR_OC_SR_lm)
+par(mfrow=c(2,2))
+plot(FR_OC_SR_lm)
 
 # Shellmaker only
-(FR_OC_NPSM_graph <- ggplot(Master_analysis_table %>% 
-                             filter(Experiment == "Filtration",
-                                    Site == "Shellmaker"),
+(FR_OC_NPSM_graph <- ggplot(Filter_data %>% 
+                             filter(Site == "Shellmaker"),
                            aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Shellmaker Filtration Trials with best fit line') +
-  guides(fill = FALSE)) +
-  geom_smooth()
+       title = 'Shellmaker Filtration Trials with lm') +
+  guides(fill = FALSE) +
+  geom_smooth(method=lm, se=TRUE, level=0.95))
+
+FR_OC_NPSM_lm <- lm(data = (Filter_data %>% filter(Site == "Shellmaker")), L_hr_m2 ~ Avg_OC_Ratio)
+summary(FR_OC_NPSM_lm)
+par(mfrow=c(2,2))
+plot(FR_OC_NPSM_lm)
 ```
 Filtration Rate (L/hr/m^2) predicted by Temperature (Linear Model, 95% CI)
 ```{r FR vs Water Quality, echo=FALSE}
-
-Filter_data <- Master_analysis_table %>% 
-                     filter(Experiment == "Filtration")
 
 (FR_Temp <- ggplot(Filter_data, aes(Temp_C_Up, L_hr_m2, color = Site)) +
   geom_point() +
@@ -155,7 +174,7 @@ par(mfrow=c(2,2))
 plot(FR_temp_lm)
 ```
 Filtration Rate (L/hr/m^2) predicted by Salinity (Linear Model, 95% CI)
-```{r}
+```{r echo=FALSE}
 
 (FR_Sal <- ggplot(Filter_data, aes(Sal_ppt_Up, L_hr_m2, color = Site)) +
   geom_point() +
@@ -178,7 +197,7 @@ par(mfrow=c(2,2))
 plot(FR_Sal_lm)
 ```
 
-```{r}
+```{r echo=FALSE}
 # Chlorophyll 
 (FR_Chl <- ggplot(Filter_data, aes(Chl_ug_L_Up, L_hr_m2, color = Site)) +
   geom_point() +
@@ -201,7 +220,7 @@ par(mfrow=c(2,2))
 plot(FR_Chl_lm)
 ```
 
-```{r}
+```{r echo=FALSE}
 # Turbidity
 (FR_Turbidity <- ggplot(Filter_data, aes(Turbidity_NTU_Up, L_hr_m2, color = Site)) +
   geom_point() +
@@ -285,42 +304,7 @@ MB_only + geom_point(size=4, color = '#7CAE00') +
   geom_text(aes(label=Date), nudge_x = 0.0005, nudge_y = 0, check_overlap = T)
 ```
 Bivalve Density Graphs
-```{r eval=FALSE, include=FALSE}
-# Graph Density by Species, exclude absent species
 
-############## Newport Deanza ###################
-(Graph_NPD_species_den <- ggplot(NPD_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
-                               aes(Species, species_den_m2, fill = Species)) + 
-  geom_col() + # columns
-  theme_classic() + 
-  labs (x = 'Bivlave Species', 
-        y = 'Density (individuals / m^2)', 
-        title = 'Newport Deanza Bivalve Density',
-        subtitle = 'May 2018 Survey') +
-  guides(fill = FALSE) + # removes color legend
-  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
-                                                                      
-############## Newport Shellmaker ##############
-(Graph_NPSM_species_den <- ggplot(NPSM_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
-                                 aes(Species, species_den_m2, fill = Species)) + 
-  geom_col() + # columns
-  theme_classic() + 
-  labs (x = 'Bivlave Species', 
-        y = 'Density (individuals / m^2)', 
-        title = 'Newport Shellmaker Bivalve Density',
-        subtitle = 'May 2018 Survey') +
-  guides(fill = FALSE) + # removes color legend
-  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
-
-
-# Save graph to "./0_Graph_Output/Graphs_Bivalve_Density"
-# Not needed Whit Rmd Knit yet
-######### May need to reformat .pdf  ###########
-#ggsave(file.path(Bivlave_density_graph_directory, "NPD_may18_bivalve_species_density.pdf"), Graph_NPD_species_den )
-#ggsave(file.path(Bivlave_density_graph_directory, "NPSM_may18_bivalve_species_density.pdf"), Graph_NPSM_species_den )
-
-##### FIgure ####### -->> biomass comparison among species
-```
 
 Olympia DTW predicted by Shell Length - Newport, CA
 ```{r echo=FALSE}
@@ -351,6 +335,11 @@ NPD_oly <- NPD_density %>%
        subtitle = 'Removed outlier bad data') +
   geom_smooth(method=lm, se=TRUE, level=0.95))
 
+Oly_DTW_lm <- lm(data = NPD_oly, tissue_dry_weight_g ~ length_mm)
+summary(Oly_DTW_lm)
+par(mfrow=c(2,2))
+plot(Oly_DTW_lm)
+
 # log transform both axes
 (Oly_shell_DTW_log <- ggplot(NPD_oly %>% 
                               filter(!(tissue_dry_weight_g > 1)),
@@ -363,6 +352,11 @@ NPD_oly <- NPD_density %>%
        subtitle = 'Removed outlier') +
   geom_smooth(method=lm, se=TRUE, level=0.95))
 
+Oly_DTW_lm_log <- lm(data = NPD_oly, log10(tissue_dry_weight_g) ~ log10(length_mm))
+summary(Oly_DTW_lm_log)
+par(mfrow=c(2,2))
+plot(Oly_DTW_lm_log)
+
 #log transform y axis
 (Oly_shell_DTW_log <- ggplot(NPD_oly %>% 
                               filter(!(tissue_dry_weight_g > 1)),
@@ -374,18 +368,10 @@ NPD_oly <- NPD_density %>%
        title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
        subtitle = 'Removed outlier') +
   geom_smooth(method=lm, se=TRUE, level=0.95))
-```
-Build Simple model to predict Olympia DTW
-```{r Shell height - DTW linear model, echo=FALSE}
-Oly_DTW_lm <- lm(data = NPD_oly, tissue_dry_weight_g ~ length_mm)
-summary(Oly_DTW_lm)
-par(mfrow=c(2,2))
-plot(Oly_DTW_lm)
-dev.off()
 
-Oly_DTW_lm_log <- lm(data = NPD_oly, log10(tissue_dry_weight_g) ~ log10(length_mm))
-summary(Oly_DTW_lm_log)
+Oly_DTW_lm_logy <- lm(data = NPD_oly, log10(tissue_dry_weight_g) ~ length_mm)
+summary(Oly_DTW_lm_logy)
 par(mfrow=c(2,2))
-plot(Oly_DTW_lm_log)
-dev.off()
+plot(Oly_DTW_lm_logy)
 ```
+
