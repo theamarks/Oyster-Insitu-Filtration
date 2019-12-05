@@ -1,2 +1,9 @@
 # Oyster-Insitu-Filtration
-Master's Thesis 
+
+Insitu Filtration Rates of Olympia Oyster and Japanese Oyster Habitats in California
+
+M.S. Thesis
+California State University Fullerton
+
+Status: Analysis in Process
+
