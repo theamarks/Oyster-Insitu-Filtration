@@ -1,0 +1,341 @@
+---
+title: "Oyster Insitu Filtration"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: yeti
+    orientation: rows
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup}
+
+## Import the libraries and functions
+library(dplyr)
+library(tidyr)
+library(data.table)
+library(magrittr)
+library(lubridate)
+library(ggplot2)
+library(ggthemes)
+library(stringr)
+library(hms)
+
+######################################################################
+## settings: 
+#1) data_directory: Keep only the input csv time series data in this directory
+#2) velocity_data_directory : Additional files required to pair filtration time stamps by Velocity to be kept here
+#3) manual_correction_directory: Put the manual correction files here. Can be the same as velocity_data_directory
+#4) output_directory: This is the directory where the output will be created 
+#5) code_directory : The directory where this code and the functions file are stored
+######################################################################
+
+data_directory = "./Data/sonde_time_series"
+velocity_data_directory = "./Data"
+manual_correction_directory = "./manual_corrections"
+output_directory = "./output"
+
+######################################################################
+# Source/import required files 
+######################################################################
+# Source the functions
+source( "functions.R")
+
+# Create the required output directories
+createOutputDirectories()
+
+# Import the files related to water velocity measurements 
+water_vel_df = fread(file.path(velocity_data_directory, "Insitu_Filter_velocity_all_data.csv"))
+  
+water_vel_other_var_df = fread(file.path(velocity_data_directory, "Insitu_Filter_sbs_FR_variables_all_data.csv"))
+
+water_vel_summary = calculateTravelTimeBySiteAndDate(water_vel_df, water_vel_other_var_df)
+
+# Import the manual corrections file
+manual_correction_df = fread(file.path(manual_correction_directory, "Manual_Corrections.csv"))
+
+manual_correction_df %<>%
+  dplyr::mutate(Correction_Start_Time = as.hms(Correction_Start_Time),
+                Correction_End_Time   = as.hms(Correction_End_Time))
+```
+
+
+Plots Before Corrections
+=====================================
+
+### 
+
+```{r, fig.width=13.5, fig.height=5}
+
+######################################################################
+##Steps 1 to 4) read the files to standardize names and plot time series for sondes
+######################################################################
+all_files = list.files(data_directory, pattern = ".csv")
+
+# Loop through files to standardize names and plot graph
+for(file in 1 : length(all_files))
+{
+  file_name = all_files[file]
+  
+  # 1) Import the file
+  one_file = fread(file.path(data_directory, file_name))
+  
+  #2 & 3) standardize name of columns and values
+  one_file = standardizeNamesAndColumns(one_file)
+ 
+  # 4) Plot the graph 
+  plot(createTimeSeriesPlot(one_file, file_name, orig_graphs_directory, "Bef_Corr"))
+  
+  ## save the modified file 
+  fwrite(one_file, file.path(output_dir_file_cleaning, file_name))
+  
+}
+```
+
+Plots After Corrections
+=====================================
+
+### 
+
+```{r, fig.width=13.5, fig.height=5}
+######################################################################
+##Step 5 to 8)  Apply manual, Sbs corrections and calculate filtration
+######################################################################
+# empty data frame to store sbs correction summary  
+sbs_correction_summary = data.frame()
+filteration_summary_table = data.frame()
+
+#loop through files and apply manual corrections
+for(file in 1 : length(all_files))
+{
+
+######################################################################
+##Step 5)  Apply manual corrections
+######################################################################
+    
+  file_name = all_files[file]
+    
+  # Import the file
+  one_file = fread(file.path(output_dir_file_cleaning, file_name))
+    
+  ## apply manual corrections
+  one_file = applyManualCorrections(one_file, file_name, manual_correction_df, output_dir_manual_corrections)
+    
+  # plot the time series agains
+  plot(createTimeSeriesPlot(one_file, file_name, corrected_graphs_directory, "After_Corr"))
+    
+  fwrite(one_file, file.path(output_dir_manual_corrections, file_name))
+  
+######################################################################
+##Step 6) Apply sbs corrections 
+######################################################################
+  
+  # check if sbs correction is required and record the result
+  sbs_summary_one_file = summarizeSbsCorrectionValues(one_file, file_name)
+  sbs_correction_summary = rbind(sbs_summary_one_file, sbs_correction_summary)
+  
+  # apply the correction if required
+  one_file =  applySbsCorrections(one_file, sbs_summary_one_file)
+  
+  # save the corrected file
+  fwrite(one_file, file.path(sbs_correction_output_directory, file_name))
+  
+######################################################################
+##Step 7 and 8) Water Velocity measurement and Filtration calculation
+######################################################################
+  one_file = adjustDownSondeTimeStamp(water_vel_summary, one_file)
+  one_file = calculateFilterationForPairedData(one_file, water_vel_summary)
+  
+  if(nrow(one_file) > 0)
+  {  
+    one_filteration_summary = createFilterationSummary(one_file, file_name)
+    filteration_summary_table = rbind(filteration_summary_table, one_filteration_summary)
+  }
+  # save the filtration calculations
+  fwrite(one_file, file.path(filtration_calc_output_directory, file_name))
+
+}
+
+# Save the correction summary
+fwrite(sbs_correction_summary, file.path(sbs_summary_output_directory,
+                                        "sbs_correction_summary.csv"))
+
+fwrite(filteration_summary_table, file.path(filtration_summary_output_directory,
+                                        "filtration_summary.csv"))
+  
+
+```
+
+
+```{r}
+
+#######################################################################
+# Create directories for TPM & Density Data
+#######################################################################
+
+TPM_directory = "./Data"
+SR_Density_directory = "./Data/bivalve_density_community"
+NP_Density_directory = "./Data/bivalve_density_community"
+
+#######################################################################
+# Read in data for TPM & Density Data
+#######################################################################
+
+TPM_data = fread(file.path(TPM_directory, "Insitu_Filter_POM_PIM_Data.csv"))
+
+SR_density_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_density.csv"))
+
+NP_density_data = fread(file.path(NP_Density_directory, "Insitu_filter_NP_may18_survey_counts.csv"))
+
+######################################################################
+# Summary Table & Average Table per field day
+######################################################################
+
+TPM_summary_table <- TPM_data %>% 
+  mutate(TPM = ((dry_weight_corrected_g - filter_weight_corrected_g) * 1000 / sample_volume_ml),
+         PIM = TPM - ((ash_weight_corrected_g - filter_weight_corrected_g) * 1000 / sample_volume_ml),
+         POM = TPM - PIM,
+         Organic_Content_Ratio = POM / TPM) %>% 
+  as_tibble()
+
+Avg_TPM_summary_table <- TPM_summary_table %>% 
+  group_by(Date, Site, sample_type) %>% 
+  summarize(Avg_TPM = round(mean(TPM), 4),
+            Avg_PIM = round(mean(PIM), 4),
+            Avg_POM = round(mean(POM), 4),
+            Avg_OC_Ratio = round(mean(Organic_Content_Ratio), 4)) 
+
+#####################################################################
+# Export Summary Tables to project Output folder
+######################################################################
+
+fwrite(TPM_summary_table, file.path(TPM_output_directory, "TPM_summary_table.csv"))
+fwrite(Avg_TPM_summary_table, file.path(TPM_output_directory, "Avg_TPM_summary_table.csv"))
+
+#####################################################################
+# Total Bivalve Density
+#######################################################################
+
+SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
+
+# Morro Bay total bivalve density
+MB_gigas_m2 = 600
+
+# Newport Deanza total bivalve Density
+
+NP_excavation_quad_area = 0.0625
+
+NPD_may18_bivalve_den <- NP_density_data %>% 
+  filter(Site == 'Deanza') %>% 
+  select(1:10, 12) %>% 
+  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
+         key = 'Species',
+         value = 'n_individuals') %>% 
+  group_by(Quadrat) %>% 
+  summarise(n_bivalves = sum(n_individuals),
+            quad_den = n_bivalves / NP_excavation_quad_area)
+  
+NPD_may18_avg_m2 <- mean(NPD_may18_bivalve_den$quad_den) # Total Average bivalve density
+
+# Newport Shellmaker total bivalve density
+
+NPSM_may18_bivalve_den <- NP_density_data %>% 
+  filter(Site == 'Shellmaker') %>% 
+  select(1:10, 12) %>% 
+  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
+         key = 'Species',
+         value = 'n_individuals') %>% 
+  group_by(Quadrat) %>% 
+  summarise(n_bivalves = sum(n_individuals),
+            quad_den = n_bivalves / NP_excavation_quad_area)
+
+NPSM_may18_avg_m2 <- mean(NPSM_may18_bivalve_den$quad_den) # Total Average bivalve density
+  
+#####################################################################
+# Densities by Bivalve Species
+######################################################################
+# dataframe density by species - Deanza
+NPD_may18_species_den <- NP_density_data %>% 
+  filter(Site == 'Deanza') %>% 
+  select(1:10, 12) %>% 
+  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
+         key = 'Species',
+         value = 'n_individuals') %>% 
+  group_by(Species, Site) %>% 
+  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area)
+
+# dataframe density by species - Shellmaker
+NPSM_may18_species_den <- NP_density_data %>% 
+  filter(Site == 'Shellmaker') %>% 
+  select(1:10, 12) %>% 
+  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
+         key = 'Species',
+         value = 'n_individuals') %>% 
+  group_by(Species, Site) %>% 
+  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area)
+
+# dataframe density by species - San Rafael
+SR_nov18_species_den <- SR_density_data %>% 
+  mutate(Species = "O. lurida") %>% 
+  group_by(Species, Site) %>% 
+  summarise(species_den_m2 = mean(density_m2))
+  
+# dataframe density by species - numbers from Morro Bay Oyster Company
+MB_species_den <- tibble(Species = "C. gigas", 
+                         Site = "Morro Bay",
+                         species_den_m2 = 600)
+
+# combine species density dataframes - All sites
+Species_density_summary <- bind_rows(NPD_may18_species_den,
+                                     NPSM_may18_species_den,
+                                     SR_nov18_species_den,
+                                     MB_species_den, .id = NULL)
+
+##############################################################
+# Create Master Analysis Table
+##############################################################
+Master_analysis_table <- filteration_summary_table %>% 
+  inner_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
+  select(1:11, 19:23, 25:28) # Exclude upstream average WQ values 
+
+fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
+```
+
+```{r eval=FALSE, include=FALSE}
+# Graph Density by Species, exclude absent species
+
+############## Newport Deanza ###################
+(Graph_NPD_species_den <-
+   ggplot(NPD_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
+                               aes(Species, species_den_m2, fill = Species)) + 
+  geom_col() + # columns
+  theme_classic() + 
+  labs (x = 'Bivlave Species', 
+        y = 'Density (individuals / m^2)', 
+        title = 'Newport Deanza Bivalve Density',
+        subtitle = 'May 2018 Survey') +
+  guides(fill = FALSE) + # removes color legend
+  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
+                                                                      
+############## Newport Shellmaker ##############
+(Graph_NPSM_species_den <-   ggplot(NPSM_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
+                                 aes(Species, species_den_m2, fill = Species)) + 
+  geom_col() + # columns
+  theme_classic() + 
+  labs (x = 'Bivlave Species', 
+        y = 'Density (individuals / m^2)', 
+        title = 'Newport Shellmaker Bivalve Density',
+        subtitle = 'May 2018 Survey') +
+  guides(fill = FALSE) + # removes color legend
+  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
+
+
+# Save graph to "./0_Graph_Output/Graphs_Bivalve_Density"
+# Not needed Whit Rmd Knit yet
+######### May need to reformat .pdf  ###########
+#ggsave(file.path(Bivlave_density_graph_directory, "NPD_may18_bivalve_species_density.pdf"), Graph_NPD_species_den )
+#ggsave(file.path(Bivlave_density_graph_directory, "NPSM_may18_bivalve_species_density.pdf"), Graph_NPSM_species_den )
+
+##### FIgure ####### -->> biomass comparison among species
+```

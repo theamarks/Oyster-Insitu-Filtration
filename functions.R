@@ -36,8 +36,45 @@ createOutputDirectories = function()
   {
     dir.create(filtration_calc_output_directory)
   }
+  
+  filtration_summary_output_directory <<- file.path(filtration_calc_output_directory,"Filtration_Summary")
+  if(!dir.exists(filtration_summary_output_directory))
+  {
+    dir.create(filtration_summary_output_directory)
+  }
+  
+  graph_output_directory <<- file.path(output_directory,"0_Graph_Output")
+  if(!dir.exists(graph_output_directory))
+  {
+    dir.create(graph_output_directory)
+  }
+  
+  orig_graphs_directory <<- file.path(graph_output_directory,"Graphs_Before_Corrections")
+  if(!dir.exists(orig_graphs_directory))
+  {
+    dir.create(orig_graphs_directory)
+  } 
+  
+  corrected_graphs_directory <<- file.path(graph_output_directory,"Graphs_After_Corrections")
+  if(!dir.exists(corrected_graphs_directory))
+  {
+    dir.create(corrected_graphs_directory)
+  } 
+  
+  # Create plot output directory
+  Bivlave_density_graph_directory <<- file.path(graph_output_directory,"Graphs_Bivalve_Density")
+  if(!dir.exists(Bivlave_density_graph_directory))
+  {
+    dir.create(Bivlave_density_graph_directory)
+  }
+  
+  TPM_output_directory <<- file.path(output_directory,"5_TPM_OC_Summary")
+  if(!dir.exists(TPM_output_directory))
+  {
+    dir.create(TPM_output_directory)
+  }
+  
 }
-
 ######################################################################################
 ## This function standardizes the column names and values (for site, experiment and position)
 ######################################################################################
@@ -64,10 +101,9 @@ standardizeNamesAndColumns = function(aTimeSeriesFile)
   
   ## 3.c) Column Experiment
   aTimeSeriesFile %<>%
-    dplyr::mutate(Experiment = tolower(Experiment),
-                  Experiment = ifelse(str_detect(Experiment, "before"), "sbs_before",
-                                          ifelse(str_detect(Experiment, "afte"), "sbs_after", 
-                                                 ifelse(str_detect(Experiment, "filt"), "Filtration", Experiment))))
+    dplyr::mutate(Experiment = ifelse(str_detect(tolower(Experiment), "before"), "sbs_before",
+                                          ifelse(str_detect(tolower(Experiment), "afte"), "sbs_after", 
+                                                 ifelse(str_detect(tolower(Experiment), "filt"), "Filtration", Experiment))))
   
   
  return(aTimeSeriesFile)
@@ -76,7 +112,7 @@ standardizeNamesAndColumns = function(aTimeSeriesFile)
 ######################################################################################
 ## This function creates time series plot 
 ######################################################################################
-createTimeSeriesPlot = function(aTimeSeriesFile, aFileName)
+createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
 {  
   aFile_Mod = aTimeSeriesFile %<>%
     dplyr::mutate(Time = as.hms(Time),
@@ -96,6 +132,8 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName)
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     labs(x = "")
   
+  one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
+  ggsave(one_graph_name, one_plot, dpi = 600, width = 11.5, height = 7, units = "in", device = "pdf", aGraphOutputDirectory)
   return(one_plot)
 
 }
@@ -169,11 +207,11 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
     dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
   
   down_chl = correction_check[which(correction_check$Position == "Down"), "Avg_Chl"]$Avg_Chl
-  up_cgl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl
-  abs_difference = abs(down_chl - up_cgl)
+  up_chl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl
+  abs_difference = abs(down_chl - up_chl)
   
-  
-  if(abs_difference >= 0.2)
+  # Chl sensor error +- 0.1 ug/L, 2 sensors, need correction if chl difference > 0.2 ug/L
+  if(abs_difference > 0.2) 
   {
     correction_factor = abs_difference/2
     
@@ -191,7 +229,7 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
     
     correction_summary = data.frame(File_Name = aFileName,
                                     Down_Chl_Avg = down_chl,
-                                    Up_Chl_Avg = up_cgl,
+                                    Up_Chl_Avg = up_chl,
                                     Abs_Diff = abs_difference,
                                     Correction_Req = TRUE,
                                     Correction_Factor = correction_factor,
@@ -204,7 +242,7 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
     
     correction_summary = data.frame(File_Name = aFileName,
                                     Down_Chl_Avg = down_chl,
-                                    Up_Chl_Avg = up_cgl,
+                                    Up_Chl_Avg = up_chl,
                                     Abs_Diff = abs_difference,
                                     Correction_Req = FALSE,
                                     Correction_Factor = NA,
@@ -260,7 +298,7 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
 }
 
 ######################################################################################
-## This function adjusts the time stamp for down instrument in filtration experiment
+## This function adjusts the time stamp for down instrument in filtration experiment by water travel time
 ######################################################################################
 adjustDownSondeTimeStamp = function(aWaterVelSummaryFile, aTimeSeriesFile)
 {
@@ -324,8 +362,30 @@ calculateFilterationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
     dplyr::inner_join(one_water_vel_summary, by = c("Date", "Site", "Experiment")) %>%
     
     dplyr::mutate(pcnt_Chl_rmvd = ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up) * 100,
-                  L_hr_m2 = ((avg_depth_cm*100 * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up))
+                  L_hr_m2 = (((avg_depth_cm/100) * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up))
   
   return(combined_water_quality_df)
 
 }
+
+######################################################################################
+## This function summarizes the filtration
+######################################################################################
+createFilterationSummary = function(aFilterationFile, aFileName)
+{
+  data_only_numeric = dplyr::select_if(aFilterationFile, is.numeric)
+  filtration_sub_df =  aFilterationFile %>% 
+    dplyr::select(c(names(data_only_numeric), "Experiment", "Date", "Site"))
+  
+  filtration_sub_df = filtration_sub_df %>%
+    dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
+    dplyr::group_by(Experiment, Date, Site) %>%
+    dplyr::summarise_all(mean) %>%
+    data.frame() %>%
+    dplyr::mutate_if(is.numeric, round, 3) %>%
+    dplyr::mutate(File_Name = aFileName) %>%
+    dplyr::select(File_Name, Experiment, everything())
+  
+  return(filtration_sub_df)
+}
+
