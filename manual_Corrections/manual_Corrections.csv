@@ -1,0 +1,21 @@
+File_Name,Experiment,Correction_Start_Time,Correction_End_Time,Instrument_with_Spike ,Correction_Applied_to_Both_Instruments
+Insitu_Filter_MB_51819.csv,Filtration,8:49:03,8:54:21,G,FALSE
+Insitu_Filter_MB_51819.csv,sbs_after,9:33:50,9:34:10,G,TRUE
+Insitu_Filter_MB_6619.csv,sbs_before,11:20:08,11:23:06,H,TRUE
+Insitu_Filter_NPD_102518.csv,sbs_before,14:44:15,14:45:00,G,TRUE
+Insitu_Filter_NPD_102518.csv,Filtration,15:12:45,15:15:00,G,FALSE
+Insitu_Filter_NPD_102518.csv,Filtration,15:10:17,15:15:00,H,FALSE
+Insitu_Filter_NPD_51119.csv,sbs_after,7:44:00,7:44:13,H,TRUE
+Insitu_Filter_NPD_6819.csv,Filtration,5:52:00,5:52:35,G,FALSE
+Insitu_Filter_SR_11818.csv,sbs_after,17:16:00,17:17:16,G,TRUE
+Insitu_Filter_SR_11818.csv,sbs_after,17:16:00,17:16:18,H,TRUE
+Insitu_Filter_SR_71718.csv,sbs_after,12:41:00,12:41:36,H,TRUE
+Insitu_Filter_MB_72718.csv,Filtration,8:54:08,8:54:58,H,FALSE
+Insitu_Filter_NPD_6919.csv,,6:42:00,7:14:17,H,FALSE
+Insitu_Filter_NPSM_6919.csv,,11:53:00,11:54:25,H,FALSE
+Insitu_Filter_NPSM_6919.csv,,12:24:12,12:32:50,G,FALSE
+Insitu_Filter_NPSM_6919.csv,,12:38:48,12:40:33,G,FALSE
+Insitu_Filter_NPSM_51119.csv,sbs_after,13:10:00,13:10:13,H,TRUE
+Insitu_Filter_NPSM_52219.csv,sbs_before,9:12:00,9:12:16,H,TRUE
+Insitu_Filter_NPD_41519.csv,Filtration,11:25:00,11:36:00,H,TRUE
+Insitu_Filter_NPD_41519.csv,sbs_before,10:49:00,10:50:00,G,TRUE
