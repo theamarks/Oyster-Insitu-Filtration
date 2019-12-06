@@ -277,7 +277,7 @@ exclude_low_deanza + geom_point(size=4) +
   geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
 ```
 Plot individual Sites TPM vs OC
-```{r TPM vs OC - Individual Sites, echo=FALSE}
+```{r TPM vs OC - By Site, echo=FALSE}
 Avg_TPM_summary_table %>% 
   ggplot(aes(x = Avg_TPM, y = Avg_OC_Ratio, group = Site, color = Site)) +
   geom_point() +
@@ -319,11 +319,10 @@ MB_only + geom_point(size=4, color = '#7CAE00') +
   theme_classic() +
   geom_text(aes(label=Date), nudge_x = 0.0005, nudge_y = 0, check_overlap = T)
 ```
-Bivalve Density Graphs
 
 
 Olympia DTW predicted by Shell Length - Newport, CA
-```{r echo=FALSE}
+```{r Oly DTW - Shell length analysis, echo=FALSE}
 NPD_oly <- NPD_density %>% 
   filter(species == "O. lurida") %>% 
   drop_na() %>% 
