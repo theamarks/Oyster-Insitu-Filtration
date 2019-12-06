@@ -356,38 +356,7 @@ summary(Oly_DTW_lm)
 par(mfrow=c(2,2))
 plot(Oly_DTW_lm)
 
-# log transform both axes
-(Oly_shell_DTW_log <- ggplot(NPD_oly %>% 
-                              filter(!(tissue_dry_weight_g > 1)),
-                            aes(log10(length_mm), log10(tissue_dry_weight_g))) +
-  geom_point() +
-  theme_classic() +
-  labs(x = 'log10 Shell Length (mm)',
-       y = 'log10 Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'Removed outlier') +
-  geom_smooth(method=lm, se=TRUE, level=0.95))
+# Outlier analysis - SD*2.2
 
-Oly_DTW_lm_log <- lm(data = NPD_oly, log10(tissue_dry_weight_g) ~ log10(length_mm))
-summary(Oly_DTW_lm_log)
-par(mfrow=c(2,2))
-plot(Oly_DTW_lm_log)
-
-#log transform y axis
-(Oly_shell_DTW_log <- ggplot(NPD_oly %>% 
-                              filter(!(tissue_dry_weight_g > 1)),
-                            aes(length_mm, log10(tissue_dry_weight_g))) +
-  geom_point() +
-  theme_classic() +
-  labs(x = 'Shell Length (mm)',
-       y = 'log10 Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'Removed outlier') +
-  geom_smooth(method=lm, se=TRUE, level=0.95))
-
-Oly_DTW_lm_logy <- lm(data = NPD_oly, log10(tissue_dry_weight_g) ~ length_mm)
-summary(Oly_DTW_lm_logy)
-par(mfrow=c(2,2))
-plot(Oly_DTW_lm_logy)
 ```
 
