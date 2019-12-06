@@ -265,8 +265,10 @@ applySbsCorrections = function(aTimeSeriesFile, aSbsCorrectionSummary)
   if(aSbsCorrectionSummary$Correction_Req)
   {  
     one_file_sbs_correction_applied = aTimeSeriesFile %>%
-            dplyr::mutate(Chl_ug_L = ifelse(!Experiment %in% c("sbs_before", "sbs_after") & Sonde==aSbsCorrectionSummary$Sonde_Higher_Avg, Chl_ug_L - aSbsCorrectionSummary$Correction_Factor, 
-                                              ifelse(!Experiment %in% c("sbs_before", "sbs_after") & Sonde==aSbsCorrectionSummary$Sonde_Lower_Avg, Chl_ug_L + aSbsCorrectionSummary$Correction_Factor, Chl_ug_L)))
+            dplyr::mutate(Chl_ug_L = ifelse(!Experiment %in% c("sbs_before", "sbs_after") & Sonde==aSbsCorrectionSummary$Sonde_Higher_Avg, 
+                                            Chl_ug_L - aSbsCorrectionSummary$Correction_Factor, 
+                                              ifelse(!Experiment %in% c("sbs_before", "sbs_after") & Sonde==aSbsCorrectionSummary$Sonde_Lower_Avg,
+                                                     Chl_ug_L + aSbsCorrectionSummary$Correction_Factor, Chl_ug_L)))
     return(one_file_sbs_correction_applied)
          
   } else {
