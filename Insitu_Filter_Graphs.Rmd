@@ -32,12 +32,21 @@ Filtration Rates (L/hr/m^2) predicted by Total Particulate Matter (ug/L) of sest
 Filter_data <- Master_analysis_table %>% 
                      filter(Experiment == "Filtration")
 
+Filter_data_pos <- Master_analysis_table %>% 
+                     filter(Experiment == "Filtration",
+                            L_hr_m2 > 0)
+# FR by site all data
 (FR_TPM_box <- ggplot((Filter_data), aes(Site, L_hr_m2)) +
   geom_boxplot() +
   theme_classic() +
   labs(x = 'Site',
        y = 'Filtration Rate L/hr/m^2'))
-  
+# FR by site (Positive values only) 
+(FR_TPM_box <- ggplot((Filter_data_pos), aes(Site, L_hr_m2)) +
+  geom_boxplot() +
+  theme_classic() +
+  labs(x = 'Site',
+       y = 'Filtration Rate L/hr/m^2'))
 
 # FR vs TPM (Filtration Trials only)
 (FR_TPM_graph <- ggplot((Filter_data), aes(Avg_TPM, L_hr_m2, color = Site)) +
