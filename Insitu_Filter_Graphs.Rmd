@@ -17,14 +17,13 @@ library(ggplot2)
 library(ggthemes)
 library(stringr)
 library(hms)
+library(viridis)
 
 Master_analysis_table <- fread(file.path('./Data', "Master_Filtration_analysis_table.csv"))
 Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
 Density_directory = "./Data/bivalve_density_community"
 NPD_density = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
 
-# Graph Color Palette: Color blind palette with black:
-cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
 
 Filtration Rates (L/hr/m^2) predicted by Total Particulate Matter (ug/L) of seston
@@ -375,3 +374,27 @@ par(mfrow=c(2,2))
 plot(Oly_DTZW_lm_rm_out)
 ```
 
+```{r echo=FALSE}
+## Test sbs correction
+NPD_41519_Filter_plot <- fread(file.path("./output/2_Manual_Corrections_Applied", "Insitu_Filter_NPD_41519.csv"))
+NPD_41519_Filter_plot <- NPD_41519_Filter_plot %>% 
+  filter(Experiment == 'Filtration') 
+
+(regular <- ggplot(NPD_41519_Filter_plot, aes(Time, Chl_ug_L, group = Position, color = Position)) + 
+  geom_point())
+
+NPD_41519_Filter_plot_sbs <- fread(file.path("./output/3_Sbs_Corrections_Applied", "Insitu_Filter_NPD_41519.csv"))
+NPD_41519_Filter_plot_sbs <- NPD_41519_Filter_plot_sbs %>% 
+  filter(Experiment == 'Filtration')
+
+(adjusted <- ggplot(NPD_41519_Filter_plot_sbs, aes(Time, Chl_ug_L, group = Position, color = Position)) + 
+  geom_point())
+
+```
+
+```{r}
+NPD_41519_FR <- fread(file.path('./output/4_Filtration_Calculations', 'Insitu_Filter_NPD_41519.csv'))
+  
+adjusted_box <- ggplot(NPD_41519_FR, aes(Position, ))
+
+```
