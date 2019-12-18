@@ -17,7 +17,8 @@ library(ggplot2)
 library(ggthemes)
 library(stringr)
 library(hms)
-library(viridis)
+library(viridisLite)
+library(forcats)
 
 Master_analysis_table <- fread(file.path('./Data', "Master_Filtration_analysis_table.csv"))
 Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
@@ -374,8 +375,8 @@ par(mfrow=c(2,2))
 plot(Oly_DTZW_lm_rm_out)
 ```
 
-```{r echo=FALSE}
-## Test sbs correction
+```{r eval=FALSE, include=FALSE}
+## Test sbs correction - SBS corrections applied correctly
 NPD_41519_Filter_plot <- fread(file.path("./output/2_Manual_Corrections_Applied", "Insitu_Filter_NPD_41519.csv"))
 NPD_41519_Filter_plot <- NPD_41519_Filter_plot %>% 
   filter(Experiment == 'Filtration') 
@@ -393,8 +394,74 @@ NPD_41519_Filter_plot_sbs <- NPD_41519_Filter_plot_sbs %>%
 ```
 
 ```{r}
-NPD_41519_FR <- fread(file.path('./output/4_Filtration_Calculations', 'Insitu_Filter_NPD_41519.csv'))
-  
-adjusted_box <- ggplot(NPD_41519_FR, aes(Position, ))
+#### Paired t-test all filtration trials --- Mean Upstream Chl vs Mean Downstream Chl
+
+Master_analysis_table_FILTER <- Master_analysis_table %>%
+  filter(Experiment == 'Filtration')
+
+t.test(Master_analysis_table_FILTER$Chl_ug_L_Up,
+       Master_analysis_table_FILTER$Chl_ug_L_Down,
+       paired = TRUE,
+       conf.level = 0.95)
+## No difference between upstream and downstream Chl across all Filtraiton trails
+
+##### Paired t-test on Positive L/hr/m^2 Filtration trails
+Master_analysis_table_posFILTER <- Master_analysis_table %>% 
+  filter(Experiment == 'Filtration',
+         L_hr_m2 > 0)
+
+t.test(Master_analysis_table_posFILTER$Chl_ug_L_Up,
+       Master_analysis_table_posFILTER$Chl_ug_L_Down,
+       paired = TRUE,
+       conf.level = 0.95)
+# No difference between upstream and downstream Chl across positive Filtration trials
+
+######### Paired t-test on all trials (Filtraiton & Neg Control)
+t.test(Master_analysis_table$Chl_ug_L_Up,
+       Master_analysis_table$Chl_ug_L_Down,
+       paried = TRUE,
+       conf.level = 0.95)
+## No difference between upstream and downstream Chl
+
+Bar_up_down_data <- Master_analysis_table %>%
+  select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
+  rename(Upstream = Chl_ug_L_Up, Downstream = Chl_ug_L_Down) %>%  
+  gather(Upstream, Downstream, key = Position, value = Chl_ug_L) %>% 
+  mutate(Position = fct_relevel(Position, 'Upstream', 'Downstream')) %>% 
+  mutate(Site = fct_relevel(Site, 'Deanza', 'Shellmaker', 'San Rafael', 'Morro Bay')) %>% 
+  mutate(x_labels = ifelse(Experiment == 'Filtration',
+                           Date,
+                           paste(Bar_up_down_data$Date, '*', sep = ' '))) %>% 
+  mutate(Site_exp_date = paste(Bar_up_down_data$Site, Bar_up_down_data$Experiment,
+                                     Bar_up_down_data$Date,
+                                     sep = ' ')) %>% 
+  mutate(Exp_Date = paste(Bar_up_down_data$Experiment, Bar_up_down_data$Date, sep = ' '))
+
+#Bar_up_down_data$Position <- as.factor(Bar_up_down_data$Position)
+
+(Paired_bar_chl_graph <- ggplot(data = Bar_up_down_data, aes(x = Site_exp_date, y = Chl_ug_L, fill = Position)) +
+    geom_bar(stat="identity", position = "dodge") +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+    facet_grid(~ Site, scales = "free", space = "free") + #'free' allows axis b/w sites uneaven
+    geom_bar(data = (Bar_up_down_data %>%
+                       filter(!Experiment %in% c('Filtration'))),
+             color = "grey22",
+             stat="identity",
+             position = "dodge") +
+    labs(x = 'Experiment', y = 'Chlorophyl (ug/L)'))
+############## Try 2 ####### make separate graphs, combine using grid.arrange()
+NPD_bar_data <- Bar_up_down_data %>% 
+  filter(Site == 'Deanza')
+
+(Chl_bar_graph_NPD <- ggplot(data = NPD_bar_data,
+                            aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
+    geom_bar(stat = "identity", position = "dodge", scales = "free") +
+    geom_bar(data = (Bar_up_down_data %>%
+                       filter(!Experiment %in% c('Filtration'))),
+             color = "grey22",
+             stat="identity",
+             position = "dodge") +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))) 
+
 
 ```
