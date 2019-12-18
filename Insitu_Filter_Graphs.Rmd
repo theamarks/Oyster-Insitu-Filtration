@@ -394,36 +394,9 @@ NPD_41519_Filter_plot_sbs <- NPD_41519_Filter_plot_sbs %>%
 
 ```
 
-```{r}
-#### Paired t-test all filtration trials --- Mean Upstream Chl vs Mean Downstream Chl
 
-Master_analysis_table_FILTER <- Master_analysis_table %>%
-  filter(Experiment == 'Filtration')
 
-t.test(Master_analysis_table_FILTER$Chl_ug_L_Up,
-       Master_analysis_table_FILTER$Chl_ug_L_Down,
-       paired = TRUE,
-       conf.level = 0.95)
-## No difference between upstream and downstream Chl across all Filtraiton trails
-
-##### Paired t-test on Positive L/hr/m^2 Filtration trails
-Master_analysis_table_posFILTER <- Master_analysis_table %>% 
-  filter(Experiment == 'Filtration',
-         L_hr_m2 > 0)
-
-t.test(Master_analysis_table_posFILTER$Chl_ug_L_Up,
-       Master_analysis_table_posFILTER$Chl_ug_L_Down,
-       paired = TRUE,
-       conf.level = 0.95)
-# No difference between upstream and downstream Chl across positive Filtration trials
-
-######### Paired t-test on all trials (Filtraiton & Neg Control)
-t.test(Master_analysis_table$Chl_ug_L_Up,
-       Master_analysis_table$Chl_ug_L_Down,
-       paried = TRUE,
-       conf.level = 0.95)
-## No difference between upstream and downstream Chl
-
+```{r Bar Graphs up vs down, echo=FALSE}
 Bar_up_down_data <- Master_analysis_table %>%
   select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
   rename(Upstream = Chl_ug_L_Up, Downstream = Chl_ug_L_Down) %>%  
@@ -533,4 +506,35 @@ Chl_graphs <- list(NPD_bar_graph, NPSM_bar_graph, SR_bar_graph, MB_bar_graph)
              layout_matrix = rbind(c(NA,1,1,1,1,1,1,1,1,1,1,1,1, NA),
                                    c(2,2,2,2,2,3,3,3,3,3,4,4,4,4))))
 ggsave("Insitu_Filter_up_vs_down_all_sites.png", all_chl_graphs)
+```
+
+```{r Paire t tests, echo=FALSE}
+#### Paired t-test all filtration trials --- Mean Upstream Chl vs Mean Downstream Chl
+
+Master_analysis_table_FILTER <- Master_analysis_table %>%
+  filter(Experiment == 'Filtration')
+
+t.test(Master_analysis_table_FILTER$Chl_ug_L_Up,
+       Master_analysis_table_FILTER$Chl_ug_L_Down,
+       paired = TRUE,
+       conf.level = 0.95)
+## No difference between upstream and downstream Chl across all Filtraiton trails
+
+##### Paired t-test on Positive L/hr/m^2 Filtration trails
+Master_analysis_table_posFILTER <- Master_analysis_table %>% 
+  filter(Experiment == 'Filtration',
+         L_hr_m2 > 0)
+
+t.test(Master_analysis_table_posFILTER$Chl_ug_L_Up,
+       Master_analysis_table_posFILTER$Chl_ug_L_Down,
+       paired = TRUE,
+       conf.level = 0.95)
+# No difference between upstream and downstream Chl across positive Filtration trials
+
+######### Paired t-test on all trials (Filtraiton & Neg Control)
+t.test(Master_analysis_table$Chl_ug_L_Up,
+       Master_analysis_table$Chl_ug_L_Down,
+       paried = TRUE,
+       conf.level = 0.95)
+## No difference between upstream and downstream Chl
 ```
