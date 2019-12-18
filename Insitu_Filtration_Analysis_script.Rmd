@@ -121,7 +121,8 @@ for(file in 1 : length(all_files))
   one_file = fread(file.path(output_dir_file_cleaning, file_name))
     
   ## apply manual corrections
-  one_file = applyManualCorrections(one_file, file_name, manual_correction_df, output_dir_manual_corrections)
+  one_file = applyManualCorrections(one_file, file_name, manual_correction_df,
+                                    output_dir_manual_corrections)
     
   # plot the time series agains
   plot(createTimeSeriesPlot(one_file, file_name, corrected_graphs_directory, "After_Corr"))
@@ -298,7 +299,7 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
 ##############################################################
 Master_analysis_table <- filteration_summary_table %>% 
   inner_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
-  select(1:11, 19:23, 25:28) # Exclude upstream average WQ values 
+  select(1:11, 17:23, 25:28) # Exclude upstream average WQ values 
 
 fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
 ```
