@@ -430,13 +430,11 @@ Bar_up_down_data <- Master_analysis_table %>%
   gather(Upstream, Downstream, key = Position, value = Chl_ug_L) %>% 
   mutate(Position = fct_relevel(Position, 'Upstream', 'Downstream')) %>% 
   mutate(Site = fct_relevel(Site, 'Deanza', 'Shellmaker', 'San Rafael', 'Morro Bay')) %>% 
-  mutate(x_labels = ifelse(Experiment == 'Filtration',
-                           Date,
-                           paste(Date, '*', sep = ' '))) %>%
   mutate(Site_exp_date = paste(Site, Experiment,
                                      Date,
                                      sep = ' ')) %>% 
-  mutate(Exp_Date = paste(Experiment, Date, sep = ' '))
+  mutate(Exp_Date = paste(Experiment, Date, sep = ' ')) %>% 
+  arrange(Site, mdy(Date))
 
 #Bar_up_down_data$Position <- as.factor(Bar_up_down_data$Position)
 
@@ -485,7 +483,7 @@ NPSM_bar_data <- Bar_up_down_data %>%
           axis.title.x = element_blank(),
           plot.title = element_text(hjust = 0.5)) + # center title
     labs(title = "Newport Shellmaker") +
-    scale_x_discrete(labels = NPSM_bar_data$x_labels) +
+    scale_x_discrete(labels = NPSM_bar_data$Date) +
     ylim(0, 8) +
     guides(fill = FALSE)) 
 
@@ -505,7 +503,7 @@ MB_bar_data <- Bar_up_down_data %>%
           axis.title.x = element_blank(),
           plot.title = element_text(hjust = 0.5)) + # center title
     labs(title = "Morro Bay") +
-    scale_x_discrete(labels = MB_bar_data$x_labels) +
+    scale_x_discrete(labels = MB_bar_data$Date) +
     ylim(0, 8) +
     guides(fill = FALSE))
 
@@ -525,13 +523,14 @@ SR_bar_data <- Bar_up_down_data %>%
           axis.title.x = element_blank(),
           plot.title = element_text(hjust = 0.5)) + # center title
     labs(title = "San Rafael") +
-    scale_x_discrete(labels = SR_bar_data$x_labels) +
+    scale_x_discrete(labels = SR_bar_data$Date) +
     ylim(0, 8) +
     guides(fill = FALSE))
 
 Chl_graphs <- list(NPD_bar_graph, NPSM_bar_graph, SR_bar_graph, MB_bar_graph) 
-(grid.arrange(grobs = Chl_graphs,
+(all_chl_graphs <- grid.arrange(grobs = Chl_graphs,
              widths = c(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
              layout_matrix = rbind(c(NA,1,1,1,1,1,1,1,1,1,1,1,1, NA),
                                    c(2,2,2,2,2,3,3,3,3,3,4,4,4,4))))
+ggsave("Insitu_Filter_up_vs_down_all_sites.png", all_chl_graphs)
 ```
