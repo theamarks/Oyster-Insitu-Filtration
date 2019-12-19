@@ -124,12 +124,17 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
     dplyr::distinct() %>%
     dplyr::mutate(legend = paste0(Position, " ", Sonde))
   
-  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_ug_L, group = Sonde, color = Sonde)) +
+  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_ug_L, group = Position, color = Position)) +
     geom_line(size = .5) +
-    scale_color_manual(values = c("black", "red"), labels = c(legend_info$legend)) +
+    scale_color_manual(values = ifelse(legend_info$Position == 'Down',
+                                       wes_palette("Cavalcanti1", n=2),
+                                       wes_palette("Cavalcanti1", n=3)),
+                       labels = ifelse(legend_info$Position == 'Down', legend_info[legend_info$Position == 'Down',3],
+                                       legend_info[legend_info$Position == 'Up',3])) +
     theme_gdocs() +
     facet_wrap(~Experiment_Title, nrow = 1, scales = "free_x") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.title = element_blank()) +
     labs(x = "")
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
