@@ -516,6 +516,7 @@ Master_analysis_table_FILTER <- Master_analysis_table %>%
 
 t.test(Master_analysis_table_FILTER$Chl_ug_L_Up,
        Master_analysis_table_FILTER$Chl_ug_L_Down,
+       alternative =c("greater"),
        paired = TRUE,
        conf.level = 0.95)
 ## No difference between upstream and downstream Chl across all Filtraiton trails
@@ -527,6 +528,7 @@ Master_analysis_table_posFILTER <- Master_analysis_table %>%
 
 t.test(Master_analysis_table_posFILTER$Chl_ug_L_Up,
        Master_analysis_table_posFILTER$Chl_ug_L_Down,
+       alternative =c("greater"),
        paired = TRUE,
        conf.level = 0.95)
 # No difference between upstream and downstream Chl across positive Filtration trials
@@ -535,6 +537,7 @@ t.test(Master_analysis_table_posFILTER$Chl_ug_L_Up,
 t.test(Master_analysis_table$Chl_ug_L_Up,
        Master_analysis_table$Chl_ug_L_Down,
        paried = TRUE,
+       alternative =c("greater"),
        conf.level = 0.95)
 ## No difference between upstream and downstream Chl
 ```
