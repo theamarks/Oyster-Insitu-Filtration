@@ -127,8 +127,8 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
   one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_ug_L, group = Position, color = Position)) +
     geom_line(size = .5) +
     scale_color_manual(values = ifelse(legend_info$Position == 'Down',
-                                       wes_palette("Cavalcanti1", n=2),
-                                       wes_palette("Cavalcanti1", n=3)),
+                                       wes_palette("Cavalcanti1")[3],
+                                       wes_palette("Cavalcanti1")[2]),
                        labels = ifelse(legend_info$Position == 'Down', legend_info[legend_info$Position == 'Down',3],
                                        legend_info[legend_info$Position == 'Up',3])) +
     theme_gdocs() +
