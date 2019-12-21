@@ -63,7 +63,7 @@ manual_correction_df %<>%
 ```
 
 
-Plots Before Corrections
+Plots - Raw Data
 =====================================
 
 ### 
@@ -95,7 +95,7 @@ for(file in 1 : length(all_files))
 }
 ```
 
-Plots After Corrections
+Plots - Spikes Removed
 =====================================
 
 ### 
@@ -170,7 +170,7 @@ fwrite(filteration_summary_table, file.path(filtration_summary_output_directory,
 
 ```
 
-Filtration Plots After Time Adjustment
+Plots - After Velocity Adjustment
 =====================================
 
 ###
