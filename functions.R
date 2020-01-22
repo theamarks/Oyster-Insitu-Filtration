@@ -159,7 +159,7 @@ createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, 
     select(Time, Date, Site, Experiment, Sonde_Up, Sonde_Down, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
     mutate(Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down)
   
-  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff)) +
+  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff, group = 1)) +
       geom_line(size = 1, color = wes_palette("Rushmore")[3]) +
       geom_point(color = wes_palette("Rushmore")[3]) +
       theme_gdocs() +
