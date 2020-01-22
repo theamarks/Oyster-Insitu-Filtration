@@ -116,8 +116,9 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
 {  
   aFile_Mod = aTimeSeriesFile %<>%
     dplyr::mutate(Time = as.hms(Time),
-                  Experiment = ifelse(Experiment %in% c("sbs_after", "sbs_before", "Filtration"), Experiment, "Filtration"),
-                  Experiment_Title = paste0(aFileName, " - ", Experiment))
+                  Experiment = ifelse(Experiment %in% c("sbs_after", "sbs_before", "Filtration"), Experiment, "Neg_Control"),
+                  Experiment_Title = paste0(aFileName, " - ", Experiment),
+                  legend_title = paste0(Position, ' ', Sonde)) # combine columns for title
   
   legend_info <- aFile_Mod %>%
     dplyr::select(Sonde, Position) %>%
@@ -126,11 +127,10 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
   
   one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_ug_L, group = Position, color = Position)) +
     geom_line(size = .5) +
-    scale_color_manual(values = ifelse(legend_info$Position == 'Down',
-                                       wes_palette("Cavalcanti1")[3],
-                                       wes_palette("Cavalcanti1")[2]),
-                       labels = ifelse(legend_info$Position == 'Down', legend_info[legend_info$Position == 'Down',3],
-                                       legend_info[legend_info$Position == 'Up',3])) +
+    scale_color_manual(values = c("Down G" = wes_palette("Cavalcanti1")[3], # assign Down to dark green
+                                  "Down H" = wes_palette("Cavalcanti1")[3],
+                                  "Up G" = wes_palette("Cavalcanti1")[2], # assign Up to light green
+                                  "Up H" = wes_palette("Cavalcanti1")[2])) +
     theme_gdocs() +
     facet_wrap(~Experiment_Title, nrow = 1, scales = "free_x") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
@@ -142,6 +142,12 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
   return(one_plot)
 
 }
+
+######################################################################################
+## This function creates time series plot - After Velocity Time adjustment
+######################################################################################
+
+
 
 ######################################################################################
 ## This function applies manual corrections
