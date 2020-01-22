@@ -37,6 +37,7 @@ data_directory = "./Data/sonde_time_series"
 velocity_data_directory = "./Data"
 manual_correction_directory = "./manual_corrections"
 output_directory = "./output"
+V_corr_Filtration_dir = "./output/4_Filtration_Calculations" # Velocity Corrected Filtration 
 
 ######################################################################
 # Source/import required files 
@@ -177,10 +178,12 @@ Plots - After Velocity Adjustment
 
 ```{r, fig.width=13.5, fig.height=5}
 ######################################################################
-## Graph Filtration Time Series After Veloctiy Time Adjustment
+## Graph Filtration Time Series After Veloctiy Time Adjustment (AM trying to copy for loop)
 ######################################################################
+
+
 # directs where files are
-all_files_Filtration = list.files("./output/4_Filtration_Calculations", pattern = ".csv")
+all_files_Filtration = list.files(V_corr_Filtration_dir, pattern = ".csv")
 
 # Loop like Task 5 with different plot function
 for(file in 1 : length(all_files_Filtration))
@@ -189,7 +192,7 @@ for(file in 1 : length(all_files_Filtration))
   file_name = all_files_Filtration[file]
     
   # Import the file
-  one_file = fread(file.path(output_dir_file_cleaning, file_name))
+  one_file = fread(file.path("./output/4_Filtration_Calculations", file_name))
     
   # plot the time series agains
   plot(createChlDiffPlot(one_file, file_name, pairedChlDiff_graphs_directory, "Velocity_Paired"))
