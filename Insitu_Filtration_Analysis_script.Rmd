@@ -176,7 +176,7 @@ Plots - After Velocity Adjustment
 
 ###
 
-```{r, fig.width=13.5, fig.height=5}
+```{r, fig.width=10, fig.height=5}
 ######################################################################
 ## Graph Filtration Time Series After Veloctiy Time Adjustment (AM trying to copy for loop)
 ######################################################################
