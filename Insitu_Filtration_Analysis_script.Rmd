@@ -175,10 +175,27 @@ Plots - After Velocity Adjustment
 
 ###
 
-```{r}
+```{r, fig.width=13.5, fig.height=5}
 ######################################################################
 ## Graph Filtration Time Series After Veloctiy Time Adjustment
 ######################################################################
+# directs where files are
+all_files_Filtration = list.files("./output/4_Filtration_Calculations", pattern = ".csv")
+
+# Loop like Task 5 with different plot function
+for(file in 1 : length(all_files_Filtration))
+{
+    
+  file_name = all_files_Filtration[file]
+    
+  # Import the file
+  one_file = fread(file.path(output_dir_file_cleaning, file_name))
+    
+  # plot the time series agains
+  plot(createChlDiffPlot(one_file, file_name, pairedChlDiff_graphs_directory, "Velocity_Paired"))
+
+}
+
 ```
 
 ```{r}
