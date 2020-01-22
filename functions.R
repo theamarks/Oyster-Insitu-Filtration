@@ -61,6 +61,12 @@ createOutputDirectories = function()
     dir.create(corrected_graphs_directory)
   } 
   
+  pairedChlDiff_graphs_directory <<- file.path(graph_output_directory,"Graphs_Paired_Chl_Diff")
+  if(!dir.exists(corrected_graphs_directory))
+  {
+    dir.create(corrected_graphs_directory)
+  }
+  
   # Create plot output directory
   Bivlave_density_graph_directory <<- file.path(graph_output_directory,"Graphs_Bivalve_Density")
   if(!dir.exists(Bivlave_density_graph_directory))
@@ -150,23 +156,16 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
 createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
 {  
   aFile_Mod = aTimeSeriesFile %<>%
-    dplyr::mutate(Time = as.hms(Time),
-                  Experiment = ifelse(Experiment %in% c("sbs_after", "sbs_before", "Filtration"), Experiment, "Neg_Control"),
-                  Experiment_Title = paste0(aFileName, " - ", Experiment),
-                  legend_title = paste0(Position, ' ', Sonde)) # combine columns for title
+    select(Time, Date, Site, Experiment, Sonde_Up, Sonde_Down, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
+    mutate(Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down)
   
-  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_ug_L, group = Position, color = legend_title)) +
-    geom_line(size = 1) +
-    geom_point() +
-    scale_color_manual(values = c("Down G" = wes_palette("Cavalcanti1")[3], # assign Down to dark green
-                                  "Down H" = wes_palette("Cavalcanti1")[3],
-                                  "Up G" = wes_palette("Cavalcanti1")[2], # assign Up to light green
-                                  "Up H" = wes_palette("Cavalcanti1")[2])) +
-    theme_gdocs() +
-    facet_wrap(~Experiment_Title, nrow = 1, scales = "free_x") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          legend.title = element_blank()) +
-    labs(x = "")
+  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff)) +
+      geom_line(size = 1, color = wes_palette("Rushmore")[3]) +
+      geom_point(color = wes_palette("Rushmore")[3]) +
+      theme_gdocs() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.title = element_blank()) +
+      labs(x = "", y = "Chl Difference", title = paste0("aFileName", " - ", "Filtration"))
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
   ggsave(one_graph_name, one_plot, dpi = 600, width = 11.5, height = 7, units = "in", device = "pdf", aGraphOutputDirectory)
