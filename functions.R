@@ -60,11 +60,11 @@ createOutputDirectories = function()
   {
     dir.create(corrected_graphs_directory)
   } 
-  
+  # directory for velocity paired Chl diff time series graphs
   pairedChlDiff_graphs_directory <<- file.path(graph_output_directory,"Graphs_Paired_Chl_Diff")
-  if(!dir.exists(corrected_graphs_directory))
+  if(!dir.exists(pairedChlDiff_graphs_directory))
   {
-    dir.create(corrected_graphs_directory)
+    dir.create(pairedChlDiff_graphs_directory)
   }
   
   # Create plot output directory
@@ -139,7 +139,7 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
                                   "Up G" = wes_palette("Cavalcanti1")[2], # assign Up to light green
                                   "Up H" = wes_palette("Cavalcanti1")[2])) +
     theme_gdocs() +
-    facet_wrap(~Experiment_Title, nrow = 1, scales = "free_x") +
+    facet_wrap(~Experiment_Title, nrow = 1, scales = "free_x") + # scales free - independent x axis on each graph
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           legend.title = element_blank()) +
     labs(x = "")
@@ -150,7 +150,7 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
 
 }
 ######################################################################################
-## This function creates time series plot - Difference b/w sondes Chl, time adjusted
+## Creates time series plot - Difference b/w sondes Chl, velocity time adjusted
 ######################################################################################
 
 createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
@@ -165,7 +165,7 @@ createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, 
       theme_gdocs() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.title = element_blank()) +
-      labs(x = "", y = "Chl Difference", title = paste0("aFileName", " - ", "Filtration"))
+      labs(x = "", y = "Chl Difference", title = paste0(aFileName, " - ", "Filtration"))
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
   ggsave(one_graph_name, one_plot, dpi = 600, width = 11.5, height = 7, units = "in", device = "pdf", aGraphOutputDirectory)
