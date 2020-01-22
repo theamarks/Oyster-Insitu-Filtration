@@ -176,7 +176,7 @@ Plots - After Velocity Adjustment
 
 ###
 
-```{r, fig.width=10, fig.height=5}
+```{r, fig.width=7, fig.height=5}
 ######################################################################
 ## Graph Filtration Time Series After Veloctiy Time Adjustment (AM trying to copy for loop)
 ######################################################################
@@ -192,7 +192,7 @@ for(file in 1 : length(all_files_Filtration))
   file_name = all_files_Filtration[file]
     
   # Import the file
-  one_file = fread(file.path("./output/4_Filtration_Calculations", file_name))
+  one_file = fread(file.path(V_corr_Filtration_dir, file_name))
     
   # plot the time series agains
   plot(createChlDiffPlot(one_file, file_name, pairedChlDiff_graphs_directory, "Velocity_Paired"))
@@ -200,6 +200,7 @@ for(file in 1 : length(all_files_Filtration))
 }
 
 ```
+
 
 ```{r}
 
