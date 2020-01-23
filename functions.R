@@ -126,8 +126,8 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
                   Experiment_Title = paste0(aFileName, " - ", Experiment),
                   legend_title = paste0(Position, ' ', Sonde)) # combine columns for title
   
- # legend_info <- aFile_Mod %>%
-  #  dplyr::select(Sonde, Position) %>%
+ # legend_info <- aFile_Mod %>%           # original code created mini data frame to hold legend 
+  #  dplyr::select(Sonde, Position) %>%   # removed and added scale_color_manual() color assignments
    # dplyr::distinct() %>%
     #dplyr::mutate(legend = paste0(Position, " ", Sonde))
   
@@ -172,11 +172,6 @@ createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, 
   return(one_plot)
 
 }
-
-######################################################################################
-## This function creates time series plot - After Velocity Time adjustment
-######################################################################################
-
 
 ######################################################################################
 ## This function applies manual corrections
@@ -242,16 +237,17 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
 {
   # check if the correction need to be applied
   correction_check = aTimeSeriesFile %>%
-    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>%
+    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
     dplyr::group_by(Position) %>%
     dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
   
+  # extacts value from dataframe, without $Avg_Chl at the end, object would remain data.frame -AM
   down_chl = correction_check[which(correction_check$Position == "Down"), "Avg_Chl"]$Avg_Chl
-  up_chl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl
-  abs_difference = abs(down_chl - up_chl)
+  up_chl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl 
+  sbs_difference = up_chl - down_chl # got rid of absolute value - discussed with DZ
   
   # Chl sensor error +- 0.1 ug/L, 2 sensors, need correction if chl difference > 0.2 ug/L
-  if(abs_difference > 0.2) 
+  if(sbs_difference > 0.2) 
   {
     correction_factor = abs_difference/2
     
