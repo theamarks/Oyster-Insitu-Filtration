@@ -156,10 +156,10 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
 createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
 {  
   aFile_Mod = aTimeSeriesFile %<>%
-    select(Time, Date, Site, Experiment, Sonde_Up, Sonde_Down, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
+    select(Time, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
     mutate(Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down)
   
-  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff, group = 1)) +
+  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff)) +
       geom_line(size = 1, color = wes_palette("Rushmore")[3]) +
       geom_point(color = wes_palette("Rushmore")[3]) +
       theme_gdocs() +
@@ -168,7 +168,7 @@ createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, 
       labs(x = "", y = "Chl Difference", title = paste0(aFileName, " - ", "Filtration"))
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
-  ggsave(one_graph_name, one_plot, dpi = 600, width = 11.5, height = 7, units = "in", device = "pdf", aGraphOutputDirectory)
+  ggsave(one_graph_name, one_plot, dpi = 600, width = 7, height = 5, units = "in", device = "pdf", aGraphOutputDirectory)
   return(one_plot)
 
 }
