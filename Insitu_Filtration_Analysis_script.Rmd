@@ -12,17 +12,17 @@ editor_options:
 ```{r setup}
 
 ## Import the libraries and functions
-library(flexdashboard)
+library(flexdashboard) # knit output format
 library(dplyr)
 library(tidyr)
 library(data.table)
 library(magrittr)
-library(lubridate)
+library(lubridate) # dealing with dates
 library(ggplot2)
-library(ggthemes)
-library(stringr)
-library(hms)
-library(wesanderson)
+library(ggthemes) # theme_gdocs() in graphs
+library(stringr) # dealing with strings
+library(hms) # dealing with time
+library(wesanderson) # color palatte
 
 ######################################################################
 ## settings: 
