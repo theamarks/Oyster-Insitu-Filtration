@@ -198,7 +198,9 @@ for(file in 1 : length(all_files_Filtration))
   one_file = fread(file.path(filtration_calc_output_directory, file_name))
     
   # plot the time series agains
-  plot(createChlDiffPlot(one_file, file_name, pairedChlDiff_graphs_directory, "Velocity_Paired"))
+  plot(createChlDiffPlot(one_file, file_name, pairedChlDiff_graphs_directory,
+                         "Velocity_Paired"))
+  dev.off()
 
 }
 
