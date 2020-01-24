@@ -343,7 +343,7 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
 adjustDownSondeTimeStamp = function(aWaterVelSummaryFile, aTimeSeriesFile)
 {
   one_correction = aWaterVelSummaryFile %>%
-    dplyr::filter(Date %in% unique(aTimeSeriesFile$Date))
+    dplyr::filter(Date %in% unique(aTimeSeriesFile$Date)) # select water row with same date as time series file going through 
   
   for(i in 1 : nrow(one_correction))
   {  
