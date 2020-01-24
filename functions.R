@@ -17,13 +17,6 @@ createOutputDirectories = function()
     dir.create(output_dir_manual_corrections)
   }
   
-  # Create an output directory for sbs corrections summary file 
-  sbs_summary_output_directory <<- file.path(output_directory,"Sbs_Corrections_Summary")
-  if(!dir.exists(sbs_summary_output_directory))
-  {
-    dir.create(sbs_summary_output_directory)
-  }
-  
   # Create an output directory to store time series files after correction
   sbs_correction_output_directory <<- file.path(output_directory,"3_Sbs_Corrections_Applied")
   if(!dir.exists(sbs_correction_output_directory))
@@ -78,6 +71,20 @@ createOutputDirectories = function()
   if(!dir.exists(TPM_output_directory))
   {
     dir.create(TPM_output_directory)
+  }
+  
+  # Create an output directory for sbs corrections summary file 
+  sbs_summary_output_directory <<- file.path(output_directory,"6_Sbs_Corrections_Summary")
+  if(!dir.exists(sbs_summary_output_directory))
+  {
+    dir.create(sbs_summary_output_directory)
+  }
+  
+  # Create an output directory for sbs corrections summary file 
+  water_velocity_summary_directory <<- file.path(output_directory,"7_Water_Velocity_Summary")
+  if(!dir.exists(water_velocity_summary_directory))
+  {
+    dir.create(water_velocity_summary_directory)
   }
   
 }
