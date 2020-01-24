@@ -338,7 +338,8 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
   
   final_results = aFRVariableData %>%
     dplyr::left_join(vel_summary_df , by = c("Date", "Site", "Experiment")) %>%
-    dplyr::mutate(t_travel_s = round(d_bw_sondes_m/avg_m_s, 0))
+    dplyr::mutate(t_travel_s = round(d_bw_sondes_m/avg_m_s, 0),
+                  t_travel_mm_ss = hms(t_travel_s))
   
   return(final_results)
   
