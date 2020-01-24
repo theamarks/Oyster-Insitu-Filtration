@@ -244,10 +244,10 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
   # extacts value from dataframe, without $Avg_Chl at the end, object would remain data.frame -AM
   down_chl = correction_check[which(correction_check$Position == "Down"), "Avg_Chl"]$Avg_Chl
   up_chl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl 
-  sbs_difference = up_chl - down_chl # got rid of absolute value - discussed with DZ
+  abs_difference = abs(down_chl - up_chl) # get rid of absolute value
   
   # Chl sensor error +- 0.1 ug/L, 2 sensors, need correction if chl difference > 0.2 ug/L
-  if(sbs_difference > 0.2) 
+  if(abs_difference > 0.2) 
   {
     correction_factor = abs_difference/2
     
