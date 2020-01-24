@@ -247,8 +247,8 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
   abs_difference = abs(down_chl - up_chl) # get rid of absolute value
   
   # Chl sensor error +- 0.1 ug/L, 2 sensors, need correction if chl difference > 0.2 ug/L
-  if(abs_difference > 0.2) 
-  {
+ # if(abs_difference > 0.2) # Remove conditional - DZ & AM decided to correct all measurements
+ # {
     correction_factor = abs_difference/2
     
     ## determine if the correction is be applied to sbs before or sbs after
@@ -274,20 +274,20 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
                                     Sonde_Higher_Avg = sonde_higher_avg,
                                     Sonde_Lower_Avg = sonde_lower_avg,
                                     stringsAsFactors = FALSE)
-  } else {
+ # } else {
     
-    correction_summary = data.frame(File_Name = aFileName,
-                                    Down_Chl_Avg = down_chl,
-                                    Up_Chl_Avg = up_chl,
-                                    Abs_Diff = abs_difference,
-                                    Correction_Req = FALSE,
-                                    Correction_Factor = NA,
-                                    G_Avg_Chl = NA,
-                                    H_Avg_Chl = NA,
-                                    Sonde_Higher_Avg = NA,
-                                    Sonde_Lower_Avg = NA,
-                                    stringsAsFactors = FALSE)
-  }
+#    correction_summary = data.frame(File_Name = aFileName,
+ #                                   Down_Chl_Avg = down_chl,
+  #                                  Up_Chl_Avg = up_chl,
+   #                                 Abs_Diff = abs_difference,
+    #                                Correction_Req = FALSE,
+     #                               Correction_Factor = NA,
+      #                              G_Avg_Chl = NA,
+       #                             H_Avg_Chl = NA,
+        #                            Sonde_Higher_Avg = NA,
+         #                           Sonde_Lower_Avg = NA,
+          #                          stringsAsFactors = FALSE)
+#  }
   
   return(correction_summary)
 
