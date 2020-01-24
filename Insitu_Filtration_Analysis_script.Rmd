@@ -90,6 +90,7 @@ for(file in 1 : length(all_files))
  
   # 4) Plot the graph 
   plot(createTimeSeriesPlot(one_file, file_name, orig_graphs_directory, "Bef_Corr"))
+  dev.off()
   
   ## save the modified file 
   fwrite(one_file, file.path(output_dir_file_cleaning, file_name))
@@ -129,6 +130,7 @@ for(file in 1 : length(all_files))
     
   # plot the time series agains
   plot(createTimeSeriesPlot(one_file, file_name, corrected_graphs_directory, "After_Corr"))
+  dev.off()
     
   fwrite(one_file, file.path(output_dir_manual_corrections, file_name))
   
