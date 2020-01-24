@@ -301,10 +301,12 @@ applySbsCorrections = function(aTimeSeriesFile, aSbsCorrectionSummary)
   if(aSbsCorrectionSummary$Correction_Req)
   {  
     one_file_sbs_correction_applied = aTimeSeriesFile %>%
-            dplyr::mutate(Chl_ug_L = ifelse(!Experiment %in% c("sbs_before", "sbs_after") & Sonde==aSbsCorrectionSummary$Sonde_Read_Higher_Avg, 
-                                            Chl_ug_L - aSbsCorrectionSummary$Correction_Factor, 
-                                              ifelse(!Experiment %in% c("sbs_before", "sbs_after") & Sonde==aSbsCorrectionSummary$Sonde_Read_Lower_Avg,
-                                                     Chl_ug_L + aSbsCorrectionSummary$Correction_Factor, Chl_ug_L)))
+            dplyr::mutate(Chl_ug_L = ifelse(!Experiment %in% c("sbs_before", "sbs_after") # Select Filtraiton Or Negative Control 
+                                            & Sonde==aSbsCorrectionSummary$Sonde_Read_Higher_Avg, # AND Select sonde in summary reading higher
+                                            Chl_ug_L - aSbsCorrectionSummary$Correction_Factor, # Then Subtract correction factor from higher sonde
+                                              ifelse(!Experiment %in% c("sbs_before", "sbs_after") # Select Filtration Or Negative Control
+                                                     & Sonde==aSbsCorrectionSummary$Sonde_Read_Lower_Avg, # AND Select sonde in summary reading lower
+                                                     Chl_ug_L + aSbsCorrectionSummary$Correction_Factor, Chl_ug_L))) # Then Add correction factor to lower sonde
     return(one_file_sbs_correction_applied)
          
   } else {
