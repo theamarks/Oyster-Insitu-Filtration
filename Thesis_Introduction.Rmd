@@ -1,0 +1,21 @@
+---
+title: "In Situ Filtration Rates of Olympia Oyster (Ostrea lurida) 
+Habitat And Japanese Oyster (Crassostrea gigas) Aquaculture"
+author: "Althea Marks"
+date: "1/27/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+The Olympia oyster (Ostrea lurida) is native to the Pacific North American coast, ranging from British Columbia, Canada (Polson and Zacherl 2009) to Baja California, Mexico (Raith et al. 2016). Overharvest of O. lurida and anthropogenic pollution led to the introduction of non-native oyster species for aquaculture to subsidize the dwindling native oyster harvests starting in 1904 (reviewed in (Baker 1995)). Currently, O. lurida abundances are less than 1% of historical estimates in California (Beck et al. 2011), while the Japanese oyster (Crassostrea gigas) has established feral populations outside of aquaculture operations in Southern California (Crooks, Crooks and Crooks 2015; Zacherl, personal observations). The extreme reduction in native O. lurida abundances is coupled with a loss of important hard substrate habitat and its associated ecosystem services. The ecosystem service of interest to this research is water filtration. Oysters are suspension feeders that remove phytoplankton, bacteria, algae, and suspended sediments from the water column, increasing water clarity (Newell and Koch 2004; Grizzle, Greene and Coen 2008) useful to benthic primary producers, like seagrasses (Peterson and Heck 1999). 
+
+zu Ermgassen et al. (2016) provides a management tool to calculate filtration services provided by O. lurida habitat. However, O. lurida filtration is calculated using data from only one laboratory study (zu Ermgassen et al., 2013), while the eastern oyster (Crassostrea virginica) filtration model uses a combination of laboratory and in situ data. In situ filtration rates of O. lurida habitat are important to estimate filtration services under complex environmental conditions often difficult to simulate in a laboratory setting. Gray and Langdon (2017) measured in situ filtration of isolated O. lurida in Yaquina Bay, Oregon, providing a foundation for estimating in situ O. lurida filtration rates. However, three factors important to filtration remain underexplored.
+	
+First, O. lurida beds are complex habitat used by other filter feeding organisms (i.e. mussels, tunicates, scallops, and sponges) that may substantially contribute to net filtration, and differ among bays. Second, environmental conditions like temperature (Gray and Langdon 2017), seston organic content (Kreeger and Newell 2001; Gray and Langdon 2017), salinity (Gray and Langdon 2017), and water velocity (Grizzle, Langan and Howell 1992; Luckenbach and Harsh 1999) are all known to affect bivalve filtration rates, and are unique to each water body. Third, research in Washington state showed that seston and phytoplankton were regulated top-down by commercially grown C. gigas (Wheat and Ruesink, 2013), which is a more robust filter feeder than O. lurida (Bougrier et al. 1995; zu Ermgassen et al. 2013; Gray and Langdon 2017) thus cultivated C. gigas may play a substantial role in overall water filtration in Pacific bays. This and many other studies use chlorophyll  as a metric for filtration (Luckenbach and Harsh 1999; Wasson et al. 2015; Grizzle, Greene, and Coen 2008; Grizzle et al. 2006) because chlorophyll  is a plant pigment whose concentration is a proxy for phytoplankton and algae fragments consumed by filter feeders. In summary, filtration models of oyster habitat lack in situ comparisons that incorporate complex environmental conditions and other bivalve contributions to overall filtration function of restored O. lurida habitat and C. gigas aquaculture. My research uses in situ methods based on Grizzle et al. (2006 & 2008) and Milbrandt et al. (2015) to test previous filtration models, using restored and aquaculture oyster habitat.
+
+

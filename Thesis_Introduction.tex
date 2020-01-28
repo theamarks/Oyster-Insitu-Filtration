@@ -1,0 +1,148 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{}
+    \pretitle{\vspace{\droptitle}}
+  \posttitle{}
+    \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+The Olympia oyster (Ostrea lurida) is native to the Pacific North
+American coast, ranging from British Columbia, Canada (Polson and
+Zacherl 2009) to Baja California, Mexico (Raith et al.~2016).
+Overharvest of O. lurida and anthropogenic pollution led to the
+introduction of non-native oyster species for aquaculture to subsidize
+the dwindling native oyster harvests starting in 1904 (reviewed in
+(Baker 1995)). Currently, O. lurida abundances are less than 1\% of
+historical estimates in California (Beck et al.~2011), while the
+Japanese oyster (Crassostrea gigas) has established feral populations
+outside of aquaculture operations in Southern California (Crooks, Crooks
+and Crooks 2015; Zacherl, personal observations). The extreme reduction
+in native O. lurida abundances is coupled with a loss of important hard
+substrate habitat and its associated ecosystem services. The ecosystem
+service of interest to this research is water filtration. Oysters are
+suspension feeders that remove phytoplankton, bacteria, algae, and
+suspended sediments from the water column, increasing water clarity
+(Newell and Koch 2004; Grizzle, Greene and Coen 2008) useful to benthic
+primary producers, like seagrasses (Peterson and Heck 1999).
+
+zu Ermgassen et al. (2016) provides a management tool to calculate
+filtration services provided by O. lurida habitat. However, O. lurida
+filtration is calculated using data from only one laboratory study (zu
+Ermgassen et al., 2013), while the eastern oyster (Crassostrea
+virginica) filtration model uses a combination of laboratory and in situ
+data. In situ filtration rates of O. lurida habitat are important to
+estimate filtration services under complex environmental conditions
+often difficult to simulate in a laboratory setting. Gray and Langdon
+(2017) measured in situ filtration of isolated O. lurida in Yaquina Bay,
+Oregon, providing a foundation for estimating in situ O. lurida
+filtration rates. However, three factors important to filtration remain
+underexplored.
+
+First, O. lurida beds are complex habitat used by other filter feeding
+organisms (i.e.~mussels, tunicates, scallops, and sponges) that may
+substantially contribute to net filtration, and differ among bays.
+Second, environmental conditions like temperature (Gray and Langdon
+2017), seston organic content (Kreeger and Newell 2001; Gray and Langdon
+2017), salinity (Gray and Langdon 2017), and water velocity (Grizzle,
+Langan and Howell 1992; Luckenbach and Harsh 1999) are all known to
+affect bivalve filtration rates, and are unique to each water body.
+Third, research in Washington state showed that seston and phytoplankton
+were regulated top-down by commercially grown C. gigas (Wheat and
+Ruesink, 2013), which is a more robust filter feeder than O. lurida
+(Bougrier et al.~1995; zu Ermgassen et al.~2013; Gray and Langdon 2017)
+thus cultivated C. gigas may play a substantial role in overall water
+filtration in Pacific bays. This and many other studies use chlorophyll
+ as a metric for filtration (Luckenbach and Harsh 1999; Wasson et
+al.~2015; Grizzle, Greene, and Coen 2008; Grizzle et al.~2006) because
+chlorophyll  is a plant pigment whose concentration is a proxy for
+phytoplankton and algae fragments consumed by filter feeders. In
+summary, filtration models of oyster habitat lack in situ comparisons
+that incorporate complex environmental conditions and other bivalve
+contributions to overall filtration function of restored O. lurida
+habitat and C. gigas aquaculture. My research uses in situ methods based
+on Grizzle et al. (2006 \& 2008) and Milbrandt et al. (2015) to test
+previous filtration models, using restored and aquaculture oyster
+habitat.
+
+
+\end{document}
