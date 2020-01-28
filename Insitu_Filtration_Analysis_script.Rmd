@@ -200,7 +200,6 @@ for(file in 1 : length(all_files_Filtration))
   # plot the time series agains
   createChlDiffPlot(one_file, file_name, pairedChlDiff_graphs_directory,
                          "Velocity_Paired")
-  dev.off()
 
 }
 
