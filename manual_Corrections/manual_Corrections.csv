@@ -1,21 +1,22 @@
-File_Name,Experiment,Correction_Start_Time,Correction_End_Time,Instrument_with_Spike ,Correction_Applied_to_Both_Instruments
-Insitu_Filter_MB_51819.csv,Filtration,8:49:03,8:54:21,G,FALSE
-Insitu_Filter_MB_51819.csv,sbs_after,9:33:50,9:34:10,G,TRUE
-Insitu_Filter_MB_6619.csv,sbs_before,11:20:08,11:23:06,H,TRUE
-Insitu_Filter_NPD_102518.csv,sbs_before,14:44:15,14:45:00,G,TRUE
-Insitu_Filter_NPD_102518.csv,Filtration,15:12:45,15:15:00,G,FALSE
-Insitu_Filter_NPD_102518.csv,Filtration,15:10:17,15:15:00,H,FALSE
-Insitu_Filter_NPD_51119.csv,sbs_after,7:44:00,7:44:13,H,TRUE
-Insitu_Filter_NPD_6819.csv,Filtration,5:52:00,5:52:35,G,FALSE
-Insitu_Filter_SR_11818.csv,sbs_after,17:16:00,17:17:16,G,TRUE
-Insitu_Filter_SR_11818.csv,sbs_after,17:16:00,17:16:18,H,TRUE
-Insitu_Filter_SR_71718.csv,sbs_after,12:41:00,12:41:36,H,TRUE
-Insitu_Filter_MB_72718.csv,Filtration,8:54:08,8:54:58,H,FALSE
-Insitu_Filter_NPD_6919.csv,,6:42:00,7:14:17,H,FALSE
-Insitu_Filter_NPSM_6919.csv,,11:53:00,11:54:25,H,FALSE
-Insitu_Filter_NPSM_6919.csv,,12:24:12,12:32:50,G,FALSE
-Insitu_Filter_NPSM_6919.csv,,12:38:48,12:40:33,G,FALSE
-Insitu_Filter_NPSM_51119.csv,sbs_after,13:10:00,13:10:13,H,TRUE
-Insitu_Filter_NPSM_52219.csv,sbs_before,9:12:00,9:12:16,H,TRUE
-Insitu_Filter_NPD_41519.csv,Filtration,11:25:00,11:36:00,H,TRUE
-Insitu_Filter_NPD_41519.csv,sbs_before,10:49:00,10:50:00,G,TRUE
+File_Name,Experiment,Correction_Start_Time,Correction_End_Time,Instrument_with_Spike ,Correction_Applied_to_Both_Instruments,Notes
+Insitu_Filter_MB_51819.csv,Filtration,8:48:00,8:545:00 AM,G,FALSE,"Field Notes: Line hitting Down sonde (stop trial), line started floating and knocked over Down sonde, restart at 8:55"
+Insitu_Filter_MB_51819.csv,sbs_after,9:33:50,9:34:10,G,TRUE,
+Insitu_Filter_MB_6619.csv,sbs_before,11:20:08,11:23:06,H,TRUE,No field notes to explain spike
+Insitu_Filter_NPD_102518.csv,sbs_before,14:44:15,14:45:00,G,TRUE,No field notes to explain spike
+Insitu_Filter_NPD_102518.csv,Filtration,15:12:45,15:15:00,G,FALSE,No field notes to explain spike
+Insitu_Filter_NPD_102518.csv,Filtration,15:10:17,15:15:00,H,FALSE,No field notes to explain spike
+Insitu_Filter_NPD_51119.csv,sbs_after,7:44:00,7:44:13,H,TRUE,"No notes on spike, but probably distrubance from sonde placement or my boots"
+Insitu_Filter_NPD_6819.csv,Filtration,5:52:00,5:52:35,G,FALSE,"No field notes to explain spike, probably sediment still clearing from my boot disturbance"
+Insitu_Filter_SR_11818.csv,sbs_after,17:16:00,17:17:16,G,TRUE,"No field notes to explain spike, probably sediment still clearing from my boot disturbance"
+Insitu_Filter_SR_11818.csv,sbs_after,17:16:00,17:16:18,H,TRUE,"No field notes to explain spike, probably sediment still clearing from my boot disturbance"
+Insitu_Filter_SR_71718.csv,sbs_after,12:41:00,12:41:36,H,TRUE,Sonde G did not record data - remove sbs_after trial
+Insitu_Filter_SR_71818.csv,Filtration,12:20:00,12:29:00,H,TRUE,"orignial start time 12:20, cut based on restart notes. Super slow water flow through reef, 10:24 wind picking up, 10:28 kicked sed at up G, 10:29 RWT "
+Insitu_Filter_MB_72718.csv,Filtration,8:53:00,8:55:00,H,FALSE,"Field notes: Sonde Fell (prob recorded spike), probably before 8:55 mudflat flooded, probably changes flow to parallel along oyster lines (~90 degree change)"
+Insitu_Filter_NPD_6919.csv,,6:42:00,7:14:17,H,FALSE,"No specific notes about spike, probably sediment disturbed from sonde reposition or my boots"
+Insitu_Filter_NPSM_6919.csv,,11:53:00,11:54:25,H,FALSE,spike at beginning of trial probably from my boots or sonde housing disturbance
+Insitu_Filter_NPSM_6919.csv,,12:24:12,12:32:50,G,FALSE,
+Insitu_Filter_NPSM_6919.csv,,12:38:48,12:40:33,G,FALSE,This is a messy third NC trial - need to think removing more
+Insitu_Filter_NPSM_51119.csv,sbs_after,13:10:00,13:10:13,H,TRUE,"No notes on spike, but probably distrubance from sonde placement or my boots"
+Insitu_Filter_NPSM_52219.csv,sbs_before,9:12:00,9:12:16,H,TRUE,"No notes on spike, but probably distrubance from sonde placement or my boots"
+Insitu_Filter_NPD_41519.csv,Filtration,11:25:00,11:36:00,G,FALSE,"11:19:30 boat wake, 11:20 sediment resuspended, 11:27 sediment still resuspended upshore of bed and over mid bed to downstream"
+Insitu_Filter_NPD_41519.csv,sbs_before,10:49:00,10:50:00,G,TRUE,"no notes on spike, but probably distrubance from sonde placement or my boots"
