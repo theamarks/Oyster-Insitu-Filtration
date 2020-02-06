@@ -273,7 +273,7 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
     correction_summary = data.frame(File_Name = aFileName,
                                     Down_Chl_Avg = down_chl,
                                     Up_Chl_Avg = up_chl,
-                                    Abs_Diff = abs_difference,
+                                    Abs_Avg_Diff = abs_difference,
                                     Correction_Req = TRUE,
                                     Correction_Factor = correction_factor,
                                     G_Avg_Chl = G_avg_chl,
