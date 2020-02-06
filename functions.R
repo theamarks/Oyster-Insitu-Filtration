@@ -428,7 +428,28 @@ createFilterationSummary = function(aFilterationFile, aFileName)
   filtration_sub_df = filtration_sub_df %>%
     dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
     dplyr::group_by(Experiment, Date, Site) %>%
-    dplyr::summarise_all(mean) %>%
+    dplyr::summarise(Temp_C_Up = mean(Temp_C_Up),
+                     SpCond_mS_cm_Up = mean(SpCond_mS_cm_Up),
+                     Cond_mS_cm_Up = mean(Cond_mS_cm_Up),
+                     TDS_g_L_Up = mean(TDS_g_L_Up),
+                     Sal_ppt_Up = mean(Sal_ppt_Up),
+                     Turbidity_NTU_Up = mean(Turbidity_NTU_Up),
+                     Chl_ug_L_Up = mean(Chl_ug_L_Up),
+                    # Chl_ug_L_Up_SD = sd(Chl_ug_L_Up), # Not sure SD is appropriate
+                     Temp_C_Down = mean(Temp_C_Down),
+                     SpCond_mS_cm_Down = mean(SpCond_mS_cm_Down),
+                     Cond_mS_cm_Down = mean(Cond_mS_cm_Down),
+                     TDS_g_L_Down = mean(TDS_g_L_Down),
+                     Sal_ppt_Down = mean(Sal_ppt_Down),
+                     Turbidity_NTU_Down = mean(Turbidity_NTU_Down),
+                     Chl_ug_L_Down = mean(Chl_ug_L_Down),
+                    # Chl_ug_L_Down_SD = sd(Chl_ug_L_Down), # snot sure SD is appropriate
+                     avg_depth_cm = mean(avg_depth_cm),
+                     d_bw_sondes_m = mean(d_bw_sondes_m),
+                     avg_m_hr = mean(avg_m_hr),
+                     pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd),
+                     L_hr_m2 = mean(L_hr_m2)
+                     ) %>%
     data.frame() %>%
     dplyr::mutate_if(is.numeric, round, 3) %>%
     dplyr::mutate(File_Name = aFileName) %>%
