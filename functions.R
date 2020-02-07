@@ -135,7 +135,8 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
   
   trial_names <- c("sbs_before" = paste0("sbs_before", ' - ', aFileName), # create list of names for facet headers
                    "Filtration" = paste0("Filtration", ' - ', aFileName),
-                   "sbs_after" = paste0("sbs_after", ' - ', aFileName))
+                   "sbs_after" = paste0("sbs_after", ' - ', aFileName),
+                   "Neg_Control" = paste0("Neg_Control", ' - ', aFileName))
   
   one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_ug_L, group = Position, color = legend_title)) +
     geom_line(size = 1) +
