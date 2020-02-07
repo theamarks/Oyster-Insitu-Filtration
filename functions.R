@@ -131,7 +131,7 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
     dplyr::mutate(Time = as.hms(Time),
                   Experiment = ifelse(Experiment %in% c("sbs_after", "sbs_before", "Filtration"), Experiment, "Neg_Control"),
                   legend_title = paste0(Position, ' ', Sonde)) %>%  # combine columns for title
-    transform(Experiment = factor(Experiment, levels = c("sbs_before", "Filtration", "sbs_after")))
+    transform(Experiment = factor(Experiment, levels = c("sbs_before", "Filtration","Neg_Control", "sbs_after")))
   
   trial_names <- c("sbs_before" = paste0("sbs_before", ' - ', aFileName), # create list of names for facet headers
                    "Filtration" = paste0("Filtration", ' - ', aFileName),
