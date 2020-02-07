@@ -133,7 +133,8 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
                   legend_title = paste0(Position, ' ', Sonde)) %>%  # combine columns for title
     transform(Experiment = factor(Experiment, levels = c("sbs_before", "Filtration","Neg_Control", "sbs_after")))
   
-  trial_names <- c("sbs_before" = paste0("sbs_before", ' - ', aFileName), # create list of names for facet headers
+  trial_names <- c("sbs_before" = paste0("sbs_before", ' - ', aFileName %>% str_replace("Insitu_FIlter_", "") %>%
+                                                              str_replace(".csv", "")), # create list of names for facet headers
                    "Filtration" = paste0("Filtration", ' - ', aFileName),
                    "sbs_after" = paste0("sbs_after", ' - ', aFileName),
                    "Neg_Control" = paste0("Neg_Control", ' - ', aFileName))
