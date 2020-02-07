@@ -254,9 +254,11 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
   #  dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
   
   # extacts value from dataframe. without $Avg_Chl at the end, object would remain data.frame -AM
-  down_chl = correction_check[which(correction_check$Position == "Down"), "Avg_Chl"]$Avg_Chl
-  up_chl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl 
-  abs_difference = abs(down_chl - up_chl) # get rid of absolute value
+ # down_chl = correction_check[which(correction_check$Position == "Down"), "Avg_Chl"]$Avg_Chl
+  down_chl = correction_check$Avg_Chl_Down
+  #up_chl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl 
+  up_chl = correction_check$Avg_Chl_Up
+  abs_difference = abs(up_chl - down_chl) # get rid of absolute value
   
   # Chl sensor error +- 0.1 ug/L, 2 sensors, need correction if chl difference > 0.2 ug/L
  # if(abs_difference > 0.2) # Remove conditional - DZ & AM decided to correct all measurements
@@ -338,7 +340,7 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
   vel_summary_df = aVelocityData %>%
     dplyr::filter(measure_position %in% c("Mid", "Down")) %>%
     dplyr::group_by(Date, Site, Experiment) %>%
-    dplyr::summarise(avg_m_s = mean(m_s),
+    dplyr::summarise(avg_m_s = round(mean(m_s), 2),
                      avg_m_hr = avg_m_s*3600)
   
   final_results = aFRVariableData %>%
