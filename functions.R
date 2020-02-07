@@ -130,13 +130,12 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
   aFile_Mod = aTimeSeriesFile %<>%
     dplyr::mutate(Time = as.hms(Time),
                   Experiment = ifelse(Experiment %in% c("sbs_after", "sbs_before", "Filtration"), Experiment, "Neg_Control"),
-                  Experiment_Title = paste0(aFileName, " - ", Experiment),
                   legend_title = paste0(Position, ' ', Sonde)) %>%  # combine columns for title
-          transform(aTimeSeriesFile, Experiment_Title = factor(Experiment_Title, levels = c("^sbs_before", "^Filtration", "^sbs_after")))
- # legend_info <- aFile_Mod %>%           # original code created mini data frame to hold legend 
-  #  dplyr::select(Sonde, Position) %>%   # removed and added scale_color_manual() color assignments
-   # dplyr::distinct() %>%
-    #dplyr::mutate(legend = paste0(Position, " ", Sonde))
+    transform(Experiment = factor(Experiment, levels = c("sbs_before", "Filtration", "sbs_after")))
+  
+  trial_names <- c("sbs_before" = paste0("sbs_before", ' - ', aFileName), # create list of names for facet headers
+                   "Filtration" = paste0("Filtration", ' - ', aFileName),
+                   "sbs_after" = paste0("sbs_after", ' - ', aFileName))
   
   one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_ug_L, group = Position, color = legend_title)) +
     geom_line(size = 1) +
@@ -145,8 +144,8 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
                                   "Down H" = wes_palette("Cavalcanti1")[3],
                                   "Up G" = wes_palette("Cavalcanti1")[2], # assign Up to light green
                                   "Up H" = wes_palette("Cavalcanti1")[2])) +
+    facet_wrap(.~Experiment, nrow = 1, scales = "free_x", labeller = as_labeller(trial_names)) + # scales free - independent x axis on each graph
     theme_gdocs() +
-    facet_wrap(~Experiment_Title, nrow = 1, scales = "free_x") + # scales free - independent x axis on each graph
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           legend.title = element_blank()) +
     labs(x = "")
