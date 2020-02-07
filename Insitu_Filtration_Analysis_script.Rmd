@@ -70,7 +70,7 @@ Plots - Raw Data
 
 ### 
 
-```{r, fig.width=13.5, fig.height=5}
+```{r fig.height=5, fig.width=13.5}
 
 ######################################################################
 ##Steps 1 to 4) read the files to standardize names and plot time series for sondes
@@ -90,7 +90,6 @@ for(file in 1 : length(all_files))
  
   # 4) Plot the graph 
   plot(createTimeSeriesPlot(one_file, file_name, orig_graphs_directory, "Bef_Corr"))
-  dev.off()
   
   ## save the modified file 
   fwrite(one_file, file.path(output_dir_file_cleaning, file_name))
@@ -130,7 +129,6 @@ for(file in 1 : length(all_files))
     
   # plot the time series agains
   plot(createTimeSeriesPlot(one_file, file_name, corrected_graphs_directory, "After_Corr"))
-  dev.off()
     
   fwrite(one_file, file.path(output_dir_manual_corrections, file_name))
   
@@ -179,7 +177,7 @@ Plots - After Velocity Adjustment
 
 ###
 
-```{r, fig.width=7, fig.height=5}
+```{r eval=FALSE, fig.height=5, fig.width=7, include=FALSE}
 ######################################################################
 ## Graph Filtration Time Series After Veloctiy Time Adjustment (AM trying to copy for loop)
 ######################################################################
