@@ -245,10 +245,15 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
   # check if the correction need to be applied
   correction_check = aTimeSeriesFile %>%
     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-    dplyr::group_by(Position) %>%
-    dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
+    select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs correction
+    tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # create two new columns Up & Down fill with Chl values, paired by time
+    filter(!is.na(Up) & !is.na(Down)) %>% # select rows with data in Up and Down
+    dplyr::summarise(Avg_Chl_Up = mean(Up),
+                     Avg_Chl_Down = mean(Down))
+     #  dplyr::group_by(Position) %>%
+  #  dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
   
-  # extacts value from dataframe, without $Avg_Chl at the end, object would remain data.frame -AM
+  # extacts value from dataframe. without $Avg_Chl at the end, object would remain data.frame -AM
   down_chl = correction_check[which(correction_check$Position == "Down"), "Avg_Chl"]$Avg_Chl
   up_chl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl 
   abs_difference = abs(down_chl - up_chl) # get rid of absolute value
