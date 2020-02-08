@@ -132,12 +132,15 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
                   Experiment = ifelse(Experiment %in% c("sbs_after", "sbs_before", "Filtration"), Experiment, "Neg_Control"),
                   legend_title = paste0(Position, ' ', Sonde)) %>%  # combine columns for title
     transform(Experiment = factor(Experiment, levels = c("sbs_before", "Filtration","Neg_Control", "sbs_after")))
-  
-  trial_names <- c("sbs_before" = paste0("sbs_before", ' - ', aFileName %>% str_replace("Insitu_FIlter_", "") %>%
-                                                              str_replace(".csv", "")), # create list of names for facet headers
-                   "Filtration" = paste0("Filtration", ' - ', aFileName),
-                   "sbs_after" = paste0("sbs_after", ' - ', aFileName),
-                   "Neg_Control" = paste0("Neg_Control", ' - ', aFileName))
+  # create list of names for facet headers 
+  trial_names <- c("sbs_before" = paste0("sbs_before", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                                                            str_replace(".csv", "")), 
+                   "Filtration" = paste0("Filtration", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                                                            str_replace(".csv", "")),
+                   "sbs_after" = paste0("sbs_after", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                                                          str_replace(".csv", "")),
+                   "Neg_Control" = paste0("Neg_Control", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                                                          str_replace(".csv", "")))
   
   one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_ug_L, group = Position, color = legend_title)) +
     geom_line(size = 1) +
@@ -173,6 +176,7 @@ createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, 
       theme_gdocs() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.title = element_blank()) +
+      geom_hline(yintercept = 0, size = 1, color = "grey50", linetype = "dashed") + # adds diff line at y = 0
       labs(x = "", y = "Chl Difference", title = paste0(aFileName, " - ", "Filtration"))
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
@@ -367,7 +371,9 @@ adjustDownSondeTimeStamp = function(aWaterVelSummaryFile, aTimeSeriesFile)
       data.frame() %>%
       dplyr::mutate(Time = paste0(Date, " ", Time),
                     Time = lubridate::parse_date_time(Time, orders = "mdy HMS"),
-                    Time = ifelse(toupper(Experiment) == toupper(one_correction$Experiment)[[i]] & Position == "Down" & toupper(Site) == toupper(one_correction$Site)[[i]] ,  Time -one_correction$t_travel_s[[i]], Time),
+                    Time = ifelse(toupper(Experiment) == toupper(one_correction$Experiment)[[i]] 
+                                  & Position == "Down" 
+                                  & toupper(Site) == toupper(one_correction$Site)[[i]] ,  Time -one_correction$t_travel_s[[i]], Time),
                     Time = as.POSIXct(Time, origin="1970-01-01", tz = "UTC"),
                     Date = paste0(month(Time), "/", day(Time), "/", substr(year(Time), 3, 4)), 
                     Time = strftime(Time, format="%H:%M:%S", tz = "UTC")) 
