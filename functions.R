@@ -171,13 +171,14 @@ createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, 
     mutate(Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down)
   
   one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff)) +
-      geom_line(size = 1, color = wes_palette("Rushmore")[3]) +
-      geom_point(color = wes_palette("Rushmore")[3]) +
+      geom_line(size = 1, color = wes_palette("GrandBudapest1")[3]) +
+      geom_point(color = wes_palette("GrandBudapest1")[3]) +
       theme_gdocs() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.title = element_blank()) +
       geom_hline(yintercept = 0, size = 1, color = "grey50", linetype = "dashed") + # adds diff line at y = 0
-      labs(x = "", y = "Chl Difference", title = paste0(aFileName, " - ", "Filtration"))
+      labs(x = "", y = "Chl Difference", title = paste0((aFileName %>% str_replace("Insitu_Filter_", "") %>% 
+                                                           str_replace(".csv", "",)), " - ", "Chl Removal")))
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
   ggsave(one_graph_name, one_plot, dpi = 600, width = 7, height = 5, units = "in", device = "pdf", aGraphOutputDirectory)
