@@ -167,18 +167,18 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
 createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
 {  
   aFile_Mod = aTimeSeriesFile %<>%
-    select(Time, Date, Site, Experiment, Sonde_Up, Sonde_Down, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
+    select(Time, Date, Site, Experiment, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
     mutate(Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
            Time = as_hms(Time))
   
-  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff, group = Experiment))+
+  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff))+
       geom_path(size = 1, color = wes_palette("GrandBudapest1")[3]) +
       geom_point(color = wes_palette("GrandBudapest1")[3]) +
       theme_gdocs() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.title = element_blank()) +
       geom_hline(yintercept = 0, size = 1, color = "grey50", linetype = "dashed") + # adds diff line at y = 0
-      labs(x = "", y = "Chl Difference (ug/L)", title = paste0(aFileName, " - ", "Chl Removal"))
+      labs(x = "", y = "Chl Difference (ug/L)", title = paste0(aFileName, " - ", Experiment))
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
   ggsave(one_graph_name, one_plot, dpi = 600, width = 7, height = 5, units = "in", device = "pdf", aGraphOutputDirectory)
