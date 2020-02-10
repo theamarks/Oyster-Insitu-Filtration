@@ -167,10 +167,11 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
 createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
 {  
   aFile_Mod = aTimeSeriesFile %<>%
-    select(Time, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
-    mutate(Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down)
+    select(Time, Date, Site, Experiment, Sonde_Up, Sonde_Down, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
+    mutate(Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
+           Time = as_hms(Time))
   
-  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff)) +
+  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff, group = Experiment))+
       geom_path(size = 1, color = wes_palette("GrandBudapest1")[3]) +
       geom_point(color = wes_palette("GrandBudapest1")[3]) +
       theme_gdocs() +
