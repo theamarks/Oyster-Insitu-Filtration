@@ -86,7 +86,13 @@ createOutputDirectories = function()
   {
     dir.create(water_velocity_summary_directory)
   }
-  
+
+  # Create an output directory for error statistics
+  error_directory <<- file.path(output_directory,"8_Error_Calculatios")
+  if(!dir.exists(error_directory))
+  {
+    dir.create(error_directory)
+  }
 }
 ######################################################################################
 ## This function standardizes the column names and values (for site, experiment and position)
