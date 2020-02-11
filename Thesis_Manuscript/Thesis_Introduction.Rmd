@@ -1,5 +1,10 @@
 ---
-output: pdf_document
+bibliography: library.bib
+csl: marine-ecology-progress-series.csl
+header-includes: \usepackage{setspace}\doublespacing
+output:
+  pdf_document:
+    fig_caption: yes
 ---
 
 # Introduction
