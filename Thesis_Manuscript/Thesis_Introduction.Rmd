@@ -4,13 +4,13 @@ output: pdf_document
 
 # Introduction
 
-##Theme - take home sentence
+## Theme - take home sentence
 
 **The filtration contributions of oyster habitat on the west coast are understudied, and need field measurements of both constructed restorations and aquaculture habitats to inform filtration estimates.**
 
 **Filtration estimates of oyster habitat on the west coast need measurements that incorporate the entire filter-feeding community of constructed oyster restorations and commercial aquaculture.**
 
-##Introduction Skeleton
+## Introduction Skeleton
 
 *West Coast Oyster Sotry
   +*Ostrea lurida* native range
