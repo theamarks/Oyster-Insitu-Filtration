@@ -178,7 +178,7 @@ createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, 
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.title = element_blank()) +
       geom_hline(yintercept = 0, size = 1, color = "grey50", linetype = "dashed") + # adds diff line at y = 0
-      labs(x = "", y = "Chl Difference (ug/L)", title = paste0(unique(Experiment), ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
+      labs(x = "", y = "Chl Difference (ug/L)", title = paste0(unique(aFile_Mod$Experiment), ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
                                                                  str_replace(".csv", "")))
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
