@@ -257,53 +257,57 @@ applyManualCorrections =  function(aTimeSeriesFile, aFileName, aManualCorrection
 calculateErrorStats = function(aTimeSeriesFile, aFileName)
 {
   afileSbsStats = aTimeSeriesFile %>% 
-    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-    select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs 
-    tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # create two new columns Up & Down fill with Chl values, paired by time
-    filter(!is.na(Up) & !is.na(Down)) %>%  # select rows with data in Up and Down
-    mutate(sbs_Chl_diff = Up - Down) %>% 
-    summarise(Mean_sbs_Chl_diff = mean(sbs_Chl_diff),
-              Median_sbs_Chl_diff = median(sbs_Chl_diff),
-              SD_sbs_Chl_diff = sd(sbs_Chl_diff), # calc sample standard deviation 
-              SE_sbs_Chl_diff = SD_sbs_Chl_diff/sqrt(length(sbs_Chl_diff))) # calc sample standard error
+     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
+     select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs 
+     tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # create two new columns Up & Down fill with Chl values, paired by time
+     filter(!is.na(Up) & !is.na(Down)) %>%  # select rows with data in Up and Down
+     mutate(sbs_Chl_diff = Up - Down) %>% 
+     summarise(Mean_sbs_Chl_diff = mean(sbs_Chl_diff),
+               Median_sbs_Chl_diff = median(sbs_Chl_diff),
+               SD_sbs_Chl_diff = sd(sbs_Chl_diff), # calc sample standard deviation 
+               SE_sbs_Chl_diff = SD_sbs_Chl_diff/sqrt(length(sbs_Chl_diff)), # calc sample standard error
+               Sample_count = length(Time))
+  
   
   # dataframe for graphing & individual sonde stats
   distrubution = aTimeSeriesFile %>% 
-    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-    select(Time, Chl_ug_L, Position, Experiment) %>% 
-    tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
-    filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
-    pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
+      dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
+      select(Time, Chl_ug_L, Position, Experiment) %>% 
+      tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
+      filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
+      pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
   
   # downstream summary stats - to populate graphs
   distrubution_down <- distrubution %>%
-    filter(Position %in% "Down") %>% 
-    summarise(mean_chl_down = mean(Chl_ug_L),
-              median_chl_down = median(Chl_ug_L),
-              sd_chl_down = sd(Chl_ug_L),
-              se_chl_down = sd_chl_down/sqrt(length(Chl_ug_L)))
+      filter(Position %in% "Down") %>% 
+      summarise(mean_chl_down = mean(Chl_ug_L),
+                median_chl_down = median(Chl_ug_L),
+                sd_chl_down = sd(Chl_ug_L),
+                se_chl_down = sd_chl_down/sqrt(length(Chl_ug_L)))
   
   # upstream summary stats - to populate graphs
   distrubution_up <- distrubution %>%
-    filter(Position %in% "Up") %>% 
-    summarise(mean_chl_up = mean(Chl_ug_L),
-              median_chl_up = median(Chl_ug_L),
-              sd_chl_up = sd(Chl_ug_L),
-              se_chl_up = sd_chl_up/sqrt(length(Chl_ug_L)))
+      filter(Position %in% "Up") %>% 
+      summarise(mean_chl_up = mean(Chl_ug_L),
+                median_chl_up = median(Chl_ug_L),
+                sd_chl_up = sd(Chl_ug_L),
+                se_chl_up = sd_chl_up/sqrt(length(Chl_ug_L)))
   
-  aSbs_stat_summary = data.frame(File_Name = aFileName,
-                                Mean_sbs_Chl_diff = afileSbsStats$Mean_sbs_Chl_diff,
-                                Median_sbs_Chl_diff = afileSbsStats$Median_sbs_Chl_diff,
-                                SD_sbs_Chl_diff = afileSbsStats$SD_sbs_Chl_diff,
-                                SE_sbs_Chl_diff = afileSbsStats$SE_sbs_Chl_diff,
-                                Mean_Chl_Up = distrubution_up$mean_chl_up,
-                                Median_Chl_Up = distrubution_up$median_chl_up,
-                                SD_Chl_Up = distrubution_up$sd_chl_up,
-                                SE_Chl_UP = distrubution_up$se_chl_up,
-                                Mean_Chl_Down = distrubution_down$mean_chl_down,
-                                Median_Chl_Down = distrubution_down$median_chl_down,
-                                SD_Chl_Down = distrubution_down$sd_chl_down,
-                                SE_Chl_Down = distrubution_down$se_chl_down)
+  # Create Side by Side summary data frame that will build larger dataframe in loop
+  Sbs_stat_summary = data.frame(# File_Name = aFileName,
+    Mean_sbs_Chl_diff = afileSbsStats$Mean_sbs_Chl_diff,
+    Median_sbs_Chl_diff = afileSbsStats$Median_sbs_Chl_diff,
+    SD_sbs_Chl_diff = afileSbsStats$SD_sbs_Chl_diff,
+    SE_sbs_Chl_diff = afileSbsStats$SE_sbs_Chl_diff,
+    Mean_Chl_Up = distrubution_up$mean_chl_up,
+    Median_Chl_Up = distrubution_up$median_chl_up,
+    SD_Chl_Up = distrubution_up$sd_chl_up,
+    SE_CHl_UP = distrubution_up$se_chl_up,
+    Mean_Chl_Down = distrubution_down$mean_chl_down,
+    Median_Chl_Down = distrubution_down$median_chl_down,
+    SD_Chl_Down = distrubution_down$sd_chl_down,
+    SE_Chl_Down = distrubution_down$se_chl_down,
+    Sample_Count = afileSbsStats$Sample_count
   
   return(aSbs_stat_summary)
   
