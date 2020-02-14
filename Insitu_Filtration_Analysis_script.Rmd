@@ -172,6 +172,48 @@ fwrite(filteration_summary_table, file.path(filtration_summary_output_directory,
 
 ```
 
+SBS - Correction & Uncertainty
+=====================================
+
+###
+```{r}
+######################################################################
+# Create SBS Stats - Uncertainty Table
+######################################################################
+# empty data frame to store sbs stats summary  
+sbs_stats_summary = data.frame()
+
+for(file in 1 : length(all_files))
+{
+  
+  file_name = all_files[file]
+    
+  # Import the file
+  one_file = fread(file.path(output_dir_file_cleaning, file_name))
+    
+  ## apply manual corrections
+  one_file = calculateErrorStats(one_file, file_name, manual_correction_df,
+                                    error_directory)
+  
+  if(nrow(one_file) > 0)
+  {  
+    Sbs_stats_summary_table = rbind(filteration_summary_table, one_file)
+  }
+  # save the sbs STATS table
+  fwrite(Sbs_stats_summary_table, file.path(error_directory, file_name))
+
+}
+
+# Save the correction summary
+fwrite(sbs_correction_summary, file.path(sbs_summary_output_directory,
+                                        "sbs_correction_summary.csv"))
+
+fwrite(filteration_summary_table, file.path(filtration_summary_output_directory,
+                                        "filtration_summary.csv"))
+  
+
+```
+
 Chl Drawdown - Velocity paired
 =====================================
 
