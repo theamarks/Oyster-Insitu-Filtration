@@ -465,11 +465,11 @@ calculateFilterationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
   
   up_sonde_df = aTimeSeriesFile %>%
     dplyr::filter(Position == "Up" & !Experiment %in% c("sbs_before", "sbs_after"))%>%
-    dplyr::select(Time, Date, Experiment, Sonde, Site, Temp_C, SpCond_mS_cm, Cond_mS_cm, TDS_g_L, Sal_ppt, Turbidity_NTU, Chl_ug_L)
+    dplyr::select(Time, Date, Experiment, Sonde, Site, Temp_C, SpCond_mS_cm, Cond_mS_cm, TDS_g_L, Sal_ppt, Turbidity_NTU, Chl_ug_L_Corrected)
   
   down_sonde_df = aTimeSeriesFile %>%
     dplyr::filter(Position == "Down" & !Experiment %in% c("sbs_before", "sbs_after"))%>%
-    dplyr::select(Time, Date, Experiment, Sonde, Site, Temp_C, SpCond_mS_cm, Cond_mS_cm, TDS_g_L, Sal_ppt, Turbidity_NTU, Chl_ug_L)
+    dplyr::select(Time, Date, Experiment, Sonde, Site, Temp_C, SpCond_mS_cm, Cond_mS_cm, TDS_g_L, Sal_ppt, Turbidity_NTU, Chl_ug_L_Corrected)
   
   
   combined_water_quality_df = up_sonde_df %>%
@@ -483,7 +483,7 @@ calculateFilterationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
                   TDS_g_L_Up = TDS_g_L.x, 
                   Sal_ppt_Up = Sal_ppt.x, 
                   Turbidity_NTU_Up = Turbidity_NTU.x, 
-                  Chl_ug_L_Up = Chl_ug_L.x,
+                  Chl_ug_L_Up = Chl_ug_L_Corrected.x,
                   
                   Sonde_Down = Sonde.y,
                   Temp_C_Down = Temp_C.y, 
@@ -492,7 +492,7 @@ calculateFilterationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
                   TDS_g_L_Down = TDS_g_L.y, 
                   Sal_ppt_Down = Sal_ppt.y, 
                   Turbidity_NTU_Down = Turbidity_NTU.y, 
-                  Chl_ug_L_Down = Chl_ug_L.y) %>%
+                  Chl_ug_L_Down = Chl_ug_L_Corrected.y) %>%
     
     dplyr::inner_join(one_water_vel_summary, by = c("Date", "Site", "Experiment")) %>%
     
