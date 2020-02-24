@@ -538,7 +538,7 @@ createFilterationSummary = function(aFilterationFile, aFileName)
                      L_hr_m2 = mean(L_hr_m2)
                      ) %>%
     data.frame() %>%
-    dplyr::mutate_if(is.numeric, round, 3) %>%
+   # dplyr::mutate_if(is.numeric, round, 3) %>% # Tried to match excel numbers
     dplyr::mutate(File_Name = aFileName) %>%
     dplyr::select(File_Name, Experiment, everything())
   
