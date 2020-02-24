@@ -254,7 +254,7 @@ applyManualCorrections =  function(aTimeSeriesFile, aFileName, aManualCorrection
 ## This function calculates and summarizes sensor systematic error based on sbs trials
 ######################################################################################
 
-calculateErrorStats = function(aTimeSeriesFile, aFileName)
+calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFile,  aOutputDirectory)
 {
   afileSbsStats = aTimeSeriesFile %>% 
      dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
@@ -307,7 +307,7 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName)
     Median_Chl_Down = distrubution_down$median_chl_down,
     SD_Chl_Down = distrubution_down$sd_chl_down,
     SE_Chl_Down = distrubution_down$se_chl_down,
-    Sample_Count = afileSbsStats$Sample_count
+    Sample_Count = afileSbsStats$Sample_count)
   
   return(aSbs_stat_summary)
   
@@ -418,7 +418,7 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
   vel_summary_df = aVelocityData %>%
     dplyr::filter(measure_position %in% c("Mid", "Down")) %>%
     dplyr::group_by(Date, Site, Experiment) %>%
-    dplyr::summarise(avg_m_s = round(mean(m_s), 2),
+    dplyr::summarise(avg_m_s = mean(m_s),
                      avg_m_hr = avg_m_s*3600)
   
   final_results = aFRVariableData %>%
