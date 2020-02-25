@@ -313,7 +313,54 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
   
 }
 
+######################################################################################
+## This function Graphs Density Plot of SBS Trails 
+######################################################################################
+createSbsDensityPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
+{
 
+Sbs_stats_plot = Sbs_stat_summary %>% 
+  select(Sample_Count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
+  mutate_if(is.numeric, round, 3) %>% 
+  rename("n" = Sample_Count,  
+         "Mean Chl Diff" = Mean_sbs_Chl_diff,  
+         "StDev Chl Diff" = SD_sbs_Chl_diff,  
+         "St Error Chl Diff" = SE_sbs_Chl_diff)
+
+Sbs_stats_plot <- t(Sbs_stats_plot) # transpose columns and rows 
+Sbs_stats_plot_text <- ggpubr::ggtexttable(Sbs_stats_plot, theme = ttheme("blank")) # dataframe to text table
+
+# Frequency polygon of sbs measurements
+(distrubution_plot <- ggplot(data = distrubution, aes(x = Chl_ug_L)) +
+    geom_freqpoly(aes(color = Position), alpha = 0.6, binwidth = 0.1, size = 1) +
+    scale_color_manual(values = c("Down" = wes_palette("Cavalcanti1")[3],
+                                  "Up" = wes_palette("Cavalcanti1")[2])) +
+    theme_gdocs() +
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank()) +
+    # add dashed line to indicate means
+    geom_vline(xintercept = distrubution_down$mean_chl_down, 
+               color = wes_palette("Cavalcanti1")[3] , linetype = "dashed", size = .75) +
+    geom_vline(xintercept = distrubution_up$mean_chl_up,
+               color = wes_palette("Cavalcanti1")[2], linetype = "dashed", size = .75) +
+    # add Mean Down next to dashed line
+    annotate("text", x = Sbs_stat_summary$Mean_Chl_Down - 0.05, 
+             y = Inf, label = paste("Mean Down: ", sep = "", round(Sbs_stat_summary$Mean_Chl_Down, 2)),
+             vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[3]) +
+    # add mean Up next to dashed line
+    annotate("text", x = Sbs_stat_summary$Mean_Chl_Up - 0.05, 
+             y = Inf, label = paste("Mean Up: ", sep = "", round(Sbs_stat_summary$Mean_Chl_Up, 2)),
+             vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[2]))
+  
+distrubution_plot_stats <- ggdraw(distrubution_plot) +
+  draw_plot(Sbs_stats_plot_text, 
+            vjust = 0,
+            hjust = 0,
+            x = -0.3,
+            y = 0.35)
+
+return(distrubution_plot_stats)
+}
 
 ######################################################################################
 ## This function summarizes the sbs correction requirements 
