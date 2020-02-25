@@ -294,7 +294,7 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
                 se_chl_up = sd_chl_up/sqrt(length(Chl_ug_L)))
   
   # Create Side by Side summary data frame that will build larger dataframe in loop
-  Sbs_stat_summary = data.frame(# File_Name = aFileName,
+  Sbs_stat_summary = data.frame(File_Name = aFileName,
     Mean_sbs_Chl_diff = afileSbsStats$Mean_sbs_Chl_diff,
     Median_sbs_Chl_diff = afileSbsStats$Median_sbs_Chl_diff,
     SD_sbs_Chl_diff = afileSbsStats$SD_sbs_Chl_diff,
@@ -309,7 +309,7 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
     SE_Chl_Down = distrubution_down$se_chl_down,
     Sample_Count = afileSbsStats$Sample_count)
   
-  return(aSbs_stat_summary)
+  return(Sbs_stat_summary)
   
 }
 
