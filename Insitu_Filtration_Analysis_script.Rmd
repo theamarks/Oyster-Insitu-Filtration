@@ -176,7 +176,7 @@ SBS - Correction & Uncertainty
 =====================================
 
 ###
-```{r}
+```{r Sbs_Correction_Uncertainty, echo=FALSE}
 ######################################################################
 # Create SBS Stats - Uncertainty Table
 ######################################################################
@@ -190,26 +190,21 @@ for(file in 1 : length(all_files))
     
   # Import the file
   one_file = fread(file.path(output_dir_file_cleaning, file_name))
-    
-  ## apply manual corrections
-  one_file = calculateErrorStats(one_file, file_name, manual_correction_df,
-                                    error_directory)
   
   if(nrow(one_file) > 0)
   {  
-    Sbs_stats_summary_table = rbind(filteration_summary_table, one_file)
+    ## calculate Statistics on Sbs data
+    one_file = calculateErrorStats(one_file, file_name, manual_correction_df,
+                                    error_directory)
+    sbs_stats_summary = rbind(sbs_stats_summary, one_file) 
   }
-  # save the sbs STATS table
-  fwrite(Sbs_stats_summary_table, file.path(error_directory, file_name))
 
 }
 
-# Save the correction summary
-fwrite(sbs_correction_summary, file.path(sbs_summary_output_directory,
-                                        "sbs_correction_summary.csv"))
+# Save the SBS Statistics summary
 
-fwrite(filteration_summary_table, file.path(filtration_summary_output_directory,
-                                        "filtration_summary.csv"))
+fwrite(sbs_stats_summary, file.path(error_directory,
+                                        "Sbs_stats_error_summary.csv"))
   
 
 ```
