@@ -178,7 +178,7 @@ SBS - Correction & Uncertainty
 ###
 ```{r Sbs_Correction_Uncertainty, echo=FALSE}
 ######################################################################
-# Create SBS Stats - Uncertainty Table
+# Create SBS Stats - Uncertainty Table & Graph SBS Density Plots
 ######################################################################
 # empty data frame to store sbs stats summary  
 sbs_stats_summary = data.frame()
@@ -190,6 +190,13 @@ for(file in 1 : length(all_files))
     
   # Import the file
   one_file = fread(file.path(output_dir_file_cleaning, file_name))
+  
+  # Calculate Error Stats for individual day
+  one_file = calculateErrorStats(one_file, file_name, manual_correction_df,
+                                error_directory)
+  
+  # Plot SBS Density with stats table
+  plot(createSbsDensityPlot(one_file, file_name, corrected_graphs_directory))
   
   if(nrow(one_file) > 0)
   {  
