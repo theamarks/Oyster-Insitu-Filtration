@@ -172,7 +172,7 @@ fwrite(filteration_summary_table, file.path(filtration_summary_output_directory,
 
 ```
 
-SBS - Correction & Uncertainty
+SBS - Correction Calc & Uncertainty
 =====================================
 
 ###
@@ -192,18 +192,20 @@ for(file in 1 : length(all_files))
   one_file = fread(file.path(output_dir_file_cleaning, file_name))
   
   # Calculate Error Stats for individual day
-  one_file = calculateErrorStats(one_file, file_name, manual_correction_df,
-                                error_directory)
+  #calculateErrorStats(one_file, file_name, manual_correction_df,
+   #                             error_directory)
   
-  # Plot SBS Density with stats table
-  plot(createSbsDensityPlot(one_file, file_name, corrected_graphs_directory))
+
   
   if(nrow(one_file) > 0)
   {  
     ## calculate Statistics on Sbs data
-    one_file = calculateErrorStats(one_file, file_name, manual_correction_df,
+    one_file_stats = calculateErrorStats(one_file, file_name, manual_correction_df,
                                     error_directory)
-    sbs_stats_summary = rbind(sbs_stats_summary, one_file) 
+      # Plot SBS Density with stats table
+    plot(createSbsDensityPlot(one_file_stats, file_name))
+    
+    sbs_stats_summary = rbind(sbs_stats_summary, one_file_stats) 
   }
 
 }
