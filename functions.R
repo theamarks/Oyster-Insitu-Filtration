@@ -316,7 +316,7 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
 ######################################################################################
 ## This function Sbs distrubution data set for Sbs Density Graphs
 ######################################################################################
-calculateSbsGraphData = function(aTimeSeriesFile, aFileName, aManualCorrectionsFile,  aOutputDirectory)
+calculateSbsGraphData = function(aTimeSeriesFile)
 {
   afileSbsStats = aTimeSeriesFile %>% 
     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
