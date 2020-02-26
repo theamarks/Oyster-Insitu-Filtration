@@ -294,7 +294,7 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
                 se_chl_up = sd_chl_up/sqrt(length(Chl_ug_L)))
   
   # Create Side by Side summary data frame that will build larger dataframe in loop
-  Sbs_stat_summary = data.frame(File_Name = aFileName,
+  aSbs_stat_summary = data.frame(File_Name = aFileName,
     Mean_sbs_Chl_diff = afileSbsStats$Mean_sbs_Chl_diff,
     Median_sbs_Chl_diff = afileSbsStats$Median_sbs_Chl_diff,
     SD_sbs_Chl_diff = afileSbsStats$SD_sbs_Chl_diff,
@@ -309,8 +309,7 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
     SE_Chl_Down = distrubution_down$se_chl_down,
     Sample_Count = afileSbsStats$Sample_count)
   
-  return(Sbs_stat_summary)
- # return(adistrubution)
+  return(aSbs_stat_summary)
   
 }
 ######################################################################################
@@ -318,19 +317,7 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
 ######################################################################################
 calculateSbsGraphData = function(aTimeSeriesFile)
 {
-  afileSbsStats = aTimeSeriesFile %>% 
-    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-    select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs 
-    tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # create two new columns Up & Down fill with Chl values, paired by time
-    filter(!is.na(Up) & !is.na(Down)) %>%  # select rows with data in Up and Down
-    mutate(sbs_Chl_diff = Up - Down) %>% 
-    summarise(Mean_sbs_Chl_diff = mean(sbs_Chl_diff),
-              Median_sbs_Chl_diff = median(sbs_Chl_diff),
-              SD_sbs_Chl_diff = sd(sbs_Chl_diff), # calc sample standard deviation 
-              SE_sbs_Chl_diff = SD_sbs_Chl_diff/sqrt(length(sbs_Chl_diff)), # calc sample standard error
-              Sample_count = length(Time))
-  
-  # dataframe for graphing & individual sonde stats
+ # dataframe for graphing & individual sonde stats
   adistrubution = aTimeSeriesFile %>% 
     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
     select(Time, Chl_ug_L, Position, Experiment) %>% 
@@ -346,10 +333,10 @@ calculateSbsGraphData = function(aTimeSeriesFile)
 ######################################################################################
 ## This function Graphs Density Plot of SBS Trails 
 ######################################################################################
-createSbsDensityPlot = function(adistrubution, aFileName)
+createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
 {
 
-Sbs_stats_plot = Sbs_stat_summary %>% 
+Sbs_stats_plot = aSbs_stat_summary %>% 
   select(Sample_Count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
   mutate_if(is.numeric, round, 3) %>% 
   rename("n" = Sample_Count,  
