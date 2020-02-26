@@ -191,7 +191,7 @@ for(file in 1 : length(all_files))
   file_name = all_files[file]
     
   # Import the file
-  one_file = fread(file.path(output_dir_file_cleaning, file_name))
+  one_file = fread(file.path(output_dir_manual_corrections, file_name))
   
   # generate data for Sbs density graphs
   stats_for_graph = calculateErrorStats(one_file, file_name, manual_correction_df, error_directory)
