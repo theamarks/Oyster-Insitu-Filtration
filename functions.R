@@ -317,7 +317,8 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
 ######################################################################################
 calculateSbsGraphData = function(aTimeSeriesFile)
 {
- # dataframe for graphing & individual sonde stats
+  
+   # dataframe for graphing & individual sonde stats
   adistrubution = aTimeSeriesFile %>% 
     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
     select(Time, Chl_ug_L, Position, Experiment) %>% 
@@ -335,48 +336,71 @@ calculateSbsGraphData = function(aTimeSeriesFile)
 ######################################################################################
 createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
 {
-
-Sbs_stats_plot = aSbs_stat_summary %>% 
-  select(Sample_Count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
-  mutate_if(is.numeric, round, 3) %>% 
-  rename("n" = Sample_Count,  
+  # dataframe for graphing & individual sonde stats
+  distrubution = adistrubution %>% 
+    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
+    select(Time, Chl_ug_L, Position, Experiment) %>% 
+    tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
+    filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
+    pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
+  
+  # downstream summary stats - to populate graphs
+  distrubution_down <- distrubution %>%
+    filter(Position %in% "Down") %>% 
+    summarise(mean_chl_down = mean(Chl_ug_L),
+              median_chl_down = median(Chl_ug_L),
+              sd_chl_down = sd(Chl_ug_L),
+              se_chl_down = sd_chl_down/sqrt(length(Chl_ug_L)))
+  
+  # upstream summary stats - to populate graphs
+  distrubution_up <- distrubution %>%
+    filter(Position %in% "Up") %>% 
+    summarise(mean_chl_up = mean(Chl_ug_L),
+              median_chl_up = median(Chl_ug_L),
+              sd_chl_up = sd(Chl_ug_L),
+              se_chl_up = sd_chl_up/sqrt(length(Chl_ug_L)))
+  
+  Sbs_stats_plot = aSbs_stat_summary %>% 
+   select(Sample_Count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
+   mutate_if(is.numeric, round, 3) %>% 
+   rename("n" = Sample_Count,  
          "Mean Chl Diff" = Mean_sbs_Chl_diff,  
          "StDev Chl Diff" = SD_sbs_Chl_diff,  
          "St Error Chl Diff" = SE_sbs_Chl_diff)
 
-Sbs_stats_plot <- t(Sbs_stats_plot) # transpose columns and rows 
-Sbs_stats_plot_text <- ggpubr::ggtexttable(Sbs_stats_plot, theme = ttheme("blank")) # dataframe to text table
+  Sbs_stats_plot <- t(Sbs_stats_plot) # transpose columns and rows 
+  Sbs_stats_plot_text <- ggpubr::ggtexttable(Sbs_stats_plot, theme = ttheme("blank")) # dataframe to text table
 
-# Frequency polygon of sbs measurements
-(distrubution_plot <- ggplot(data = adistrubution, aes(x = Chl_ug_L)) +
-    geom_freqpoly(aes(color = Position), alpha = 0.6, binwidth = 0.1, size = 1) +
-    scale_color_manual(values = c("Down" = wes_palette("Cavalcanti1")[3],
+  # Frequency polygon of sbs measurements
+  distrubution_plot <- ggplot(data = adistrubution, aes(x = Chl_ug_L)) +
+      geom_freqpoly(aes(color = Position), alpha = 0.6, binwidth = 0.1, size = 1) +
+      scale_color_manual(values = c("Down" = wes_palette("Cavalcanti1")[3],
                                   "Up" = wes_palette("Cavalcanti1")[2])) +
-    theme_gdocs() +
-    theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank()) +
+      theme_gdocs() +
+      theme(panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank()) +
     # add dashed line to indicate means
-    geom_vline(xintercept = distrubution_down$mean_chl_down, 
-               color = wes_palette("Cavalcanti1")[3] , linetype = "dashed", size = .75) +
-    geom_vline(xintercept = distrubution_up$mean_chl_up,
-               color = wes_palette("Cavalcanti1")[2], linetype = "dashed", size = .75) +
+      geom_vline(xintercept = distrubution_down$mean_chl_down, 
+                 color = wes_palette("Cavalcanti1")[3] , linetype = "dashed", size = .75) +
+      geom_vline(xintercept = distrubution_up$mean_chl_up,
+                color = wes_palette("Cavalcanti1")[2], linetype = "dashed", size = .75) +
     # add Mean Down next to dashed line
-    annotate("text", x = Sbs_stat_summary$Mean_Chl_Down - 0.05, 
-             y = Inf, label = paste("Mean Down: ", sep = "", round(Sbs_stat_summary$Mean_Chl_Down, 2)),
-             vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[3]) +
+      annotate("text", x = aSbs_stat_summary$Mean_Chl_Down - 0.05, 
+               y = Inf, label = paste("Mean Down: ", sep = "", round(aSbs_stat_summary$Mean_Chl_Down, 2)),
+              vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[3]) +
     # add mean Up next to dashed line
-    annotate("text", x = Sbs_stat_summary$Mean_Chl_Up - 0.05, 
-             y = Inf, label = paste("Mean Up: ", sep = "", round(Sbs_stat_summary$Mean_Chl_Up, 2)),
-             vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[2]))
+      annotate("text", x = aSbs_stat_summary$Mean_Chl_Up - 0.05, 
+              y = Inf, label = paste("Mean Up: ", sep = "", round(aSbs_stat_summary$Mean_Chl_Up, 2)),
+              vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[2])
   
-distrubution_plot_stats <- ggdraw(distrubution_plot) +
-  draw_plot(Sbs_stats_plot_text, 
-            vjust = 0,
-            hjust = 0,
-            x = -0.3,
-            y = 0.35)
+  distrubution_plot_stats <- ggdraw(distrubution_plot) +
+      draw_plot(Sbs_stats_plot_text, 
+              vjust = 0,
+              hjust = 0,
+              x = -0.3,
+              y = 0.35)
 
-return(distrubution_plot_stats)
+  return(distrubution_plot_stats)
 }
 
 ######################################################################################
