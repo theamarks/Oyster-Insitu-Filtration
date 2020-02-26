@@ -310,9 +310,38 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
     Sample_Count = afileSbsStats$Sample_count)
   
   return(Sbs_stat_summary)
-  return(adistrubution)
+ # return(adistrubution)
   
 }
+######################################################################################
+## This function Sbs distrubution data set for Sbs Density Graphs
+######################################################################################
+calculateSbsGraphData = function(aTimeSeriesFile, aFileName, aManualCorrectionsFile,  aOutputDirectory)
+{
+  afileSbsStats = aTimeSeriesFile %>% 
+    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
+    select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs 
+    tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # create two new columns Up & Down fill with Chl values, paired by time
+    filter(!is.na(Up) & !is.na(Down)) %>%  # select rows with data in Up and Down
+    mutate(sbs_Chl_diff = Up - Down) %>% 
+    summarise(Mean_sbs_Chl_diff = mean(sbs_Chl_diff),
+              Median_sbs_Chl_diff = median(sbs_Chl_diff),
+              SD_sbs_Chl_diff = sd(sbs_Chl_diff), # calc sample standard deviation 
+              SE_sbs_Chl_diff = SD_sbs_Chl_diff/sqrt(length(sbs_Chl_diff)), # calc sample standard error
+              Sample_count = length(Time))
+  
+  # dataframe for graphing & individual sonde stats
+  adistrubution = aTimeSeriesFile %>% 
+    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
+    select(Time, Chl_ug_L, Position, Experiment) %>% 
+    tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
+    filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
+    pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
+  
+   return(adistrubution)
+  
+}
+
 
 ######################################################################################
 ## This function Graphs Density Plot of SBS Trails 
