@@ -139,14 +139,17 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
                   legend_title = paste0(Position, ' ', Sonde)) %>%  # combine columns for title
     transform(Experiment = factor(Experiment, levels = c("sbs_before", "Filtration","Neg_Control", "sbs_after")))
   # create list of names for facet headers 
-  trial_names <- c("sbs_before" = paste0("sbs_before", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
-                                                                            str_replace(".csv", "")), 
-                   "Filtration" = paste0("Filtration", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
-                                                                            str_replace(".csv", "")),
-                   "sbs_after" = paste0("sbs_after", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
-                                                                          str_replace(".csv", "")),
-                   "Neg_Control" = paste0("Neg_Control", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
-                                                                          str_replace(".csv", "")))
+  trial_names <- c("sbs_before" = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                           str_replace(".csv", ""),' - ',"sbs_before"), 
+                   
+                   "Filtration" = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                           str_replace(".csv", ""), ' - ',"Filtration"),
+                   
+                   "sbs_after" = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                          str_replace(".csv", ""), ' - ',"sbs_after"),
+                   
+                   "Neg_Control" = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                            str_replace(".csv", ""), ' - ', "Neg_Control"))
   
   one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_ug_L, group = Position, color = legend_title)) +
     geom_line(size = 1) +
@@ -184,9 +187,8 @@ createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, 
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.title = element_blank()) +
       geom_hline(yintercept = 0, size = 1, color = "grey50", linetype = "dashed") + # adds diff line at y = 0
-      labs(x = "", y = "Chl Difference (ug/L)", title = paste0(unique(aFile_Mod$Experiment), ' - ',
-                                                               aFileName %>% str_replace("Insitu_Filter_", "") %>%
-                                                                 str_replace(".csv", "")))
+      labs(x = "", y = "Chl Difference (ug/L)", title = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                                                 str_replace(".csv", ""), ' - ',unique(aFile_Mod$Experiment)))
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
   ggsave(one_graph_name, one_plot, dpi = 600, width = 7, height = 5, units = "in", device = "pdf", aGraphOutputDirectory)
@@ -387,14 +389,14 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
                 color = wes_palette("Cavalcanti1")[2], linetype = "dashed", size = .75) +
     # add Mean Down next to dashed line
       annotate("text", x = aSbs_stat_summary$Mean_Chl_Down - 0.05, 
-               y = Inf, label = bquote(bar(x) ~ .(round(Sbs_stat_summary$Mean_Chl_Down, 2))),
+               y = 0, label = bquote(bar(x) ~ .(round(aSbs_stat_summary$Mean_Chl_Down, 2))),
               vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[3]) +
     # add mean Up next to dashed line
       annotate("text", x = aSbs_stat_summary$Mean_Chl_Up - 0.05, 
-              y = Inf, label = bquote(bar(x) ~ .(round(Sbs_stat_summary$Mean_Chl_Up, 2))),
+              y = Inf, label = bquote(bar(x) ~ .(round(aSbs_stat_summary$Mean_Chl_Up, 2))),
               vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[2]) +
       labs(title = aFileName %>% str_replace("Insitu_Filter_", "") %>%
-                            str_replace(".csv", "")))
+                            str_replace(".csv", ""))
   
   distrubution_plot_stats <- ggdraw(distrubution_plot) +
       draw_plot(Sbs_stats_plot_text, 
