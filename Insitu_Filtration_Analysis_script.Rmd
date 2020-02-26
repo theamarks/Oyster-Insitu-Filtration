@@ -23,6 +23,8 @@ library(ggthemes) # theme_gdocs() in graphs
 library(stringr) # dealing with strings
 library(hms) # dealing with time
 library(wesanderson) # color palatte
+library(ggpubr) 
+library(cowplot) # arragne multiple plots or objects in single plot
 
 ######################################################################
 ## settings: 
@@ -191,8 +193,11 @@ for(file in 1 : length(all_files))
   # Import the file
   one_file = fread(file.path(output_dir_file_cleaning, file_name))
   
-  calculateSbsGraphData(one_file)  
-  plot(createSbsDensityPlot(adistrubution, file_name))
+  # generate data for Sbs density graphs
+  stats_for_graph = calculateErrorStats(one_file, file_name, manual_correction_df, error_directory)
+  Sbs_Graph_data = calculateSbsGraphData(one_file)  
+  # plot Sbs density graphs
+  plot(createSbsDensityPlot(Sbs_Graph_data, stats_for_graph, file_name))
   
   if(nrow(one_file) > 0)
   {  
