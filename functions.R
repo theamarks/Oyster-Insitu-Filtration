@@ -184,7 +184,8 @@ createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, 
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             legend.title = element_blank()) +
       geom_hline(yintercept = 0, size = 1, color = "grey50", linetype = "dashed") + # adds diff line at y = 0
-      labs(x = "", y = "Chl Difference (ug/L)", title = paste0(unique(aFile_Mod$Experiment), ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
+      labs(x = "", y = "Chl Difference (ug/L)", title = paste0(unique(aFile_Mod$Experiment), ' - ',
+                                                               aFileName %>% str_replace("Insitu_Filter_", "") %>%
                                                                  str_replace(".csv", "")))
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
@@ -373,7 +374,7 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
 
   # Frequency polygon of sbs measurements
   distrubution_plot <- ggplot(data = adistrubution, aes(x = Chl_ug_L)) +
-      geom_freqpoly(aes(color = Position), alpha = 0.6, binwidth = 0.1, size = 1) +
+      geom_freqpoly(aes(color = Position), binwidth = 0.1, size = 1) +
       scale_color_manual(values = c("Down" = wes_palette("Cavalcanti1")[3],
                                   "Up" = wes_palette("Cavalcanti1")[2])) +
       theme_gdocs() +
@@ -386,19 +387,21 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
                 color = wes_palette("Cavalcanti1")[2], linetype = "dashed", size = .75) +
     # add Mean Down next to dashed line
       annotate("text", x = aSbs_stat_summary$Mean_Chl_Down - 0.05, 
-               y = Inf, label = paste("Mean Down: ", sep = "", round(aSbs_stat_summary$Mean_Chl_Down, 2)),
+               y = Inf, label = bquote(bar(x) ~ .(round(Sbs_stat_summary$Mean_Chl_Down, 2))),
               vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[3]) +
     # add mean Up next to dashed line
       annotate("text", x = aSbs_stat_summary$Mean_Chl_Up - 0.05, 
-              y = Inf, label = paste("Mean Up: ", sep = "", round(aSbs_stat_summary$Mean_Chl_Up, 2)),
-              vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[2])
+              y = Inf, label = bquote(bar(x) ~ .(round(Sbs_stat_summary$Mean_Chl_Up, 2))),
+              vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[2]) +
+      labs(title = aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                            str_replace(".csv", "")))
   
   distrubution_plot_stats <- ggdraw(distrubution_plot) +
       draw_plot(Sbs_stats_plot_text, 
-              vjust = 0,
-              hjust = 0,
-              x = -0.3,
-              y = 0.35)
+                vjust = 0,
+                hjust = 0,
+                x = 0.3,
+                y = 0.35)
 
   return(distrubution_plot_stats)
 }
