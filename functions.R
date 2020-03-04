@@ -640,3 +640,149 @@ createFilterationSummary = function(aFilterationFile, aFileName)
   return(filtration_sub_df)
 }
 
+######################################################################################
+## Create Water Quality compound Graphs 
+######################################################################################
+
+createWQgraphs = function(aFilterationFile, aFileName)
+{
+  
+  # Chl y-axis bounds
+  Chl_ymax <- ifelse(max(aFilterationFile$Chl_ug_L_Up) > max(aFilterationFile$Chl_ug_L_Down), 
+                     max(aFilterationFile$Chl_ug_L_Up), max(aFilterationFile$Chl_ug_L_Down))
+  Chl_ymin <- ifelse(min(aFilterationFile$Chl_ug_L_Up) < min(aFilterationFile$Chl_ug_L_Down), 
+                     min(aFilterationFile$Chl_ug_L_Up), min(aFilterationFile$Chl_ug_L_Down))
+  # Turbidity y-axis bounds
+  Turb_ymax <- ifelse(max(aFilterationFile$Turbidity_NTU_Up) > max(aFilterationFile$Turbidity_NTU_Down), 
+                      max(aFilterationFile$Turbidity_NTU_Up), max(aFilterationFile$Turbidity_NTU_Down))
+  Turb_ymin <- ifelse(min(aFilterationFile$Turbidity_NTU_Up) < min(aFilterationFile$Turbidity_NTU_Down), 
+                      min(aFilterationFile$Turbidity_NTU_Up), min(aFilterationFile$Turbidity_NTU_Down))
+  # Temp y-axis bounds
+  Temp_ymax <- ifelse(max(aFilterationFile$Temp_C_Up) > max(aFilterationFile$Temp_C_Down), 
+                      max(aFilterationFile$Temp_C_Up), max(aFilterationFile$Temp_C_Down))
+  Temp_ymin <- ifelse(min(aFilterationFile$Temp_C_Up) < min(aFilterationFile$Temp_C_Down), 
+                      min(aFilterationFile$Temp_C_Up), min(aFilterationFile$Temp_C_Down))
+  # Salinity y-axis bounds
+  Sal_ymax <- ifelse(max(aFilterationFile$Sal_ppt_Up) > max(aFilterationFile$Sal_ppt_Down), 
+                     max(aFilterationFile$Sal_ppt_Up), max(aFilterationFile$Sal_ppt_Down))
+  Sal_ymin <- ifelse(min(aFilterationFile$Sal_ppt_Up) < min(aFilterationFile$Sal_ppt_Down), 
+                     min(aFilterationFile$Sal_ppt_Up), min(aFilterationFile$Sal_ppt_Down))
+  
+  # Chlorophyll Up
+  Chl_plot_Up <- ggplot(data = aFilterationFile, aes(x = Time, y = Chl_ug_L_Up)) +
+      geom_path(size = 1, color = wes_palette("Cavalcanti1")[2]) +
+      geom_point(color = wes_palette("Cavalcanti1")[2]) +
+      theme_gdocs() +
+      coord_cartesian(ylim = c(Chl_ymin, Chl_ymax)) +
+      theme(axis.text.x = element_blank(), # remove x axis text
+            axis.title.x = element_blank(), # removed x axis title
+            legend.title = element_blank(), # remove legend
+            rect = element_blank()) + # removed black boarder rectangle 
+      theme(plot.title = element_text(hjust = 0.5)) + # Center title
+      labs(title = "Upstream",
+           y = expression(paste("Chlorophyll ", alpha, " (", mu, "g/L) ")))
+  
+  # Turbidity Up 
+  Turb_plot_Up <- ggplot(data = aFilterationFile, aes(x = Time, y = Turbidity_NTU_Up)) +
+      geom_path(size = 1, color = wes_palette("Royal1")[4]) +
+      geom_point(color = wes_palette("Royal1")[4]) +
+      theme_gdocs() +
+      coord_cartesian(ylim = c(Turb_ymin, Turb_ymax)) +
+      theme(axis.text.x = element_blank(),
+            axis.title.x = element_blank(),
+            rect = element_blank(),
+            legend.title = element_blank()) +
+      labs(y = "Turbidity NTU")
+  
+  # Temperature Up
+  Temp_plot_Up <- ggplot(data = aFilterationFile, aes(x = Time, y = Temp_C_Up)) +
+      geom_path(size = 1, color = wes_palette("Zissou1")[1]) +
+      geom_point(color = wes_palette("Zissou1")[1]) +
+      theme_gdocs() +
+      coord_cartesian(ylim = c(Temp_ymin, Temp_ymax)) +
+      theme(axis.text.x = element_blank(),
+            axis.title.x = element_blank(),
+            rect = element_blank(),
+            legend.title = element_blank()) +
+      labs(y = paste("Temperature ", "(", intToUtf8(176), "C)"))
+  
+  # Slainity Up
+  Sal_plot_Up <- ggplot(data = aFilterationFile, aes(x = Time, y = Sal_ppt_Up)) +
+      geom_path(size = 1, color = wes_palette("GrandBudapest1")[2]) +
+      geom_point(color = wes_palette("GrandBudapest1")[2]) +
+      theme_gdocs() +
+      coord_cartesian(ylim = c(Sal_ymin, Sal_ymax)) +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            rect = element_blank(),
+            legend.title = element_blank()) +
+      labs(y = "Salinity (ppt)")
+  
+  # All Up WQ Graphs in a single column cowplot::plot_grid()
+  Up_WQ <- plot_grid(Chl_plot_Up, Turb_plot_Up, Temp_plot_Up, Sal_plot_Up,
+                     nrow = 4)
+  
+  # Chlorophyll Down
+  Chl_plot_Down <- ggplot(data = aFilterationFile, aes(x = Time, y = Chl_ug_L_Down)) +
+      geom_path(size = 1, color = wes_palette("Cavalcanti1")[3]) +
+      geom_point(color = wes_palette("Cavalcanti1")[3]) +
+      theme_gdocs() +
+      coord_cartesian(ylim = c(Chl_ymin, Chl_ymax)) +
+      theme(axis.text.x = element_blank(),
+            axis.title.x = element_blank(),
+            axis.text.y = element_blank(),
+            axis.title.y = element_blank(),
+            legend.title = element_blank(),
+            rect = element_blank()) +
+      theme(plot.title = element_text(hjust = 0.5)) +
+      labs(title = "Downstream")
+  
+  
+  #labs(title = paste0(unique(aFilterationFile$Experiment)), #, ' - ', aFileName %>% 
+  # str_replace("Insitu_Filter_", "") %>%
+  #  str_replace(".csv", "")),
+  
+  # Turbidity Down 
+  Turb_plot_Down <- ggplot(data = aFilterationFile, aes(x = Time, y = Turbidity_NTU_Down)) +
+      geom_path(size = 1, color = wes_palette("Royal1")[4]) +
+      geom_point(color = wes_palette("Royal1")[4]) +
+      theme_gdocs() +
+      coord_cartesian(ylim = c(Turb_ymin, Turb_ymax)) +
+      theme(axis.text.x = element_blank(),
+            axis.title.x = element_blank(),
+            axis.text.y = element_blank(),
+            axis.title.y = element_blank(),
+            rect = element_blank(),
+            legend.title = element_blank()) 
+  
+  # Temperature Down
+  Temp_plot_Down <- ggplot(data = aFilterationFile, aes(x = Time, y = Temp_C_Down)) +
+      geom_path(size = 1, color = wes_palette("Zissou1")[1]) +
+      geom_point(color = wes_palette("Zissou1")[1]) +
+      theme_gdocs() +
+      coord_cartesian(ylim = c(Temp_ymin, Temp_ymax)) +
+      theme(axis.text.x = element_blank(),
+            axis.title.x = element_blank(),
+            axis.text.y = element_blank(),
+            axis.title.y = element_blank(),
+            rect = element_blank(),
+            legend.title = element_blank()) 
+  
+  # Salinity Down
+  Sal_plot_Down <- ggplot(data = aFilterationFile, aes(x = Time, y = Sal_ppt_Down)) +
+      geom_path(size = 1, color = wes_palette("GrandBudapest1")[2]) +
+      geom_point(color = wes_palette("GrandBudapest1")[2]) +
+      theme_gdocs() +
+      coord_cartesian(ylim = c(Sal_ymin, Sal_ymax)) +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            axis.text.y = element_blank(),
+            axis.title.y = element_blank(),
+            rect = element_blank(),
+            legend.title = element_blank()) 
+  
+  # combine all downstream graphs in a single column
+  Down_WQ <- plot_grid(Chl_plot_Down, Turb_plot_Down, Temp_plot_Down, Sal_plot_Down,
+                       nrow = 4)
+  # combine upstream and downstream WQ graphs in two columns
+  All_WQ <- plot_grid(Up_WQ, Down_WQ, ncol = 2)
+  
+}
