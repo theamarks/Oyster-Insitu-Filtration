@@ -13,16 +13,18 @@ editor_options:
 
 ## Import the libraries and functions
 library(flexdashboard) # knit output format
-library(dplyr)
-library(tidyr)
+library(dplyr) # data manupulation 
+library(tidyr) # data rearranging
 library(data.table)
 library(magrittr)
 library(lubridate) # dealing with dates
-library(ggplot2)
+library(ggplot2) # graphing
 library(ggthemes) # theme_gdocs() in graphs
 library(stringr) # dealing with strings
-library(hms) # dealing with time
+library(hms) # dealing with time & date
 library(wesanderson) # color palatte
+library(ggpubr) 
+library(cowplot) # arragne multiple plots or objects in single plot
 
 ######################################################################
 ## settings: 
@@ -169,6 +171,52 @@ fwrite(sbs_correction_summary, file.path(sbs_summary_output_directory,
 fwrite(filteration_summary_table, file.path(filtration_summary_output_directory,
                                         "filtration_summary.csv"))
   
+
+```
+
+SBS - Correction Calc & Uncertainty
+=====================================
+
+###
+```{r Sbs_Correction_Uncertainty, echo=FALSE}
+######################################################################
+# Create SBS Stats - Uncertainty Table & Graph SBS Density Plots
+######################################################################
+# empty data frame to store sbs stats summary  
+sbs_stats_summary = data.frame()
+
+for(file in 1 : length(all_files))
+{
+  
+  file_name = all_files[file]
+    
+  # Import the file
+  one_file = fread(file.path(output_dir_manual_corrections, file_name))
+  
+  # generate data for Sbs density graphs
+  stats_for_graph = calculateErrorStats(one_file, file_name, manual_correction_df, error_directory)
+  Sbs_Graph_data = calculateSbsGraphData(one_file)  
+  # plot Sbs density graphs
+  plot(createSbsDensityPlot(Sbs_Graph_data, stats_for_graph, file_name))
+  
+  if(nrow(one_file) > 0)
+  {  
+    ## calculate Statistics on Sbs data
+    one_file_stats = calculateErrorStats(one_file, file_name, manual_correction_df,
+                                    error_directory)
+    sbs_stats_summary = rbind(sbs_stats_summary, one_file_stats) 
+
+  }
+  
+
+}
+
+# Save the SBS Statistics summary
+
+fwrite(sbs_stats_summary, file.path(error_directory,
+                                        "Sbs_stats_error_summary.csv"))
+
+#### Could I add in calculateErrorStats() in the variable within the graphing function? 
 
 ```
 

@@ -86,7 +86,13 @@ createOutputDirectories = function()
   {
     dir.create(water_velocity_summary_directory)
   }
-  
+
+  # Create an output directory for error statistics
+  error_directory <<- file.path(output_directory,"8_Error_Calculatios")
+  if(!dir.exists(error_directory))
+  {
+    dir.create(error_directory)
+  }
 }
 ######################################################################################
 ## This function standardizes the column names and values (for site, experiment and position)
@@ -133,14 +139,17 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
                   legend_title = paste0(Position, ' ', Sonde)) %>%  # combine columns for title
     transform(Experiment = factor(Experiment, levels = c("sbs_before", "Filtration","Neg_Control", "sbs_after")))
   # create list of names for facet headers 
-  trial_names <- c("sbs_before" = paste0("sbs_before", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
-                                                                            str_replace(".csv", "")), 
-                   "Filtration" = paste0("Filtration", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
-                                                                            str_replace(".csv", "")),
-                   "sbs_after" = paste0("sbs_after", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
-                                                                          str_replace(".csv", "")),
-                   "Neg_Control" = paste0("Neg_Control", ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
-                                                                          str_replace(".csv", "")))
+  trial_names <- c("sbs_before" = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                           str_replace(".csv", ""),' - ',"sbs_before"), 
+                   
+                   "Filtration" = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                           str_replace(".csv", ""), ' - ',"Filtration"),
+                   
+                   "sbs_after" = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                          str_replace(".csv", ""), ' - ',"sbs_after"),
+                   
+                   "Neg_Control" = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                            str_replace(".csv", ""), ' - ', "Neg_Control"))
   
   one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_ug_L, group = Position, color = legend_title)) +
     geom_line(size = 1) +
@@ -160,32 +169,7 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
   return(one_plot)
 
 }
-######################################################################################
-## Creates time series plot - Difference b/w sondes Chl, velocity time adjusted
-######################################################################################
 
-createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
-{  
-  aFile_Mod = aTimeSeriesFile %<>%
-    select(Time, Date, Site, Experiment, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
-    mutate(Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
-           Time = as_hms(Time))
-                   
-  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff))+
-      geom_path(size = 1, color = wes_palette("GrandBudapest1")[3]) +
-      geom_point(color = wes_palette("GrandBudapest1")[3]) +
-      theme_gdocs() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.title = element_blank()) +
-      geom_hline(yintercept = 0, size = 1, color = "grey50", linetype = "dashed") + # adds diff line at y = 0
-      labs(x = "", y = "Chl Difference (ug/L)", title = paste0(unique(aFile_Mod$Experiment), ' - ', aFileName %>% str_replace("Insitu_Filter_", "") %>%
-                                                                 str_replace(".csv", "")))
-  
-  one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
-  ggsave(one_graph_name, one_plot, dpi = 600, width = 7, height = 5, units = "in", device = "pdf", aGraphOutputDirectory)
-  return(one_plot)
-
-}
 
 ######################################################################################
 ## This function applies manual corrections
@@ -242,6 +226,188 @@ applyManualCorrections =  function(aTimeSeriesFile, aFileName, aManualCorrection
     return(aTimeSeriesFile)
     
   }
+}
+
+######################################################################################
+## Creates time series plot - Difference b/w sondes Chl, velocity time adjusted
+######################################################################################
+
+createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
+{  
+  aFile_Mod = aTimeSeriesFile %<>%
+    select(Time, Date, Site, Experiment, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
+    mutate(Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
+           Time = as_hms(Time))
+  
+  one_plot = ggplot(data = aFile_Mod, aes(x = Time, y = Chl_diff))+
+    geom_path(size = 1, color = wes_palette("GrandBudapest1")[3]) +
+    geom_point(color = wes_palette("GrandBudapest1")[3]) +
+    theme_gdocs() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.title = element_blank()) +
+    geom_hline(yintercept = 0, size = 1, color = "grey50", linetype = "dashed") + # adds diff line at y = 0
+    labs(x = "", y = "Chl Difference (ug/L)", title = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                                                               str_replace(".csv", ""), ' - ',unique(aFile_Mod$Experiment)))
+  
+  one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
+  ggsave(one_graph_name, one_plot, dpi = 600, width = 7, height = 5, units = "in", device = "pdf", aGraphOutputDirectory)
+  return(one_plot)
+  
+}
+
+######################################################################################
+## This function calculates and summarizes sensor systematic error based on sbs trials
+######################################################################################
+
+calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFile,  aOutputDirectory)
+{
+  afileSbsStats = aTimeSeriesFile %>% 
+     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
+     select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs 
+     tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # create two new columns Up & Down fill with Chl values, paired by time
+     filter(!is.na(Up) & !is.na(Down)) %>%  # select rows with data in Up and Down
+     mutate(sbs_Chl_diff = Up - Down) %>% 
+     summarise(Mean_sbs_Chl_diff = mean(sbs_Chl_diff),
+               Median_sbs_Chl_diff = median(sbs_Chl_diff),
+               SD_sbs_Chl_diff = sd(sbs_Chl_diff), # calc sample standard deviation 
+               SE_sbs_Chl_diff = SD_sbs_Chl_diff/sqrt(length(sbs_Chl_diff)), # calc sample standard error
+               Sample_count = length(Time))
+  
+  
+  # dataframe for graphing & individual sonde stats
+  adistrubution = aTimeSeriesFile %>% 
+      dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
+      select(Time, Chl_ug_L, Position, Experiment) %>% 
+      tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
+      filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
+      pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
+  
+  # downstream summary stats - to populate graphs
+  distrubution_down <- adistrubution %>%
+      filter(Position %in% "Down") %>% 
+      summarise(mean_chl_down = mean(Chl_ug_L),
+                median_chl_down = median(Chl_ug_L),
+                sd_chl_down = sd(Chl_ug_L),
+                se_chl_down = sd_chl_down/sqrt(length(Chl_ug_L)))
+  
+  # upstream summary stats - to populate graphs
+  distrubution_up <- adistrubution %>%
+      filter(Position %in% "Up") %>% 
+      summarise(mean_chl_up = mean(Chl_ug_L),
+                median_chl_up = median(Chl_ug_L),
+                sd_chl_up = sd(Chl_ug_L),
+                se_chl_up = sd_chl_up/sqrt(length(Chl_ug_L)))
+  
+  # Create Side by Side summary data frame that will build larger dataframe in loop
+  aSbs_stat_summary = data.frame(File_Name = aFileName,
+    Mean_sbs_Chl_diff = afileSbsStats$Mean_sbs_Chl_diff,
+    Median_sbs_Chl_diff = afileSbsStats$Median_sbs_Chl_diff,
+    SD_sbs_Chl_diff = afileSbsStats$SD_sbs_Chl_diff,
+    SE_sbs_Chl_diff = afileSbsStats$SE_sbs_Chl_diff,
+    Mean_Chl_Up = distrubution_up$mean_chl_up,
+    Median_Chl_Up = distrubution_up$median_chl_up,
+    SD_Chl_Up = distrubution_up$sd_chl_up,
+    SE_CHl_UP = distrubution_up$se_chl_up,
+    Mean_Chl_Down = distrubution_down$mean_chl_down,
+    Median_Chl_Down = distrubution_down$median_chl_down,
+    SD_Chl_Down = distrubution_down$sd_chl_down,
+    SE_Chl_Down = distrubution_down$se_chl_down,
+    Sample_Count = afileSbsStats$Sample_count)
+  
+  return(aSbs_stat_summary)
+  
+}
+######################################################################################
+## This function Sbs distrubution data set for Sbs Density Graphs
+######################################################################################
+calculateSbsGraphData = function(aTimeSeriesFile)
+{
+  
+   # dataframe for graphing & individual sonde stats
+  adistrubution = aTimeSeriesFile %>% 
+    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
+    select(Time, Chl_ug_L, Position, Experiment) %>% 
+    tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
+    filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
+    pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
+  
+   return(adistrubution)
+  
+}
+
+
+######################################################################################
+## This function Graphs Density Plot of SBS Trails 
+######################################################################################
+createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
+{
+  # dataframe for graphing & individual sonde stats
+  distrubution = adistrubution %>% 
+    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
+    select(Time, Chl_ug_L, Position, Experiment) %>% 
+    tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
+    filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
+    pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
+  
+  # downstream summary stats - to populate graphs
+  distrubution_down <- distrubution %>%
+    filter(Position %in% "Down") %>% 
+    summarise(mean_chl_down = mean(Chl_ug_L),
+              median_chl_down = median(Chl_ug_L),
+              sd_chl_down = sd(Chl_ug_L),
+              se_chl_down = sd_chl_down/sqrt(length(Chl_ug_L)))
+  
+  # upstream summary stats - to populate graphs
+  distrubution_up <- distrubution %>%
+    filter(Position %in% "Up") %>% 
+    summarise(mean_chl_up = mean(Chl_ug_L),
+              median_chl_up = median(Chl_ug_L),
+              sd_chl_up = sd(Chl_ug_L),
+              se_chl_up = sd_chl_up/sqrt(length(Chl_ug_L)))
+  
+  Sbs_stats_plot = aSbs_stat_summary %>% 
+   select(Sample_Count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
+   mutate_if(is.numeric, round, 3) %>% 
+   rename("n" = Sample_Count,  
+         "Mean Chl Diff" = Mean_sbs_Chl_diff,  
+         "StDev Chl Diff" = SD_sbs_Chl_diff,  
+         "St Error Chl Diff" = SE_sbs_Chl_diff)
+
+  Sbs_stats_plot <- t(Sbs_stats_plot) # transpose columns and rows 
+  Sbs_stats_plot_text <- ggpubr::ggtexttable(Sbs_stats_plot, theme = ttheme("blank")) # dataframe to text table
+
+  # Frequency polygon of sbs measurements
+  distrubution_plot <- ggplot(data = adistrubution, aes(x = Chl_ug_L)) +
+      geom_freqpoly(aes(color = Position), binwidth = 0.1, size = 1) +
+      scale_color_manual(values = c("Down" = wes_palette("Cavalcanti1")[3],
+                                  "Up" = wes_palette("Cavalcanti1")[2])) +
+      theme_gdocs() +
+      theme(panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank()) +
+    # add dashed line to indicate means
+      geom_vline(xintercept = distrubution_down$mean_chl_down, 
+                 color = wes_palette("Cavalcanti1")[3] , linetype = "dashed", size = .75) +
+      geom_vline(xintercept = distrubution_up$mean_chl_up,
+                color = wes_palette("Cavalcanti1")[2], linetype = "dashed", size = .75) +
+    # add Mean Down next to dashed line
+      annotate("text", x = aSbs_stat_summary$Mean_Chl_Down - 0.05, 
+               y = 0, label = bquote(bar(x) ~ .(round(aSbs_stat_summary$Mean_Chl_Down, 2))),
+              vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[3]) +
+    # add mean Up next to dashed line
+      annotate("text", x = aSbs_stat_summary$Mean_Chl_Up - 0.05, 
+              y = Inf, label = bquote(bar(x) ~ .(round(aSbs_stat_summary$Mean_Chl_Up, 2))),
+              vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[2]) +
+      labs(title = aFileName %>% str_replace("Insitu_Filter_", "") %>%
+                            str_replace(".csv", ""))
+  
+  distrubution_plot_stats <- ggdraw(distrubution_plot) +
+      draw_plot(Sbs_stats_plot_text, 
+                vjust = 0,
+                hjust = 0,
+                x = 0.3,
+                y = 0.35)
+
+  return(distrubution_plot_stats)
 }
 
 ######################################################################################
@@ -347,7 +513,7 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
   vel_summary_df = aVelocityData %>%
     dplyr::filter(measure_position %in% c("Mid", "Down")) %>%
     dplyr::group_by(Date, Site, Experiment) %>%
-    dplyr::summarise(avg_m_s = round(mean(m_s), 2),
+    dplyr::summarise(avg_m_s = mean(m_s),
                      avg_m_hr = avg_m_s*3600)
   
   final_results = aFRVariableData %>%
@@ -394,11 +560,11 @@ calculateFilterationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
   
   up_sonde_df = aTimeSeriesFile %>%
     dplyr::filter(Position == "Up" & !Experiment %in% c("sbs_before", "sbs_after"))%>%
-    dplyr::select(Time, Date, Experiment, Sonde, Site, Temp_C, SpCond_mS_cm, Cond_mS_cm, TDS_g_L, Sal_ppt, Turbidity_NTU, Chl_ug_L)
+    dplyr::select(Time, Date, Experiment, Sonde, Site, Temp_C, SpCond_mS_cm, Cond_mS_cm, TDS_g_L, Sal_ppt, Turbidity_NTU, Chl_ug_L_Corrected)
   
   down_sonde_df = aTimeSeriesFile %>%
     dplyr::filter(Position == "Down" & !Experiment %in% c("sbs_before", "sbs_after"))%>%
-    dplyr::select(Time, Date, Experiment, Sonde, Site, Temp_C, SpCond_mS_cm, Cond_mS_cm, TDS_g_L, Sal_ppt, Turbidity_NTU, Chl_ug_L)
+    dplyr::select(Time, Date, Experiment, Sonde, Site, Temp_C, SpCond_mS_cm, Cond_mS_cm, TDS_g_L, Sal_ppt, Turbidity_NTU, Chl_ug_L_Corrected)
   
   
   combined_water_quality_df = up_sonde_df %>%
@@ -412,7 +578,7 @@ calculateFilterationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
                   TDS_g_L_Up = TDS_g_L.x, 
                   Sal_ppt_Up = Sal_ppt.x, 
                   Turbidity_NTU_Up = Turbidity_NTU.x, 
-                  Chl_ug_L_Up = Chl_ug_L.x,
+                  Chl_ug_L_Up = Chl_ug_L_Corrected.x,
                   
                   Sonde_Down = Sonde.y,
                   Temp_C_Down = Temp_C.y, 
@@ -421,7 +587,7 @@ calculateFilterationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
                   TDS_g_L_Down = TDS_g_L.y, 
                   Sal_ppt_Down = Sal_ppt.y, 
                   Turbidity_NTU_Down = Turbidity_NTU.y, 
-                  Chl_ug_L_Down = Chl_ug_L.y) %>%
+                  Chl_ug_L_Down = Chl_ug_L_Corrected.y) %>%
     
     dplyr::inner_join(one_water_vel_summary, by = c("Date", "Site", "Experiment")) %>%
     
@@ -467,7 +633,7 @@ createFilterationSummary = function(aFilterationFile, aFileName)
                      L_hr_m2 = mean(L_hr_m2)
                      ) %>%
     data.frame() %>%
-    dplyr::mutate_if(is.numeric, round, 3) %>%
+   # dplyr::mutate_if(is.numeric, round, 3) %>% # Tried to match excel numbers
     dplyr::mutate(File_Name = aFileName) %>%
     dplyr::select(File_Name, Experiment, everything())
   
