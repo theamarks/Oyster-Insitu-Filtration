@@ -178,7 +178,7 @@ SBS - Correction Calc & Uncertainty
 =====================================
 
 ###
-```{r Sbs_Correction_Uncertainty, echo=FALSE}
+```{r Sbs_Correction_Uncertainty, eval=FALSE, include=FALSE}
 ######################################################################
 # Create SBS Stats - Uncertainty Table & Graph SBS Density Plots
 ######################################################################
@@ -252,8 +252,37 @@ for(file in 1 : length(all_files_Filtration))
 
 ```
 
+Water Quality - Filtraiton
+=====================================
 
-```{r}
+###
+
+```{r Plot_Filtration_WQ, fig.height=5, fig.width=15}
+######################################################################
+## Graph WQ during Filtraiton / Neg Control Trials - Paired Data
+######################################################################
+
+# directs where files are
+all_files_Filtration = list.files(filtration_calc_output_directory, pattern = ".csv")
+
+# Loop like Task 5 with different plot function
+for(file in 1 : length(all_files_Filtration))
+{ 
+    
+  file_name = all_files_Filtration[file]
+    
+  # Import the file
+  one_file = fread(file.path(filtration_calc_output_directory, file_name))
+    
+  # plot the time series agains
+  if(nrow(one_file) > 0){
+  plot(createWQgraphs(one_file, file_name))
+  }
+}
+
+```
+
+```{r TPM_Density, eval=FALSE, include=FALSE}
 
 #######################################################################
 # Create directories for TPM & Density Data
