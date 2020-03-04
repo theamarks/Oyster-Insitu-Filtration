@@ -165,7 +165,7 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
     labs(x = "")
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
-  ggsave(one_graph_name, one_plot, dpi = 600, width = 11.5, height = 7, units = "in", device = "pdf", aGraphOutputDirectory)
+  #ggsave(one_graph_name, one_plot, dpi = 600, width = 11.5, height = 7, units = "in", device = "pdf", aGraphOutputDirectory)
   return(one_plot)
 
 }
@@ -250,7 +250,7 @@ createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, 
                                                                str_replace(".csv", ""), ' - ',unique(aFile_Mod$Experiment)))
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
-  ggsave(one_graph_name, one_plot, dpi = 600, width = 7, height = 5, units = "in", device = "pdf", aGraphOutputDirectory)
+ # ggsave(one_graph_name, one_plot, dpi = 600, width = 7, height = 5, units = "in", device = "pdf", aGraphOutputDirectory)
   return(one_plot)
   
 }
@@ -678,9 +678,10 @@ createWQgraphs = function(aFilterationFile, aFileName)
             axis.title.x = element_blank(), # removed x axis title
             legend.title = element_blank(), # remove legend
             rect = element_blank()) + # removed black boarder rectangle 
-      theme(plot.title = element_text(hjust = 0.5)) + # Center title
-      labs(title = "Upstream",
-           y = expression(paste("Chlorophyll ", alpha, " (", mu, "g/L) ")))
+      theme(plot.subtitle = element_text(hjust = 0.5)) + # Center title
+      labs(title = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>% str_replace(".csv", ""),
+                          ' - ', unique(aFilterationFile$Experiment)),
+          subtitle = "Upstream")
   
   # Turbidity Up 
   Turb_plot_Up <- ggplot(data = aFilterationFile, aes(x = Time, y = Turbidity_NTU_Up)) +
@@ -733,13 +734,8 @@ createWQgraphs = function(aFilterationFile, aFileName)
             axis.title.y = element_blank(),
             legend.title = element_blank(),
             rect = element_blank()) +
-      theme(plot.title = element_text(hjust = 0.5)) +
-      labs(title = "Downstream")
-  
-  
-  #labs(title = paste0(unique(aFilterationFile$Experiment)), #, ' - ', aFileName %>% 
-  # str_replace("Insitu_Filter_", "") %>%
-  #  str_replace(".csv", "")),
+      theme(plot.subtitle = element_text(hjust = 0.5)) +
+      labs(subtitle = "Downstream")
   
   # Turbidity Down 
   Turb_plot_Down <- ggplot(data = aFilterationFile, aes(x = Time, y = Turbidity_NTU_Down)) +
@@ -784,5 +780,7 @@ createWQgraphs = function(aFilterationFile, aFileName)
                        nrow = 4)
   # combine upstream and downstream WQ graphs in two columns
   All_WQ <- plot_grid(Up_WQ, Down_WQ, ncol = 2)
+  
+  return(All_WQ)
   
 }
