@@ -649,6 +649,7 @@ createWQgraphs = function(aFiltrationFile, aFileName)
   # Convert Time from difftime to hms variable for x-axis formatting
   aFiltrationFile$Time <- as_hms(aFiltrationFile$Time)
   
+  # Make y-axis limits the same for both upstream and downstream graphs
   # Chl y-axis bounds
   Chl_ymax <- ifelse(max(aFiltrationFile$Chl_ug_L_Up) > max(aFiltrationFile$Chl_ug_L_Down), 
                      max(aFiltrationFile$Chl_ug_L_Up), max(aFiltrationFile$Chl_ug_L_Down))
@@ -672,10 +673,12 @@ createWQgraphs = function(aFiltrationFile, aFileName)
   
   # Chlorophyll Up
   Chl_plot_Up <- ggplot(data = aFiltrationFile, aes(x = Time, y = Chl_ug_L_Up)) +
-      geom_path(size = 1, color = wes_palette("Cavalcanti1")[2]) +
+      #geom_path(size = 1, color = wes_palette("Cavalcanti1")[2]) +
       geom_point(color = wes_palette("Cavalcanti1")[2]) +
       theme_gdocs() +
       coord_cartesian(ylim = c(Chl_ymin, Chl_ymax)) +
+      geom_hline(yintercept = mean(aFiltrationFile$Chl_ug_L_Up),
+                 color = wes_palette("Cavalcanti1")[2], linetype = "dashed", size = .75) +
       theme(axis.text.x = element_blank(), # remove x axis text
             axis.title.x = element_blank(), # removed x axis title
             legend.title = element_blank(), # remove legend
@@ -687,10 +690,12 @@ createWQgraphs = function(aFiltrationFile, aFileName)
   
   # Turbidity Up 
   Turb_plot_Up <- ggplot(data = aFiltrationFile, aes(x = Time, y = Turbidity_NTU_Up)) +
-      geom_path(size = 1, color = wes_palette("Royal1")[4]) +
+      #geom_path(size = 1, color = wes_palette("Royal1")[4]) +
       geom_point(color = wes_palette("Royal1")[4]) +
       theme_gdocs() +
       coord_cartesian(ylim = c(Turb_ymin, Turb_ymax)) +
+      geom_hline(yintercept = mean(aFiltrationFile$Turbidity_NTU_Up),
+                 color = wes_palette("Royal1")[4], linetype = "dashed", size = .75) +
       theme(axis.text.x = element_blank(),
             axis.title.x = element_blank(),
             rect = element_blank(),
@@ -699,10 +704,12 @@ createWQgraphs = function(aFiltrationFile, aFileName)
   
   # Temperature Up
   Temp_plot_Up <- ggplot(data = aFiltrationFile, aes(x = Time, y = Temp_C_Up)) +
-      geom_path(size = 1, color = wes_palette("Zissou1")[1]) +
+     # geom_path(size = 1, color = wes_palette("Zissou1")[1]) +
       geom_point(color = wes_palette("Zissou1")[1]) +
       theme_gdocs() +
       coord_cartesian(ylim = c(Temp_ymin, Temp_ymax)) +
+      geom_hline(yintercept = mean(aFiltrationFile$Temp_C_Up),
+                 color = wes_palette("Zissou1")[1], linetype = "dashed", size = .75) +
       theme(axis.text.x = element_blank(),
             axis.title.x = element_blank(),
             rect = element_blank(),
@@ -711,10 +718,12 @@ createWQgraphs = function(aFiltrationFile, aFileName)
   
   # Slainity Up
   Sal_plot_Up <- ggplot(data = aFiltrationFile, aes(x = Time, y = Sal_ppt_Up)) +
-      geom_path(size = 1, color = wes_palette("GrandBudapest1")[2]) +
+      #geom_path(size = 1, color = wes_palette("GrandBudapest1")[2]) +
       geom_point(color = wes_palette("GrandBudapest1")[2]) +
       theme_gdocs() +
       coord_cartesian(ylim = c(Sal_ymin, Sal_ymax)) +
+      geom_hline(yintercept = mean(aFiltrationFile$Sal_ppt_Up),
+                 color = wes_palette("GrandBudapest1")[2], linetype = "dashed", size = .75) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             rect = element_blank(),
             legend.title = element_blank()) +
@@ -726,10 +735,12 @@ createWQgraphs = function(aFiltrationFile, aFileName)
   
   # Chlorophyll Down
   Chl_plot_Down <- ggplot(data = aFiltrationFile, aes(x = Time, y = Chl_ug_L_Down)) +
-      geom_path(size = 1, color = wes_palette("Cavalcanti1")[3]) +
+      #geom_path(size = 1, color = wes_palette("Cavalcanti1")[3]) +
       geom_point(color = wes_palette("Cavalcanti1")[3]) +
       theme_gdocs() +
       coord_cartesian(ylim = c(Chl_ymin, Chl_ymax)) +
+      geom_hline(yintercept = mean(aFiltrationFile$Chl_ug_L_Down),
+                 color = wes_palette("Cavalcanti1")[3], linetype = "dashed", size = .75) +
       theme(axis.text.x = element_blank(),
             axis.title.x = element_blank(),
             axis.text.y = element_blank(),
@@ -742,10 +753,12 @@ createWQgraphs = function(aFiltrationFile, aFileName)
   
   # Turbidity Down 
   Turb_plot_Down <- ggplot(data = aFiltrationFile, aes(x = Time, y = Turbidity_NTU_Down)) +
-      geom_path(size = 1, color = wes_palette("Royal1")[4]) +
+      #geom_path(size = 1, color = wes_palette("Royal1")[4]) +
       geom_point(color = wes_palette("Royal1")[4]) +
       theme_gdocs() +
       coord_cartesian(ylim = c(Turb_ymin, Turb_ymax)) +
+      geom_hline(yintercept = mean(aFiltrationFile$Turbidity_NTU_Down),
+                 color = wes_palette("Royal1")[4], linetype = "dashed", size = .75) +
       theme(axis.text.x = element_blank(),
             axis.title.x = element_blank(),
             axis.text.y = element_blank(),
@@ -755,10 +768,12 @@ createWQgraphs = function(aFiltrationFile, aFileName)
   
   # Temperature Down
   Temp_plot_Down <- ggplot(data = aFiltrationFile, aes(x = Time, y = Temp_C_Down)) +
-      geom_path(size = 1, color = wes_palette("Zissou1")[1]) +
+      #geom_path(size = 1, color = wes_palette("Zissou1")[1]) +
       geom_point(color = wes_palette("Zissou1")[1]) +
       theme_gdocs() +
       coord_cartesian(ylim = c(Temp_ymin, Temp_ymax)) +
+      geom_hline(yintercept = mean(aFiltrationFile$Temp_C_Down),
+                 color = wes_palette("Zissou1")[1], linetype = "dashed", size = .75) +
       theme(axis.text.x = element_blank(),
             axis.title.x = element_blank(),
             axis.text.y = element_blank(),
@@ -768,10 +783,12 @@ createWQgraphs = function(aFiltrationFile, aFileName)
   
   # Salinity Down
   Sal_plot_Down <- ggplot(data = aFiltrationFile, aes(x = Time, y = Sal_ppt_Down)) +
-      geom_path(size = 1, color = wes_palette("GrandBudapest1")[2]) +
+      #geom_path(size = 1, color = wes_palette("GrandBudapest1")[2]) +
       geom_point(color = wes_palette("GrandBudapest1")[2]) +
       theme_gdocs() +
       coord_cartesian(ylim = c(Sal_ymin, Sal_ymax)) +
+      geom_hline(yintercept = mean(aFiltrationFile$Sal_ppt_Down),
+                 color = wes_palette("GrandBudapest1")[2], linetype = "dashed", size = .75) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             axis.text.y = element_blank(),
             axis.title.y = element_blank(),
