@@ -165,7 +165,7 @@ createTimeSeriesPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirector
     labs(x = "")
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
-  #ggsave(one_graph_name, one_plot, dpi = 600, width = 11.5, height = 7, units = "in", device = "pdf", aGraphOutputDirectory)
+  ggsave(one_graph_name, one_plot, dpi = 600, width = 11.5, height = 7, units = "in", device = "pdf", aGraphOutputDirectory)
   return(one_plot)
 
 }
@@ -250,7 +250,7 @@ createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, 
                                                                str_replace(".csv", ""), ' - ',unique(aFile_Mod$Experiment)))
   
   one_graph_name = paste0(gsub(".csv", "", aFileName), "_", aType, ".pdf")
- # ggsave(one_graph_name, one_plot, dpi = 600, width = 7, height = 5, units = "in", device = "pdf", aGraphOutputDirectory)
+  ggsave(one_graph_name, one_plot, dpi = 600, width = 7, height = 5, units = "in", device = "pdf", aGraphOutputDirectory)
   return(one_plot)
   
 }
@@ -646,6 +646,8 @@ createFilterationSummary = function(aFilterationFile, aFileName)
 
 createWQgraphs = function(aFilterationFile, aFileName)
 {
+  # Convert Time from difftime to hms variable for x-axis formatting
+  aFiltrationFile$Time <- as_hms(aFilterationFile$Time)
   
   # Chl y-axis bounds
   Chl_ymax <- ifelse(max(aFilterationFile$Chl_ug_L_Up) > max(aFilterationFile$Chl_ug_L_Down), 
@@ -679,8 +681,8 @@ createWQgraphs = function(aFilterationFile, aFileName)
             legend.title = element_blank(), # remove legend
             rect = element_blank()) + # removed black boarder rectangle 
       theme(plot.subtitle = element_text(hjust = 0.5)) + # Center title
-      labs(title = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>% str_replace(".csv", ""),
-                          ' - ', unique(aFilterationFile$Experiment)),
+      labs(#title = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>% str_replace(".csv", ""),
+                         # ' - ', unique(aFilterationFile$Experiment)),
           subtitle = "Upstream")
   
   # Turbidity Up 
