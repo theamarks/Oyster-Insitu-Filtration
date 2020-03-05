@@ -42,7 +42,7 @@ Water Quality - Filtraiton
 
 ###
 
-```{r Plot_Filtration_WQ, fig.height=5, fig.width=15}
+```{r Plot_Filtration_WQ, fig.height=8, fig.width=15}
 ######################################################################
 ## Graph WQ during Filtraiton / Neg Control Trials - Paired Data
 ######################################################################
