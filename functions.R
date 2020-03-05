@@ -601,10 +601,10 @@ calculateFilterationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
 ######################################################################################
 ## This function summarizes the filtration
 ######################################################################################
-createFilterationSummary = function(aFilterationFile, aFileName)
+createFilterationSummary = function(aFiltrationFile, aFileName)
 {
-  data_only_numeric = dplyr::select_if(aFilterationFile, is.numeric)
-  filtration_sub_df =  aFilterationFile %>% 
+  data_only_numeric = dplyr::select_if(aFiltrationFile, is.numeric)
+  filtration_sub_df =  aFiltrationFile %>% 
     dplyr::select(c(names(data_only_numeric), "Experiment", "Date", "Site"))
   
   filtration_sub_df = filtration_sub_df %>%
@@ -644,34 +644,34 @@ createFilterationSummary = function(aFilterationFile, aFileName)
 ## Create Water Quality compound Graphs 
 ######################################################################################
 
-createWQgraphs = function(aFilterationFile, aFileName)
+createWQgraphs = function(aFiltrationFile, aFileName)
 {
   # Convert Time from difftime to hms variable for x-axis formatting
-  aFiltrationFile$Time <- as_hms(aFilterationFile$Time)
+  aFiltrationFile$Time <- as_hms(aFiltrationFile$Time)
   
   # Chl y-axis bounds
-  Chl_ymax <- ifelse(max(aFilterationFile$Chl_ug_L_Up) > max(aFilterationFile$Chl_ug_L_Down), 
-                     max(aFilterationFile$Chl_ug_L_Up), max(aFilterationFile$Chl_ug_L_Down))
-  Chl_ymin <- ifelse(min(aFilterationFile$Chl_ug_L_Up) < min(aFilterationFile$Chl_ug_L_Down), 
-                     min(aFilterationFile$Chl_ug_L_Up), min(aFilterationFile$Chl_ug_L_Down))
+  Chl_ymax <- ifelse(max(aFiltrationFile$Chl_ug_L_Up) > max(aFiltrationFile$Chl_ug_L_Down), 
+                     max(aFiltrationFile$Chl_ug_L_Up), max(aFiltrationFile$Chl_ug_L_Down))
+  Chl_ymin <- ifelse(min(aFiltrationFile$Chl_ug_L_Up) < min(aFiltrationFile$Chl_ug_L_Down), 
+                     min(aFiltrationFile$Chl_ug_L_Up), min(aFiltrationFile$Chl_ug_L_Down))
   # Turbidity y-axis bounds
-  Turb_ymax <- ifelse(max(aFilterationFile$Turbidity_NTU_Up) > max(aFilterationFile$Turbidity_NTU_Down), 
-                      max(aFilterationFile$Turbidity_NTU_Up), max(aFilterationFile$Turbidity_NTU_Down))
-  Turb_ymin <- ifelse(min(aFilterationFile$Turbidity_NTU_Up) < min(aFilterationFile$Turbidity_NTU_Down), 
-                      min(aFilterationFile$Turbidity_NTU_Up), min(aFilterationFile$Turbidity_NTU_Down))
+  Turb_ymax <- ifelse(max(aFiltrationFile$Turbidity_NTU_Up) > max(aFiltrationFile$Turbidity_NTU_Down), 
+                      max(aFiltrationFile$Turbidity_NTU_Up), max(aFiltrationFile$Turbidity_NTU_Down))
+  Turb_ymin <- ifelse(min(aFiltrationFile$Turbidity_NTU_Up) < min(aFiltrationFile$Turbidity_NTU_Down), 
+                      min(aFiltrationFile$Turbidity_NTU_Up), min(aFiltrationFile$Turbidity_NTU_Down))
   # Temp y-axis bounds
-  Temp_ymax <- ifelse(max(aFilterationFile$Temp_C_Up) > max(aFilterationFile$Temp_C_Down), 
-                      max(aFilterationFile$Temp_C_Up), max(aFilterationFile$Temp_C_Down))
-  Temp_ymin <- ifelse(min(aFilterationFile$Temp_C_Up) < min(aFilterationFile$Temp_C_Down), 
-                      min(aFilterationFile$Temp_C_Up), min(aFilterationFile$Temp_C_Down))
+  Temp_ymax <- ifelse(max(aFiltrationFile$Temp_C_Up) > max(aFiltrationFile$Temp_C_Down), 
+                      max(aFiltrationFile$Temp_C_Up), max(aFiltrationFile$Temp_C_Down))
+  Temp_ymin <- ifelse(min(aFiltrationFile$Temp_C_Up) < min(aFiltrationFile$Temp_C_Down), 
+                      min(aFiltrationFile$Temp_C_Up), min(aFiltrationFile$Temp_C_Down))
   # Salinity y-axis bounds
-  Sal_ymax <- ifelse(max(aFilterationFile$Sal_ppt_Up) > max(aFilterationFile$Sal_ppt_Down), 
-                     max(aFilterationFile$Sal_ppt_Up), max(aFilterationFile$Sal_ppt_Down))
-  Sal_ymin <- ifelse(min(aFilterationFile$Sal_ppt_Up) < min(aFilterationFile$Sal_ppt_Down), 
-                     min(aFilterationFile$Sal_ppt_Up), min(aFilterationFile$Sal_ppt_Down))
+  Sal_ymax <- ifelse(max(aFiltrationFile$Sal_ppt_Up) > max(aFiltrationFile$Sal_ppt_Down), 
+                     max(aFiltrationFile$Sal_ppt_Up), max(aFiltrationFile$Sal_ppt_Down))
+  Sal_ymin <- ifelse(min(aFiltrationFile$Sal_ppt_Up) < min(aFiltrationFile$Sal_ppt_Down), 
+                     min(aFiltrationFile$Sal_ppt_Up), min(aFiltrationFile$Sal_ppt_Down))
   
   # Chlorophyll Up
-  Chl_plot_Up <- ggplot(data = aFilterationFile, aes(x = Time, y = Chl_ug_L_Up)) +
+  Chl_plot_Up <- ggplot(data = aFiltrationFile, aes(x = Time, y = Chl_ug_L_Up)) +
       geom_path(size = 1, color = wes_palette("Cavalcanti1")[2]) +
       geom_point(color = wes_palette("Cavalcanti1")[2]) +
       theme_gdocs() +
@@ -681,12 +681,12 @@ createWQgraphs = function(aFilterationFile, aFileName)
             legend.title = element_blank(), # remove legend
             rect = element_blank()) + # removed black boarder rectangle 
       theme(plot.subtitle = element_text(hjust = 0.5)) + # Center title
-      labs(#title = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>% str_replace(".csv", ""),
-                         # ' - ', unique(aFilterationFile$Experiment)),
+      labs(title = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>% str_replace(".csv", ""),
+                          ' - ', unique(aFiltrationFile$Experiment)),
           subtitle = "Upstream")
   
   # Turbidity Up 
-  Turb_plot_Up <- ggplot(data = aFilterationFile, aes(x = Time, y = Turbidity_NTU_Up)) +
+  Turb_plot_Up <- ggplot(data = aFiltrationFile, aes(x = Time, y = Turbidity_NTU_Up)) +
       geom_path(size = 1, color = wes_palette("Royal1")[4]) +
       geom_point(color = wes_palette("Royal1")[4]) +
       theme_gdocs() +
@@ -698,7 +698,7 @@ createWQgraphs = function(aFilterationFile, aFileName)
       labs(y = "Turbidity NTU")
   
   # Temperature Up
-  Temp_plot_Up <- ggplot(data = aFilterationFile, aes(x = Time, y = Temp_C_Up)) +
+  Temp_plot_Up <- ggplot(data = aFiltrationFile, aes(x = Time, y = Temp_C_Up)) +
       geom_path(size = 1, color = wes_palette("Zissou1")[1]) +
       geom_point(color = wes_palette("Zissou1")[1]) +
       theme_gdocs() +
@@ -710,7 +710,7 @@ createWQgraphs = function(aFilterationFile, aFileName)
       labs(y = paste("Temperature ", "(", intToUtf8(176), "C)"))
   
   # Slainity Up
-  Sal_plot_Up <- ggplot(data = aFilterationFile, aes(x = Time, y = Sal_ppt_Up)) +
+  Sal_plot_Up <- ggplot(data = aFiltrationFile, aes(x = Time, y = Sal_ppt_Up)) +
       geom_path(size = 1, color = wes_palette("GrandBudapest1")[2]) +
       geom_point(color = wes_palette("GrandBudapest1")[2]) +
       theme_gdocs() +
@@ -725,7 +725,7 @@ createWQgraphs = function(aFilterationFile, aFileName)
                      nrow = 4)
   
   # Chlorophyll Down
-  Chl_plot_Down <- ggplot(data = aFilterationFile, aes(x = Time, y = Chl_ug_L_Down)) +
+  Chl_plot_Down <- ggplot(data = aFiltrationFile, aes(x = Time, y = Chl_ug_L_Down)) +
       geom_path(size = 1, color = wes_palette("Cavalcanti1")[3]) +
       geom_point(color = wes_palette("Cavalcanti1")[3]) +
       theme_gdocs() +
@@ -737,10 +737,11 @@ createWQgraphs = function(aFilterationFile, aFileName)
             legend.title = element_blank(),
             rect = element_blank()) +
       theme(plot.subtitle = element_text(hjust = 0.5)) +
-      labs(subtitle = "Downstream")
+      labs(title = "",
+          subtitle = "Downstream")
   
   # Turbidity Down 
-  Turb_plot_Down <- ggplot(data = aFilterationFile, aes(x = Time, y = Turbidity_NTU_Down)) +
+  Turb_plot_Down <- ggplot(data = aFiltrationFile, aes(x = Time, y = Turbidity_NTU_Down)) +
       geom_path(size = 1, color = wes_palette("Royal1")[4]) +
       geom_point(color = wes_palette("Royal1")[4]) +
       theme_gdocs() +
@@ -753,7 +754,7 @@ createWQgraphs = function(aFilterationFile, aFileName)
             legend.title = element_blank()) 
   
   # Temperature Down
-  Temp_plot_Down <- ggplot(data = aFilterationFile, aes(x = Time, y = Temp_C_Down)) +
+  Temp_plot_Down <- ggplot(data = aFiltrationFile, aes(x = Time, y = Temp_C_Down)) +
       geom_path(size = 1, color = wes_palette("Zissou1")[1]) +
       geom_point(color = wes_palette("Zissou1")[1]) +
       theme_gdocs() +
@@ -766,7 +767,7 @@ createWQgraphs = function(aFilterationFile, aFileName)
             legend.title = element_blank()) 
   
   # Salinity Down
-  Sal_plot_Down <- ggplot(data = aFilterationFile, aes(x = Time, y = Sal_ppt_Down)) +
+  Sal_plot_Down <- ggplot(data = aFiltrationFile, aes(x = Time, y = Sal_ppt_Down)) +
       geom_path(size = 1, color = wes_palette("GrandBudapest1")[2]) +
       geom_point(color = wes_palette("GrandBudapest1")[2]) +
       theme_gdocs() +
