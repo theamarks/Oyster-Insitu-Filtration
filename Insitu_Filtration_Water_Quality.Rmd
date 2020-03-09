@@ -29,7 +29,8 @@ data_directory = "./Data/sonde_time_series"
 velocity_data_directory = "./Data"
 manual_correction_directory = "./manual_corrections"
 output_directory = "./output"
-  filtration_calc_output_directory <<- file.path(output_directory,"4_Filtration_Calculations")
+filtration_calc_output_directory = "./output/4_Filtration_Calculations"
+Sbs_correction_directory = "./output/3_Sbs_Corrections_Applied"
 ######################################################################
 # Source/import required files 
 ######################################################################
@@ -37,7 +38,7 @@ output_directory = "./output"
 source( "functions.R")
 ```
 
-Water Quality - Filtraiton
+Water Quality - Filtration
 =====================================
 
 ###
@@ -62,6 +63,36 @@ for(file in 1 : length(all_files_Filtration))
   # plot the time series agains
   if(nrow(one_file) > 0){
   plot(createWQgraphs(one_file, file_name))
+  }
+}
+
+```
+
+Water Quality - SBS
+=====================================
+
+###
+
+```{r Plot_Filtration_WQ, fig.height=8, fig.width=15}
+######################################################################
+## Graph WQ during Filtraiton / Neg Control Trials - Paired Data
+######################################################################
+
+# directs where files are
+all_files_Sbs_Corrected = list.files(Sbs_correction_directory, pattern = ".csv")
+
+# Loop like Task 5 with different plot function
+for(file in 1 : length(all_files_Filtration))
+{ 
+    
+  file_name = all_files_Filtration[file]
+    
+  # Import the file
+  one_file = fread(file.path(Sbs_correction_directory, file_name))
+    
+  # plot the time series agains
+  if(nrow(one_file) > 0){
+  plot(createWQgraphsSBS(one_file, file_name))
   }
 }
 
