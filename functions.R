@@ -834,7 +834,7 @@ matchSbsCorrectedByTime = function(aSbsCorrectionFile, aWaterVelSummary)
                   TDS_g_L_Up = TDS_g_L.x, 
                   Sal_ppt_Up = Sal_ppt.x, 
                   Turbidity_NTU_Up = Turbidity_NTU.x, 
-                  Chl_ug_L_Up = Chl_ug_L_Corrected.x,
+                  Chl_ug_L_Corr_Up = Chl_ug_L_Corrected.x,
                   
                   Sonde_Down = Sonde.y,
                   Temp_C_Down = Temp_C.y, 
@@ -843,7 +843,7 @@ matchSbsCorrectedByTime = function(aSbsCorrectionFile, aWaterVelSummary)
                   TDS_g_L_Down = TDS_g_L.y, 
                   Sal_ppt_Down = Sal_ppt.y, 
                   Turbidity_NTU_Down = Turbidity_NTU.y, 
-                  Chl_ug_L_Down = Chl_ug_L_Corrected.y) %>%
+                  Chl_ug_L_Corr_Down = Chl_ug_L_Corrected.y) %>%
   
   return(combined_Sbs_WQ_df)
   
