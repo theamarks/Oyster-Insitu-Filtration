@@ -73,7 +73,7 @@ Water Quality - SBS
 
 ###
 
-```{r Plot_Filtration_WQ, fig.height=8, fig.width=15}
+```{r Plot_SBS_WQ, fig.height=8, fig.width=15}
 ######################################################################
 ## Graph WQ during Filtraiton / Neg Control Trials - Paired Data
 ######################################################################
@@ -92,7 +92,8 @@ for(file in 1 : length(all_files_Filtration))
     
   # plot the time series agains
   if(nrow(one_file) > 0){
-  plot(createWQgraphsSBS(one_file, file_name))
+    combined_Sbs_WQ_df <- matchSbsCorrectedByTime(one_file) # returns combined_Sbs_WQ_df object
+    plot(createWQgraphsSBS(combined_Sbs_WQ_df, file_name))
   }
 }
 
