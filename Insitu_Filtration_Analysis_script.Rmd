@@ -178,7 +178,7 @@ SBS - Correction Calc & Uncertainty
 =====================================
 
 ###
-```{r Sbs_Correction_Uncertainty, fig.height=5, fig.width=6}
+```{r Sbs_Correction_Uncertainty, fig.height=5, fig.width=4}
 ######################################################################
 # Create SBS Stats - Uncertainty Table & Graph SBS Density Plots
 ######################################################################
