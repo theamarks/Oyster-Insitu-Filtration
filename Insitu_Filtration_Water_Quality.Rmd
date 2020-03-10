@@ -35,7 +35,7 @@ Sbs_correction_directory = "./output/3_Sbs_Corrections_Applied"
 # Source/import required files 
 ######################################################################
 # Source the functions
-source( "functions.R")
+source("functions.R")
 ```
 
 Water Quality - Filtration
@@ -75,24 +75,26 @@ Water Quality - SBS
 
 ```{r Plot_SBS_WQ, fig.height=8, fig.width=15}
 ######################################################################
-## Graph WQ during Filtraiton / Neg Control Trials - Paired Data
+## Graph WQ during SBS Trials - Paired Data
 ######################################################################
 
 # directs where files are
 all_files_Sbs_Corrected = list.files(Sbs_correction_directory, pattern = ".csv")
 
 # Loop like Task 5 with different plot function
-for(file in 1 : length(all_files_Filtration))
+for(file in 1 : length(all_files_Sbs_Corrected))
 { 
     
-  file_name = all_files_Filtration[file]
+  file_name = all_files_Sbs_Corrected[file]
     
   # Import the file
   one_file = fread(file.path(Sbs_correction_directory, file_name))
+  
+  combined_Sbs_WQ_df <- matchSbsCorrectedByTime(one_file) # returns combined_Sbs_WQ_df object
     
-  # plot the time series agains
+  # plot the time series 
   if(nrow(one_file) > 0){
-    combined_Sbs_WQ_df <- matchSbsCorrectedByTime(one_file) # returns combined_Sbs_WQ_df object
+    
     plot(createWQgraphsSBS(combined_Sbs_WQ_df, file_name))
   }
 }
