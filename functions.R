@@ -807,18 +807,14 @@ createWQgraphs = function(aFiltrationFile, aFileName)
 ######################################################################################
 ## Rearrange Sbs Corrected data for graphing water quality
 ######################################################################################
-matchSbsCorrectedByTime = function(aSbsCorrectionFile, aWaterVelSummary)
+matchSbsCorrectedByTime = function(aSbsCorrectionFile)
 {
-  #one_water_vel_summary = aWaterVelSummary %>%
-   # dplyr::filter(Date %in% unique(aTimeSeriesFile$Date)) %>%
-    #dplyr::select(Date, Site, Experiment, avg_depth_cm, d_bw_sondes_m, avg_m_hr)
-  
-  up_sonde_df = aTimeSeriesFile %>%
+  up_sonde_df = aSbsCorrectionFile %>%
     dplyr::filter(Position == "Up" & Experiment %in% c("sbs_before", "sbs_after"))%>%
     dplyr::select(Time, Date, Experiment, Sonde, Position, Site, Temp_C, SpCond_mS_cm,
                   Cond_mS_cm, TDS_g_L, Sal_ppt, Turbidity_NTU, Chl_ug_L_Corrected)
   
-  down_sonde_df = aTimeSeriesFile %>%
+  down_sonde_df = aSbsCorrectionFile %>%
     dplyr::filter(Position == "Down" & Experiment %in% c("sbs_before", "sbs_after"))%>%
     dplyr::select(Time, Date, Experiment, Sonde, Position, Site, Temp_C, SpCond_mS_cm, 
                   Cond_mS_cm, TDS_g_L, Sal_ppt, Turbidity_NTU, Chl_ug_L_Corrected)
@@ -843,7 +839,7 @@ matchSbsCorrectedByTime = function(aSbsCorrectionFile, aWaterVelSummary)
                   TDS_g_L_Down = TDS_g_L.y, 
                   Sal_ppt_Down = Sal_ppt.y, 
                   Turbidity_NTU_Down = Turbidity_NTU.y, 
-                  Chl_ug_L_Corr_Down = Chl_ug_L_Corrected.y) %>%
+                  Chl_ug_L_Corr_Down = Chl_ug_L_Corrected.y)
   
   return(combined_Sbs_WQ_df)
   
@@ -851,40 +847,40 @@ matchSbsCorrectedByTime = function(aSbsCorrectionFile, aWaterVelSummary)
 ######################################################################################
 ## Create Water Quality compound Graphs - SBS
 ######################################################################################
-createWQgraphsSBS = function(aSbsCorrectionFile, aFileName)
+createWQgraphsSBS = function(aSbsCorrMatchedFile, aFileName)
 {
   # Convert Time from difftime to hms variable for x-axis formatting
-  aSbsCorrectionFile$Time <- as_hms(aSbsCorrectionFile$Time)
+  aSbsCorrMatchedFile$Time <- as_hms(aSbsCorrMatchedFile$Time)
   
   # Make y-axis limits the same for both upstream and downstream graphs
   # Chl y-axis bounds
-  Chl_ymax <- ifelse(max(aSbsCorrectionFile$Chl_ug_L_Up) > max(aSbsCorrectionFile$Chl_ug_L_Down), 
-                     max(aSbsCorrectionFile$Chl_ug_L_Up), max(aSbsCorrectionFile$Chl_ug_L_Down))
-  Chl_ymin <- ifelse(min(aSbsCorrectionFile$Chl_ug_L_Up) < min(aSbsCorrectionFile$Chl_ug_L_Down), 
-                     min(aSbsCorrectionFile$Chl_ug_L_Up), min(aSbsCorrectionFile$Chl_ug_L_Down))
+  Chl_ymax <- ifelse(max(aSbsCorrMatchedFile$Chl_ug_L_Corr_Up) > max(aSbsCorrMatchedFile$Chl_ug_L_Corr_Down), 
+                     max(aSbsCorrMatchedFile$Chl_ug_L_Corr_Up), max(aSbsCorrMatchedFile$Chl_ug_L_Corr_Down))
+  Chl_ymin <- ifelse(min(aSbsCorrMatchedFile$Chl_ug_L_Corr_Up) < min(aSbsCorrMatchedFile$Chl_ug_L_Corr_Down), 
+                     min(aSbsCorrMatchedFile$Chl_ug_L_Corr_Up), min(aSbsCorrMatchedFile$Chl_ug_L_Corr_Down))
   # Turbidity y-axis bounds
-  Turb_ymax <- ifelse(max(aSbsCorrectionFile$Turbidity_NTU_Up) > max(aSbsCorrectionFile$Turbidity_NTU_Down), 
-                      max(aSbsCorrectionFile$Turbidity_NTU_Up), max(aSbsCorrectionFile$Turbidity_NTU_Down))
-  Turb_ymin <- ifelse(min(aSbsCorrectionFile$Turbidity_NTU_Up) < min(aSbsCorrectionFile$Turbidity_NTU_Down), 
-                      min(aSbsCorrectionFile$Turbidity_NTU_Up), min(aSbsCorrectionFile$Turbidity_NTU_Down))
+  Turb_ymax <- ifelse(max(aSbsCorrMatchedFile$Turbidity_NTU_Up) > max(aSbsCorrMatchedFile$Turbidity_NTU_Down), 
+                      max(aSbsCorrMatchedFile$Turbidity_NTU_Up), max(aSbsCorrMatchedFile$Turbidity_NTU_Down))
+  Turb_ymin <- ifelse(min(aSbsCorrMatchedFile$Turbidity_NTU_Up) < min(aSbsCorrMatchedFile$Turbidity_NTU_Down), 
+                      min(aSbsCorrMatchedFile$Turbidity_NTU_Up), min(aSbsCorrMatchedFile$Turbidity_NTU_Down))
   # Temp y-axis bounds
-  Temp_ymax <- ifelse(max(aSbsCorrectionFile$Temp_C_Up) > max(aSbsCorrectionFile$Temp_C_Down), 
-                      max(aSbsCorrectionFile$Temp_C_Up), max(aSbsCorrectionFile$Temp_C_Down))
-  Temp_ymin <- ifelse(min(aSbsCorrectionFile$Temp_C_Up) < min(aSbsCorrectionFile$Temp_C_Down), 
-                      min(aSbsCorrectionFile$Temp_C_Up), min(aSbsCorrectionFile$Temp_C_Down))
+  Temp_ymax <- ifelse(max(aSbsCorrMatchedFile$Temp_C_Up) > max(aSbsCorrMatchedFile$Temp_C_Down), 
+                      max(aSbsCorrMatchedFile$Temp_C_Up), max(aSbsCorrMatchedFile$Temp_C_Down))
+  Temp_ymin <- ifelse(min(aSbsCorrMatchedFile$Temp_C_Up) < min(aSbsCorrMatchedFile$Temp_C_Down), 
+                      min(aSbsCorrMatchedFile$Temp_C_Up), min(aSbsCorrMatchedFile$Temp_C_Down))
   # Salinity y-axis bounds
-  Sal_ymax <- ifelse(max(aSbsCorrectionFile$Sal_ppt_Up) > max(aSbsCorrectionFile$Sal_ppt_Down), 
-                     max(aSbsCorrectionFile$Sal_ppt_Up), max(aSbsCorrectionFile$Sal_ppt_Down))
-  Sal_ymin <- ifelse(min(aSbsCorrectionFile$Sal_ppt_Up) < min(aSbsCorrectionFile$Sal_ppt_Down), 
-                     min(aSbsCorrectionFile$Sal_ppt_Up), min(aSbsCorrectionFile$Sal_ppt_Down))
+  Sal_ymax <- ifelse(max(aSbsCorrMatchedFile$Sal_ppt_Up) > max(aSbsCorrMatchedFile$Sal_ppt_Down), 
+                     max(aSbsCorrMatchedFile$Sal_ppt_Up), max(aSbsCorrMatchedFile$Sal_ppt_Down))
+  Sal_ymin <- ifelse(min(aSbsCorrMatchedFile$Sal_ppt_Up) < min(aSbsCorrMatchedFile$Sal_ppt_Down), 
+                     min(aSbsCorrMatchedFile$Sal_ppt_Up), min(aSbsCorrMatchedFile$Sal_ppt_Down))
   
   # Chlorophyll Up
-  Chl_plot_Up <- ggplot(data = aSbsCorrectionFile, aes(x = Time, y = Chl_ug_L_Up)) +
+  Chl_plot_Up <- ggplot(data = aSbsCorrMatchedFile, aes(x = Time, y = Chl_ug_L_Corr_Up)) +
     #geom_path(size = 1, color = wes_palette("Cavalcanti1")[2]) +
     geom_point(color = wes_palette("Cavalcanti1")[2]) +
     theme_gdocs() +
     coord_cartesian(ylim = c(Chl_ymin, Chl_ymax)) +
-    geom_hline(yintercept = mean(aSbsCorrectionFile$Chl_ug_L_Up),
+    geom_hline(yintercept = mean(aSbsCorrMatchedFile$Chl_ug_L_Corr_Up),
                color = wes_palette("Cavalcanti1")[2], linetype = "dashed", size = .75) +
     theme(axis.text.x = element_blank(), # remove x axis text
           axis.title.x = element_blank(), # removed x axis title
@@ -892,16 +888,16 @@ createWQgraphsSBS = function(aSbsCorrectionFile, aFileName)
           rect = element_blank()) + # removed black boarder rectangle 
     theme(plot.subtitle = element_text(hjust = 0.5)) + # Center title
     labs(title = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>% str_replace(".csv", ""),
-                        ' - ', unique(aSbsCorrectionFile$Experiment)),
+                        ' - ', "Side by Side"),
          subtitle = "Upstream")
   
   # Turbidity Up 
-  Turb_plot_Up <- ggplot(data = aSbsCorrectionFile, aes(x = Time, y = Turbidity_NTU_Up)) +
+  Turb_plot_Up <- ggplot(data = aSbsCorrMatchedFile, aes(x = Time, y = Turbidity_NTU_Up)) +
     #geom_path(size = 1, color = wes_palette("Royal1")[4]) +
     geom_point(color = wes_palette("Royal1")[4]) +
     theme_gdocs() +
     coord_cartesian(ylim = c(Turb_ymin, Turb_ymax)) +
-    geom_hline(yintercept = mean(aSbsCorrectionFile$Turbidity_NTU_Up),
+    geom_hline(yintercept = mean(aSbsCorrMatchedFile$Turbidity_NTU_Up),
                color = wes_palette("Royal1")[4], linetype = "dashed", size = .75) +
     theme(axis.text.x = element_blank(),
           axis.title.x = element_blank(),
@@ -910,12 +906,12 @@ createWQgraphsSBS = function(aSbsCorrectionFile, aFileName)
     labs(y = "Turbidity NTU")
   
   # Temperature Up
-  Temp_plot_Up <- ggplot(data = aSbsCorrectionFile, aes(x = Time, y = Temp_C_Up)) +
+  Temp_plot_Up <- ggplot(data = aSbsCorrMatchedFile, aes(x = Time, y = Temp_C_Up)) +
     # geom_path(size = 1, color = wes_palette("Zissou1")[1]) +
     geom_point(color = wes_palette("Zissou1")[1]) +
     theme_gdocs() +
     coord_cartesian(ylim = c(Temp_ymin, Temp_ymax)) +
-    geom_hline(yintercept = mean(aSbsCorrectionFile$Temp_C_Up),
+    geom_hline(yintercept = mean(aSbsCorrMatchedFile$Temp_C_Up),
                color = wes_palette("Zissou1")[1], linetype = "dashed", size = .75) +
     theme(axis.text.x = element_blank(),
           axis.title.x = element_blank(),
@@ -924,12 +920,12 @@ createWQgraphsSBS = function(aSbsCorrectionFile, aFileName)
     labs(y = paste("Temperature ", "(", intToUtf8(176), "C)"))
   
   # Slainity Up
-  Sal_plot_Up <- ggplot(data = aSbsCorrectionFile, aes(x = Time, y = Sal_ppt_Up)) +
+  Sal_plot_Up <- ggplot(data = aSbsCorrMatchedFile, aes(x = Time, y = Sal_ppt_Up)) +
     #geom_path(size = 1, color = wes_palette("GrandBudapest1")[2]) +
     geom_point(color = wes_palette("GrandBudapest1")[2]) +
     theme_gdocs() +
     coord_cartesian(ylim = c(Sal_ymin, Sal_ymax)) +
-    geom_hline(yintercept = mean(aSbsCorrectionFile$Sal_ppt_Up),
+    geom_hline(yintercept = mean(aSbsCorrMatchedFile$Sal_ppt_Up),
                color = wes_palette("GrandBudapest1")[2], linetype = "dashed", size = .75) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           rect = element_blank(),
@@ -941,12 +937,12 @@ createWQgraphsSBS = function(aSbsCorrectionFile, aFileName)
                      nrow = 4)
   
   # Chlorophyll Down
-  Chl_plot_Down <- ggplot(data = aSbsCorrectionFile, aes(x = Time, y = Chl_ug_L_Down)) +
+  Chl_plot_Down <- ggplot(data = aSbsCorrMatchedFile, aes(x = Time, y = Chl_ug_L_Corr_Down)) +
     #geom_path(size = 1, color = wes_palette("Cavalcanti1")[3]) +
     geom_point(color = wes_palette("Cavalcanti1")[3]) +
     theme_gdocs() +
     coord_cartesian(ylim = c(Chl_ymin, Chl_ymax)) +
-    geom_hline(yintercept = mean(aSbsCorrectionFile$Chl_ug_L_Down),
+    geom_hline(yintercept = mean(aSbsCorrMatchedFile$Chl_ug_L_Corr_Down),
                color = wes_palette("Cavalcanti1")[3], linetype = "dashed", size = .75) +
     theme(axis.text.x = element_blank(),
           axis.title.x = element_blank(),
@@ -959,12 +955,12 @@ createWQgraphsSBS = function(aSbsCorrectionFile, aFileName)
          subtitle = "Downstream")
   
   # Turbidity Down 
-  Turb_plot_Down <- ggplot(data = aSbsCorrectionFile, aes(x = Time, y = Turbidity_NTU_Down)) +
+  Turb_plot_Down <- ggplot(data = aSbsCorrMatchedFile, aes(x = Time, y = Turbidity_NTU_Down)) +
     #geom_path(size = 1, color = wes_palette("Royal1")[4]) +
     geom_point(color = wes_palette("Royal1")[4]) +
     theme_gdocs() +
     coord_cartesian(ylim = c(Turb_ymin, Turb_ymax)) +
-    geom_hline(yintercept = mean(aSbsCorrectionFile$Turbidity_NTU_Down),
+    geom_hline(yintercept = mean(aSbsCorrMatchedFile$Turbidity_NTU_Down),
                color = wes_palette("Royal1")[4], linetype = "dashed", size = .75) +
     theme(axis.text.x = element_blank(),
           axis.title.x = element_blank(),
@@ -974,12 +970,12 @@ createWQgraphsSBS = function(aSbsCorrectionFile, aFileName)
           legend.title = element_blank()) 
   
   # Temperature Down
-  Temp_plot_Down <- ggplot(data = aSbsCorrectionFile, aes(x = Time, y = Temp_C_Down)) +
+  Temp_plot_Down <- ggplot(data = aSbsCorrMatchedFile, aes(x = Time, y = Temp_C_Down)) +
     #geom_path(size = 1, color = wes_palette("Zissou1")[1]) +
     geom_point(color = wes_palette("Zissou1")[1]) +
     theme_gdocs() +
     coord_cartesian(ylim = c(Temp_ymin, Temp_ymax)) +
-    geom_hline(yintercept = mean(aSbsCorrectionFile$Temp_C_Down),
+    geom_hline(yintercept = mean(aSbsCorrMatchedFile$Temp_C_Down),
                color = wes_palette("Zissou1")[1], linetype = "dashed", size = .75) +
     theme(axis.text.x = element_blank(),
           axis.title.x = element_blank(),
@@ -989,12 +985,12 @@ createWQgraphsSBS = function(aSbsCorrectionFile, aFileName)
           legend.title = element_blank()) 
   
   # Salinity Down
-  Sal_plot_Down <- ggplot(data = aSbsCorrectionFile, aes(x = Time, y = Sal_ppt_Down)) +
+  Sal_plot_Down <- ggplot(data = aSbsCorrMatchedFile, aes(x = Time, y = Sal_ppt_Down)) +
     #geom_path(size = 1, color = wes_palette("GrandBudapest1")[2]) +
     geom_point(color = wes_palette("GrandBudapest1")[2]) +
     theme_gdocs() +
     coord_cartesian(ylim = c(Sal_ymin, Sal_ymax)) +
-    geom_hline(yintercept = mean(aSbsCorrectionFile$Sal_ppt_Down),
+    geom_hline(yintercept = mean(aSbsCorrMatchedFile$Sal_ppt_Down),
                color = wes_palette("GrandBudapest1")[2], linetype = "dashed", size = .75) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           axis.text.y = element_blank(),
@@ -1006,8 +1002,8 @@ createWQgraphsSBS = function(aSbsCorrectionFile, aFileName)
   Down_WQ <- plot_grid(Chl_plot_Down, Turb_plot_Down, Temp_plot_Down, Sal_plot_Down,
                        nrow = 4)
   # combine upstream and downstream WQ graphs in two columns
-  All_WQ <- plot_grid(Up_WQ, Down_WQ, ncol = 2)
+  All_SBS_WQ <- plot_grid(Up_WQ, Down_WQ, ncol = 2)
   
-  return(All_WQ)
+  return(All_SBS_WQ)
   
 }
