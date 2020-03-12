@@ -304,15 +304,15 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
     Median_sbs_Chl_diff = afileSbsStats$Median_sbs_Chl_diff,
     SD_sbs_Chl_diff = afileSbsStats$SD_sbs_Chl_diff,
     SE_sbs_Chl_diff = afileSbsStats$SE_sbs_Chl_diff,
-    Mean_Chl_Up = distrubution_up$mean_chl_up,
-    Median_Chl_Up = distrubution_up$median_chl_up,
-    SD_Chl_Up = distrubution_up$sd_chl_up,
-    SE_CHl_UP = distrubution_up$se_chl_up,
-    Mean_Chl_Down = distrubution_down$mean_chl_down,
-    Median_Chl_Down = distrubution_down$median_chl_down,
-    SD_Chl_Down = distrubution_down$sd_chl_down,
-    SE_Chl_Down = distrubution_down$se_chl_down,
-    Sample_Count = afileSbsStats$Sample_count)
+    Mean_sbs_Chl_Up = distrubution_up$mean_chl_up,
+    Median_sbs_Chl_Up = distrubution_up$median_chl_up,
+    SD_sbs_Chl_Up = distrubution_up$sd_chl_up,
+    SE_sbs_CHl_UP = distrubution_up$se_chl_up,
+    Mean_sbs_Chl_Down = distrubution_down$mean_chl_down,
+    Median_sbs_Chl_Down = distrubution_down$median_chl_down,
+    SD_sbs_Chl_Down = distrubution_down$sd_chl_down,
+    SE_sbs_Chl_Down = distrubution_down$se_chl_down,
+    Sample_sbs_Count = afileSbsStats$Sample_count)
   
   return(aSbs_stat_summary)
   
@@ -600,7 +600,7 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
 ######################################################################################
 ## This function summarizes the filtration
 ######################################################################################
-createFiltraationSummary = function(aFiltrationFile, aFileName)
+createFiltrationSummary = function(aFiltrationFile, aFileName)
 {
   data_only_numeric = dplyr::select_if(aFiltrationFile, is.numeric)
   
