@@ -566,7 +566,6 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
     dplyr::filter(Position == "Down" & !Experiment %in% c("sbs_before", "sbs_after"))%>%
     dplyr::select(Time, Date, Experiment, Sonde, Site, Temp_C, SpCond_mS_cm, Cond_mS_cm, TDS_g_L, Sal_ppt, Turbidity_NTU, Chl_ug_L_Corrected)
   
-  
   combined_water_quality_df = up_sonde_df %>%
     dplyr::inner_join(down_sonde_df, by = c("Time", "Date", "Site", "Experiment")) %>%
     dplyr::select(Time, Date, Site, Experiment,
@@ -604,10 +603,14 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
 createFiltraationSummary = function(aFiltrationFile, aFileName)
 {
   data_only_numeric = dplyr::select_if(aFiltrationFile, is.numeric)
+  
   filtration_sub_df =  aFiltrationFile %>% 
     dplyr::select(c(names(data_only_numeric), "Experiment", "Date", "Site"))
   
-  filtration_sub_df = filtration_sub_df %>%
+  up_down_PairedTtest = filtration_sub_df %>% 
+    tidy(t.test(Chl_ug_L_Up, Chl_ug_L_Down, paired = T)) # Paired T-test, output is a 1x8 table
+  
+  filtration_sub_df_sum = filtration_sub_df %>%
     dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
     dplyr::group_by(Experiment, Date, Site) %>%
     dplyr::summarise(Temp_C_Up = mean(Temp_C_Up),
@@ -637,7 +640,9 @@ createFiltraationSummary = function(aFiltrationFile, aFileName)
     dplyr::mutate(File_Name = aFileName) %>%
     dplyr::select(File_Name, Experiment, everything())
   
-  return(filtration_sub_df)
+  filtration_df_test = cbind(filtration_sub_df_sum, up_down_PairedTtest)
+  
+  return(filtration_df_test)
 }
 
 ######################################################################################
