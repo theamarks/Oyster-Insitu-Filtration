@@ -156,8 +156,8 @@ for(file in 1 : length(all_files))
   
   if(nrow(one_file) > 0)
   {  
-    one_filteration_summary = createFilterationSummary(one_file, file_name)
-    filteration_summary_table = rbind(filteration_summary_table, one_filteration_summary)
+    one_filtration_summary = createFiltrationSummary(one_file, file_name)
+    filtration_summary_table = rbind(filtration_summary_table, one_filtration_summary)
   }
   # save the filtration calculations
   fwrite(one_file, file.path(filtration_calc_output_directory, file_name))
@@ -168,7 +168,7 @@ for(file in 1 : length(all_files))
 fwrite(sbs_correction_summary, file.path(sbs_summary_output_directory,
                                         "sbs_correction_summary.csv"))
 
-fwrite(filteration_summary_table, file.path(filtration_summary_output_directory,
+fwrite(filtration_summary_table, file.path(filtration_summary_output_directory,
                                         "filtration_summary.csv"))
   
 
