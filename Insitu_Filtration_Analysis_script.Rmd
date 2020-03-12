@@ -25,6 +25,7 @@ library(hms) # dealing with time & date
 library(wesanderson) # color palatte
 library(ggpubr) 
 library(cowplot) # arragne multiple plots or objects in single plot
+library(broom) # tidy(t.test()) converts t-test output from console text to 1 x 8 tibble 
 
 ######################################################################
 ## settings: 
