@@ -552,7 +552,7 @@ adjustDownSondeTimeStamp = function(aWaterVelSummaryFile, aTimeSeriesFile)
 ######################################################################################
 ## This function calculates filtration after pairing the data by timestamp
 ######################################################################################
-calculateFilterationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
+calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
 {
   one_water_vel_summary = aWaterVelSummary %>%
     dplyr::filter(Date %in% unique(aTimeSeriesFile$Date)) %>%
@@ -601,7 +601,7 @@ calculateFilterationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
 ######################################################################################
 ## This function summarizes the filtration
 ######################################################################################
-createFilterationSummary = function(aFiltrationFile, aFileName)
+createFiltraationSummary = function(aFiltrationFile, aFileName)
 {
   data_only_numeric = dplyr::select_if(aFiltrationFile, is.numeric)
   filtration_sub_df =  aFiltrationFile %>% 
