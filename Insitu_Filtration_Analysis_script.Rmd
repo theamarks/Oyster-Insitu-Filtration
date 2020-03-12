@@ -73,7 +73,7 @@ Chl - Raw Data
 
 ### 
 
-```{r Std_names_plot_raw_chl, fig.height=5, fig.width=13.5}
+```{r Std_names_plot_raw_chl, fig.height=5, fig.width=13.5, cache = TRUE}
 
 ######################################################################
 ##Steps 1 to 4) read the files to standardize names and plot time series for sondes
@@ -105,13 +105,13 @@ Chl - Spikes Removed
 
 ### 
 
-```{r Manual_Sbs_Corr_Plot_Chl_FR_Clac, fig.height=5, fig.width=13.5}
+```{r Manual_Sbs_Corr_Plot_Chl_FR_Clac, fig.height=5, fig.width=13.5, cache = TRUE}
 ######################################################################
 ##Step 5 to 8)  Apply manual, Sbs corrections and calculate filtration
 ######################################################################
 # empty data frame to store sbs correction summary  
 sbs_correction_summary = data.frame()
-filteration_summary_table = data.frame()
+filtration_summary_table = data.frame()
 
 #loop through files and apply manual corrections
 for(file in 1 : length(all_files))
@@ -153,7 +153,7 @@ for(file in 1 : length(all_files))
 ##Step 7 and 8) Water Velocity measurement and Filtration calculation
 ######################################################################
   one_file = adjustDownSondeTimeStamp(water_vel_summary, one_file)
-  one_file = calculateFilterationForPairedData(one_file, water_vel_summary)
+  one_file = calculateFiltrationForPairedData(one_file, water_vel_summary)
   
   if(nrow(one_file) > 0)
   {  
@@ -179,7 +179,7 @@ SBS - Correction Calc & Uncertainty
 =====================================
 
 ###
-```{r Sbs_Correction_Uncertainty, fig.height=5, fig.width=4}
+```{r Sbs_Correction_Uncertainty, fig.height=5, fig.width=4, cache = TRUE}
 ######################################################################
 # Create SBS Stats - Uncertainty Table & Graph SBS Density Plots
 ######################################################################
@@ -219,7 +219,7 @@ Chl Drawdown - Velocity paired
 
 ###
 
-```{r Plot_V_paired_Chl_diff, fig.height=5, fig.width=10}
+```{r Plot_V_paired_Chl_diff, fig.height=5, fig.width=10, cache = TRUE}
 ######################################################################
 ## Graph Filtration Time Series After Veloctiy Time Adjustment (AM trying to copy for loop)
 ######################################################################
@@ -247,7 +247,7 @@ for(file in 1 : length(all_files_Filtration))
 ```
 
 
-```{r TPM_Density, eval=FALSE, include=FALSE}
+```{r TPM_Density, eval=FALSE, include=FALSE, cache = TRUE}
 
 #######################################################################
 # Create directories for TPM & Density Data
@@ -374,7 +374,7 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
 ##############################################################
 # Create Master Analysis Table
 ##############################################################
-Master_analysis_table <- filteration_summary_table %>% 
+Master_analysis_table <- filtration_summary_table %>% 
   inner_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
   select(1:11, 17:23, 25:28) # Exclude upstream average WQ values 
 
