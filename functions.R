@@ -630,10 +630,11 @@ createFiltrationSummary = function(aFiltrationFile, aFileName)
                      avg_depth_cm = mean(avg_depth_cm),
                      d_bw_sondes_m = mean(d_bw_sondes_m),
                      avg_m_hr = mean(avg_m_hr),
-                    # Mean_Chl_diff = mean(Chl_ug_L_Up) - mean(Chl_ug_L_Down),
+                     Mean_Chl_diff = mean(Chl_diff),
+                     StDev_Chl_diff = sd(Chl_diff),
+                     StEr_Chl_diff = sd(Chl_diff)/sqrt(lenth(Chl_diff)),
                      pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd),
-                     L_hr_m2 = mean(L_hr_m2)
-                     ) %>%
+                     L_hr_m2 = mean(L_hr_m2)) %>%
     data.frame() %>%
     dplyr::mutate(File_Name = aFileName) %>%
     dplyr::select(File_Name, Experiment, everything())
