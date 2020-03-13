@@ -591,6 +591,7 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
     dplyr::inner_join(one_water_vel_summary, by = c("Date", "Site", "Experiment")) %>%
     
     dplyr::mutate(pcnt_Chl_rmvd = ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up) * 100,
+                  Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
                   L_hr_m2 = (((avg_depth_cm/100) * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up))
   
   return(combined_water_quality_df)
@@ -619,7 +620,6 @@ createFiltrationSummary = function(aFiltrationFile, aFileName)
                      Sal_ppt_Up = mean(Sal_ppt_Up),
                      Turbidity_NTU_Up = mean(Turbidity_NTU_Up),
                      Chl_ug_L_Up = mean(Chl_ug_L_Up),
-                    # Chl_ug_L_Up_SD = sd(Chl_ug_L_Up), # Not sure SD is appropriate
                      Temp_C_Down = mean(Temp_C_Down),
                      SpCond_mS_cm_Down = mean(SpCond_mS_cm_Down),
                      Cond_mS_cm_Down = mean(Cond_mS_cm_Down),
@@ -627,15 +627,14 @@ createFiltrationSummary = function(aFiltrationFile, aFileName)
                      Sal_ppt_Down = mean(Sal_ppt_Down),
                      Turbidity_NTU_Down = mean(Turbidity_NTU_Down),
                      Chl_ug_L_Down = mean(Chl_ug_L_Down),
-                    # Chl_ug_L_Down_SD = sd(Chl_ug_L_Down), # snot sure SD is appropriate
                      avg_depth_cm = mean(avg_depth_cm),
                      d_bw_sondes_m = mean(d_bw_sondes_m),
                      avg_m_hr = mean(avg_m_hr),
+                    # Mean_Chl_diff = mean(Chl_ug_L_Up) - mean(Chl_ug_L_Down),
                      pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd),
                      L_hr_m2 = mean(L_hr_m2)
                      ) %>%
     data.frame() %>%
-   # dplyr::mutate_if(is.numeric, round, 3) %>% # Tried to match excel numbers
     dplyr::mutate(File_Name = aFileName) %>%
     dplyr::select(File_Name, Experiment, everything())
   
