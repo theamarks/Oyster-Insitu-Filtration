@@ -1,0 +1,102 @@
+---
+title: "Filtration Water Quality"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: yeti
+    orientation: rows
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup}
+
+## Import the libraries and functions
+library(flexdashboard) # knit output format
+library(dplyr) # data manupulation 
+library(tidyr) # data rearranging
+library(data.table)
+library(magrittr)
+library(lubridate) # dealing with dates
+library(ggplot2) # graphing
+library(ggthemes) # theme_gdocs() in graphs
+library(stringr) # dealing with strings
+library(hms) # dealing with time & date
+library(wesanderson) # color palatte
+library(ggpubr) 
+library(cowplot) # arragne multiple plots or objects in single plot
+
+data_directory = "./Data/sonde_time_series"
+velocity_data_directory = "./Data"
+manual_correction_directory = "./manual_corrections"
+output_directory = "./output"
+filtration_calc_output_directory = "./output/4_Filtration_Calculations"
+Sbs_correction_directory = "./output/3_Sbs_Corrections_Applied"
+######################################################################
+# Source/import required files 
+######################################################################
+# Source the functions
+source("functions.R")
+```
+
+Water Quality - Filtration
+=====================================
+
+###
+
+```{r Plot_Filtration_WQ, fig.height=8, fig.width=15}
+######################################################################
+## Graph WQ during Filtraiton / Neg Control Trials - Paired Data
+######################################################################
+
+# directs where files are
+all_files_Filtration = list.files(filtration_calc_output_directory, pattern = ".csv")
+
+# Loop like Task 5 with different plot function
+for(file in 1 : length(all_files_Filtration))
+{ 
+    
+  file_name = all_files_Filtration[file]
+    
+  # Import the file
+  one_file = fread(file.path(filtration_calc_output_directory, file_name))
+    
+  # plot the time series agains
+  if(nrow(one_file) > 0){
+  plot(createWQgraphs(one_file, file_name))
+  }
+}
+
+```
+
+Water Quality - SBS
+=====================================
+
+###
+
+```{r Plot_SBS_WQ, fig.height=8, fig.width=15}
+######################################################################
+## Graph WQ during SBS Trials - Paired Data
+######################################################################
+
+# directs where files are
+all_files_Sbs_Corrected = list.files(Sbs_correction_directory, pattern = ".csv")
+
+# Loop like Task 5 with different plot function
+for(file in 1 : length(all_files_Sbs_Corrected))
+{ 
+    
+  file_name = all_files_Sbs_Corrected[file]
+    
+  # Import the file
+  one_file = fread(file.path(Sbs_correction_directory, file_name))
+  
+  combined_Sbs_WQ_df <- matchSbsCorrectedByTime(one_file) # returns combined_Sbs_WQ_df object
+    
+  # plot the time series 
+  if(nrow(one_file) > 0){
+    
+    plot(createWQgraphsSBS(combined_Sbs_WQ_df, file_name))
+  }
+}
+
+```
