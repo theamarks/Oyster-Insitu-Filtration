@@ -608,7 +608,7 @@ createFiltrationSummary = function(aFiltrationFile, aFileName)
   filtration_sub_df =  aFiltrationFile %>% 
     dplyr::select(c(names(data_only_numeric), "Experiment", "Date", "Site"))
   
-  up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_ug_L_Up, filtration_sub_df$Chl_ug_L_Down, paired = T))
+  up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_ug_L_Up, filtration_sub_df$Chl_ug_L_Down, alternative = "greater"))
   
   filtration_sub_df_sum = filtration_sub_df %>%
     dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
