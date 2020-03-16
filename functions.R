@@ -608,7 +608,7 @@ createFiltrationSummary = function(aFiltrationFile, aFileName)
   filtration_sub_df =  aFiltrationFile %>% 
     dplyr::select(c(names(data_only_numeric), "Experiment", "Date", "Site"))
   
-  up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_ug_L_Up, filtration_sub_df$Chl_ug_L_Down, alternative = "greater"))
+  up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_ug_L_Up, filtration_sub_df$Chl_ug_L_Down, paired = T))
   
   filtration_sub_df_sum = filtration_sub_df %>%
     dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
@@ -632,7 +632,7 @@ createFiltrationSummary = function(aFiltrationFile, aFileName)
                      avg_m_hr = mean(avg_m_hr),
                      Mean_Chl_diff = mean(Chl_diff),
                      StDev_Chl_diff = sd(Chl_diff),
-                     StEr_Chl_diff = sd(Chl_diff)/sqrt(lenth(Chl_diff)),
+                     StEr_Chl_diff = sd(Chl_diff)/sqrt(length(Chl_diff)),
                      pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd),
                      L_hr_m2 = mean(L_hr_m2)) %>%
     data.frame() %>%
