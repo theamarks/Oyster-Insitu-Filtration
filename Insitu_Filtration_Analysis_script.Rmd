@@ -73,7 +73,7 @@ Chl - Raw Data
 
 ### 
 
-```{r Std_names_plot_raw_chl, fig.height=5, fig.width=13.5, cache = TRUE}
+```{r Std_names_plot_raw_chl, fig.height=5, fig.width=13.5}
 
 ######################################################################
 ##Steps 1 to 4) read the files to standardize names and plot time series for sondes
@@ -105,7 +105,7 @@ Chl - Spikes Removed
 
 ### 
 
-```{r Manual_Sbs_Corr_Plot_Chl_FR_Clac, fig.height=5, fig.width=13.5, cache = TRUE}
+```{r Manual_Sbs_Corr_Plot_Chl_FR_Clac, fig.height=5, fig.width=13.5}
 ######################################################################
 ##Step 5 to 8)  Apply manual, Sbs corrections and calculate filtration
 ######################################################################
@@ -179,7 +179,7 @@ SBS - Correction Calc & Uncertainty
 =====================================
 
 ###
-```{r Sbs_Correction_Uncertainty, fig.height=5, fig.width=4, cache = TRUE}
+```{r Sbs_Correction_Uncertainty, fig.height=5, fig.width=4}
 ######################################################################
 # Create SBS Stats - Uncertainty Table & Graph SBS Density Plots
 ######################################################################
@@ -219,7 +219,7 @@ Chl Drawdown - Velocity paired
 
 ###
 
-```{r Plot_V_paired_Chl_diff, fig.height=5, fig.width=10, cache = TRUE}
+```{r Plot_V_paired_Chl_diff, fig.height=5, fig.width=10}
 ######################################################################
 ## Graph Filtration Time Series After Veloctiy Time Adjustment (AM trying to copy for loop)
 ######################################################################
@@ -247,7 +247,7 @@ for(file in 1 : length(all_files_Filtration))
 ```
 
 
-```{r TPM_Density, eval=FALSE, include=FALSE, cache = TRUE}
+```{r TPM_Density, eval=FALSE, include=FALSE}
 
 #######################################################################
 # Create directories for TPM & Density Data
