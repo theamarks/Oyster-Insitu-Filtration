@@ -376,7 +376,7 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
 ##############################################################
 Master_analysis_table <- filtration_summary_table %>% 
   inner_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
-  select(1:11, 17:23, 25:28) # Exclude upstream average WQ values 
+  select(-ends_with("Down"), -c("estimate", "conf.high", "method", "alternative")) # Exclude downstream average WQ values and unneeded single tail t-test results
 
 fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
 ```
