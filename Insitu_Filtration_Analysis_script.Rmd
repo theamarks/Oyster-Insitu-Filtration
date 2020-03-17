@@ -247,7 +247,7 @@ for(file in 1 : length(all_files_Filtration))
 ```
 
 
-```{r TPM_Density, eval=FALSE, include=FALSE, cache=TRUE}
+```{r TPM_Density, echo=FALSE, cache=TRUE}
 
 #######################################################################
 # Create directories for TPM & Density Data
@@ -296,13 +296,13 @@ fwrite(Avg_TPM_summary_table, file.path(TPM_output_directory, "Avg_TPM_summary_t
 # Total Bivalve Density
 #######################################################################
 
+# San Rafael bivalve density based on data from Chela Zabin (November 2017 survey)
 SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
 
-# Morro Bay total bivalve density
+# Morro Bay total bivalve density - data from MBOC staff 
 MB_gigas_m2 = 600
 
-# Newport Deanza total bivalve Density
-
+# Newport Deanza total bivalve Density - Data from Zacherl lab surveys 
 NP_excavation_quad_area = 0.0625
 
 NPD_may18_bivalve_den <- NP_density_data %>% 
