@@ -518,8 +518,7 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
   
   final_results = aFRVariableData %>%
     dplyr::left_join(vel_summary_df , by = c("Date", "Site", "Experiment")) %>%
-    dplyr::mutate(t_travel_s = round(d_bw_sondes_m/avg_m_s, 0),
-                  t_travel_mm_ss = hms(t_travel_s))
+    dplyr::mutate(t_travel_s = round(d_bw_sondes_m/avg_m_s, 0))
   
   return(final_results)
   
@@ -556,7 +555,7 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
 {
   one_water_vel_summary = aWaterVelSummary %>%
     dplyr::filter(Date %in% unique(aTimeSeriesFile$Date)) %>%
-    dplyr::select(Date, Site, Experiment, avg_depth_cm, d_bw_sondes_m, avg_m_hr)
+    dplyr::!select("reliable_data", "data_possible_influence", "t_travel_mm_ss")
   
   up_sonde_df = aTimeSeriesFile %>%
     dplyr::filter(Position == "Up" & !Experiment %in% c("sbs_before", "sbs_after"))%>%
@@ -894,7 +893,7 @@ createWQgraphsSBS = function(aSbsCorrMatchedFile, aFileName)
     labs(title = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>% str_replace(".csv", ""),
                         ' - ', "Side by Side"),
          subtitle = "Upstream",
-         y = expression(paste("Chlorophyll ", alpha, " (", mu, "g/L) "))))
+         y = expression(paste("Chlorophyll ", alpha, " (", mu, "g/L) ")))
   
   # Turbidity Up 
   Turb_plot_Up <- ggplot(data = aSbsCorrMatchedFile, aes(x = Time, y = Turbidity_NTU_Up)) +
