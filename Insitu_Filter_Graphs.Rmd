@@ -1,10 +1,11 @@
 ---
 title: "In situ Filtration Analysis Graphs"
-author: "Althea Marks"
-date: "11/12/2019"
-output:
-  html_document: default
-  pdf_document: default
+output: 
+  flexdashboard::flex_dashboard:
+    theme: yeti
+    orientation: rows
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r include=FALSE}
@@ -21,15 +22,40 @@ library(viridisLite)
 library(forcats)
 library(gridExtra)
 
-Master_analysis_table <- fread(file.path('./Data', "Master_Filtration_analysis_table.csv"))
+
+Master_analysis_table <- fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
 Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
 Density_directory = "./Data/bivalve_density_community"
 NPD_density = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
 
 ```
 
-Filtration Rates (L/hr/m^2) predicted by Total Particulate Matter (ug/L) of seston
-```{r FR vs TPM, echo=FALSE, message=FALSE}
+Chlorphyll % Removed  - Linear Regression
+=====================================
+```{r}
+# exclude San Rafael
+Chl_rmd_LM_No_SR <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
+                         # site logic variables 
+                         Master_analysis_table$NPD + Master_analysis_table$NPSM + Master_analysis_table$MB + 
+                         # Field notes logic variables
+                         Master_analysis_table$Wind + Master_analysis_table$G_upstream + Master_analysis_table$Daylight +
+                         Master_analysis_table$Sonde_fell + Master_analysis_table$Boat_wake + Master_analysis_table$Algae +
+                         # Quantatative variables
+                         Master_analysis_table$Temp_C_Up + Master_analysis_table$Sal_ppt_Up +
+                         Master_analysis_table$Turbidity_NTU_Up + Master_analysis_table$Chl_ug_L_Up +
+                         Master_analysis_table$avg_depth_cm + Master_analysis_table$d_bw_sondes_m +
+                         Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_POM + 
+                         Master_analysis_table$Avg_PIM)
+
+summary(Chl_rmd_LM_No_SR)
+
+```
+
+
+Filtration Rates (L/hr/m^2) by TPM (ug/L)
+=====================================
+
+```{r FR vs TPM, fig.height=5, fig.width=4}
 Filter_data <- Master_analysis_table %>% 
                      filter(Experiment == "Filtration")
 
@@ -37,11 +63,14 @@ Filter_data_pos <- Master_analysis_table %>%
                      filter(Experiment == "Filtration",
                             L_hr_m2 > 0)
 # FR by site all data
-(FR_TPM_box <- ggplot((Filter_data), aes(Site, L_hr_m2)) +
+FR_TPM_box <- ggplot((Filter_data), aes(Site, L_hr_m2)) +
   geom_boxplot() +
   theme_classic() +
   labs(x = 'Site',
-       y = 'Filtration Rate L/hr/m^2'))
+       y = 'Filtration Rate L/hr/m^2')
+
+plot(FR_TPM_box)
+
 # FR by site (Positive values only) 
 (FR_TPM_box <- ggplot((Filter_data_pos), aes(Site, L_hr_m2)) +
   geom_boxplot() +
@@ -75,7 +104,9 @@ plot(FR_TPM_lm)
 
 ```
 
-Filtration Rates (L/hr/m^2) predicted by Organic Content of seston
+L/hr/m^2 X OC 
+=====================================
+
 ```{r FR vs OC, echo=FALSE}
 (FR_OC_graph <- ggplot(Filter_data, aes(Avg_OC_Ratio, L_hr_m2, color = Site)) +
   geom_point() +
@@ -167,9 +198,12 @@ summary(FR_OC_NPSM_lm)
 par(mfrow=c(2,2))
 plot(FR_OC_NPSM_lm)
 ```
-Filtration Rate (L/hr/m^2) predicted by Temperature (Linear Model, 95% CI)
+
+L/hr/m^2 X WQ
+=====================================
 ```{r FR vs Water Quality, echo=FALSE}
 
+## Temperature
 (FR_Temp <- ggplot(Filter_data, aes(Temp_C_Up, L_hr_m2, color = Site)) +
   geom_point() +
   theme_classic() +
@@ -190,9 +224,9 @@ summary(FR_temp_lm)
 par(mfrow=c(2,2))
 plot(FR_temp_lm)
 ```
-Filtration Rate (L/hr/m^2) predicted by Salinity (Linear Model, 95% CI)
-```{r echo=FALSE}
 
+```{r echo=FALSE}
+## Salinity
 (FR_Sal <- ggplot(Filter_data, aes(Sal_ppt_Up, L_hr_m2, color = Site)) +
   geom_point() +
   theme_classic() +
@@ -215,7 +249,7 @@ plot(FR_Sal_lm)
 ```
 
 ```{r echo=FALSE}
-# Chlorophyll 
+## Chlorophyll 
 (FR_Chl <- ggplot(Filter_data, aes(Chl_ug_L_Up, L_hr_m2, color = Site)) +
   geom_point() +
   theme_classic() +
@@ -238,7 +272,7 @@ plot(FR_Chl_lm)
 ```
 
 ```{r echo=FALSE}
-# Turbidity
+## Turbidity
 (FR_Turbidity <- ggplot(Filter_data, aes(Turbidity_NTU_Up, L_hr_m2, color = Site)) +
   geom_point() +
   theme_classic() +
@@ -260,8 +294,10 @@ par(mfrow=c(2,2))
 plot(FR_Turb_lm)
 ```
 
-TPM vs OC
+TPM & OC
+=====================================
 ```{r TPM vs OC, echo=FALSE}
+##TPM vs OC
 TPM_OC_base <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio, color = Site, label = Date))
 
 TPM_OC_base + geom_point(size=4) + 
@@ -277,8 +313,9 @@ exclude_low_deanza + geom_point(size=4) +
   theme_classic() +
   geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
 ```
-Plot individual Sites TPM vs OC
+
 ```{r TPM vs OC - By Site, echo=FALSE}
+## Plot individual Sites TPM vs OC
 Avg_TPM_summary_table %>% 
   ggplot(aes(x = Avg_TPM, y = Avg_OC_Ratio, group = Site, color = Site)) +
   geom_point() +
@@ -320,10 +357,10 @@ MB_only + geom_point(size=4, color = '#7CAE00') +
   theme_classic() +
   geom_text(aes(label=Date), nudge_x = 0.0005, nudge_y = 0, check_overlap = T)
 ```
-
-
-Olympia DTW predicted by Shell Length - Newport, CA
+DTW - Shell length
+=====================================
 ```{r Oly DTW - Shell length analysis, echo=FALSE}
+##Olympia DTW predicted by Shell Length - Newport, CA
 NPD_oly <- NPD_density %>% 
   filter(species == "O. lurida") %>% 
   drop_na() %>% 
