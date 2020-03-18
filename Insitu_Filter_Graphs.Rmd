@@ -3,7 +3,7 @@ title: "In situ Filtration Analysis Graphs"
 output: 
   flexdashboard::flex_dashboard:
     theme: yeti
-    orientation: rows
+    vertical_layout: scroll
 editor_options: 
   chunk_output_type: console
 ---
@@ -32,7 +32,7 @@ NPD_density = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biom
 
 Chlorphyll % Removed  - Linear Regression
 =====================================
-```{r}
+```{r echo=TRUE}
 # exclude San Rafael
 Chl_rmd_LM_No_SR <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
                          # site logic variables 
@@ -52,53 +52,67 @@ summary(Chl_rmd_LM_No_SR)
 ```
 
 
-Filtration Rates (L/hr/m^2) by TPM (ug/L)
+L/hr/m^2 X TPM (ug/L)
 =====================================
-
-```{r FR vs TPM, fig.height=5, fig.width=4}
+### FR by site (all data)
+```{r FR vs TPM, fig.height=5, fig.width=6}
 Filter_data <- Master_analysis_table %>% 
                      filter(Experiment == "Filtration")
 
 Filter_data_pos <- Master_analysis_table %>% 
                      filter(Experiment == "Filtration",
                             L_hr_m2 > 0)
-# FR by site all data
+
 FR_TPM_box <- ggplot((Filter_data), aes(Site, L_hr_m2)) +
   geom_boxplot() +
   theme_classic() +
   labs(x = 'Site',
        y = 'Filtration Rate L/hr/m^2')
-
 plot(FR_TPM_box)
+```
 
-# FR by site (Positive values only) 
-(FR_TPM_box <- ggplot((Filter_data_pos), aes(Site, L_hr_m2)) +
+### FR by site (Positive values only) 
+```{r FR by site positive only}
+FR_TPM_box_pos <- ggplot((Filter_data_pos), aes(Site, L_hr_m2)) +
   geom_boxplot() +
   theme_classic() +
   labs(x = 'Site',
-       y = 'Filtration Rate L/hr/m^2'))
+       y = 'Filtration Rate L/hr/m^2')
+plot(FR_TPM_box_pos)
+```
 
-# FR vs TPM (Filtration Trials only)
-(FR_TPM_graph <- ggplot((Filter_data), aes(Avg_TPM, L_hr_m2, color = Site)) +
+### FR vs TPM (Filtration Trials only)
+```{r}
+FR_TPM_graph <- ggplot((Filter_data), aes(Avg_TPM, L_hr_m2, color = Site)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Total Particulate Matter (ug/L)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'All Filtration Trials') +
-  guides(fill = FALSE))
+  guides(fill = FALSE)
+plot(FR_TPM_graph)
+```
 
-# Fit line 
-(FR_TPM_lm_graph <- ggplot(Filter_data, aes(Avg_TPM, L_hr_m2)) +
+### Fit line 
+```{r}
+FR_TPM_lm_graph <- ggplot(Filter_data, aes(Avg_TPM, L_hr_m2)) +
   geom_point() +
   geom_smooth(method=lm, se=TRUE, level=0.95) +
   theme_classic() +
   labs(x = 'Total Particulate Matter (ug/L)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'All Filtration Trials with lm') +
-  guides(fill = FALSE))
+  guides(fill = FALSE)
+plot(FR_TPM_lm_graph)
+```
 
+### FR TPM Linear Model
+```{r}
 FR_TPM_lm <- lm(data = Filter_data, L_hr_m2 ~ Avg_TPM)
 summary(FR_TPM_lm)
+```
+### diagnostic plots
+```{r}
 par(mfrow=c(2,2))
 plot(FR_TPM_lm)
 
