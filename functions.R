@@ -644,7 +644,7 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
   
   filter_df_Ttest_logicVar = filter_df_Ttest %>% 
     inner_join(one_water_vel_summary %>% 
-                 select(Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae, Notes), 
+                 select(Date, Site, Experiment, Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae), 
                by = c("Date", "Site", "Experiment")
     )
   
