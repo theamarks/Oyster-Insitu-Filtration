@@ -248,7 +248,7 @@ for(file in 1 : length(all_files_Filtration))
 ```
 
 
-```{r TPM_Density, echo=FALSE, cache=TRUE}
+```{r TPM_Density, cache=TRUE}
 
 #######################################################################
 # Create directories for TPM & Density Data
@@ -381,12 +381,12 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
 # Create Master Analysis Table
 ##############################################################
 Master_analysis_table <- filtration_summary_table %>% 
-  inner_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
+  left_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
   # Exclude downstream average WQ values and unneeded single tail t-test results
   select(-c("estimate", "conf.high", "method", "alternative", "sample_type","Temp_C_Down", "SpCond_mS_cm_Down",
             "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down")) %>% 
   # Add in site simple variables for regression
-  mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
+   mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
          NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
          NPSM = ifelse(grepl("Shellmaker", filtration_summary_table$Site), T, F),
          MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F))
