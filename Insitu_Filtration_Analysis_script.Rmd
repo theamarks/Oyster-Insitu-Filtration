@@ -158,7 +158,7 @@ for(file in 1 : length(all_files))
   
   if(nrow(one_file) > 0)
   {  
-    one_filtration_summary = createFiltrationSummary(one_file, file_name)
+    one_filtration_summary = createFiltrationSummary(one_file, file_name, water_vel_summary)
     filtration_summary_table = rbind(filtration_summary_table, one_filtration_summary)
   }
   # save the filtration calculations
@@ -386,12 +386,14 @@ Master_analysis_table <- filtration_summary_table %>%
   select(-c("estimate", "conf.high", "method", "alternative", "sample_type","Temp_C_Down", "SpCond_mS_cm_Down",
             "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down")) %>% 
   # Add in site simple variables for regression
-  mutate(SR = ifelse(grepl("San Rafael", Master_analysis_table$Site), T, F),
-         NPD = ifelse(grepl("Deanza", Master_analysis_table$Site), T, F),
-         NPSM = ifelse(grepl("Shellmaker", Master_analysis_table$Site), T, F),
-         MB = ifelse(grepl("Morro Bay", Master_analysis_table$Site), T, F))
+  mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
+         NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
+         NPSM = ifelse(grepl("Shellmaker", filtration_summary_table$Site), T, F),
+         MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F))
 
-fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
+# fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
+fwrite(Master_analysis_table, file.path(filtration_summary_output_directory,
+                                        "Master_Filtration_analysis_table.csv"))
 ```
 
 ```{r Species_Density_Graphs, echo=FALSE, cache=TRUE}
