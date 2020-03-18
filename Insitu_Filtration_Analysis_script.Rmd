@@ -26,6 +26,7 @@ library(wesanderson) # color palatte
 library(ggpubr) 
 library(cowplot) # arragne multiple plots or objects in single plot
 library(broom) # tidy(t.test()) converts t-test output from console text to 1 x 8 tibble 
+library(olsrr)
 
 ######################################################################
 ## settings: 
@@ -73,7 +74,7 @@ Chl - Raw Data
 
 ### 
 
-```{r Std_names_plot_raw_chl, fig.height=5, fig.width=13.5, cache = TRUE}
+```{r Std_names_plot_raw_chl, fig.height=5, fig.width=13.5, cache=TRUE}
 
 ######################################################################
 ##Steps 1 to 4) read the files to standardize names and plot time series for sondes
@@ -105,7 +106,7 @@ Chl - Spikes Removed
 
 ### 
 
-```{r Manual_Sbs_Corr_Plot_Chl_FR_Clac, fig.height=5, fig.width=13.5, cache = TRUE}
+```{r Manual_Sbs_Corr_Plot_Chl_FR_Clac, fig.height=5, fig.width=13.5, cache=TRUE}
 ######################################################################
 ##Step 5 to 8)  Apply manual, Sbs corrections and calculate filtration
 ######################################################################
@@ -157,7 +158,7 @@ for(file in 1 : length(all_files))
   
   if(nrow(one_file) > 0)
   {  
-    one_filtration_summary = createFiltrationSummary(one_file, file_name)
+    one_filtration_summary = createFiltrationSummary(one_file, file_name, water_vel_summary)
     filtration_summary_table = rbind(filtration_summary_table, one_filtration_summary)
   }
   # save the filtration calculations
@@ -175,11 +176,11 @@ fwrite(filtration_summary_table, file.path(filtration_summary_output_directory,
 
 ```
 
-SBS - Correction Calc & Uncertainty
+SBS - Correction Calc
 =====================================
 
 ###
-```{r Sbs_Correction_Uncertainty, fig.height=5, fig.width=4, cache = TRUE}
+```{r Sbs_Correction_Uncertainty, fig.height=5, fig.width=4, cache=TRUE}
 ######################################################################
 # Create SBS Stats - Uncertainty Table & Graph SBS Density Plots
 ######################################################################
@@ -219,7 +220,7 @@ Chl Drawdown - Velocity paired
 
 ###
 
-```{r Plot_V_paired_Chl_diff, fig.height=5, fig.width=10, cache = TRUE}
+```{r Plot_V_paired_Chl_diff, fig.height=5, fig.width=10, cache=TRUE}
 ######################################################################
 ## Graph Filtration Time Series After Veloctiy Time Adjustment (AM trying to copy for loop)
 ######################################################################
@@ -247,7 +248,7 @@ for(file in 1 : length(all_files_Filtration))
 ```
 
 
-```{r TPM_Density, eval=FALSE, include=FALSE, cache = TRUE}
+```{r TPM_Density, echo=FALSE, cache=TRUE}
 
 #######################################################################
 # Create directories for TPM & Density Data
@@ -292,17 +293,20 @@ Avg_TPM_summary_table <- TPM_summary_table %>%
 fwrite(TPM_summary_table, file.path(TPM_output_directory, "TPM_summary_table.csv"))
 fwrite(Avg_TPM_summary_table, file.path(TPM_output_directory, "Avg_TPM_summary_table.csv"))
 
+```
+
+```{r Total_bivlave_density, cache=TRUE}
 #####################################################################
 # Total Bivalve Density
 #######################################################################
 
+# San Rafael bivalve density based on data from Chela Zabin (November 2017 survey)
 SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
 
-# Morro Bay total bivalve density
+# Morro Bay total bivalve density - data from MBOC staff 
 MB_gigas_m2 = 600
 
-# Newport Deanza total bivalve Density
-
+# Newport Deanza total bivalve Density - Data from Zacherl lab surveys 
 NP_excavation_quad_area = 0.0625
 
 NPD_may18_bivalve_den <- NP_density_data %>% 
@@ -370,18 +374,29 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
                                      NPSM_may18_species_den,
                                      SR_nov18_species_den,
                                      MB_species_den, .id = NULL)
+```
 
+```{r Create_Master_Analysis_Table, cache=TRUE}
 ##############################################################
 # Create Master Analysis Table
 ##############################################################
 Master_analysis_table <- filtration_summary_table %>% 
   inner_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
-  select(1:11, 17:23, 25:28) # Exclude upstream average WQ values 
+  # Exclude downstream average WQ values and unneeded single tail t-test results
+  select(-c("estimate", "conf.high", "method", "alternative", "sample_type","Temp_C_Down", "SpCond_mS_cm_Down",
+            "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down")) %>% 
+  # Add in site simple variables for regression
+  mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
+         NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
+         NPSM = ifelse(grepl("Shellmaker", filtration_summary_table$Site), T, F),
+         MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F))
 
-fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
+# fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
+fwrite(Master_analysis_table, file.path(filtration_summary_output_directory,
+                                        "Master_Filtration_analysis_table.csv"))
 ```
 
-```{r eval=FALSE, include=FALSE}
+```{r Species_Density_Graphs, echo=FALSE, cache=TRUE}
 # Graph Density by Species, exclude absent species
 
 ############## Newport Deanza ###################

@@ -518,8 +518,7 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
   
   final_results = aFRVariableData %>%
     dplyr::left_join(vel_summary_df , by = c("Date", "Site", "Experiment")) %>%
-    dplyr::mutate(t_travel_s = round(d_bw_sondes_m/avg_m_s, 0),
-                  t_travel_mm_ss = hms(t_travel_s))
+    dplyr::mutate(t_travel_s = round(d_bw_sondes_m/avg_m_s, 0))
   
   return(final_results)
   
@@ -556,7 +555,9 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
 {
   one_water_vel_summary = aWaterVelSummary %>%
     dplyr::filter(Date %in% unique(aTimeSeriesFile$Date)) %>%
-    dplyr::select(Date, Site, Experiment, avg_depth_cm, d_bw_sondes_m, avg_m_hr)
+    # negative select unused data and dumby variables (they won't propigate into summary properly)
+    dplyr::select(-c("reliable_data", "data_possible_influence", "Wind","G_upstream",
+                     "Daylight","Sonde_fell","Boat_wake","Algae","Notes"))
   
   up_sonde_df = aTimeSeriesFile %>%
     dplyr::filter(Position == "Up" & !Experiment %in% c("sbs_before", "sbs_after"))%>%
@@ -591,6 +592,7 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
     dplyr::inner_join(one_water_vel_summary, by = c("Date", "Site", "Experiment")) %>%
     
     dplyr::mutate(pcnt_Chl_rmvd = ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up) * 100,
+                  Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
                   L_hr_m2 = (((avg_depth_cm/100) * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up))
   
   return(combined_water_quality_df)
@@ -600,14 +602,14 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
 ######################################################################################
 ## This function summarizes the filtration
 ######################################################################################
-createFiltrationSummary = function(aFiltrationFile, aFileName)
+createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_summary)
 {
   data_only_numeric = dplyr::select_if(aFiltrationFile, is.numeric)
   
   filtration_sub_df =  aFiltrationFile %>% 
     dplyr::select(c(names(data_only_numeric), "Experiment", "Date", "Site"))
   
-  up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_ug_L_Up, filtration_sub_df$Chl_ug_L_Down, paired = T))
+  up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_diff, alternative = "greater"))
   
   filtration_sub_df_sum = filtration_sub_df %>%
     dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
@@ -619,7 +621,6 @@ createFiltrationSummary = function(aFiltrationFile, aFileName)
                      Sal_ppt_Up = mean(Sal_ppt_Up),
                      Turbidity_NTU_Up = mean(Turbidity_NTU_Up),
                      Chl_ug_L_Up = mean(Chl_ug_L_Up),
-                    # Chl_ug_L_Up_SD = sd(Chl_ug_L_Up), # Not sure SD is appropriate
                      Temp_C_Down = mean(Temp_C_Down),
                      SpCond_mS_cm_Down = mean(SpCond_mS_cm_Down),
                      Cond_mS_cm_Down = mean(Cond_mS_cm_Down),
@@ -627,21 +628,28 @@ createFiltrationSummary = function(aFiltrationFile, aFileName)
                      Sal_ppt_Down = mean(Sal_ppt_Down),
                      Turbidity_NTU_Down = mean(Turbidity_NTU_Down),
                      Chl_ug_L_Down = mean(Chl_ug_L_Down),
-                    # Chl_ug_L_Down_SD = sd(Chl_ug_L_Down), # snot sure SD is appropriate
                      avg_depth_cm = mean(avg_depth_cm),
                      d_bw_sondes_m = mean(d_bw_sondes_m),
                      avg_m_hr = mean(avg_m_hr),
+                     Mean_Chl_diff = mean(Chl_diff),
+                     StDev_Chl_diff = sd(Chl_diff),
+                     StEr_Chl_diff = sd(Chl_diff)/sqrt(length(Chl_diff)),
                      pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd),
-                     L_hr_m2 = mean(L_hr_m2)
-                     ) %>%
+                     L_hr_m2 = mean(L_hr_m2)) %>%
     data.frame() %>%
-   # dplyr::mutate_if(is.numeric, round, 3) %>% # Tried to match excel numbers
     dplyr::mutate(File_Name = aFileName) %>%
     dplyr::select(File_Name, Experiment, everything())
   
-  filtration_df_Ttest = cbind(filtration_sub_df_sum, up_down_PairedTtest)
+  filter_df_Ttest = cbind(filtration_sub_df_sum, up_down_PairedTtest)
   
-  return(filtration_df_Ttest)
+  # Add in simple logic variables from field notes
+  filter_df_Ttest_logicVar = filter_df_Ttest %>% 
+    inner_join(one_water_vel_summary %>% 
+                 select(Date, Site, Experiment, Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae), 
+               by = c("Date", "Site", "Experiment")
+    )
+  
+  return(filter_df_Ttest_logicVar)
 }
 
 ######################################################################################
@@ -893,7 +901,8 @@ createWQgraphsSBS = function(aSbsCorrMatchedFile, aFileName)
     theme(plot.subtitle = element_text(hjust = 0.5)) + # Center title
     labs(title = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>% str_replace(".csv", ""),
                         ' - ', "Side by Side"),
-         subtitle = "Upstream")
+         subtitle = "Upstream",
+         y = expression(paste("Chlorophyll ", alpha, " (", mu, "g/L) ")))
   
   # Turbidity Up 
   Turb_plot_Up <- ggplot(data = aSbsCorrMatchedFile, aes(x = Time, y = Turbidity_NTU_Up)) +
