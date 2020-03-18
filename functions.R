@@ -893,7 +893,8 @@ createWQgraphsSBS = function(aSbsCorrMatchedFile, aFileName)
     theme(plot.subtitle = element_text(hjust = 0.5)) + # Center title
     labs(title = paste0(aFileName %>% str_replace("Insitu_Filter_", "") %>% str_replace(".csv", ""),
                         ' - ', "Side by Side"),
-         subtitle = "Upstream")
+         subtitle = "Upstream",
+         y = expression(paste("Chlorophyll ", alpha, " (", mu, "g/L) "))))
   
   # Turbidity Up 
   Turb_plot_Up <- ggplot(data = aSbsCorrMatchedFile, aes(x = Time, y = Turbidity_NTU_Up)) +
