@@ -602,7 +602,7 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
 ######################################################################################
 ## This function summarizes the filtration
 ######################################################################################
-createFiltrationSummary = function(aFiltrationFile, aFileName)
+createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_summary)
 {
   data_only_numeric = dplyr::select_if(aFiltrationFile, is.numeric)
   
@@ -640,9 +640,15 @@ createFiltrationSummary = function(aFiltrationFile, aFileName)
     dplyr::mutate(File_Name = aFileName) %>%
     dplyr::select(File_Name, Experiment, everything())
   
-  filtration_df_Ttest = cbind(filtration_sub_df_sum, up_down_PairedTtest)
+  filter_df_Ttest = cbind(filtration_sub_df_sum, up_down_PairedTtest)
   
-  return(filtration_df_Ttest)
+  filter_df_Ttest_logicVar = filter_df_Ttest %>% 
+    inner_join(one_water_vel_summary %>% 
+                 select(Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae, Notes), 
+               by = c("Date", "Site", "Experiment")
+    )
+  
+  return(filter_df_Ttest_logicVar)
 }
 
 ######################################################################################
