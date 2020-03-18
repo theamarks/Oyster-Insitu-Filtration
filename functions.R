@@ -642,6 +642,7 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
   
   filter_df_Ttest = cbind(filtration_sub_df_sum, up_down_PairedTtest)
   
+  # Add in simple logic variables from field notes
   filter_df_Ttest_logicVar = filter_df_Ttest %>% 
     inner_join(one_water_vel_summary %>% 
                  select(Date, Site, Experiment, Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae), 
