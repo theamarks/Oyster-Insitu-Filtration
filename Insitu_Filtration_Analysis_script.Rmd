@@ -383,7 +383,8 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
 Master_analysis_table <- filtration_summary_table %>% 
   inner_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
   # Exclude downstream average WQ values and unneeded single tail t-test results
-  select(-ends_with("Down"), -c("estimate", "conf.high", "method", "alternative", "sample_type")) %>% 
+  select(-c("estimate", "conf.high", "method", "alternative", "sample_type","Temp_C_Down", "SpCond_mS_cm_Down",
+            "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down")) %>% 
   # Add in site simple variables for regression
   mutate(SR = ifelse(grepl("San Rafael", Master_analysis_table$Site), T, F),
          NPD = ifelse(grepl("Deanza", Master_analysis_table$Site), T, F),
@@ -393,7 +394,7 @@ Master_analysis_table <- filtration_summary_table %>%
 fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
 ```
 
-```{r Species_Density_Graphs, eval=FALSE, include=FALSE, cache=TRUE}
+```{r Species_Density_Graphs, echo=FALSE, cache=TRUE}
 # Graph Density by Species, exclude absent species
 
 ############## Newport Deanza ###################
