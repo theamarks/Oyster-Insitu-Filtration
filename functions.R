@@ -555,7 +555,9 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
 {
   one_water_vel_summary = aWaterVelSummary %>%
     dplyr::filter(Date %in% unique(aTimeSeriesFile$Date)) %>%
-    dplyr::!select("reliable_data", "data_possible_influence", "t_travel_mm_ss")
+    # negative select unused data and dumby variables (they won't propigate into summary properly)
+    dplyr::select(-c("reliable_data", "data_possible_influence", "Wind","G_upstream",
+                     "Daylight","Sonde_fell","Boat_wake","Algae","Notes"))
   
   up_sonde_df = aTimeSeriesFile %>%
     dplyr::filter(Position == "Up" & !Experiment %in% c("sbs_before", "sbs_after"))%>%
