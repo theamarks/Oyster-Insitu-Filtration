@@ -26,6 +26,7 @@ library(wesanderson) # color palatte
 library(ggpubr) 
 library(cowplot) # arragne multiple plots or objects in single plot
 library(broom) # tidy(t.test()) converts t-test output from console text to 1 x 8 tibble 
+library(olsrr)
 
 ######################################################################
 ## settings: 
@@ -175,7 +176,7 @@ fwrite(filtration_summary_table, file.path(filtration_summary_output_directory,
 
 ```
 
-SBS - Correction Calc & Uncertainty
+SBS - Correction Calc
 =====================================
 
 ###
@@ -292,6 +293,9 @@ Avg_TPM_summary_table <- TPM_summary_table %>%
 fwrite(TPM_summary_table, file.path(TPM_output_directory, "TPM_summary_table.csv"))
 fwrite(Avg_TPM_summary_table, file.path(TPM_output_directory, "Avg_TPM_summary_table.csv"))
 
+```
+
+```{r Total_bivlave_density, cache=TRUE}
 #####################################################################
 # Total Bivalve Density
 #######################################################################
@@ -370,18 +374,26 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
                                      NPSM_may18_species_den,
                                      SR_nov18_species_den,
                                      MB_species_den, .id = NULL)
+```
 
+```{r Create_Master_Analysis_Table, cache=TRUE}
 ##############################################################
 # Create Master Analysis Table
 ##############################################################
 Master_analysis_table <- filtration_summary_table %>% 
   inner_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
-  select(-ends_with("Down"), -c("estimate", "conf.high", "method", "alternative")) # Exclude downstream average WQ values and unneeded single tail t-test results
+  # Exclude downstream average WQ values and unneeded single tail t-test results
+  select(-ends_with("Down"), -c("estimate", "conf.high", "method", "alternative", "sample_type")) %>% 
+  # Add in site simple variables for regression
+  mutate(SR = ifelse(grepl("San Rafael", Master_analysis_table$Site), T, F),
+         NPD = ifelse(grepl("Deanza", Master_analysis_table$Site), T, F),
+         NPSM = ifelse(grepl("Shellmaker", Master_analysis_table$Site), T, F),
+         MB = ifelse(grepl("Morro Bay", Master_analysis_table$Site), T, F))
 
 fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
 ```
 
-```{r eval=FALSE, include=FALSE}
+```{r Species_Density_Graphs, eval=FALSE, include=FALSE, cache=TRUE}
 # Graph Density by Species, exclude absent species
 
 ############## Newport Deanza ###################
