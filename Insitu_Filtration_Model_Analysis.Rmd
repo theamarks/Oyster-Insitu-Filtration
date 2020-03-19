@@ -38,6 +38,10 @@ Chlorphyll % Removed  - Linear Regression
 =====================================
 ### LM - excluding San Rafael logic variable
 ```{r Chl_rmd_LM_No_SR output, fig.height=15, fig.width=6, cache=TRUE}
+# Remove San Diego filtration trial - not applicable to this analysis - different experimental set up
+Master_analysis_table <- Master_analysis_table %>% 
+  filter(!Site %in% c("San Diego"))
+
 Chl_rmd_LM_No_SR <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
                          # site logic variables 
                          Master_analysis_table$NPD + Master_analysis_table$NPSM + Master_analysis_table$MB + 
