@@ -385,6 +385,8 @@ Master_analysis_table <- filtration_summary_table %>%
   # Exclude downstream average WQ values and unneeded single tail t-test results
   select(-c("estimate", "conf.high", "method", "alternative", "sample_type","Temp_C_Down", "SpCond_mS_cm_Down",
             "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down")) %>% 
+  # remove San Diego from analysis table - set up not comparable
+  filter(!Site %in% c("San Diego")) %>% 
   # Add in site simple variables for regression
   mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
          NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
