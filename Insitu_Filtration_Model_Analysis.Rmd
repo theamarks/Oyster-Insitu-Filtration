@@ -51,7 +51,7 @@ Site_colors <- c("San Rafael" = "#440154FF",
 
 ```
 
-Chlorphyll % Removed  - Linear Regression
+Chl % Removed - LM
 =====================================
 ### LM - excluding San Rafael logic variable
 ```{r Chl_rmd_LM_No_SR output, fig.height=15, fig.width=6, cache=TRUE}
@@ -72,7 +72,7 @@ Chl_rmd_LM_No_SR <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
 summary(Chl_rmd_LM_No_SR)
 ```
 
-L/hr/m^2 X TPM (ug/L)
+FR X TPM
 =====================================
 
 ### FR by site (all data)
@@ -107,6 +107,7 @@ plot(FR_TPM_box_pos)
 FR_TPM_graph <- ggplot((Filter_data), aes(Avg_TPM, L_hr_m2 )) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey30') +
   geom_point(aes(color = Site)) +
+  geom_abline(aes(intercept=0, slope=1)) +
   scale_color_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Total Particulate Matter (ug/L)',
@@ -135,10 +136,10 @@ plot(FR_TPM_lm)
 
 ```
 
-L/hr/m^2 X OC 
+FR X OC 
 =====================================
 
-### FR predicted by OC
+### FR by OC
 ```{r FR vs OC, cache=TRUE}
 FR_OC_graph <- ggplot(Filter_data, aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey30') +
@@ -428,67 +429,111 @@ plot(FR_Turb_lm)
 
 TPM & OC
 =====================================
+
+### TPM by OC
 ```{r TPM vs OC, echo=FALSE}
-##TPM vs OC
-TPM_OC_base <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio, color = Site, label = Date))
-
-TPM_OC_base + geom_point(size=4) + 
-  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC") + 
+TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) + 
+  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM x OC") + 
   theme_classic() +
-  geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
-
-# Exclude low deanza value
-exclude_low_deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(!(Site == "Deanza") | !(Date == "4/18/19"))), aes(x = Avg_TPM, y = Avg_OC_Ratio, color = Site, label = Date))
-
-exclude_low_deanza + geom_point(size=4) + 
-  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC", subtitle = "Excluding NPD 4/18/19") + 
-  theme_classic() +
-  geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
+  #geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+plot(TPM_OC)
 ```
 
+### Exclude low deanza value
+```{r}
+TPM_OC_no_ND_low <- ggplot(data = (Avg_TPM_summary_table %>% filter(!(Site == "Deanza") | !(Date == "4/18/19"))),
+                             aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) + 
+  scale_color_manual(values = Site_colors) + 
+  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC", 
+       subtitle = "Excluding NPD 4/18/19") + 
+  theme_classic() +
+  #geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+plot(TPM_OC_no_ND_low)
+```
+
+### Individual Sites TPM vs OC
 ```{r TPM vs OC - By Site, echo=FALSE}
-## Plot individual Sites TPM vs OC
-Avg_TPM_summary_table %>% 
-  ggplot(aes(x = Avg_TPM, y = Avg_OC_Ratio, group = Site, color = Site)) +
-  geom_point() +
+OC_TPM_by_Site <- Avg_TPM_summary_table %>% 
+  ggplot(aes(x = Avg_TPM, y = Avg_OC_Ratio, group = Site)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) + 
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
   theme_classic() +
   labs(x = "Total Particulate Matter",
        y = 'Average Organic Content Ratio',
-       title = 'OC predicted by TPM') +
-  facet_wrap(~ Site) 
-
-############ Deanza #############
-Deanza_only <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")), aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date))
-
-Deanza_only + geom_point(size=4, color = '#F8766D') + 
-  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC Deanza") + 
-  theme_classic() +
-  geom_text(aes(label=Date), nudge_x = 0.0003, nudge_y = 0, check_overlap = T)
-
-############ Shellmaker ##########
-Shellmaker_only <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Shellmaker")), aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date))
-
-Shellmaker_only + geom_point(size=4, color = '#C77CFF') + 
-  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC Shellmaker") + 
-  theme_classic() +
-  geom_text(aes(label=Date), nudge_x = 0.0002, nudge_y = 0, check_overlap = T)
-
-############ San Rafael ##########
-SR_only <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "San Rafael")), aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date))
-
-SR_only + geom_point(size=4, color = '#00BFC4') + 
-  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC San Rafael") + 
-  theme_classic() +
-  geom_text(aes(label=Date), nudge_x = 0.005, nudge_y = 0, check_overlap = T)
-
-############ Morro Bay ##########
-MB_only <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay")), aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date))
-
-MB_only + geom_point(size=4, color = '#7CAE00') + 
-  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC Morro Bay") + 
-  theme_classic() +
-  geom_text(aes(label=Date), nudge_x = 0.0005, nudge_y = 0, check_overlap = T)
+       title = 'OC predicted by TPM (g/L)') +
+  facet_wrap(~ Site) +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+plot(OC_TPM_by_Site)
 ```
+
+### Deanza
+```{r}
+TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")),
+                        aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) + 
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM X OC (Deanza)") + 
+  theme_classic()
+plot(TPM_OC_Deanza)
+```
+
+### Shellmaker
+```{r}
+TP_OC_NPSM <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Shellmaker")), 
+                     aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) + 
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM X OC (Shellmaker)") + 
+  theme_classic()
+plot(TP_OC_NPSM)
+```
+
+### San Rafael
+```{r}
+TP_OC_SR <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "San Rafael")),
+                   aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) + 
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM X OC (San Rafael)") + 
+  theme_classic()
+plot(TP_OC_SR)
+```
+
+### Morro Bay
+```{r}
+TP_OC_MB <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay")), 
+                   aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) + 
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM X OC (Morro Bay)") + 
+  theme_classic()
+plot(TP_OC_MB)
+```
+
 DTW - Shell length
 =====================================
 ```{r Oly DTW - Shell length analysis, echo=FALSE}
