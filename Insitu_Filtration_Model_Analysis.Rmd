@@ -140,28 +140,22 @@ L/hr/m^2 X OC
 
 ### FR predicted by OC
 ```{r FR vs OC, cache=TRUE}
-FR_OC_graph <- ggplot(Filter_data, aes(Avg_OC_Ratio, L_hr_m2, color = Site)) +
-  geom_point() +
+FR_OC_graph <- ggplot(Filter_data, aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = 'Clearence Rate (L/hr/m^2)',
        title = 'All Filtration Trials') +
   guides(fill = FALSE) +
-  geom_smooth(method=lm, se=T, level=0.95, color = "black")
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
 plot(FR_OC_graph)
-```
-
-### FR by OC bestfit
-```{r eval=FALSE, include=FALSE, cache=T}
-FR_OC_graph_bestfit <- ggplot(Filter_data, aes(Avg_OC_Ratio, L_hr_m2)) +
-  geom_point() +
-  theme_classic() +
-  labs(x = 'Organic Content of Seston (fraction)',
-       y = 'Clearence Rate (L/hr/m^2)',
-       title = 'All Filtration Trials with best fit line') +
-  guides(fill = FALSE) +
-  geom_smooth(method=lm, se=TRUE, level=0.95)
-plot(FR_OC_graph_bestfit)
 ```
 
 ### FR by OC Linear Model
@@ -178,16 +172,22 @@ plot(FR_OC_lm)
 
 ### Deanza FR by OC
 ```{r}
-FR_OC_NPD_graph <- ggplot(Filter_data %>% 
-                             filter(Site == "Deanza"),
-                           aes(Avg_OC_Ratio, L_hr_m2)) +
-  geom_point() +
+FR_OC_NPD_graph <- ggplot(Filter_data %>% filter(Site == "Deanza"),
+                          aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors, guide=FALSE) +  
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Newport Deanza Filtration Trials with best fit line') +
+       title = 'Newport Deanza Filtration Trials (Linear Model)') +
   guides(fill = FALSE) +
-  geom_smooth(method=lm, se=TRUE, level=0.95)
+    # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
 plot(FR_OC_NPD_graph)
 ```
 
@@ -205,16 +205,22 @@ plot(FR_OC_NPD_lm)
 
 ### Morro Bay FR by OC
 ```{r}
-FR_OC_MB_graph <- ggplot(Filter_data %>% 
-                             filter(Site == "Morro Bay"),
+FR_OC_MB_graph <- ggplot(Filter_data %>%filter(Site == "Morro Bay"),
                            aes(Avg_OC_Ratio, L_hr_m2)) +
-  geom_point() +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors, guide=FALSE) +  
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Morro Bay Filtration Trials with lm') +
+       title = 'Morro Bay Filtration Trials (Linear Model)') +
   guides(fill = FALSE) +
-  geom_smooth(method=lm, se=TRUE, level=0.95)
+    # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
 plot(FR_OC_MB_graph)
 ```
 
@@ -233,16 +239,22 @@ plot(FR_OC_NPD_lm)
 ### San Rafael FR by OC
 ```{r}
 # San Rafael only
-FR_OC_SR_graph <- ggplot(Master_analysis_table %>% 
-                             filter(Site == "San Rafael"),
+FR_OC_SR_graph <- ggplot(Master_analysis_table %>% filter(Site == "San Rafael"),
                            aes(Avg_OC_Ratio, L_hr_m2)) +
-  geom_point() +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors, guide=FALSE) +  
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = 'Clearence Rate (L/hr/m^2)',
-       title = 'San Rafael Filtration Trials with lm') +
+       title = 'San Rafael Filtration Trials (Linear Model)') +
   guides(fill = FALSE) +
-  geom_smooth(method=lm, se=TRUE, level=0.95)
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
 plot(FR_OC_SR_graph)
 ```
 
@@ -260,16 +272,21 @@ plot(FR_OC_SR_lm)
 
 ### Shellmaker only
 ```{r}
-FR_OC_NPSM_graph <- ggplot(Filter_data %>% 
-                             filter(Site == "Shellmaker"),
+FR_OC_NPSM_graph <- ggplot(Filter_data %>% filter(Site == "Shellmaker"),
                            aes(Avg_OC_Ratio, L_hr_m2)) +
-  geom_point() +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors, guide=FALSE) +  
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Shellmaker Filtration Trials with lm') +
+       title = 'Shellmaker Filtration Trials (Linear Model)') +
   guides(fill = FALSE) +
-  geom_smooth(method=lm, se=TRUE, level=0.95)
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
 plot(FR_OC_NPSM_graph)
 ```
 
