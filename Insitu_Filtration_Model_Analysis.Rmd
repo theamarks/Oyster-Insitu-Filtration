@@ -22,6 +22,8 @@ library(viridisLite)
 library(forcats)
 library(gridExtra)
 library(ggpmisc) # package for adding line equation and R^2 to plots
+library(viridis) # Color palette for Restoration Area - Options: magma , inferno, plasma, viridis, cividis
+library(scales)
 
 
 Master_analysis_table <- fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
@@ -29,8 +31,23 @@ Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_s
 Density_directory = "./Data/bivalve_density_community"
 NPD_density = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
 
+# Remove San Diego filtration trial - not applicable to this analysis - different experimental set up
+Master_analysis_table <- Master_analysis_table %>% 
+  filter(!Site %in% c("San Diego"))
+
 # Basic linear model formula to display on plots
 x_y_formula <- y ~ x 
+
+# Order Sites by Latitude
+site_by_lat <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
+# transform Site variable to factor and arange by Latitude
+Master_analysis_table <- arrange(transform(Master_analysis_table, Site = factor(Site,levels = site_by_lat)), Site)
+# Assign colors to each Site
+viridis(4)
+Site_colors <- c("San Rafael" = "#440154FF",
+                 "Morro Bay" = "#31688EFF",
+                 "Shellmaker" = "#35B779FF",
+                 "Deanza" = "#FDE725FF")
 
 ```
 
@@ -38,9 +55,6 @@ Chlorphyll % Removed  - Linear Regression
 =====================================
 ### LM - excluding San Rafael logic variable
 ```{r Chl_rmd_LM_No_SR output, fig.height=15, fig.width=6, cache=TRUE}
-# Remove San Diego filtration trial - not applicable to this analysis - different experimental set up
-Master_analysis_table <- Master_analysis_table %>% 
-  filter(!Site %in% c("San Diego"))
 
 Chl_rmd_LM_No_SR <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
                          # site logic variables 
@@ -71,7 +85,7 @@ Filter_data_pos <- Master_analysis_table %>%
                             L_hr_m2 > 0)
 
 FR_TPM_box <- ggplot((Filter_data), aes(Site, L_hr_m2)) +
-  geom_boxplot() +
+  geom_boxplot(color = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
        y = 'Filtration Rate L/hr/m^2')
@@ -81,7 +95,7 @@ plot(FR_TPM_box)
 ### FR by site (Positive values only) 
 ```{r FR by site positive only, cache=TRUE}
 FR_TPM_box_pos <- ggplot((Filter_data_pos), aes(Site, L_hr_m2)) +
-  geom_boxplot() +
+  geom_boxplot(color = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
        y = 'Filtration Rate L/hr/m^2')
@@ -90,20 +104,10 @@ plot(FR_TPM_box_pos)
 
 ### FR vs TPM (Filtration Trials only)
 ```{r, cache=TRUE}
-site_by_lat <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
-Filter_data <- arrange(transform(Filter_data, Site = factor(Site,levels = site_by_lat)), Site)
-
-Site_colors <- c("San Rafael" = ,
-                 "Morro Bay" =,
-                 "Shellmaker" = ,
-                 "Deanza" = )
-#Oy <- arrange(transform(Oy, State = factor(State,levels = order_by_state)), State)
-
-Site_colors <- 
-
 FR_TPM_graph <- ggplot((Filter_data), aes(Avg_TPM, L_hr_m2 )) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey30') +
   geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Total Particulate Matter (ug/L)',
        y = 'Clearence Rate (L/hr/m^2)',
