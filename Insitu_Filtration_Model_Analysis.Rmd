@@ -307,93 +307,121 @@ L/hr/m^2 X WQ
 
 ### Temperature
 ```{r FR vs Water Quality, echo=FALSE}
-FR_Temp <- ggplot(Filter_data, aes(Temp_C_Up, L_hr_m2, color = Site)) +
-  geom_point() +
+FR_Temp <- ggplot(Filter_data, aes(Temp_C_Up, L_hr_m2)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +  
   theme_classic() +
   labs(x = 'Temperature Upstream (C)',
        y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Filtration predicted by Temprature - All Sites')
+       title = 'Filtration by Temprature (Linear Model)') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
 plot(FR_Temp)
+```
 
-(FR_Temp_bestfit <- ggplot(Filter_data, aes(Temp_C_Up, L_hr_m2)) +
-  geom_point() +
-  theme_classic() +
-  labs(x = 'Temperature Upstream (C)',
-       y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Filtration predicted by Temprature - All Sites') +
-  geom_smooth(method=lm, se=TRUE, level=0.95))
-
+### Fr by Temp Linear Model
+```{r}
 FR_temp_lm <- lm(data = Filter_data, L_hr_m2 ~ Temp_C_Up)
 summary(FR_temp_lm)
+```
+
+### Diagnostic Plots
+```{r}
 par(mfrow=c(2,2))
 plot(FR_temp_lm)
 ```
 
+### Salinity
 ```{r echo=FALSE}
-## Salinity
-(FR_Sal <- ggplot(Filter_data, aes(Sal_ppt_Up, L_hr_m2, color = Site)) +
-  geom_point() +
-  theme_classic() +
-  labs(x = 'Salinity Upstream (ppt)',
-       y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Filtration predicted by Salinity - All Sites')) 
-  
-(FR_Sal_bestfit <- ggplot(Filter_data, aes(Sal_ppt_Up, L_hr_m2)) +
-  geom_point() +
-  theme_classic() +
-  labs(x = 'Salinity Upstream (ppt)',
-       y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Filtration predicted by Salinity - All Sites') +
-  geom_smooth(method=lm, se=TRUE, level=0.95))
 
+FR_Sal <- ggplot(Filter_data, aes(Sal_ppt_Up, L_hr_m2)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +  
+  theme_classic() +
+  labs(x = 'Salinity Upstream (ppt)',
+       y = 'Clearence Rate (L/hr/m^2)',
+       title = 'Filtration by Salinity (Linear Model)') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+plot(FR_Sal)
+```
+
+### FR by Salinity Linear Model
+```{r}
 FR_Sal_lm <- lm(data = Filter_data, L_hr_m2 ~ Sal_ppt_Up)
 summary(FR_Sal_lm)
+```
+
+### Diagnostic Plots
+```{r}
 par(mfrow=c(2,2))
 plot(FR_Sal_lm)
 ```
 
+### Chlorophyll 
 ```{r echo=FALSE}
-## Chlorophyll 
-(FR_Chl <- ggplot(Filter_data, aes(Chl_ug_L_Up, L_hr_m2, color = Site)) +
-  geom_point() +
+FR_Chl <- ggplot(Filter_data, aes(Chl_ug_L_Up, L_hr_m2)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +  
   theme_classic() +
   labs(x = 'Chlorophyll Upstream (ug/L)',
        y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Filtration predicted by Chlrophyll - All Sites')) 
-  
-(FR_Chl_bestfit <- ggplot(Filter_data, aes(Chl_ug_L_Up, L_hr_m2)) +
-  geom_point() +
-  theme_classic() +
-  labs(x = 'Chlorophyll Upstream (ug/L)',
-       y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Filtration predicted by Chlorophyll - All Sites') +
-  geom_smooth(method=lm, se=TRUE, level=0.95))
+       title = 'Filtration predicted by Chlrophyll - All Sites') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+plot(FR_Chl)
+```
 
+### FR by Chl Linear Model
+```{r}
 FR_Chl_lm <- lm(data = Filter_data, L_hr_m2 ~ Chl_ug_L_Up)
 summary(FR_Chl_lm)
+```
+
+### Diagnostic Plots
+```{r}
 par(mfrow=c(2,2))
 plot(FR_Chl_lm)
 ```
 
+### Turbidity
 ```{r echo=FALSE}
-## Turbidity
-(FR_Turbidity <- ggplot(Filter_data, aes(Turbidity_NTU_Up, L_hr_m2, color = Site)) +
-  geom_point() +
+FR_Turbidity <- ggplot(Filter_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey30') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) + 
   theme_classic() +
   labs(x = 'Turbidity Upstream (NTU)',
        y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Filtration predicted by Turbidity - All Sites')) 
-  
-(FR_Turbidity_bestfit <- ggplot(Filter_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
-  geom_point() +
-  theme_classic() +
-  labs(x = 'Tubidity Upstream (NTU)',
-       y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Filtration predicted by Turbidity - All Sites') +
-  geom_smooth(method=lm, se=TRUE, level=0.95))
+       title = 'Filtration predicted by Turbidity (All Sites)') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+plot(FR_Turbidity)
+```
 
+### FR by Turbidity Linear Model
+```{r}
 FR_Turb_lm <- lm(data = Filter_data, L_hr_m2 ~ Turbidity_NTU_Up)
 summary(FR_Turb_lm)
+```
+
+### Diagnostic Plots
+```{r}
 par(mfrow=c(2,2))
 plot(FR_Turb_lm)
 ```
