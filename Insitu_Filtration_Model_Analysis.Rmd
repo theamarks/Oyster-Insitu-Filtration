@@ -54,7 +54,7 @@ Site_colors <- c("San Rafael" = "#440154FF",
 Chl % Removed - LM
 =====================================
 ### LM - excluding San Rafael logic variable
-```{r Chl_rmd_LM_No_SR output, fig.height=15, fig.width=6, cache=TRUE}
+```{r LM_Prct_Chl_All, fig.height=15, fig.width=6, cache=TRUE}
 
 LM_PrctChl_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
                          # site logic variables - SR not included - would break model
@@ -75,7 +75,7 @@ summary(LM_PrctChl_All)
 ```
 
 ### LM - Filtraiton Trials Only
-```{r}
+```{r LM_PrctChl_Filter, fig.height=15, fig.width=6, cache=TRUE}
 Filtration_only_Analysis <- Master_analysis_table %>% 
   filter(Experiment %in% c("Filtration")) # Filtration trials only - exclude Negative controls
 
@@ -96,7 +96,7 @@ summary(LM_PrctChl_Filter)
 ```
 
 ### LM - Filtration Trials w/ sig Filtration
-```{r}
+```{r LM_PrctChl_sigFilter, fig.height=15, fig.width=6, cache=TRUE}
 # Filtration Trials with significant Chl_diff
 FilterWithFiltration <- Master_analysis_table %>% 
   filter(p.value <= 0.05)
