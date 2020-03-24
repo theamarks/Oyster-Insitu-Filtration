@@ -307,7 +307,7 @@ SR_density_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster
 NP_density_data = fread(file.path(NP_Density_directory, "Insitu_filter_NP_may18_survey_counts.csv"))
 
 # San Rafael bivalve density based on data from Chela Zabin (November 2017 survey)
-SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
+#SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
 
 # Morro Bay total bivalve density - data from MBOC staff 
 MB_gigas_m2 = 600
@@ -365,7 +365,8 @@ NPD_may18_species_den <- NP_density_data %>%
          "Geukensia_demissa", "Adula_diegensis", "Argopecten_ventricosa",
          key = 'Species',
          value = 'n_individuals') %>% 
-  group_by(Site, Species) %>% 
+  mutate(Date = mdy(Date)) %>% 
+  group_by(Site, Date, Species) %>% 
   summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area) %>% 
   # remove species with 0 individuals per m^2
   filter(!(species_den_m2 <= 0))
@@ -390,26 +391,29 @@ NPSM_may18_species_den <- NP_density_data %>%
          "Geukensia_demissa", "Adula_diegensis", "Argopecten_ventricosa",
          key = 'Species',
          value = 'n_individuals') %>% 
-  group_by(Site, Species) %>% 
+  mutate(Date = mdy(Date)) %>% 
+  group_by(Site, Date, Species) %>% 
   summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area) %>% 
   # remove species with 0 individuals per m^2
   filter(!(species_den_m2 <= 0))
 
 # dataframe density by species - San Rafael
-SR_nov18_species_den <- SR_density_data %>% 
-  mutate(Species = "O. lurida") %>% 
-  group_by(Site, Species) %>% 
+SR_nov17_species_den <- SR_density_data %>% 
+  mutate(Species = "Ostrea_lurida",
+         Date = mdy("11/1/17")) %>% # survey date from Chela Zabin
+  group_by(Site, Date, Species) %>% 
   summarise(species_den_m2 = mean(density_m2))
   
 # dataframe density by species - numbers from Morro Bay Oyster Company
 MB_species_den <- tibble(Site = "Morro Bay",
-                         Species = "C. gigas", 
+                         Date = mdy("11/21/17"), # Date info was recorded in field notebook 
+                         Species = "Crassostrea_gigas", 
                          species_den_m2 = 600)
 
 # combine species density dataframes - All sites
 Species_density_summary <- bind_rows(NPD_may18_species_den,
                                      NPSM_may18_species_den,
-                                     SR_nov18_species_den,
+                                     SR_nov17_species_den,
                                      MB_species_den, .id = NULL)
 
 fwrite(Species_density_summary, file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
