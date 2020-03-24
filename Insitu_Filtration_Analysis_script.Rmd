@@ -452,7 +452,6 @@ Master_analysis_table <- filtration_summary_table %>%
          MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F)) %>% 
   left_join(Species_density_summary, by = c("Site"))
 
-# fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
 fwrite(Master_analysis_table, file.path(filtration_summary_output_directory,
                                         "Master_Filtration_analysis_table.csv"))
 ```
