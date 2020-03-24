@@ -314,33 +314,6 @@ MB_gigas_m2 = 600
 
 # Newport Deanza total bivalve Density - Data from Zacherl lab surveys 
 NP_excavation_quad_area = 0.0625
-
-########## May not need these calculations
-NPD_may18_bivalve_den <- NP_density_data %>% 
-  filter(Site == 'Deanza') %>% 
-  select(1:10, 12) %>% 
-  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
-         key = 'Species',
-         value = 'n_individuals') %>% 
-  group_by(Quadrat) %>% 
-  summarise(n_bivalves = sum(n_individuals),
-            quad_den = n_bivalves / NP_excavation_quad_area)
-  
-NPD_may18_avg_m2 <- mean(NPD_may18_bivalve_den$quad_den) # Total Average bivalve density
-
-# Newport Shellmaker total bivalve density
-########## May not need these calculations
-NPSM_may18_bivalve_den <- NP_density_data %>% 
-  filter(Site == 'Shellmaker') %>% 
-  select(1:10, 12) %>% 
-  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
-         key = 'Species',
-         value = 'n_individuals') %>% 
-  group_by(Quadrat) %>% 
-  summarise(n_bivalves = sum(n_individuals),
-            quad_den = n_bivalves / NP_excavation_quad_area)
-
-NPSM_may18_avg_m2 <- mean(NPSM_may18_bivalve_den$quad_den) # Total Average bivalve density
   
 #####################################################################
 # Densities by Bivalve Species
@@ -450,7 +423,8 @@ Master_analysis_table <- filtration_summary_table %>%
          NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
          NPSM = ifelse(grepl("Shellmaker", filtration_summary_table$Site), T, F),
          MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F)) %>% 
-  left_join(Species_density_summary, by = c("Site"))
+  left_join(Species_density_summary, by = c("Site")) %>% 
+  select(-c("Date.y"))
 
 fwrite(Master_analysis_table, file.path(filtration_summary_output_directory,
                                         "Master_Filtration_analysis_table.csv"))
