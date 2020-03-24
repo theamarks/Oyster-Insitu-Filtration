@@ -248,25 +248,20 @@ for(file in 1 : length(all_files_Filtration))
 ```
 
 
-```{r TPM_Density, cache=TRUE}
+```{r TPM_POM_PIM, cache=TRUE}
 
 #######################################################################
-# Create directories for TPM & Density Data
+# Create directories for TPM 
 #######################################################################
 
 TPM_directory = "./Data"
-SR_Density_directory = "./Data/bivalve_density_community"
-NP_Density_directory = "./Data/bivalve_density_community"
+#TPM_output_directory creation is in functions.R
 
 #######################################################################
-# Read in data for TPM & Density Data
+# Read in data for TPM 
 #######################################################################
 
 TPM_data = fread(file.path(TPM_directory, "Insitu_Filter_POM_PIM_Data.csv"))
-
-SR_density_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_density.csv"))
-
-NP_density_data = fread(file.path(NP_Density_directory, "Insitu_filter_NP_may18_survey_counts.csv"))
 
 ######################################################################
 # Summary Table & Average Table per field day
@@ -297,8 +292,19 @@ fwrite(Avg_TPM_summary_table, file.path(TPM_output_directory, "Avg_TPM_summary_t
 
 ```{r Total_bivlave_density, cache=TRUE}
 #####################################################################
-# Total Bivalve Density
+# Total Bivalve Density - Data Directories
 #######################################################################
+
+SR_Density_directory = "./Data/bivalve_density_community"
+NP_Density_directory = "./Data/bivalve_density_community"
+# Bivalve_output_directory created in functions.R
+
+#####################################################################
+# Read in data
+#######################################################################
+
+SR_density_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_density.csv"))
+NP_density_data = fread(file.path(NP_Density_directory, "Insitu_filter_NP_may18_survey_counts.csv"))
 
 # San Rafael bivalve density based on data from Chela Zabin (November 2017 survey)
 SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
@@ -309,6 +315,7 @@ MB_gigas_m2 = 600
 # Newport Deanza total bivalve Density - Data from Zacherl lab surveys 
 NP_excavation_quad_area = 0.0625
 
+########## May not need these calculations
 NPD_may18_bivalve_den <- NP_density_data %>% 
   filter(Site == 'Deanza') %>% 
   select(1:10, 12) %>% 
@@ -322,7 +329,7 @@ NPD_may18_bivalve_den <- NP_density_data %>%
 NPD_may18_avg_m2 <- mean(NPD_may18_bivalve_den$quad_den) # Total Average bivalve density
 
 # Newport Shellmaker total bivalve density
-
+########## May not need these calculations
 NPSM_may18_bivalve_den <- NP_density_data %>% 
   filter(Site == 'Shellmaker') %>% 
   select(1:10, 12) %>% 
@@ -339,34 +346,64 @@ NPSM_may18_avg_m2 <- mean(NPSM_may18_bivalve_den$quad_den) # Total Average bival
 # Densities by Bivalve Species
 ######################################################################
 # dataframe density by species - Deanza
+
 NPD_may18_species_den <- NP_density_data %>% 
   filter(Site == 'Deanza') %>% 
-  select(1:10, 12) %>% 
-  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
+ # select need columns & replace species names with full scientific names 
+  rename(Site = 1,
+         Treatment = 2, 
+         Quadrat = 3, 
+         Date = 4, 
+         Ostrea_lurida = 5, 
+         Crassostrea_gigas = 6,
+         Mytilus_galloprovincialis = 7, 
+         Musculista_senhousia = 8,
+         Geukensia_demissa = 9, 
+         Adula_diegensis = 10,
+         Argopecten_ventricosa = 12) %>% 
+  gather('Ostrea_lurida', 'Crassostrea_gigas', "Mytilus_galloprovincialis", "Musculista_senhousia",
+         "Geukensia_demissa", "Adula_diegensis", "Argopecten_ventricosa",
          key = 'Species',
          value = 'n_individuals') %>% 
-  group_by(Species, Site) %>% 
-  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area)
-
+  group_by(Site, Species) %>% 
+  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area) %>% 
+  # remove species with 0 individuals per m^2
+  filter(!(species_den_m2 <= 0))
+  
+  
 # dataframe density by species - Shellmaker
 NPSM_may18_species_den <- NP_density_data %>% 
   filter(Site == 'Shellmaker') %>% 
-  select(1:10, 12) %>% 
-  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
+ # select need columns & replace species names with full scientific names 
+  rename(Site = 1,
+         Treatment = 2, 
+         Quadrat = 3, 
+         Date = 4, 
+         Ostrea_lurida = 5, 
+         Crassostrea_gigas = 6,
+         Mytilus_galloprovincialis = 7, 
+         Musculista_senhousia = 8,
+         Geukensia_demissa = 9, 
+         Adula_diegensis = 10,
+         Argopecten_ventricosa = 12) %>% 
+  gather('Ostrea_lurida', 'Crassostrea_gigas', "Mytilus_galloprovincialis", "Musculista_senhousia",
+         "Geukensia_demissa", "Adula_diegensis", "Argopecten_ventricosa",
          key = 'Species',
          value = 'n_individuals') %>% 
-  group_by(Species, Site) %>% 
-  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area)
+  group_by(Site, Species) %>% 
+  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area) %>% 
+  # remove species with 0 individuals per m^2
+  filter(!(species_den_m2 <= 0))
 
 # dataframe density by species - San Rafael
 SR_nov18_species_den <- SR_density_data %>% 
   mutate(Species = "O. lurida") %>% 
-  group_by(Species, Site) %>% 
+  group_by(Site, Species) %>% 
   summarise(species_den_m2 = mean(density_m2))
   
 # dataframe density by species - numbers from Morro Bay Oyster Company
-MB_species_den <- tibble(Species = "C. gigas", 
-                         Site = "Morro Bay",
+MB_species_den <- tibble(Site = "Morro Bay",
+                         Species = "C. gigas", 
                          species_den_m2 = 600)
 
 # combine species density dataframes - All sites
@@ -374,6 +411,9 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
                                      NPSM_may18_species_den,
                                      SR_nov18_species_den,
                                      MB_species_den, .id = NULL)
+
+fwrite(Species_density_summary, file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
+
 ```
 
 ```{r Create_Master_Analysis_Table, cache=TRUE}

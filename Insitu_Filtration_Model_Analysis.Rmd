@@ -56,7 +56,7 @@ Chl % Removed - LM
 ### LM - excluding San Rafael logic variable
 ```{r Chl_rmd_LM_No_SR output, fig.height=15, fig.width=6, cache=TRUE}
 
-Chl_rmd_LM_No_SR <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
+PrctChl_LM_NoSR_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
                          # site logic variables 
                          Master_analysis_table$NPD + Master_analysis_table$NPSM + Master_analysis_table$MB + 
                          # Field notes logic variables
@@ -69,7 +69,27 @@ Chl_rmd_LM_No_SR <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
                          Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_POM + 
                          Master_analysis_table$Avg_PIM)
 
-summary(Chl_rmd_LM_No_SR)
+summary(PrctChl_LM_NoSR_All)
+```
+
+```{r}
+Filtration_only_Analysis <- Master_analysis_table %>% 
+  filter(Experiment %in% c("Filtration"))
+
+PrctChl_LM_NoSR_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
+                         # site logic variables 
+                         Master_analysis_table$NPD + Master_analysis_table$NPSM + Master_analysis_table$MB + 
+                         # Field notes logic variables
+                         Master_analysis_table$Wind + Master_analysis_table$G_upstream + Master_analysis_table$Daylight +
+                         Master_analysis_table$Sonde_fell + Master_analysis_table$Boat_wake + Master_analysis_table$Algae +
+                         # Quantatative variables
+                         Master_analysis_table$Temp_C_Up + Master_analysis_table$Sal_ppt_Up +
+                         Master_analysis_table$Turbidity_NTU_Up + Master_analysis_table$Chl_ug_L_Up +
+                         Master_analysis_table$avg_depth_cm + Master_analysis_table$d_bw_sondes_m +
+                         Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_POM + 
+                         Master_analysis_table$Avg_PIM)
+
+summary(PrctChl_LM_NoSR_All)
 ```
 
 FR X TPM
@@ -544,21 +564,31 @@ NPD_oly <- NPD_density %>%
   as_tibble() %>%
   select(species, length_mm, tissue_dry_weight_g)
 
-(Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
+Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
   geom_point() +
   theme_classic() +
   labs(x = 'Shell Length (mm)',
        y = 'Dry Tissue Weight (g)',
        title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
        subtitle = 'With outlier (bad data)') +
-  geom_smooth(method=lm, se=TRUE, level=0.95))
+  geom_smooth(method=lm, se=TRUE, level=0.95)
+plot(Oly_shell_DTW)
+```
 
+### Oly DTW Linear Model
+```{r}
 Oly_DTW_lm <- lm(data = NPD_oly, tissue_dry_weight_g ~ length_mm)
 summary(Oly_DTW_lm)
+```
+
+### Diagnostic Plots
+```{r}
 par(mfrow=c(2,2))
 plot(Oly_DTW_lm)
+```
 
-# Outlier analysis (mean -+ SD * 2.2)
+### Outlier analysis (mean -+ SD * 2.2)
+```{r}
 find_outlier <- function(data){
   average <- mean(data)
   stdev <- sd(data)
@@ -569,7 +599,7 @@ find_outlier <- function(data){
 NPD_oly_outlier <- NPD_oly %>% 
   mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g))
 
-(Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outlier %>% 
+Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outlier %>% 
                                   filter(DTW_outlier == FALSE), 
                                 aes(length_mm, tissue_dry_weight_g)) +
   geom_point() +
@@ -578,14 +608,21 @@ NPD_oly_outlier <- NPD_oly %>%
        y = 'Dry Tissue Weight (g)',
        title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
        subtitle = 'Removed outlier') +
-  geom_smooth(method=lm, se=TRUE, level=0.95))
+  geom_smooth(method=lm, se=TRUE, level=0.95)
+plot(Oly_shell_DTW_rm_out)
+```
 
-# Linear model without outlier
+### Linear model without outlier
+```{r}
 Oly_DTZW_lm_rm_out <- lm(data = NPD_oly_outlier %>% 
                            filter(DTW_outlier == FALSE),
                          tissue_dry_weight_g ~ length_mm)
 
 summary(Oly_DTZW_lm_rm_out)
+```
+
+### Diagnostic plots
+```{r}
 par(mfrow=c(2,2))
 plot(Oly_DTZW_lm_rm_out)
 ```
@@ -608,8 +645,10 @@ NPD_41519_Filter_plot_sbs <- NPD_41519_Filter_plot_sbs %>%
 
 ```
 
+Up & Down Chl
+=====================================
 
-
+### Facet Plots
 ```{r Bar Graphs up vs down, echo=FALSE}
 Bar_up_down_data <- Master_analysis_table %>%
   select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
@@ -625,7 +664,7 @@ Bar_up_down_data <- Master_analysis_table %>%
 
 #Bar_up_down_data$Position <- as.factor(Bar_up_down_data$Position)
 
-(Paired_bar_chl_graph <- ggplot(data = Bar_up_down_data, aes(x = Site_exp_date, y = Chl_ug_L, fill = Position)) +
+Paired_bar_chl_graph <- ggplot(data = Bar_up_down_data, aes(x = Site_exp_date, y = Chl_ug_L, fill = Position)) +
     geom_bar(stat="identity", position = "dodge") +
     theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
     facet_grid(~ Site, scales = "free", space = "free") + #'free' allows axis b/w sites uneaven
@@ -634,12 +673,20 @@ Bar_up_down_data <- Master_analysis_table %>%
              color = "grey22",
              stat="identity",
              position = "dodge") +
-    labs(x = 'Experiment', y = 'Chlorophyl (ug/L)'))
+    labs(x = 'Experiment', y = 'Chlorophyl (ug/L)')
+plot(Paired_bar_chl_graph)
+```
+
+### Graphs using grid.arrange()
+```{r}
 ############## Try 2 ####### make separate graphs, combine using grid.arrange()
+
+##### Check Dates in final graph - Don't look right - AM 2020_3_22
+
 NPD_bar_data <- Bar_up_down_data %>% 
   filter(Site == 'Deanza')
 
-(NPD_bar_graph <- ggplot(data = NPD_bar_data, aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
+NPD_bar_graph <- ggplot(data = NPD_bar_data, aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
     geom_col(position = position_dodge2(width = 0.9, preserve = "single")) +
     geom_col(data = (NPD_bar_data %>% # add boarder around Neg Control experiments
                        filter(!Experiment %in% c('Filtration'))),
@@ -652,12 +699,12 @@ NPD_bar_data <- Bar_up_down_data %>%
           plot.title = element_text(hjust = 0.5)) + # center title
     labs(y = 'Chlorophyll a (ug/L)', title = "Newport Deanza") +
     scale_x_discrete(labels = NPD_bar_data$Date) +
-    ylim(0, 8))
+    ylim(0, 8)
 
 NPSM_bar_data <- Bar_up_down_data %>% 
   filter(Site == 'Shellmaker')
 
-(NPSM_bar_graph <- ggplot(data = NPSM_bar_data,
+NPSM_bar_graph <- ggplot(data = NPSM_bar_data,
                           aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
     geom_col(position = position_dodge2(width = 0.9, preserve = "single")) +
     geom_col(data = (NPSM_bar_data %>% # add boarder around Neg Control experiments
@@ -672,12 +719,12 @@ NPSM_bar_data <- Bar_up_down_data %>%
     labs(title = "Newport Shellmaker") +
     scale_x_discrete(labels = NPSM_bar_data$Date) +
     ylim(0, 8) +
-    guides(fill = FALSE)) 
+    guides(fill = FALSE) 
 
 MB_bar_data <- Bar_up_down_data %>% 
   filter(Site == 'Morro Bay')
 
-(MB_bar_graph <- ggplot(data = MB_bar_data,
+MB_bar_graph <- ggplot(data = MB_bar_data,
                           aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
     geom_col(position = position_dodge2(width = 0.9, preserve = "single")) +
     geom_col(data = (MB_bar_data %>% # add boarder around Neg Control experiments
@@ -692,12 +739,12 @@ MB_bar_data <- Bar_up_down_data %>%
     labs(title = "Morro Bay") +
     scale_x_discrete(labels = MB_bar_data$Date) +
     ylim(0, 8) +
-    guides(fill = FALSE))
+    guides(fill = FALSE)
 
 SR_bar_data <- Bar_up_down_data %>% 
   filter(Site == 'San Rafael')
 
-(SR_bar_graph <- ggplot(data = SR_bar_data,
+SR_bar_graph <- ggplot(data = SR_bar_data,
                           aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
     geom_col(position = position_dodge2(width = 0.9, preserve = "single")) +
     geom_col(data = (SR_bar_data %>% # add boarder around Neg Control experiments
@@ -712,19 +759,20 @@ SR_bar_data <- Bar_up_down_data %>%
     labs(title = "San Rafael") +
     scale_x_discrete(labels = SR_bar_data$Date) +
     ylim(0, 8) +
-    guides(fill = FALSE))
+    guides(fill = FALSE)
 
 Chl_graphs <- list(NPD_bar_graph, NPSM_bar_graph, SR_bar_graph, MB_bar_graph) 
-(all_chl_graphs <- grid.arrange(grobs = Chl_graphs,
+all_chl_graphs <- grid.arrange(grobs = Chl_graphs,
              widths = c(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
              layout_matrix = rbind(c(NA,1,1,1,1,1,1,1,1,1,1,1,1, NA),
-                                   c(2,2,2,2,2,3,3,3,3,3,4,4,4,4))))
+                                   c(2,2,2,2,2,3,3,3,3,3,4,4,4,4)))
+plot(all_chl_graphs)
 ggsave("Insitu_Filter_up_vs_down_all_sites.png", all_chl_graphs)
 ```
 
-```{r Paire t tests, echo=FALSE}
+```{r Paire t tests, eval=FALSE, include=FALSE}
 #### Paired t-test all filtration trials --- Mean Upstream Chl vs Mean Downstream Chl
-
+####### Double Check this analysis - AM 2020_3_22
 Master_analysis_table_FILTER <- Master_analysis_table %>%
   filter(Experiment == 'Filtration')
 
