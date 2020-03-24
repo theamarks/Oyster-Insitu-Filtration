@@ -439,6 +439,7 @@ fwrite(Species_density_summary, file.path(Bivalve_output_directory, "Bivalve_Den
 ##############################################################
 # Create Master Analysis Table
 ##############################################################
+
 Master_analysis_table <- filtration_summary_table %>% 
   left_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
   # Exclude downstream average WQ values and unneeded single tail t-test results
@@ -448,7 +449,8 @@ Master_analysis_table <- filtration_summary_table %>%
   mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
          NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
          NPSM = ifelse(grepl("Shellmaker", filtration_summary_table$Site), T, F),
-         MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F)) 
+         MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F)) %>% 
+  left_join(Species_density_summary, by = c("Site"))
 
 # fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
 fwrite(Master_analysis_table, file.path(filtration_summary_output_directory,
