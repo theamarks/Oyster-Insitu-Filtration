@@ -88,10 +88,17 @@ createOutputDirectories = function()
   }
 
   # Create an output directory for error statistics
-  error_directory <<- file.path(output_directory,"8_Error_Calculatios")
+  error_directory <<- file.path(output_directory,"8_Error_Calculations")
   if(!dir.exists(error_directory))
   {
     dir.create(error_directory)
+  }
+  
+  # Create an output directory for Bivalve Densities
+  Bivalve_output_directory <<- file.path(output_directory,"9_Bivalve_Density")
+  if(!dir.exists(Bivalve_output_directory))
+  {
+    dir.create(Bivalve_output_directory)
   }
 }
 ######################################################################################
@@ -366,7 +373,7 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
               se_chl_up = sd_chl_up/sqrt(length(Chl_ug_L)))
   
   Sbs_stats_plot = aSbs_stat_summary %>% 
-   select(Sample_Count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
+   select(Sample_count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
    mutate_if(is.numeric, round, 3) %>% 
    rename("n" = Sample_Count,  
          "Mean Chl Diff" = Mean_sbs_Chl_diff,  
@@ -608,7 +615,7 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
   
   filtration_sub_df =  aFiltrationFile %>% 
     dplyr::select(c(names(data_only_numeric), "Experiment", "Date", "Site"))
-  
+  # single tail t-test on Chl_diff
   up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_diff, alternative = "greater"))
   
   filtration_sub_df_sum = filtration_sub_df %>%
