@@ -25,7 +25,7 @@ library(ggpmisc) # package for adding line equation and R^2 to plots
 library(viridis) # Color palette for Restoration Area - Options: magma , inferno, plasma, viridis, cividis
 library(scales)
 
-
+# Read in Data
 Master_analysis_table <- fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
 Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
 Density_directory = "./Data/bivalve_density_community"
@@ -56,8 +56,8 @@ Chl % Removed - LM
 ### LM - excluding San Rafael logic variable
 ```{r Chl_rmd_LM_No_SR output, fig.height=15, fig.width=6, cache=TRUE}
 
-PrctChl_LM_NoSR_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
-                         # site logic variables 
+LM_PrctChl_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
+                         # site logic variables - SR not included - would break model
                          Master_analysis_table$NPD + Master_analysis_table$NPSM + Master_analysis_table$MB + 
                          # Field notes logic variables
                          Master_analysis_table$Wind + Master_analysis_table$G_upstream + Master_analysis_table$Daylight +
@@ -67,16 +67,41 @@ PrctChl_LM_NoSR_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
                          Master_analysis_table$Turbidity_NTU_Up + Master_analysis_table$Chl_ug_L_Up +
                          Master_analysis_table$avg_depth_cm + Master_analysis_table$d_bw_sondes_m +
                          Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_POM + 
-                         Master_analysis_table$Avg_PIM)
+                         Master_analysis_table$Avg_PIM + 
+                         # Bivavle density is essentially the same as site, not sure if needed. May be appropriate NPD vs NPSM  
+                         Master_analysis_table$Bivalve_den_m2)
 
-summary(PrctChl_LM_NoSR_All)
+summary(LM_PrctChl_All)
 ```
 
+### LM - Filtraiton Trials Only
 ```{r}
 Filtration_only_Analysis <- Master_analysis_table %>% 
   filter(Experiment %in% c("Filtration")) # Filtration trials only - exclude Negative controls
 
-PrctChl_LM_NoSR_All <- lm(Filtration_only_Analysis$pcnt_Chl_rmvd ~
+LM_PrctChl_Filter <- lm(Filtration_only_Analysis$pcnt_Chl_rmvd ~
+                         # site logic variables - SR not included - would break model to include all sites
+                         Filtration_only_Analysis$NPD + Filtration_only_Analysis$NPSM + Filtration_only_Analysis$MB + 
+                         # Field notes logic variables
+                         Filtration_only_Analysis$Wind + Filtration_only_Analysis$G_upstream + Filtration_only_Analysis$Daylight +
+                         Filtration_only_Analysis$Sonde_fell + Filtration_only_Analysis$Boat_wake + Filtration_only_Analysis$Algae +
+                         # Quantatative variables
+                         Filtration_only_Analysis$Temp_C_Up + Filtration_only_Analysis$Sal_ppt_Up +
+                         Filtration_only_Analysis$Turbidity_NTU_Up + Filtration_only_Analysis$Chl_ug_L_Up +
+                         Filtration_only_Analysis$avg_depth_cm + Filtration_only_Analysis$d_bw_sondes_m +
+                         Filtration_only_Analysis$avg_m_hr + Filtration_only_Analysis$Avg_POM + 
+                         Filtration_only_Analysis$Avg_PIM)
+
+summary(LM_PrctChl_Filter)
+```
+
+### LM - Filtration Trials w/ sig Filtration
+```{r}
+# Filtration Trials with significant Chl_diff
+FilterWithFiltration <- Master_analysis_table %>% 
+  filter(p.value <= 0.05)
+  
+LM_PrctChl_sigFilter <- lm(Filtration_only_Analysis$pcnt_Chl_rmvd ~
                          # site logic variables 
                          Filtration_only_Analysis$NPD + Filtration_only_Analysis$NPSM + Filtration_only_Analysis$MB + 
                          # Field notes logic variables
@@ -89,7 +114,7 @@ PrctChl_LM_NoSR_All <- lm(Filtration_only_Analysis$pcnt_Chl_rmvd ~
                          Filtration_only_Analysis$avg_m_hr + Filtration_only_Analysis$Avg_POM + 
                          Filtration_only_Analysis$Avg_PIM)
 
-summary(PrctChl_LM_NoSR_All)
+summary(LM_PrctChl_sigFilter)
 ```
 
 FR X TPM
