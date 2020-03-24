@@ -416,6 +416,21 @@ Species_density_summary <- bind_rows(NPD_may18_species_den,
                                      SR_nov17_species_den,
                                      MB_species_den, .id = NULL)
 
+Species_density_summary <- Species_density_summary %>% 
+  pivot_wider(names_from = Species,
+              values_from = species_den_m2) %>% 
+  select(Site, Date,
+         "Adula_diegensis_m2" = Adula_diegensis,
+         "Musculista_senhousia_m2" = Musculista_senhousia,
+         "Mytilus_galloprovincialis_m2" = Mytilus_galloprovincialis,
+         "Ostrea_lurida_m2" = Ostrea_lurida,
+         "Argopecten_ventricosa_m2" = Argopecten_ventricosa,
+         "Geukensia_demissa_m2" = Geukensia_demissa,
+         "Crassostrea_gigas_m2" = Crassostrea_gigas) %>% 
+  # calculate total bivalve density
+  mutate(Bivalve_den_m2 = sum(Adula_diegensis_m2, Musculista_senhousia_m2, Mytilus_galloprovincialis_m2,
+           Ostrea_lurida_m2, Argopecten_ventricosa_m2, Geukensia_demissa_m2, Crassostrea_gigas_m2, na.rm = T))
+
 fwrite(Species_density_summary, file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
 
 ```
