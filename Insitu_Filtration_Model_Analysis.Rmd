@@ -24,6 +24,7 @@ library(gridExtra)
 library(ggpmisc) # package for adding line equation and R^2 to plots
 library(viridis) # Color palette for Restoration Area - Options: magma , inferno, plasma, viridis, cividis
 library(scales)
+library(cowplot)
 
 # Read in Data
 Master_analysis_table <- fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
@@ -40,8 +41,10 @@ x_y_formula <- y ~ x
 
 # Order Sites by Latitude
 site_by_lat <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
+
 # transform Site variable to factor and arange by Latitude
 Master_analysis_table <- arrange(transform(Master_analysis_table, Site = factor(Site,levels = site_by_lat)), Site)
+
 # Assign colors to each Site
 viridis(4)
 Site_colors <- c("San Rafael" = "#440154FF",
@@ -49,6 +52,24 @@ Site_colors <- c("San Rafael" = "#440154FF",
                  "Shellmaker" = "#35B779FF",
                  "Deanza" = "#FDE725FF")
 
+Hab_FR_Label <- expression('Habitat Filtration Rate (Lhr/m'^2*')')
+Prt_Chl_Label <- expression(paste('Percent Chlorophyll ', alpha, ' Removed'))
+Chl_ugL_Label <- expression(paste("Chlorophyll ", alpha, " (", mu, "g/L) "))
+
+# Custom graph theme - base theme_bw
+#theme_filtration <- function (base_size = 12, base_family = "") 
+#{
+ # theme_grey(base_size = base_size, base_family = base_family) %+replace% 
+  #  theme(axis.text = element_text(size = rel(0.8)), 
+   # axis.ticks = element_line(colour = "black"), 
+    #legend.key = element_rect(colour = "grey80"), 
+#    panel.background = element_rect(fill = "white", colour = NA), 
+ #   panel.border = element_rect(fill = NA, colour = "grey50"), 
+  #  panel.grid.major = element_line(colour = "grey90", size = 0.2), 
+   # panel.grid.minor = element_line(colour = "grey98", size = 0.5), 
+    #strip.background = element_rect(fill = "grey80", colour = "grey50", 
+     #                               size = 0.2))
+#}
 ```
 
 Chl % Removed - LM
@@ -59,6 +80,8 @@ Chl % Removed - LM
 LM_PrctChl_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
                          # site logic variables - SR not included - would break model
                          Master_analysis_table$NPD + Master_analysis_table$NPSM + Master_analysis_table$MB + 
+                         # Filtration Trial - T or F
+                         Master_analysis_table$Filter_trial +
                          # Field notes logic variables
                          Master_analysis_table$Wind + Master_analysis_table$G_upstream + Master_analysis_table$Daylight +
                          Master_analysis_table$Sonde_fell + Master_analysis_table$Boat_wake + Master_analysis_table$Algae +
@@ -66,13 +89,16 @@ LM_PrctChl_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
                          Master_analysis_table$Temp_C_Up + Master_analysis_table$Sal_ppt_Up +
                          Master_analysis_table$Turbidity_NTU_Up + Master_analysis_table$Chl_ug_L_Up +
                          Master_analysis_table$avg_depth_cm + Master_analysis_table$d_bw_sondes_m +
-                         Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_POM + 
-                         Master_analysis_table$Avg_PIM + 
+                         Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_OC_Ratio ) 
                          # Bivavle density is essentially the same as site, not sure if needed. May be appropriate NPD vs NPSM  
-                         Master_analysis_table$Bivalve_den_m2)
+                         #Master_analysis_table$Bivalve_den_m2)
 
 summary(LM_PrctChl_All)
 ```
+*** 
+I'm not sure if narrowing down the data to Filtration Trials only and then only significant Filtration trials helps predict. Wouldn't the model be stronger if all the data was included? 
+
+How about bivalve density - the numbers are the same for each site across trials- essentially the same as Site effect?
 
 ### LM - Filtraiton Trials Only
 ```{r LM_PrctChl_Filter, fig.height=15, fig.width=6, cache=TRUE}
@@ -89,8 +115,7 @@ LM_PrctChl_Filter <- lm(Filtration_only_Analysis$pcnt_Chl_rmvd ~
                          Filtration_only_Analysis$Temp_C_Up + Filtration_only_Analysis$Sal_ppt_Up +
                          Filtration_only_Analysis$Turbidity_NTU_Up + Filtration_only_Analysis$Chl_ug_L_Up +
                          Filtration_only_Analysis$avg_depth_cm + Filtration_only_Analysis$d_bw_sondes_m +
-                         Filtration_only_Analysis$avg_m_hr + Filtration_only_Analysis$Avg_POM + 
-                         Filtration_only_Analysis$Avg_PIM)
+                         Filtration_only_Analysis$avg_m_hr + Filtration_only_Analysis$Avg_OC_Ratio)
 
 summary(LM_PrctChl_Filter)
 ```
@@ -99,20 +124,19 @@ summary(LM_PrctChl_Filter)
 ```{r LM_PrctChl_sigFilter, fig.height=15, fig.width=6, cache=TRUE}
 # Filtration Trials with significant Chl_diff
 FilterWithFiltration <- Master_analysis_table %>% 
-  filter(p.value <= 0.05)
+  filter(p.value <= 0.05 & Filter_trial == TRUE)
   
-LM_PrctChl_sigFilter <- lm(Filtration_only_Analysis$pcnt_Chl_rmvd ~
+LM_PrctChl_sigFilter <- lm(FilterWithFiltration$pcnt_Chl_rmvd ~
                          # site logic variables 
-                         Filtration_only_Analysis$NPD + Filtration_only_Analysis$NPSM + Filtration_only_Analysis$MB + 
+                         FilterWithFiltration$NPD + FilterWithFiltration$NPSM + FilterWithFiltration$MB + 
                          # Field notes logic variables
-                         Filtration_only_Analysis$Wind + Filtration_only_Analysis$G_upstream + Filtration_only_Analysis$Daylight +
-                         Filtration_only_Analysis$Sonde_fell + Filtration_only_Analysis$Boat_wake + Filtration_only_Analysis$Algae +
+                         FilterWithFiltration$Wind + FilterWithFiltration$G_upstream + FilterWithFiltration$Daylight +
+                         FilterWithFiltration$Sonde_fell + FilterWithFiltration$Boat_wake + #FilterWithFiltration$Algae +
                          # Quantatative variables
-                         Filtration_only_Analysis$Temp_C_Up + Filtration_only_Analysis$Sal_ppt_Up +
-                         Filtration_only_Analysis$Turbidity_NTU_Up + Filtration_only_Analysis$Chl_ug_L_Up +
-                         Filtration_only_Analysis$avg_depth_cm + Filtration_only_Analysis$d_bw_sondes_m +
-                         Filtration_only_Analysis$avg_m_hr + Filtration_only_Analysis$Avg_POM + 
-                         Filtration_only_Analysis$Avg_PIM)
+                         FilterWithFiltration$Temp_C_Up + FilterWithFiltration$Sal_ppt_Up +
+                         FilterWithFiltration$Turbidity_NTU_Up + FilterWithFiltration$Chl_ug_L_Up +
+                         FilterWithFiltration$avg_depth_cm + FilterWithFiltration$d_bw_sondes_m +
+                         FilterWithFiltration$avg_m_hr + FilterWithFiltration$Avg_OC_Ratio)
 
 summary(LM_PrctChl_sigFilter)
 ```
@@ -120,8 +144,8 @@ summary(LM_PrctChl_sigFilter)
 FR X TPM
 =====================================
 
-### FR by site (all data)
-```{r FR vs TPM, fig.height=5, fig.width=6, cache=TRUE}
+### Filtration by site (all data)
+```{r FR vs TPM, fig.height=5, fig.width=12, cache=TRUE}
 Filter_data <- Master_analysis_table %>% 
                      filter(Experiment == "Filtration")
 
@@ -133,8 +157,16 @@ FR_TPM_box <- ggplot((Filter_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
-       y = 'Filtration Rate L/hr/m^2')
-plot(FR_TPM_box)
+       y = Hab_FR_Label)
+
+Chl_Rmd_TPM_box <- ggplot(Filter_data, aes(Site, pcnt_Chl_rmvd)) +
+  geom_boxplot(color = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = Prt_Chl_Label)
+
+grid.arrange(FR_TPM_box, Chl_Rmd_TPM_box, nrow = 1)
+
 ```
 
 ### FR by site (Positive values only) 
@@ -143,7 +175,8 @@ FR_TPM_box_pos <- ggplot((Filter_data_pos), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
-       y = 'Filtration Rate L/hr/m^2')
+       y = 'Filtration Rate L/hr/m^2',
+       title = 'Positive L/hr/m^2 only')
 plot(FR_TPM_box_pos)
 ```
 
@@ -674,7 +707,7 @@ Up & Down Chl
 =====================================
 
 ### Facet Plots
-```{r Bar Graphs up vs down, echo=FALSE}
+```{r Bar Graphs up vs down, eval=FALSE, include=FALSE}
 Bar_up_down_data <- Master_analysis_table %>%
   select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
   rename(Upstream = Chl_ug_L_Up, Downstream = Chl_ug_L_Down) %>%  
@@ -703,7 +736,7 @@ plot(Paired_bar_chl_graph)
 ```
 
 ### Graphs using grid.arrange()
-```{r}
+```{r eval=FALSE, include=FALSE}
 ############## Try 2 ####### make separate graphs, combine using grid.arrange()
 
 ##### Check Dates in final graph - Don't look right - AM 2020_3_22
@@ -829,7 +862,7 @@ t.test(Master_analysis_table$Chl_ug_L_Up,
 ## No difference between upstream and downstream Chl
 ```
 
-```{r Species_Density_Graphs, echo=FALSE, cache=TRUE}
+```{r Species_Density_Graphs, eval=FALSE, cache=TRUE, include=FALSE}
 # Graph Density by Species, exclude absent species
 
 ############## Newport Deanza ###################
