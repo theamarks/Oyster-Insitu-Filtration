@@ -794,7 +794,8 @@ OC_TPM_by_Site <- Avg_TPM_summary_table %>%
                label.y = "bottom")
 plot(OC_TPM_by_Site)
 ```
-*** Large spread of relationship among sites. Different TPM:OC signatures and relationships at different sites.
+*** 
+Large spread of relationship among sites. Different TPM:OC signatures and relationships at different sites.
 
 ### TPM vs OC by sites
 ```{r TPM_OC_Sites, fig.height=10, fig.width=12,}
