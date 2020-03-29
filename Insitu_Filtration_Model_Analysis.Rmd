@@ -3,7 +3,6 @@ title: "In situ Filtration Analysis Graphs"
 output: 
   flexdashboard::flex_dashboard:
     theme: yeti
-    vertical_layout: scroll
 editor_options: 
   chunk_output_type: console
 ---
@@ -140,6 +139,9 @@ summary(LM_PrctChl_sigFilter)
 FR X TPM
 =====================================
 
+Row
+-------------------------------------
+
 ### Filtration by site (all data)
 ```{r FR vs TPM, fig.height=5, fig.width=12, cache=TRUE}
 Filter_data <- Master_analysis_table %>% 
@@ -162,6 +164,9 @@ Chl_Rmd_TPM_box <- ggplot(Filter_data, aes(Site, pcnt_Chl_rmvd)) +
 grid.arrange(FR_TPM_box, Chl_Rmd_TPM_box, nrow = 1)
 
 ```
+
+Row
+-------------------------------------
 
 ### Filtration by site (Positive values only) 
 ```{r FR by site positive only, fig.height=5, fig.width=12, cache=TRUE}
@@ -191,6 +196,9 @@ Chl_Rmd_box_pos <- ggplot((Chl_Rmd_data_pos), aes(Site, pcnt_Chl_rmvd)) +
 
 grid.arrange(FR_TPM_box_pos, Chl_Rmd_box_pos, nrow = 1)
 ```
+
+Row
+-------------------------------------
 
 ### Filtration vs TPM (Filtration Trials only)
 ```{r, fig.height=5, fig.width=12, cache=TRUE}
@@ -231,6 +239,9 @@ Chl_Rmd_TPM_graph <- ggplot((Filter_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
 grid.arrange(FR_TPM_graph, Chl_Rmd_TPM_graph, nrow = 1)
 ```
 
+Row
+-------------------------------------
+
 ### FR TPM Linear Model
 ```{r, cache=TRUE}
 FR_TPM_lm <- lm(data = Filter_data, L_hr_m2 ~ Avg_TPM)
@@ -246,6 +257,9 @@ plot(FR_TPM_lm)
 
 Filtration X OC 
 =====================================
+
+Row
+-------------------------------------
 
 ### Filtration vs OC
 ```{r FR vs OC, fig.height=5, fig.width=12, cache=TRUE}
@@ -283,6 +297,9 @@ Chl_Rmd_OC_graph <- ggplot(Filter_data, aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
 grid.arrange(FR_OC_graph, Chl_Rmd_OC_graph, nrow = 1)
 ```
 
+Row
+-------------------------------------
+
 ### FR by OC Linear Model
 ```{r, cache =TRUE}
 FR_OC_lm <- lm(data = Filter_data, L_hr_m2 ~ Avg_OC_Ratio)
@@ -294,6 +311,9 @@ summary(FR_OC_lm)
 par(mfrow=c(2,2))
 plot(FR_OC_lm)
 ```
+
+Row
+-------------------------------------
 
 ### Deanza FR by OC
 ```{r Deanza_Filter_OC, fig.height=5, fig.width=12}
@@ -333,6 +353,9 @@ Chl_Rmd_OC_NPD_graph <- ggplot(Filter_data %>% filter(Site == "Deanza"),
 grid.arrange(FR_OC_NPD_graph, Chl_Rmd_OC_NPD_graph, nrow = 1)
 ```
 
+Row
+-------------------------------------
+
 ### Deanza FR by OC Linear Model
 ```{r}
 FR_OC_NPD_lm <- lm(data = (Filter_data %>% filter(Site == "Deanza")), L_hr_m2 ~ Avg_OC_Ratio)
@@ -344,6 +367,9 @@ summary(FR_OC_NPD_lm)
 par(mfrow=c(2,2))
 plot(FR_OC_NPD_lm)
 ```
+
+Row
+-------------------------------------
 
 ### Morro Bay FR by OC
 ```{r}
@@ -366,6 +392,9 @@ FR_OC_MB_graph <- ggplot(Filter_data %>%filter(Site == "Morro Bay"),
 plot(FR_OC_MB_graph)
 ```
 
+Row
+-------------------------------------
+
 ### MB FR by OC Linear Model
 ```{r}
 FR_OC_MB_lm <- lm(data = (Filter_data %>% filter(Site == "Morro Bay")), L_hr_m2 ~ Avg_OC_Ratio)
@@ -377,6 +406,9 @@ summary(FR_OC_MB_lm)
 par(mfrow=c(2,2))
 plot(FR_OC_NPD_lm)
 ```
+
+Row
+-------------------------------------
 
 ### San Rafael FR by OC
 ```{r}
@@ -400,6 +432,9 @@ FR_OC_SR_graph <- ggplot(Master_analysis_table %>% filter(Site == "San Rafael"),
 plot(FR_OC_SR_graph)
 ```
 
+Row
+-------------------------------------
+
 ### SR FR by OC Linear Model
 ```{r}
 FR_OC_SR_lm <- lm(data = (Filter_data %>% filter(Site == "San Rafael")), L_hr_m2 ~ Avg_OC_Ratio)
@@ -411,6 +446,9 @@ summary(FR_OC_SR_lm)
 par(mfrow=c(2,2))
 plot(FR_OC_SR_lm)
 ```
+
+Row
+-------------------------------------
 
 ### Shellmaker only
 ```{r}
@@ -432,6 +470,9 @@ FR_OC_NPSM_graph <- ggplot(Filter_data %>% filter(Site == "Shellmaker"),
 plot(FR_OC_NPSM_graph)
 ```
 
+Row
+-------------------------------------
+
 ### Shellmaker FR by OC Linear Model
 ```{r}
 FR_OC_NPSM_lm <- lm(data = (Filter_data %>% filter(Site == "Shellmaker")), L_hr_m2 ~ Avg_OC_Ratio)
@@ -446,6 +487,9 @@ plot(FR_OC_NPSM_lm)
 
 L/hr/m^2 X WQ
 =====================================
+
+Row
+-------------------------------------
 
 ### Temperature
 ```{r FR_Temp, fig.height=10, fig.width=12, echo=FALSE}
@@ -508,6 +552,9 @@ Chl_Rmd_pos_Temp <- ggplot(Chl_Rmd_data_pos, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
 grid.arrange(FR_Temp, Chl_Rmd_Temp, FR_pos_Temp, Chl_Rmd_pos_Temp, nrow = 2)
 ```
 
+Row
+-------------------------------------
+
 ### FR by Temp Linear Model
 ```{r}
 FR_temp_lm <- lm(data = Filter_data, L_hr_m2 ~ Temp_C_Up)
@@ -519,6 +566,9 @@ summary(FR_temp_lm)
 par(mfrow=c(2,2))
 plot(FR_temp_lm)
 ```
+
+Row
+-------------------------------------
 
 ### Salinity
 ```{r FR_Salinity, fig.height=10, fig.width=12, echo=FALSE}
@@ -580,6 +630,9 @@ Chl_Rmd_pos_Sal <- ggplot(Chl_Rmd_data_pos, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
 grid.arrange(FR_Sal, Chl_Rmd_Sal, FR_pos_Sal, Chl_Rmd_pos_Sal, nrow = 2)
 ```
 
+Row
+-------------------------------------
+
 ### FR by Salinity Linear Model
 ```{r}
 FR_Sal_lm <- lm(data = Filter_data, L_hr_m2 ~ Sal_ppt_Up)
@@ -591,6 +644,9 @@ summary(FR_Sal_lm)
 par(mfrow=c(2,2))
 plot(FR_Sal_lm)
 ```
+
+Row
+-------------------------------------
 
 ### Chlorophyll 
 ```{r FR_Chl, fig.height=10, fig.width=12, echo=FALSE}
@@ -651,6 +707,9 @@ Chl_Rmd_pos_Chl <- ggplot(Chl_Rmd_data_pos, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
 grid.arrange(FR_Chl, Chl_Rmd_Chl, FR_pos_Chl, Chl_Rmd_pos_Chl, nrow = 2)
 ```
 
+Row
+-------------------------------------
+
 ### FR by Chl Linear Model
 ```{r}
 FR_Chl_lm <- lm(data = Filter_data, L_hr_m2 ~ Chl_ug_L_Up)
@@ -662,6 +721,9 @@ summary(FR_Chl_lm)
 par(mfrow=c(2,2))
 plot(FR_Chl_lm)
 ```
+
+Row
+-------------------------------------
 
 ### Turbidity
 ```{r FR_Turbidity, fig.height=10, fig.width=12, echo=FALSE}
@@ -723,6 +785,9 @@ Chl_Rmd_pos_Turb <- ggplot(Chl_Rmd_data_pos, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd
 grid.arrange(FR_Turb, Chl_Rmd_Turb, FR_pos_Turb, Chl_Rmd_pos_Turb, nrow =2)
 ```
 
+Row
+-------------------------------------
+
 ### FR by Turbidity Linear Model
 ```{r}
 FR_Turb_lm <- lm(data = Filter_data, L_hr_m2 ~ Turbidity_NTU_Up)
@@ -737,6 +802,9 @@ plot(FR_Turb_lm)
 
 TPM & OC
 =====================================
+
+Row
+-------------------------------------
 
 ### TPM by OC
 ```{r TPM vs OC, echo=FALSE}
@@ -754,8 +822,10 @@ TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio
                label.y = "bottom")
 plot(TPM_OC)
 ```
+***
 
-### Exclude low deanza value
+No reason to exclude that low NPD value right?
+
 ```{r eval=FALSE, include=FALSE}
 ##  No reason to exclude low data point
 TPM_OC_no_ND_low <- ggplot(data = (Avg_TPM_summary_table %>% filter(!(Site == "Deanza") | !(Date == "4/18/19"))),
@@ -774,6 +844,9 @@ TPM_OC_no_ND_low <- ggplot(data = (Avg_TPM_summary_table %>% filter(!(Site == "D
                label.y = "bottom")
 plot(TPM_OC_no_ND_low)
 ```
+
+Row
+-------------------------------------
 
 ### Individual Sites TPM vs OC
 ```{r TPM_OC_facet - By Site, echo=FALSE}
@@ -795,7 +868,11 @@ OC_TPM_by_Site <- Avg_TPM_summary_table %>%
 plot(OC_TPM_by_Site)
 ```
 *** 
+
 Large spread of relationship among sites. Different TPM:OC signatures and relationships at different sites.
+
+Row
+-------------------------------------
 
 ### TPM vs OC by sites
 ```{r TPM_OC_Sites, fig.height=10, fig.width=12,}
@@ -865,6 +942,9 @@ grid.arrange(TPM_OC_Deanza, TPM_OC_NPSM, TPM_OC_SR, TPM_OC_MB, nrow = 2)
 DTW - Shell length
 =====================================
 
+Row
+-------------------------------------
+
 ### Newport Olympia Shell length vs DTW
 ```{r Oly_DTW_Shell_length, echo=FALSE}
 #Olympia DTW predicted by Shell Length - Newport, CA
@@ -892,7 +972,11 @@ Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
 plot(Oly_shell_DTW)
 ```
 ***
+
 Outlier probably sample processing error or error in data entry. 
+
+Row
+-------------------------------------
 
 ### DTW Shell length Outlier analysis (mean -+ SD * 2.2)
 ```{r Oly_DTW_Shell_length_outier_removed}
@@ -930,7 +1014,11 @@ Oly_shell_DTW_rm_out <- ggplot(NPD_oly_DTW_outlier %>%
 plot(Oly_shell_DTW_rm_out)
 ```
 ***
+
 Shell length explains 48% of Dry Tissue Weight. Compare this relationship to Gray & Langdon (Yaquina Bay)
+
+Row
+-------------------------------------
 
 ### Linear model without outlier
 ```{r}
@@ -946,6 +1034,9 @@ summary(Oly_DTW_lm_rm_out)
 par(mfrow=c(2,2))
 plot(Oly_DTW_lm_rm_out)
 ```
+
+Row
+-------------------------------------
 
 ### Total Wet Weight vs Dry Tissue Weight
 ```{r}
@@ -964,6 +1055,9 @@ Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
                label.y = "top")
 plot(Oly_TWW_DTW)
 ```
+
+Row
+-------------------------------------
 
 ### TWW vs DTW (remove outlier)
 ```{r}
@@ -986,7 +1080,11 @@ Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_DTW_outlier %>%
 plot(Oly_TWW_DTW_rm_out)
 ```
 ***
+
 Gray and Langdon (2017): "Unless explicitly mentioned, DTW of experimental oysters was estimated using the species-specific allometric relationship between DTW and total wet weight (TWW), which were determined in preliminary analysis (O. lurida: DTW = 0.0044TWW − 0.043, R2 =0.93, F1,32 =78.80, p value <0.0001; C. gigas: DTW = 0.039TWW − 0.06, R2 =0.89, F1,29 = 225.97, p value <0.0001).
+
+Row
+-------------------------------------
 
 ### Linear model without outlier
 ```{r}
