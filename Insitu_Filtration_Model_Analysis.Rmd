@@ -862,9 +862,10 @@ TPM_OC_MB <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay"
 grid.arrange(TPM_OC_Deanza, TPM_OC_NPSM, TPM_OC_SR, TPM_OC_MB, nrow = 2)
 ```
 
-
 DTW - Shell length
 =====================================
+
+### Newport Olympia Shell length vs DTW
 ```{r Oly_DTW_Shell_length, echo=FALSE}
 #Olympia DTW predicted by Shell Length - Newport, CA
 # All excavation quadrat samples processed to date aggregated 
@@ -905,10 +906,10 @@ find_outlier <- function(data){
 }
 
 # Remove outlier from graph 
-NPD_oly_outlier <- NPD_oly %>% 
+NPD_oly_DTW_outlier <- NPD_oly %>%
   mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g))
 # Graph with outliers removed
-Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outlier %>% 
+Oly_shell_DTW_rm_out <- ggplot(NPD_oly_DTW_outlier %>% 
                                   filter(DTW_outlier == FALSE), 
                                 aes(length_mm, tissue_dry_weight_g)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -929,51 +930,84 @@ Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outlier %>%
 plot(Oly_shell_DTW_rm_out)
 ```
 ***
-Shell length explains ~30% of Dry Tissue Weight. Compare this relationship to Gray & Langdon (Yaquina Bay)
-
-### Total Wet Weight vs Dry Tissue Weight
-```{r}
-
-```
+Shell length explains 48% of Dry Tissue Weight. Compare this relationship to Gray & Langdon (Yaquina Bay)
 
 ### Linear model without outlier
 ```{r}
-Oly_DTZW_lm_rm_out <- lm(data = NPD_oly_outlier %>% 
+Oly_DTW_lm_rm_out <- lm(data = NPD_oly_DTW_outlier %>% 
                            filter(DTW_outlier == FALSE),
                          tissue_dry_weight_g ~ length_mm)
 
-summary(Oly_DTZW_lm_rm_out)
+summary(Oly_DTW_lm_rm_out)
 ```
 
 ### Diagnostic plots
 ```{r}
 par(mfrow=c(2,2))
-plot(Oly_DTZW_lm_rm_out)
+plot(Oly_DTW_lm_rm_out)
 ```
 
-```{r eval=FALSE, include=FALSE}
-## Test sbs correction - SBS corrections applied correctly
-NPD_41519_Filter_plot <- fread(file.path("./output/2_Manual_Corrections_Applied", "Insitu_Filter_NPD_41519.csv"))
-NPD_41519_Filter_plot <- NPD_41519_Filter_plot %>% 
-  filter(Experiment == 'Filtration') 
+### Total Wet Weight vs Dry Tissue Weight
+```{r}
+Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  theme_classic() +
+  labs(x = 'Total wet weight (g)',
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Total Wet Weight - Newport, CA') +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "top")
+plot(Oly_TWW_DTW)
+```
 
-(regular <- ggplot(NPD_41519_Filter_plot, aes(Time, Chl_ug_L, group = Position, color = Position)) + 
-  geom_point())
+### TWW vs DTW (remove outlier)
+```{r}
+# use DTW outlier data to plot graph
+Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_DTW_outlier %>% 
+                                  filter(DTW_outlier == FALSE),
+                        aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  theme_classic() +
+  labs(x = 'Total wet weight (g)',
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Total Wet Weight - Newport, CA') +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+plot(Oly_TWW_DTW_rm_out)
+```
+***
+Gray and Langdon (2017): "Unless explicitly mentioned, DTW of experimental oysters was estimated using the species-specific allometric relationship between DTW and total wet weight (TWW), which were determined in preliminary analysis (O. lurida: DTW = 0.0044TWW − 0.043, R2 =0.93, F1,32 =78.80, p value <0.0001; C. gigas: DTW = 0.039TWW − 0.06, R2 =0.89, F1,29 = 225.97, p value <0.0001).
 
-NPD_41519_Filter_plot_sbs <- fread(file.path("./output/3_Sbs_Corrections_Applied", "Insitu_Filter_NPD_41519.csv"))
-NPD_41519_Filter_plot_sbs <- NPD_41519_Filter_plot_sbs %>% 
-  filter(Experiment == 'Filtration')
+### Linear model without outlier
+```{r}
+Oly_TWW_DTW_lm_rm_out <- lm(data = NPD_oly_DTW_outlier %>% 
+                           filter(DTW_outlier == FALSE),
+                         tissue_dry_weight_g ~ total_wet_weight_g)
 
-(adjusted <- ggplot(NPD_41519_Filter_plot_sbs, aes(Time, Chl_ug_L, group = Position, color = Position)) + 
-  geom_point())
+summary(Oly_TWW_DTW_lm_rm_out)
+```
 
+### Diagnostic plots
+```{r}
+par(mfrow=c(2,2))
+plot(Oly_TWW_DTW_lm_rm_out)
 ```
 
 Up & Down Chl
 =====================================
 
 ### Facet Plots
-```{r Bar Graphs up vs down, eval=FALSE, include=FALSE}
+```{r Bar_Graphs_up_vs_down, eval=FALSE, include=FALSE}
 Bar_up_down_data <- Master_analysis_table %>%
   select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
   rename(Upstream = Chl_ug_L_Up, Downstream = Chl_ug_L_Down) %>%  
@@ -1002,7 +1036,7 @@ plot(Paired_bar_chl_graph)
 ```
 
 ### Graphs using grid.arrange()
-```{r eval=FALSE, include=FALSE}
+```{r Bar_Graphs_up_vs_down_grid.arrange, eval=FALSE, include=FALSE}
 ############## Try 2 ####### make separate graphs, combine using grid.arrange()
 
 ##### Check Dates in final graph - Don't look right - AM 2020_3_22
