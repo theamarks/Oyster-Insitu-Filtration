@@ -2,6 +2,7 @@
 title: "In situ Filtration Analysis Graphs"
 output: 
   flexdashboard::flex_dashboard:
+    vertical_layout: scroll
     theme: yeti
 editor_options: 
   chunk_output_type: console
@@ -90,10 +91,8 @@ LM_PrctChl_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
 
 summary(LM_PrctChl_All)
 ```
-*** 
-I'm not sure if narrowing down the data to Filtration Trials only and then only significant Filtration trials helps predict. Wouldn't the model be stronger if all the data was included? 
-
-How about bivalve density - the numbers are the same for each site across trials- essentially the same as Site effect?
+ 
+> I'm not sure if narrowing down the data to Filtration Trials only and then only significant Filtration trials helps predict. Wouldn't the model be stronger if all the data was included? How about bivalve density - the numbers are the same for each site across trials- essentially the same as Site effect?
 
 ### LM - Filtraiton Trials Only
 ```{r LM_PrctChl_Filter, fig.height=15, fig.width=6, cache=TRUE}
@@ -753,9 +752,8 @@ TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio
                label.y = "bottom")
 plot(TPM_OC)
 ```
-***
 
-No reason to exclude that low NPD value right?
+> No reason to exclude that low NPD value right?
 
 ```{r eval=FALSE, include=FALSE}
 ##  No reason to exclude low data point
@@ -795,9 +793,8 @@ OC_TPM_by_Site <- Avg_TPM_summary_table %>%
                label.y = "bottom")
 plot(OC_TPM_by_Site)
 ```
-*** 
 
-Large spread of relationship among sites. Different TPM:OC signatures and relationships at different sites.
+> Large spread of relationship among sites. Different TPM:OC signatures and relationships at different sites.
 
 ### TPM vs OC by sites
 ```{r TPM_OC_Sites, fig.height=10, fig.width=12,}
@@ -893,9 +890,8 @@ Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
 
 plot(Oly_shell_DTW)
 ```
-***
 
-Outlier probably sample processing error or error in data entry. 
+> Outlier probably sample processing error or error in data entry. 
 
 ### DTW Shell length Outlier analysis (mean -+ SD * 2.2)
 ```{r Oly_DTW_Shell_length_outier_removed}
@@ -932,9 +928,8 @@ Oly_shell_DTW_rm_out <- ggplot(NPD_oly_DTW_outlier %>%
 
 plot(Oly_shell_DTW_rm_out)
 ```
-***
 
-Shell length explains 48% of Dry Tissue Weight. Compare this relationship to Gray & Langdon (Yaquina Bay)
+> Shell length explains 48% of Dry Tissue Weight. Compare this relationship to Gray & Langdon (Yaquina Bay)
 
 ### Linear model without outlier
 ```{r}
@@ -989,9 +984,8 @@ Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_DTW_outlier %>%
                label.y = "bottom")
 plot(Oly_TWW_DTW_rm_out)
 ```
-***
 
-Gray and Langdon (2017): "Unless explicitly mentioned, DTW of experimental oysters was estimated using the species-specific allometric relationship between DTW and total wet weight (TWW), which were determined in preliminary analysis (O. lurida: DTW = 0.0044TWW − 0.043, R2 =0.93, F1,32 =78.80, p value <0.0001; C. gigas: DTW = 0.039TWW − 0.06, R2 =0.89, F1,29 = 225.97, p value <0.0001).
+> Gray and Langdon (2017): "Unless explicitly mentioned, DTW of experimental oysters was estimated using the species-specific allometric relationship between DTW and total wet weight (TWW), which were determined in preliminary analysis (O. lurida: DTW = 0.0044TWW − 0.043, R2 =0.93, F1,32 =78.80, p value <0.0001; C. gigas: DTW = 0.039TWW − 0.06, R2 =0.89, F1,29 = 225.97, p value <0.0001).
 
 ### Linear model without outlier
 ```{r}
