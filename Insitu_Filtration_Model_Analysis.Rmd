@@ -25,7 +25,7 @@ library(ggpmisc) # package for adding line equation and R^2 to plots
 library(viridis) # Color palette for Restoration Area - Options: magma , inferno, plasma, viridis, cividis
 library(scales)
 library(cowplot) # for arranging multiple plots into a single figure
-library(RColorBrewer)
+library(wesanderson)
 
 # source functions 
 source("functions.R")
@@ -1179,7 +1179,7 @@ Bivalve Density
 =====================================
 
 ### Bivalve Density
-```{r Bivalve_Density}
+```{r Bivalve_Density, fig.height=6, fig.width=8}
 # read in bivalve density data from cleaned data file
 Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
 
@@ -1207,6 +1207,8 @@ Species_colors <- rev(wes_palette("IsleofDogs1", 7, type = c("continuous")))
 # Stacked bar graph
 Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) + 
   geom_col(aes(x = Site, y = individuals_m2, fill = Species)) +
+  geom_text(aes(label = round(Bivalve_den_m2,0), y = Bivalve_den_m2), 
+            vjust = -0.5) +
   theme_classic() +
   scale_fill_manual(values = Species_colors) +
   scale_y_continuous(breaks = seq(0, max(Bivalve_Den_data$Bivalve_den_m2), by = 500)) +
@@ -1214,6 +1216,8 @@ Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) +
   
 Bivalve_Den_graph
 ```
+
+> Data for each site is from a single survey
 
 ```{r Species_Density_Graphs, eval=FALSE, cache=TRUE, include=FALSE}
 # Graph Density by Species, exclude absent species
