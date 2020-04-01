@@ -913,11 +913,12 @@ find_outlier <- function(data){
 }
 
 # Remove outlier from graph 
-NPD_oly_DTW_outlier <- NPD_oly %>%
-  mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g))
+NPD_oly_DTW <- NPD_oly %>%
+  mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
+  filter(DTW_outlier == FALSE)
+
 # Graph with outliers removed
-Oly_shell_DTW_rm_out <- ggplot(NPD_oly_DTW_outlier %>% 
-                                  filter(DTW_outlier == FALSE), 
+Oly_shell_DTW_rm_out <- ggplot(NPD_oly_DTW, 
                                 aes(length_mm, tissue_dry_weight_g)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -941,17 +942,26 @@ plot(Oly_shell_DTW_rm_out)
 
 ### Linear model without outlier
 ```{r}
-Oly_DTW_lm_rm_out <- lm(data = NPD_oly_DTW_outlier %>% 
+Oly_DTW_lm <- lm(data = NPD_oly_DTW_outlier %>% 
                            filter(DTW_outlier == FALSE),
                          tissue_dry_weight_g ~ length_mm)
 
-summary(Oly_DTW_lm_rm_out)
+summary(Oly_DTW_lm)
 ```
 
 ### Diagnostic plots
 ```{r}
 par(mfrow=c(2,2))
-plot(Oly_DTW_lm_rm_out)
+plot(Oly_DTW_lm)
+```
+
+### Quadratic model
+```{r}
+length2 <- length_mm^2
+
+Oly_DTW_Quad <- lm(data = NPD_oly_DTW_outlier %>% 
+                           filter(DTW_outlier == FALSE),
+                         tissue_dry_weight_g ~ length_mm)
 ```
 
 ### Total Wet Weight vs Dry Tissue Weight
@@ -1218,6 +1228,12 @@ Bivalve_Den_graph
 ```
 
 > Data for each site is from a single survey
+
+### Biomass estimate by Site
+```{r}
+Bivalve_Biomass_Data <- Bivalve_Den_data %>% 
+  
+```
 
 ```{r Species_Density_Graphs, eval=FALSE, cache=TRUE, include=FALSE}
 # Graph Density by Species, exclude absent species
