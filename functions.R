@@ -641,8 +641,8 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
                      Mean_Chl_diff = mean(Chl_diff),
                      StDev_Chl_diff = sd(Chl_diff),
                      StEr_Chl_diff = sd(Chl_diff)/sqrt(length(Chl_diff)),
-                     L_hr_m2 = mean(L_hr_m2)) %>%
-                     pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd),
+                     L_hr_m2 = mean(L_hr_m2),
+                     pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd)) %>% 
                      
     data.frame() %>%
     dplyr::mutate(File_Name = aFileName) %>%
