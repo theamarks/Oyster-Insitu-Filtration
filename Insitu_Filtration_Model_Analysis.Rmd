@@ -86,19 +86,18 @@ Chl % Removed - LM
 ```{r LM_Prct_Chl_All, fig.height=15, fig.width=6, cache=TRUE}
 
 LM_PrctChl_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
-                         # site logic variables - SR not included - would break model
-                         Master_analysis_table$NPD + Master_analysis_table$NPSM + Master_analysis_table$MB + 
-                         # Filtration Trial - T or F
-                         Master_analysis_table$Filter_trial +
-                         # Field notes logic variables
-                         Master_analysis_table$Wind + Master_analysis_table$G_upstream + Master_analysis_table$Daylight +
-                         Master_analysis_table$Sonde_fell + Master_analysis_table$Boat_wake + Master_analysis_table$Algae +
-                         # Quantatative variables
-                         Master_analysis_table$Temp_C_Up + Master_analysis_table$Sal_ppt_Up +
-                         Master_analysis_table$Turbidity_NTU_Up + Master_analysis_table$Chl_ug_L_Up +
-                         Master_analysis_table$avg_depth_cm + Master_analysis_table$d_bw_sondes_m +
-                         Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_OC_Ratio ) 
-                         # Bivavle density is essentially the same as site, not sure if needed. May be appropriate NPD vs NPSM  
+                        # site logic variables - SR not included - would break model
+                       Master_analysis_table$NPD + Master_analysis_table$NPSM + 
+                       Master_analysis_table$MB + Master_analysis_table$Filter_trial +
+                       Master_analysis_table$Wind + Master_analysis_table$G_upstream + 
+                       Master_analysis_table$Daylight + Master_analysis_table$Sonde_fell + 
+                       Master_analysis_table$Boat_wake + Master_analysis_table$Algae +
+                        # Quantatative variables
+                       Master_analysis_table$Temp_C_Up + Master_analysis_table$Sal_ppt_Up +
+                       Master_analysis_table$Turbidity_NTU_Up + Master_analysis_table$Chl_ug_L_Up +
+                       Master_analysis_table$avg_depth_cm + Master_analysis_table$d_bw_sondes_m +
+                       Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_OC_Ratio ) 
+                        # Bivavle density is essentially the same as site, not sure if needed. May be appropriate NPD vs NPSM  
                          #Master_analysis_table$Bivalve_den_m2)
 
 summary(LM_PrctChl_All)
@@ -113,10 +112,13 @@ Filtration_only_Analysis <- Master_analysis_table %>%
 
 LM_PrctChl_Filter <- lm(Filtration_only_Analysis$pcnt_Chl_rmvd ~
                          # site logic variables - SR not included - would break model to include all sites
-                         Filtration_only_Analysis$NPD + Filtration_only_Analysis$NPSM + Filtration_only_Analysis$MB + 
+                         Filtration_only_Analysis$NPD + Filtration_only_Analysis$NPSM + 
+                         Filtration_only_Analysis$MB + 
                          # Field notes logic variables
-                         Filtration_only_Analysis$Wind + Filtration_only_Analysis$G_upstream + Filtration_only_Analysis$Daylight +
-                         Filtration_only_Analysis$Sonde_fell + Filtration_only_Analysis$Boat_wake + Filtration_only_Analysis$Algae +
+                         Filtration_only_Analysis$Wind + Filtration_only_Analysis$G_upstream +
+                         Filtration_only_Analysis$Daylight +
+                         Filtration_only_Analysis$Sonde_fell + Filtration_only_Analysis$Boat_wake + 
+                         Filtration_only_Analysis$Algae +
                          # Quantatative variables
                          Filtration_only_Analysis$Temp_C_Up + Filtration_only_Analysis$Sal_ppt_Up +
                          Filtration_only_Analysis$Turbidity_NTU_Up + Filtration_only_Analysis$Chl_ug_L_Up +
@@ -128,9 +130,10 @@ summary(LM_PrctChl_Filter)
 
 ### LM - Filtration Trials w/ sig Filtration
 ```{r LM_PrctChl_sigFilter, fig.height=15, fig.width=6, cache=TRUE}
-# Filtration Trials with significant Chl_diff
+# Filtration trials only - exclude Negative controls & Percent Chl removed greater than 0
 FilterWithFiltration <- Master_analysis_table %>% 
-  filter(p.value <= 0.05 & Filter_trial == TRUE)
+  filter(Experiment %in% c("Filtration") & pcnt_Chl_rmvd > 0)
+
   
 LM_PrctChl_sigFilter <- lm(FilterWithFiltration$pcnt_Chl_rmvd ~
                          # site logic variables 
@@ -524,6 +527,17 @@ FR_temp_lm <- lm(data = Filter_data, L_hr_m2 ~ Temp_C_Up)
 summary(FR_temp_lm)
 ```
 
+### Percent Chl removed X Temp Linear Model (All filtration)
+```{r}
+Prt_Chl_temp_lm <- lm(data = Filter_data, pcnt_Chl_rmvd ~ Temp_C_Up)
+summary(Prt_Chl_temp_lm)
+```
+
+```{r}
+Prt_Chl_temp_pos_lm <- lm(data = Chl_Rmd_data_pos, pcnt_Chl_rmvd ~ Temp_C_Up)
+summary(Prt_Chl_temp_lm)
+```
+
 ### Diagnostic Plots
 ```{r}
 par(mfrow=c(2,2))
@@ -886,6 +900,7 @@ NPD_oly <- NPD_density %>%
   as_tibble() 
 
 Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
+  geom_smooth(method = lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point() +
   #scale_color_manual(values = Site_colors, guide=FALSE) + 
   theme_classic() +
@@ -893,7 +908,6 @@ Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
        y = 'Dry Tissue Weight (g)',
        title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
        subtitle = 'With outlier (bad data)') +
-  geom_smooth(method = lm, se=TRUE, level=0.95, color = 'grey50') +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
@@ -964,7 +978,7 @@ plot(Oly_DTW_lm)
 ```
 
 ### Quadratic model x^2
-```{r Quad_model_DTW_length}
+```{r Quad_model_DTW_length_2}
 #Quadratic model using length^2
 length_2 <- NPD_oly_outRmd$length_mm^2
 
@@ -1004,7 +1018,7 @@ plot(Oly_DTW_Quad_graph)
 > stat_poly_eq() draws different equation doesn't match the line drawn... Why???! Should be y = 4.166e-03 + 8.270e-05 x^2 stat_poly_eq() "It supports only linear models fitted with function lm()"
 
 ### Quadratic model x^3
-```{r Quad_model_DTW_length}
+```{r Quad_model_DTW_length_3}
 #Quadratic model using length^2
 length_3 <- NPD_oly_outRmd$length_mm^3
 
@@ -1016,7 +1030,7 @@ summary(Oly_DTW_Quad)
 > doesn't fit better
 
 ### Exponential model
-```{r Quad_model_DTW_length}
+```{r Quad_model_DTW_length_4}
 #Quadratic model using length and length^2
 Oly_DTW_Exp <- lm(data = NPD_oly_outRmd,
                    log(tissue_dry_weight_g) ~ length_mm)
@@ -1064,8 +1078,7 @@ plot(Oly_TWW_DTW)
 ### TWW vs DTW (remove outlier)
 ```{r}
 # use DTW outlier data to plot graph
-Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_DTW_outlier %>% 
-                                  filter(DTW_outlier == FALSE),
+Oly_TWW_DTW_rm_out <- ggplot(Oly_shell_DTW_rm_out,
                         aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors, guide=FALSE) + 
