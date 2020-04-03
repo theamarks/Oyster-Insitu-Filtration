@@ -773,7 +773,7 @@ summary(ChlRmdPos_Chl_lm)
 > Chl almost significant predictor of Chl Rmd (Pos Filter)
 
 ### Turbidity
-```{r FR_Turbidity, fig.height=10, fig.width=12, echo=FALSE}
+```{r Filter_Turbidity, fig.height=10, fig.width=12, echo=FALSE}
 FR_Turb <- ggplot(Filtration_only_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -801,6 +801,7 @@ Chl_Rmd_Turb <- ggplot(Filtration_only_data, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd
                parse = TRUE,
                label.x = "right",
                label.y = "bottom")
+
 FR_pos_Turb <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -815,7 +816,7 @@ FR_pos_Turb <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_pos_Turb <- ggplot(Chl_Rmd_data_pos, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd)) +
+Chl_Rmd_pos_Turb <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) + 
@@ -832,16 +833,28 @@ Chl_Rmd_pos_Turb <- ggplot(Chl_Rmd_data_pos, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd
 grid.arrange(FR_Turb, Chl_Rmd_Turb, FR_pos_Turb, Chl_Rmd_pos_Turb, nrow =2)
 ```
 
-### FR by Turbidity Linear Model
+### FR by Turbidity LM
 ```{r}
 FR_Turb_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Turbidity_NTU_Up)
 summary(FR_Turb_lm)
 ```
 
-### Diagnostic Plots
+### ChlRmd by Turbidity LM
 ```{r}
-par(mfrow=c(2,2))
-plot(FR_Turb_lm)
+ChlRmd_Turb_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Turbidity_NTU_Up)
+summary(ChlRmd_Turb_lm)
+```
+
+### FR Pos by Turbidity LM
+```{r}
+FRPos_Turb_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Turbidity_NTU_Up)
+summary(FRPos_Turb_lm)
+```
+
+### ChlRmd Pos by Turbidity LM
+```{r}
+ChlRmdPos_Turb_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Turbidity_NTU_Up)
+summary(ChlRmdPos_Turb_lm)
 ```
 
 TPM & OC
@@ -866,37 +879,18 @@ plot(TPM_OC)
 
 > No reason to exclude that low NPD value right?
 
-```{r eval=FALSE, include=FALSE}
-##  No reason to exclude low data point
-TPM_OC_no_ND_low <- ggplot(data = (Avg_TPM_summary_table %>% filter(!(Site == "Deanza") | !(Date == "4/18/19"))),
-                             aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) + 
-  scale_color_manual(values = Site_colors) + 
-  labs(x = "Total Particulate Matter", y = "Average Organic Content Ratio", title = "TPM --> OC", 
-       subtitle = "Excluding NPD 4/18/19") + 
-  theme_classic() +
-  #geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-plot(TPM_OC_no_ND_low)
-```
-
 ### Individual Sites TPM vs OC
-```{r TPM_OC_facet - By Site, echo=FALSE}
+```{r TPM_OC - By Site, echo=FALSE}
 OC_TPM_by_Site <- Avg_TPM_summary_table %>% 
-  ggplot(aes(x = Avg_TPM, y = Avg_OC_Ratio, group = Site)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  ggplot(aes(x = Avg_TPM, y = Avg_OC_Ratio, color = Site)) +
   geom_point(aes(color = Site)) + 
+  geom_smooth(method=lm, se=TRUE, level=0.95) +
   scale_color_manual(values = Site_colors, guide=FALSE) + 
   theme_classic() +
   labs(x = TPM_Label,
        y = 'Average Organic Content Ratio',
        title = 'OC predicted by TPM (g/L)') +
-  facet_wrap(~ Site) +
+  #facet_wrap(~ Site) +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
@@ -971,6 +965,40 @@ TPM_OC_MB <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay"
 
 grid.arrange(TPM_OC_Deanza, TPM_OC_NPSM, TPM_OC_SR, TPM_OC_MB, nrow = 2)
 ```
+
+### San Rafael TMP by OC
+```{r}
+TPM_SR <- Avg_TPM_summary_table %>% filter(Site == "San Rafael")
+
+OC_TPM_SR_LM <- lm(data = TPM_SR, Avg_OC_Ratio ~ Avg_TPM)
+summary(OC_TPM_SR_LM)
+```
+
+### Morro Bay TMP by OC
+```{r}
+TPM_MB <- Avg_TPM_summary_table %>% filter(Site == "Morro Bay")
+
+OC_TPM_MB_LM <- lm(data = TPM_MB, Avg_OC_Ratio ~ Avg_TPM)
+summary(OC_TPM_MB_LM)
+```
+
+### Shellmaker TMP by OC
+```{r}
+TPM_NPSM <- Avg_TPM_summary_table %>% filter(Site == "Shellmaker")
+
+OC_TPM_NPSM_LM <- lm(data = TPM_NPSM, Avg_OC_Ratio ~ Avg_TPM)
+summary(OC_TPM_NPSM_LM)
+```
+
+### Deanza TMP by OC
+```{r}
+TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
+
+OC_TPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ Avg_TPM)
+summary(OC_TPM_NPD_LM)
+```
+
+> almost significant 
 
 DTW - Shell length
 =====================================
