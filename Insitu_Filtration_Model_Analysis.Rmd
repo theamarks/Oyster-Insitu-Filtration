@@ -57,6 +57,14 @@ site_by_lat <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza")
 # transform Site variable to factor and arange by Latitude
 Master_analysis_table <- arrange(transform(Master_analysis_table, Site = factor(Site,levels = site_by_lat)), Site)
 
+ # Filtration trials only - exclude Negative controls
+Filtration_only_data <- Master_analysis_table %>% 
+  filter(Experiment %in% c("Filtration"))
+
+# Filtration trials only - exclude Negative controls & Percent Chl removed greater than 0
+Filtration_pos_data <- Master_analysis_table %>% 
+  filter(Experiment %in% c("Filtration") & pcnt_Chl_rmvd > 0)
+
 # Assign colors to each Site
 viridis(4)
 Site_colors <- c("San Rafael" = "#440154FF",
@@ -106,66 +114,63 @@ summary(LM_PrctChl_All)
 > I'm not sure if narrowing down the data to Filtration Trials only and then only significant Filtration trials helps predict. Wouldn't the model be stronger if all the data was included? How about bivalve density - the numbers are the same for each site across trials- essentially the same as Site effect?
 
 ### LM - Filtraiton Trials Only
-```{r LM_PrctChl_Filter, fig.height=15, fig.width=6, cache=TRUE}
-Filtration_only_Analysis <- Master_analysis_table %>% 
-  filter(Experiment %in% c("Filtration")) # Filtration trials only - exclude Negative controls
-
-LM_PrctChl_Filter <- lm(Filtration_only_Analysis$pcnt_Chl_rmvd ~
+```{r LM_PrctChl_Filter_only, fig.height=15, fig.width=6, cache=TRUE}
+# Filtration Trials only - no Negative Controls
+LM_PrctChl_Filter <- lm(Filtration_only_data$pcnt_Chl_rmvd ~
                          # site logic variables - SR not included - would break model to include all sites
-                         Filtration_only_Analysis$NPD + Filtration_only_Analysis$NPSM + 
-                         Filtration_only_Analysis$MB + 
+                         Filtration_only_data$NPD + Filtration_only_data$NPSM + 
+                         Filtration_only_data$MB + 
                          # Field notes logic variables
-                         Filtration_only_Analysis$Wind + Filtration_only_Analysis$G_upstream +
-                         Filtration_only_Analysis$Daylight +
-                         Filtration_only_Analysis$Sonde_fell + Filtration_only_Analysis$Boat_wake + 
-                         Filtration_only_Analysis$Algae +
+                         Filtration_only_data$Wind + Filtration_only_data$G_upstream +
+                         Filtration_only_data$Daylight +
+                         Filtration_only_data$Sonde_fell + Filtration_only_data$Boat_wake + 
+                         Filtration_only_data$Algae +
                          # Quantatative variables
-                         Filtration_only_Analysis$Temp_C_Up + Filtration_only_Analysis$Sal_ppt_Up +
-                         Filtration_only_Analysis$Turbidity_NTU_Up + Filtration_only_Analysis$Chl_ug_L_Up +
-                         Filtration_only_Analysis$avg_depth_cm + Filtration_only_Analysis$d_bw_sondes_m +
-                         Filtration_only_Analysis$avg_m_hr + Filtration_only_Analysis$Avg_OC_Ratio)
+                         Filtration_only_data$Temp_C_Up + Filtration_only_data$Sal_ppt_Up +
+                         Filtration_only_data$Turbidity_NTU_Up + Filtration_only_data$Chl_ug_L_Up +
+                         Filtration_only_data$avg_depth_cm + Filtration_only_data$d_bw_sondes_m +
+                         Filtration_only_data$avg_m_hr + Filtration_only_data$Avg_OC_Ratio)
 
 summary(LM_PrctChl_Filter)
 ```
 
-### LM - Filtration Trials w/ sig Filtration
-```{r LM_PrctChl_sigFilter, fig.height=15, fig.width=6, cache=TRUE}
-# Filtration trials only - exclude Negative controls & Percent Chl removed greater than 0
-FilterWithFiltration <- Master_analysis_table %>% 
-  filter(Experiment %in% c("Filtration") & pcnt_Chl_rmvd > 0)
+### LM - Filtration Trials w/ positive Percent Chl removal
+```{r LM_PrctChl_positive, fig.height=15, fig.width=6, cache=TRUE}
 
-  
-LM_PrctChl_sigFilter <- lm(FilterWithFiltration$pcnt_Chl_rmvd ~
+# Positive Percent Chl removed trials only
+LM_PrctChl_pos <- lm(Filtration_pos_data$pcnt_Chl_rmvd ~
                          # site logic variables 
-                         FilterWithFiltration$NPD + FilterWithFiltration$NPSM + FilterWithFiltration$MB + 
+                         Filtration_pos_data$NPD + Filtration_pos_data$NPSM + Filtration_pos_data$MB + 
                          # Field notes logic variables
-                         FilterWithFiltration$Wind + FilterWithFiltration$G_upstream + FilterWithFiltration$Daylight +
-                         FilterWithFiltration$Sonde_fell + FilterWithFiltration$Boat_wake + #FilterWithFiltration$Algae +
+                         Filtration_pos_data$Wind + Filtration_pos_data$G_upstream + Filtration_pos_data$Daylight +
+                         Filtration_pos_data$Sonde_fell + Filtration_pos_data$Boat_wake + #Filtration_pos_data$Algae +
                          # Quantatative variables
-                         FilterWithFiltration$Temp_C_Up + FilterWithFiltration$Sal_ppt_Up +
-                         FilterWithFiltration$Turbidity_NTU_Up + FilterWithFiltration$Chl_ug_L_Up +
-                         FilterWithFiltration$avg_depth_cm + FilterWithFiltration$d_bw_sondes_m +
-                         FilterWithFiltration$avg_m_hr + FilterWithFiltration$Avg_OC_Ratio)
+                         Filtration_pos_data$Temp_C_Up + Filtration_pos_data$Sal_ppt_Up +
+                         Filtration_pos_data$Turbidity_NTU_Up + Filtration_pos_data$Chl_ug_L_Up +
+                         Filtration_pos_data$avg_depth_cm + Filtration_pos_data$d_bw_sondes_m +
+                         Filtration_pos_data$avg_m_hr + Filtration_pos_data$Avg_OC_Ratio)
 
-summary(LM_PrctChl_sigFilter)
+summary(LM_PrctChl_pos)
 ```
+
+> exausted the degrees of freedom. Try addative model instead of comprehensive model. Based on literature. Temperature, Salinity, Organic Content, wind, water velocity, avg_depth 
+
 
 FR X TPM
 =====================================
 
 ### Filtration by site (all data)
 ```{r FR vs TPM, fig.height=5, fig.width=12, cache=TRUE}
-Filter_data <- Master_analysis_table %>% 
-                     filter(Experiment == "Filtration")
+# Filtration_only_data defined in setup
 
-FR_TPM_box <- ggplot((Filter_data), aes(Site, L_hr_m2)) +
+FR_TPM_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Hab_FR_Label)
 
-Chl_Rmd_TPM_box <- ggplot(Filter_data, aes(Site, pcnt_Chl_rmvd)) +
+Chl_Rmd_TPM_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
@@ -178,11 +183,9 @@ grid.arrange(FR_TPM_box, Chl_Rmd_TPM_box, nrow = 1)
 
 ### Filtration by site (Positive values only) 
 ```{r FR by site positive only, fig.height=5, fig.width=12, cache=TRUE}
-FR_data_pos <- Master_analysis_table %>% 
-                     filter(Experiment == "Filtration" &
-                            L_hr_m2 > 0)
+# Filtration_pos_data defined in setup
 
-FR_TPM_box_pos <- ggplot((FR_data_pos), aes(Site, L_hr_m2)) +
+FR_TPM_box_pos <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
@@ -206,8 +209,8 @@ grid.arrange(FR_TPM_box_pos, Chl_Rmd_box_pos, nrow = 1)
 ```
 
 ### Filtration vs TPM (Filtration Trials only)
-```{r, fig.height=5, fig.width=12, cache=TRUE}
-FR_TPM_graph <- ggplot((Filter_data), aes(Avg_TPM, L_hr_m2 )) +
+```{r, Filter by TPM filter only, fig.height=5, fig.width=12, cache=TRUE}
+FR_TPM_graph <- ggplot((Filtration_only_data), aes(Avg_TPM, L_hr_m2 )) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
@@ -224,7 +227,7 @@ FR_TPM_graph <- ggplot((Filter_data), aes(Avg_TPM, L_hr_m2 )) +
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_TPM_graph <- ggplot((Filter_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
+Chl_Rmd_TPM_graph <- ggplot((Filtration_only_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
@@ -245,16 +248,66 @@ grid.arrange(FR_TPM_graph, Chl_Rmd_TPM_graph, nrow = 1)
 ```
 
 ### FR TPM Linear Model
-```{r, cache=TRUE}
-FR_TPM_lm <- lm(data = Filter_data, L_hr_m2 ~ Avg_TPM)
+```{r LM FR x TPM, cache=TRUE}
+FR_TPM_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Avg_TPM)
 summary(FR_TPM_lm)
 ```
 
-### diagnostic plots
-```{r, cache=TRUE}
-par(mfrow=c(2,2))
-plot(FR_TPM_lm)
+### ChlRmd TPM Linear Model
+```{r LM ChlRmd x TPM , cache=TRUE}
+ChlRmd_TPM_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Avg_TPM)
+summary(ChlRmd_TPM_lm)
+```
 
+### Filtration vs TPM (Positive Filtration Trials only)
+```{r , fig.height=5, fig.width=12, cache=TRUE}
+FRPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, L_hr_m2 )) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Hab_FR_Label,
+       title = 'Pos Filtration Trials') +
+  guides(fill = FALSE) +
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Prt_Chl_Label,
+       title = 'Pos Filtration Trials') +
+  guides(fill = FALSE) +
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+grid.arrange(FRPos_TPM_graph, Chl_RmdPos_TPM_graph, nrow = 1)
+```
+
+### FR Pos TPM Linear Model
+```{r, cache=TRUE}
+FRPos_TPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_TPM)
+summary(FR_TPM_lm)
+```
+
+###ChlRmd Pos TPM Linear Model
+```{r, cache=TRUE}
+FRPos_TPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_TPM)
+summary(FRPos_TPM_lm)
 ```
 
 Filtration X OC 
@@ -262,7 +315,7 @@ Filtration X OC
 
 ### Filtration vs OC
 ```{r FR vs OC, fig.height=5, fig.width=12, cache=TRUE}
-FR_OC_graph <- ggplot(Filter_data, aes(Avg_OC_Ratio, L_hr_m2)) +
+FR_OC_graph <- ggplot(Filtration_only_data, aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +
@@ -278,8 +331,8 @@ FR_OC_graph <- ggplot(Filter_data, aes(Avg_OC_Ratio, L_hr_m2)) +
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_OC_graph <- ggplot(Filter_data, aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
-  geom_smooth(se = T, level = 0.95, color = 'grey50') +
+Chl_Rmd_OC_graph <- ggplot(Filtration_only_data, aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +
   theme_classic() +
@@ -298,19 +351,69 @@ grid.arrange(FR_OC_graph, Chl_Rmd_OC_graph, nrow = 1)
 
 ### FR by OC Linear Model
 ```{r, cache =TRUE}
-FR_OC_lm <- lm(data = Filter_data, L_hr_m2 ~ Avg_OC_Ratio)
+FR_OC_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Avg_OC_Ratio)
 summary(FR_OC_lm)
 ```
 
-### Diagnosic Plots
-```{r}
-par(mfrow=c(2,2))
-plot(FR_OC_lm)
+### ChlRmd by OC Linear Model
+```{r, cache =TRUE}
+ChlRmd_OC_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
+summary(ChlRmd_OC_lm)
 ```
+
+### Filter Positive vs OC
+```{r FR vs OC, fig.height=5, fig.width=12, cache=TRUE}
+FRPos_OC_graph <- ggplot(Filtration_pos_data, aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Organic Content of Seston (fraction)',
+       y = Hab_FR_Label,
+       title = 'All Filtration Trials') +
+  guides(fill = FALSE) +
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+Chl_RmdPos_OC_graph <- ggplot(Filtration_pos_data, aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Organic Content of Seston (fraction)',
+       y = Prt_Chl_Label,
+       title = 'All Filtration Trials') +
+  guides(fill = FALSE) +
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+grid.arrange(FRPos_OC_graph, Chl_RmdPos_OC_graph, nrow = 1)
+```
+
+### FR Pos by OC Linear Model
+```{r, cache =TRUE}
+FRPos_OC_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_OC_Ratio)
+summary(FRPos_OC_lm)
+```
+
+### ChlRmd Pos by OC Linear Model
+```{r, cache =TRUE}
+ChlRmdPos_OC_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
+summary(ChlRmdPos_OC_lm)
+```
+
+> Significant Avg_OC_Ratio *
 
 ### Deanza FR by OC
 ```{r Deanza_Filter_OC, fig.height=5, fig.width=12}
-FR_OC_NPD_graph <- ggplot(Filter_data %>% filter(Site == "Deanza"),
+FR_OC_NPD_graph <- ggplot(Filtration_only_data %>% filter(Site == "Deanza"),
                           aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -327,7 +430,7 @@ FR_OC_NPD_graph <- ggplot(Filter_data %>% filter(Site == "Deanza"),
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_OC_NPD_graph <- ggplot(Filter_data %>% filter(Site == "Deanza"),
+Chl_Rmd_OC_NPD_graph <- ggplot(Filtration_only_data %>% filter(Site == "Deanza"),
                           aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -348,27 +451,27 @@ grid.arrange(FR_OC_NPD_graph, Chl_Rmd_OC_NPD_graph, nrow = 1)
 
 ### Deanza FR by OC Linear Model
 ```{r}
-FR_OC_NPD_lm <- lm(data = (Filter_data %>% filter(Site == "Deanza")), L_hr_m2 ~ Avg_OC_Ratio)
+FR_OC_NPD_lm <- lm(data = (Filtration_only_data %>% filter(Site == "Deanza")), L_hr_m2 ~ Avg_OC_Ratio)
 summary(FR_OC_NPD_lm)
 ```
 
-### Diagnostic plot
+### Deanza ChlRmd by OC Linear Model
 ```{r}
-par(mfrow=c(2,2))
-plot(FR_OC_NPD_lm)
+ChlRmd_OC_NPD_lm <- lm(data = (Filtration_only_data %>% filter(Site == "Deanza")), pcnt_Chl_rmvd ~ Avg_OC_Ratio)
+summary(ChlRmd_OC_NPD_lm)
 ```
 
-### Morro Bay FR by OC
-```{r}
-FR_OC_MB_graph <- ggplot(Filter_data %>%filter(Site == "Morro Bay"),
-                           aes(Avg_OC_Ratio, L_hr_m2)) +
+### Deanza FR Positive by OC
+```{r Deanza_Filter_Pos_OC, fig.height=5, fig.width=12}
+FRPos_OC_NPD_graph <- ggplot(Filtration_pos_data %>% filter(Site == "Deanza"),
+                          aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors, guide=FALSE) +  
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
-       y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Morro Bay Filtration Trials (Linear Model)') +
+       y = Hab_FR_Label,
+       title = 'Newport Deanza Positive Filtration Trials (Linear Model)') +
   guides(fill = FALSE) +
     # line equation on graph
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
@@ -376,85 +479,38 @@ FR_OC_MB_graph <- ggplot(Filter_data %>%filter(Site == "Morro Bay"),
                parse = TRUE,
                label.x = "right",
                label.y = "bottom")
-plot(FR_OC_MB_graph)
-```
 
-### MB FR by OC Linear Model
-```{r}
-FR_OC_MB_lm <- lm(data = (Filter_data %>% filter(Site == "Morro Bay")), L_hr_m2 ~ Avg_OC_Ratio)
-summary(FR_OC_MB_lm)
-```
-
-### Diagnositc plots
-```{r}
-par(mfrow=c(2,2))
-plot(FR_OC_NPD_lm)
-```
-
-### San Rafael FR by OC
-```{r}
-# San Rafael only
-FR_OC_SR_graph <- ggplot(Master_analysis_table %>% filter(Site == "San Rafael"),
-                           aes(Avg_OC_Ratio, L_hr_m2)) +
+Chl_RmdPos_OC_NPD_graph <- ggplot(Filtration_pos_data %>% filter(Site == "Deanza"),
+                          aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors, guide=FALSE) +  
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
-       y = 'Clearence Rate (L/hr/m^2)',
-       title = 'San Rafael Filtration Trials (Linear Model)') +
+       y = Prt_Chl_Label,
+       title = 'Newport Deanza Positive Filtration Trials (Linear Model)') +
   guides(fill = FALSE) +
+    # line equation on graph
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
                label.x = "right",
                label.y = "bottom")
-
-plot(FR_OC_SR_graph)
+grid.arrange(FRPos_OC_NPD_graph, Chl_RmdPos_OC_NPD_graph, nrow = 1)
 ```
 
-### SR FR by OC Linear Model
+### Deanza FR Positive by OC Linear Model
 ```{r}
-FR_OC_SR_lm <- lm(data = (Filter_data %>% filter(Site == "San Rafael")), L_hr_m2 ~ Avg_OC_Ratio)
-summary(FR_OC_SR_lm)
+FRPos_OC_NPD_lm <- lm(data = (Filtration_pos_data %>% filter(Site == "Deanza")), 
+                      L_hr_m2 ~ Avg_OC_Ratio)
+summary(FRPos_OC_NPD_lm)
 ```
 
-### Diagnostic plots
+### Deanza ChlRmd Positive by OC Linear Model
 ```{r}
-par(mfrow=c(2,2))
-plot(FR_OC_SR_lm)
-```
-
-### Shellmaker only
-```{r}
-FR_OC_NPSM_graph <- ggplot(Filter_data %>% filter(Site == "Shellmaker"),
-                           aes(Avg_OC_Ratio, L_hr_m2)) +
-  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors, guide=FALSE) +  
-  theme_classic() +
-  labs(x = 'Organic Content of Seston (fraction)',
-       y = 'Clearence Rate (L/hr/m^2)',
-       title = 'Shellmaker Filtration Trials (Linear Model)') +
-  guides(fill = FALSE) +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-plot(FR_OC_NPSM_graph)
-```
-
-### Shellmaker FR by OC Linear Model
-```{r}
-FR_OC_NPSM_lm <- lm(data = (Filter_data %>% filter(Site == "Shellmaker")), L_hr_m2 ~ Avg_OC_Ratio)
-summary(FR_OC_NPSM_lm)
-```
-
-### Diagnostic Plots
-```{r}
-par(mfrow=c(2,2))
-plot(FR_OC_NPSM_lm)
+ChlRmdPos_OC_NPD_lm <- lm(data = (Filtration_pos_data %>% filter(Site == "Deanza")), 
+                          pcnt_Chl_rmvd ~ Avg_OC_Ratio)
+summary(ChlRmdPos_OC_NPD_lm)
 ```
 
 L/hr/m^2 X WQ
@@ -462,7 +518,7 @@ L/hr/m^2 X WQ
 
 ### Temperature
 ```{r FR_Temp, fig.height=10, fig.width=12, echo=FALSE}
-FR_Temp <- ggplot(Filter_data, aes(Temp_C_Up, L_hr_m2)) +
+FR_Temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
@@ -476,7 +532,7 @@ FR_Temp <- ggplot(Filter_data, aes(Temp_C_Up, L_hr_m2)) +
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_Temp <- ggplot(Filter_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
+Chl_Rmd_Temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
@@ -490,7 +546,7 @@ Chl_Rmd_Temp <- ggplot(Filter_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
                label.x = "right",
                label.y = "bottom")
 
-FR_pos_Temp <- ggplot(FR_data_pos, aes(Temp_C_Up, L_hr_m2)) +
+FR_pos_Temp <- ggplot(Filtration_pos_data, aes(Temp_C_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
@@ -523,13 +579,13 @@ grid.arrange(FR_Temp, Chl_Rmd_Temp, FR_pos_Temp, Chl_Rmd_pos_Temp, nrow = 2)
 
 ### FR by Temp Linear Model
 ```{r}
-FR_temp_lm <- lm(data = Filter_data, L_hr_m2 ~ Temp_C_Up)
+FR_temp_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Temp_C_Up)
 summary(FR_temp_lm)
 ```
 
 ### Percent Chl removed X Temp Linear Model (All filtration)
 ```{r}
-Prt_Chl_temp_lm <- lm(data = Filter_data, pcnt_Chl_rmvd ~ Temp_C_Up)
+Prt_Chl_temp_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 summary(Prt_Chl_temp_lm)
 ```
 
@@ -547,7 +603,7 @@ plot(FR_temp_lm)
 ### Salinity
 ```{r FR_Salinity, fig.height=10, fig.width=12, echo=FALSE}
 
-FR_Sal <- ggplot(Filter_data, aes(Sal_ppt_Up, L_hr_m2)) +
+FR_Sal <- ggplot(Filtration_only_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
@@ -560,7 +616,7 @@ FR_Sal <- ggplot(Filter_data, aes(Sal_ppt_Up, L_hr_m2)) +
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_Sal <- ggplot(Filter_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
+Chl_Rmd_Sal <- ggplot(Filtration_only_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
@@ -573,7 +629,7 @@ Chl_Rmd_Sal <- ggplot(Filter_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
                label.x = "right",
                label.y = "bottom")
 
-FR_pos_Sal <- ggplot(FR_data_pos, aes(Sal_ppt_Up, L_hr_m2)) +
+FR_pos_Sal <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
@@ -606,7 +662,7 @@ grid.arrange(FR_Sal, Chl_Rmd_Sal, FR_pos_Sal, Chl_Rmd_pos_Sal, nrow = 2)
 
 ### FR by Salinity Linear Model
 ```{r}
-FR_Sal_lm <- lm(data = Filter_data, L_hr_m2 ~ Sal_ppt_Up)
+FR_Sal_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Sal_ppt_Up)
 summary(FR_Sal_lm)
 ```
 
@@ -618,7 +674,7 @@ plot(FR_Sal_lm)
 
 ### Chlorophyll 
 ```{r FR_Chl, fig.height=10, fig.width=12, echo=FALSE}
-FR_Chl <- ggplot(Filter_data, aes(Chl_ug_L_Up, L_hr_m2)) +
+FR_Chl <- ggplot(Filtration_only_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
@@ -631,7 +687,7 @@ FR_Chl <- ggplot(Filter_data, aes(Chl_ug_L_Up, L_hr_m2)) +
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_Chl <- ggplot(Filter_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
+Chl_Rmd_Chl <- ggplot(Filtration_only_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
@@ -644,7 +700,7 @@ Chl_Rmd_Chl <- ggplot(Filter_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
                label.x = "right",
                label.y = "bottom")
 
-FR_pos_Chl <- ggplot(FR_data_pos, aes(Chl_ug_L_Up, L_hr_m2)) +
+FR_pos_Chl <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
@@ -677,7 +733,7 @@ grid.arrange(FR_Chl, Chl_Rmd_Chl, FR_pos_Chl, Chl_Rmd_pos_Chl, nrow = 2)
 
 ### FR by Chl Linear Model
 ```{r}
-FR_Chl_lm <- lm(data = Filter_data, L_hr_m2 ~ Chl_ug_L_Up)
+FR_Chl_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Chl_ug_L_Up)
 summary(FR_Chl_lm)
 ```
 
@@ -689,7 +745,7 @@ plot(FR_Chl_lm)
 
 ### Turbidity
 ```{r FR_Turbidity, fig.height=10, fig.width=12, echo=FALSE}
-FR_Turb <- ggplot(Filter_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
+FR_Turb <- ggplot(Filtration_only_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) + 
@@ -703,7 +759,7 @@ FR_Turb <- ggplot(Filter_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_Turb <- ggplot(Filter_data, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd)) +
+Chl_Rmd_Turb <- ggplot(Filtration_only_data, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) + 
@@ -716,7 +772,7 @@ Chl_Rmd_Turb <- ggplot(Filter_data, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd)) +
                parse = TRUE,
                label.x = "right",
                label.y = "bottom")
-FR_pos_Turb <- ggplot(FR_data_pos, aes(Turbidity_NTU_Up, L_hr_m2)) +
+FR_pos_Turb <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) + 
@@ -749,7 +805,7 @@ grid.arrange(FR_Turb, Chl_Rmd_Turb, FR_pos_Turb, Chl_Rmd_pos_Turb, nrow =2)
 
 ### FR by Turbidity Linear Model
 ```{r}
-FR_Turb_lm <- lm(data = Filter_data, L_hr_m2 ~ Turbidity_NTU_Up)
+FR_Turb_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Turbidity_NTU_Up)
 summary(FR_Turb_lm)
 ```
 
