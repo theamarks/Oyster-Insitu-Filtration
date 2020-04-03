@@ -513,11 +513,11 @@ ChlRmdPos_OC_NPD_lm <- lm(data = (Filtration_pos_data %>% filter(Site == "Deanza
 summary(ChlRmdPos_OC_NPD_lm)
 ```
 
-L/hr/m^2 X WQ
+Filter X WQ
 =====================================
 
 ### Temperature
-```{r FR_Temp, fig.height=10, fig.width=12, echo=FALSE}
+```{r Filter_Temp, fig.height=10, fig.width=12, echo=FALSE}
 FR_Temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -525,7 +525,7 @@ FR_Temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, L_hr_m2)) +
   theme_classic() +
   labs(x = 'Temperature Upstream (C)',
        y = Hab_FR_Label,
-       title = 'All Filtration Trials') +
+       title = 'FR by Temp (All Filtration Trials)') +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
@@ -539,7 +539,7 @@ Chl_Rmd_Temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
   theme_classic() +
   labs(x = 'Temperature Upstream (C)',
        y = Prt_Chl_Label,
-       title = 'All Filtration Trials') +
+       title = 'ChlRmd by Temp (All Filtration Trials)') +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
@@ -560,14 +560,14 @@ FR_pos_Temp <- ggplot(Filtration_pos_data, aes(Temp_C_Up, L_hr_m2)) +
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_pos_Temp <- ggplot(Chl_Rmd_data_pos, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
+Chl_Rmd_pos_Temp <- ggplot(Filtration_pos_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
   theme_classic() +
   labs(x = 'Temperature Upstream (C)',
        y = Prt_Chl_Label,
-       title = 'Positive Chl Removed') +
+       title = 'Positive ChlRmd') +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
@@ -577,31 +577,32 @@ Chl_Rmd_pos_Temp <- ggplot(Chl_Rmd_data_pos, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
 grid.arrange(FR_Temp, Chl_Rmd_Temp, FR_pos_Temp, Chl_Rmd_pos_Temp, nrow = 2)
 ```
 
-### FR by Temp Linear Model
+### FR by Temp LM (All Filter)
 ```{r}
 FR_temp_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Temp_C_Up)
 summary(FR_temp_lm)
 ```
 
-### Percent Chl removed X Temp Linear Model (All filtration)
+### ChlRmd X Temp LM (All Filter)
 ```{r}
-Prt_Chl_temp_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Temp_C_Up)
-summary(Prt_Chl_temp_lm)
+ChlRmd_temp_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Temp_C_Up)
+summary(ChlRmd_temp_lm)
 ```
 
+### FR Positive X Temp LM
 ```{r}
-Prt_Chl_temp_pos_lm <- lm(data = Chl_Rmd_data_pos, pcnt_Chl_rmvd ~ Temp_C_Up)
-summary(Prt_Chl_temp_lm)
+FRPos_temp_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Temp_C_Up)
+summary(FRPos_temp_lm)
 ```
 
-### Diagnostic Plots
+### ChlRmd Positive X Temp LM
 ```{r}
-par(mfrow=c(2,2))
-plot(FR_temp_lm)
+ChlRmdPos_temp_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Temp_C_Up)
+summary(ChlRmdPos_temp_lm)
 ```
 
 ### Salinity
-```{r FR_Salinity, fig.height=10, fig.width=12, echo=FALSE}
+```{r Filter_Salinity, fig.height=10, fig.width=12, echo=FALSE}
 
 FR_Sal <- ggplot(Filtration_only_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -660,20 +661,34 @@ Chl_Rmd_pos_Sal <- ggplot(Chl_Rmd_data_pos, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
 grid.arrange(FR_Sal, Chl_Rmd_Sal, FR_pos_Sal, Chl_Rmd_pos_Sal, nrow = 2)
 ```
 
-### FR by Salinity Linear Model
+### FR by Salinity LM
 ```{r}
 FR_Sal_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Sal_ppt_Up)
 summary(FR_Sal_lm)
 ```
 
-### Diagnostic Plots
+### ChlRmd by Salinity LM
 ```{r}
-par(mfrow=c(2,2))
-plot(FR_Sal_lm)
+ChlRmd_Sal_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
+summary(ChlRmd_Sal_lm)
 ```
 
+### FR Pos by Salinity LM
+```{r}
+FRPos_Sal_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Sal_ppt_Up)
+summary(FRPos_Sal_lm)
+```
+
+### ChlRmd Pos by Salinity LM
+```{r}
+ChlRmdPos_Sal_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
+summary(ChlRmdPos_Sal_lm)
+```
+
+> Salinity almost significant predictor of ChlRmd (Positive Filter)
+
 ### Chlorophyll 
-```{r FR_Chl, fig.height=10, fig.width=12, echo=FALSE}
+```{r Filter_Chl, fig.height=10, fig.width=12, echo=FALSE}
 FR_Chl <- ggplot(Filtration_only_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -731,17 +746,31 @@ Chl_Rmd_pos_Chl <- ggplot(Chl_Rmd_data_pos, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
 grid.arrange(FR_Chl, Chl_Rmd_Chl, FR_pos_Chl, Chl_Rmd_pos_Chl, nrow = 2)
 ```
 
-### FR by Chl Linear Model
+### FR by Chl LM
 ```{r}
 FR_Chl_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Chl_ug_L_Up)
 summary(FR_Chl_lm)
 ```
 
-### Diagnostic Plots
+### ChlRmd by Chl LM
 ```{r}
-par(mfrow=c(2,2))
-plot(FR_Chl_lm)
+ChlRmd_Chl_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
+summary(ChlRmd_Chl_lm)
 ```
+
+### FR Pos by Chl LM
+```{r}
+FRPos_Chl_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Chl_ug_L_Up)
+summary(FRPos_Chl_lm)
+```
+
+### ChlRmd Pos by Chl LM
+```{r}
+ChlRmdPos_Chl_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
+summary(ChlRmdPos_Chl_lm)
+```
+
+> Chl almost significant predictor of Chl Rmd (Pos Filter)
 
 ### Turbidity
 ```{r FR_Turbidity, fig.height=10, fig.width=12, echo=FALSE}
