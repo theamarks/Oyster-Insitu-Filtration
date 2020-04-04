@@ -9,6 +9,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
+################### Packages ###########################
 library(dplyr)
 library(tidyr)
 library(data.table)
@@ -35,22 +36,16 @@ output_directory = "./output"
 # create output directories (same as Insitu_Filtraiton_Analysis_script.Rmd)
 createOutputDirectories()
 
-# Read in Data
+##################### Read in Data from  project output ##########################
 Master_analysis_table <- fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
 Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
 Density_directory = "./Data/bivalve_density_community"
 NPD_density = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
 
+##################### Data #########################################
 # Remove San Diego filtration trial - not applicable to this analysis - different experimental set up
 Master_analysis_table <- Master_analysis_table %>% 
   filter(!Site %in% c("San Diego"))
-
-# linear model formula
-x_y_formula <- y ~ x 
-# Quadratic model
-x2_y_formula <- y ~ x^2
-# Exponential model
-logy_x_formula <- log(y) ~ x 
 
 # Order Sites by Latitude
 site_by_lat <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
@@ -66,14 +61,22 @@ Filtration_only_data <- Master_analysis_table %>%
 Filtration_pos_data <- Master_analysis_table %>% 
   filter(Experiment %in% c("Filtration") & pcnt_Chl_rmvd > 0)
 
-# Assign colors to each Site
+############### model formulas ###############
+# linear model formula
+x_y_formula <- y ~ x 
+# Quadratic model
+x2_y_formula <- y ~ x^2
+# Exponential model
+logy_x_formula <- log(y) ~ x 
+
+############### Site Color Assignments ###############
 viridis(4)
 Site_colors <- c("San Rafael" = "#440154FF",
                  "Morro Bay" = "#31688EFF",
                  "Shellmaker" = "#35B779FF",
                  "Deanza" = "#FDE725FF")
 
-# Labels for graphs 
+################# Labels for graphs  #########################
 Hab_FR_Label <- expression('Habitat Filtration Rate (L/hr/m'^2*')')
 Prt_Chl_Label <- expression(paste('Percent Chlorophyll ', alpha, ' Removed'))
 Chl_ugL_Label <- expression(paste("Chlorophyll ", alpha, " (", mu, "g/L) "))
@@ -245,6 +248,16 @@ ols_step_both_p(FR_all_olsrr)
 
 > "Stepwise Regression - Build regression model from a set of candidate predictor variables by entering and removing predictors based on p values, in a stepwise manner until there is no variable left to enter or remove any more."
 
+```{r}
+NPD_FR_LM <- lm(data = Filtration_only_data %>% filter(Site == "Deanza"), L_hr_m2 ~ 
+                  # Field notes logic variables
+                  Wind + Boat_wake + Algae +
+                         # Quantatative variables
+                         Temp_C_Up + Sal_ppt_Up + Avg_OC_Ratio)
+
+ols_step_both_p(NPD_FR_LM)
+
+```
 
 FR X TPM
 =====================================
