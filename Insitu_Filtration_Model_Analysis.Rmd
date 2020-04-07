@@ -27,7 +27,8 @@ library(viridis) # Color palette for Restoration Area - Options: magma , inferno
 library(scales)
 library(cowplot) # for arranging multiple plots into a single figure
 library(wesanderson)
-library(olsrr)
+library(olsrr) # ols_step_backward_p() "builds regression model from a set of candidate predictor variables" 
+# replaces ols_step_backward()
 
 # source functions 
 source("functions.R")
@@ -58,8 +59,21 @@ Filtration_only_data <- Master_analysis_table %>%
   filter(Experiment %in% c("Filtration"))
 
 # Filtration trials only - exclude Negative controls & Percent Chl removed greater than 0
-Filtration_pos_data <- Master_analysis_table %>% 
-  filter(Experiment %in% c("Filtration") & pcnt_Chl_rmvd > 0)
+### Important Note ## When Percent Chl removed is positive, so is L/hr/m^2 and vice visa. 
+# Filtering by pcnt_Chl_rmvd effectively filters both values the same, so further analysis 
+# withFiltration_pos_data serves both purposes. 
+Filtration_pos_data <- Filtration_only_data %>% 
+  filter(pcnt_Chl_rmvd > 0)
+
+# Deanza data only - all trials
+Deanza_data_all <- Master_analysis_table %>% 
+  filter(Site %in% c("Deanza"))
+# Deanza only - Filtraiton trials only
+Deanza_Filter_data <- Deanza_data_all %>% 
+  filter(Experiment %in% c("Filtration"))
+# Deanza only- Positive Filtration only
+Deanza_PosFilter_data <- Deanza_Filter_data %>% 
+  filter(pcnt_Chl_rmvd > 0)
 
 ############### model formulas ###############
 # linear model formula
@@ -102,32 +116,48 @@ find_outlier <- function(data){
 }
 ```
 
-Chl % Removed - LM
+Multiple Regression
 =====================================
-### LM - excluding San Rafael logic variable
+### Chl Removed - All Data (Filtration and Negative Control)
 ```{r LM_Prct_Chl_All, fig.height=15, fig.width=6, cache=TRUE}
 
 LM_PrctChl_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
-                        # site logic variables - SR not included - would break model
+                      # site logic variables - SR not included - would break model
                        Master_analysis_table$NPD + Master_analysis_table$NPSM + 
                        Master_analysis_table$MB + Master_analysis_table$Filter_trial +
                        Master_analysis_table$Wind + Master_analysis_table$G_upstream + 
                        Master_analysis_table$Daylight + Master_analysis_table$Sonde_fell + 
                        Master_analysis_table$Boat_wake + Master_analysis_table$Algae +
-                        # Quantatative variables
+                      # Quantatative variables
                        Master_analysis_table$Temp_C_Up + Master_analysis_table$Sal_ppt_Up +
                        Master_analysis_table$Turbidity_NTU_Up + Master_analysis_table$Chl_ug_L_Up +
                        Master_analysis_table$avg_depth_cm + Master_analysis_table$d_bw_sondes_m +
                        Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_OC_Ratio ) 
-                        # Bivavle density is essentially the same as site, not sure if needed. May be appropriate NPD vs NPSM  
-                         #Master_analysis_table$Bivalve_den_m2)
+                      # Bivavle density is essentially the same as site, not sure if needed. 
+                      # May be appropriate NPD vs NPSM  
+                      # Master_analysis_table$Bivalve_den_m2)
 
+# multiple regression summary
 summary(LM_PrctChl_All)
 ```
- 
-> I'm not sure if narrowing down the data to Filtration Trials only and then only significant Filtration trials helps predict. Wouldn't the model be stronger if all the data was included? How about bivalve density - the numbers are the same for each site across trials- essentially the same as Site effect?
 
-### LM FR- excluding San Rafael logic variable
+```{r}
+# detailed multiple regression
+ols_regress(LM_PrctChl_All)
+```
+
+```{r}
+# stepwise regression - enter and remove based on p-values
+ols_step_both_p(LM_PrctChl_All)
+# ols_step_backward_p(LM_PrctChl_All) # Not sure the difference from ols_step_both_p
+# diagnosis of colinearity
+# ols_coll_diag(LM_PrctChl_All)
+
+```
+ 
+> Why does stepwise removal of candidate predictor variables not match significance results of full multiple regression? 
+
+### FR - All Data (Filtration and Negative Control)
 ```{r LM_FR_All, fig.height=15, fig.width=6, cache=TRUE}
 
 LM_FR_All <- lm(Master_analysis_table$L_hr_m2 ~
@@ -142,13 +172,27 @@ LM_FR_All <- lm(Master_analysis_table$L_hr_m2 ~
                        Master_analysis_table$Turbidity_NTU_Up + Master_analysis_table$Chl_ug_L_Up +
                        Master_analysis_table$avg_depth_cm + Master_analysis_table$d_bw_sondes_m +
                        Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_OC_Ratio ) 
-                        # Bivavle density is essentially the same as site, not sure if needed. May be appropriate NPD vs NPSM  
-                         #Master_analysis_table$Bivalve_den_m2)
+                      # Bivavle density is essentially the same as site, not sure if needed. 
+                      # May be appropriate NPD vs NPSM  
+                      # Master_analysis_table$Bivalve_den_m2)
 
+# multiple regression summary
 summary(LM_FR_All)
 ```
 
-### LM - Filtraiton Trials Only
+```{R}
+# detailed multiple regression summary - ANOVA results
+ols_regress(LM_FR_All)
+```
+
+```{r, fig.height=15, fig.width=6}
+# Stepwise regression
+ols_step_both_p(LM_FR_All)
+# # diagnosis of colinearity
+#ols_coll_diag(LM_FR_All)
+```
+
+### Chl Removed - Filtraiton Trials Only
 ```{r LM_PrctChl_Filter_only, fig.height=15, fig.width=6, cache=TRUE}
 # Filtration Trials only - no Negative Controls
 LM_PrctChl_Filter <- lm(Filtration_only_data$pcnt_Chl_rmvd ~
@@ -166,11 +210,24 @@ LM_PrctChl_Filter <- lm(Filtration_only_data$pcnt_Chl_rmvd ~
                          Filtration_only_data$avg_depth_cm + Filtration_only_data$d_bw_sondes_m +
                          Filtration_only_data$avg_m_hr + Filtration_only_data$Avg_OC_Ratio)
 
+# multiple regression summary
 summary(LM_PrctChl_Filter)
 ```
 
-### LM - FR Filter Trials Only
-```{r LM_FR_Filter_only, fig.height=15, fig.width=6, cache=TRUE}
+```{r, fig.height=15, fig.width=6}
+# detailed multiple regression summary - ANOVA results
+ols_regress(LM_PrctChl_Filter)
+```
+
+```{r, fig.height=15, fig.width=6}
+# Stepwise regression
+ols_step_both_p(LM_PrctChl_Filter)
+# diagnosis of colinearity
+# ols_coll_diag(LM_PrctChl_Filter)
+```
+
+### FR - Filtraiton Trials Only
+```{r LM_FR_Filter, fig.height=15, fig.width=6, cache=TRUE}
 # Filtration Trials only - no Negative Controls
 LM_FR_Filter <- lm(Filtration_only_data$L_hr_m2 ~
                          # site logic variables - SR not included - would break model to include all sites
@@ -187,79 +244,179 @@ LM_FR_Filter <- lm(Filtration_only_data$L_hr_m2 ~
                          Filtration_only_data$avg_depth_cm + Filtration_only_data$d_bw_sondes_m +
                          Filtration_only_data$avg_m_hr + Filtration_only_data$Avg_OC_Ratio)
 
+# multiple regression summary
 summary(LM_FR_Filter)
 ```
 
-### LM - Filter Pos ChlRmd - Addative model
-```{r LM_PrctChl_pos_addative, fig.height=15, fig.width=6, cache=TRUE}
+```{r ,fig.height=15, fig.width=6}
+# detailed multiple regression summary - ANOVA results
+ols_regress(LM_FR_Filter)
+```
+
+```{r, fig.height=15, fig.width=6}
+# Stepwise regression
+ols_step_both_p(LM_FR_Filter)
+# diagnosis of colinearity
+#ols_coll_diag(LM_FR_Filter)
+```
+
+### Chl Rmd - Positive Filtration
+```{r LM_PrctChl_pos_add, fig.height=15, fig.width=6, cache=TRUE}
 
 # Positive Percent Chl removed trials only
-LM_PrctChl_pos_add <- lm(Filtration_pos_data$pcnt_Chl_rmvd ~
-                         # site logic variables 
-                         Filtration_pos_data$Wind + 
-                         # Filtration_pos_data$Algae + # no trials with Algae observed
+LM_PrctChl_pos_add <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM + MB + 
+                         # Field notes logic variables
+                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
                          # Quantatative variables
-                         Filtration_pos_data$Temp_C_Up + 
-                         Filtration_pos_data$Sal_ppt_Up + 
-                         Filtration_pos_data$avg_m_hr + 
-                         Filtration_pos_data$Avg_OC_Ratio)
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 
 summary(LM_PrctChl_pos_add)
 ```
 
-> What does it mean if I descirbe 42 % of the variation, but have no significant factors?
+```{r ,fig.height=15, fig.width=6}
+# detailed multiple regression summary - ANOVA results
+ols_regress(LM_PrctChl_pos_add)
+```
 
-### LM - FR Filter Trials w/ positive Percent Chl removal
-```{r LM_PrctChl_positive, fig.height=15, fig.width=6, cache=TRUE}
+```{r, fig.height=15, fig.width=6}
+# Stepwise regression
+ols_step_both_p(LM_PrctChl_pos_add)
+# Add NPSM & Avg_OC_Ratio into model
+```
+
+```{r,fig.height=15, fig.width=6}
+LM2_PrctChl_pos_add <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ 
+                          NPSM + Avg_OC_Ratio)
+
+summary(LM2_PrctChl_pos_add)
+# diagnosis of colinearity
+#ols_coll_diag(LM_PrctChl_pos_add)
+```
+
+```{r ,fig.height=15, fig.width=6}
+# detailed multiple regression summary - ANOVA results
+ols_regress(LM2_PrctChl_pos_add)
+```
+
+### FR - Positive Filtration
+```{r LM_FR_pos, fig.height=15, fig.width=6, cache=TRUE}
 
 # Positive Percent Chl removed trials only
-LM_FR_pos <- lm(Filtration_pos_data$L_hr_m2 ~
+LM_FR_pos <- lm(data = Filtration_pos_data, L_hr_m2 ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM + MB + 
                          # Field notes logic variables
-                         Filtration_pos_data$Wind + # Filtration_pos_data$G_upstream + 
-                      # Filtration_pos_data$Daylight + Filtration_pos_data$Boat_wake + 
+                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
                          # Quantatative variables
-                         Filtration_pos_data$Temp_C_Up + Filtration_pos_data$Sal_ppt_Up + 
-                       Filtration_pos_data$Avg_OC_Ratio)
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 
 summary(LM_FR_pos)
 ```
 
-### olsrr stepwise model
-```{r}
+```{r ,fig.height=15, fig.width=6}
+# detailed multiple regression summary - ANOVA results
+ols_regress(LM_FR_pos)
+```
 
-FR_all_olsrr <- lm(data = Filtration_only_data, L_hr_m2 ~
-                         # site logic variables - SR not included - would break model to include all sites
-                         NPD + NPSM + 
-                         MB + 
+```{r, fig.height=15, fig.width=6}
+# Stepwise regression
+ols_step_both_p(LM_FR_pos)
+# diagnosis of colinearity
+#ols_coll_diag(LM_FR_pos)
+```
+
+> NPSM is the only variable added in after stepwise 
+
+### Chl Rmd - Deanza - Filtration Trials
+```{r LM_ChlRmd_NPD_filter, fig.height=15, fig.width=6}
+LM_ChlRmd_NPD_all <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM + MB + 
                          # Field notes logic variables
-                         Wind + G_upstream +
-                         Daylight +
-                         Sonde_fell + Boat_wake + 
-                         Algae +
+                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
                          # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up +
-                         Turbidity_NTU_Up + Chl_ug_L_Up +
-                         avg_depth_cm + d_bw_sondes_m +
-                         avg_m_hr + Avg_OC_Ratio)
-
-ols_step_both_p(FR_all_olsrr)
-
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
+# not enough degrees of freedom 
 ```
 
-> "Stepwise Regression - Build regression model from a set of candidate predictor variables by entering and removing predictors based on p values, in a stepwise manner until there is no variable left to enter or remove any more."
-
-```{r}
-NPD_FR_LM <- lm(data = Filtration_only_data %>% filter(Site == "Deanza"), L_hr_m2 ~ 
-                  # Field notes logic variables
-                  Wind + Boat_wake + Algae +
-                         # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Avg_OC_Ratio)
-
-ols_step_both_p(NPD_FR_LM)
-
+```{r, fig.height=15, fig.width=6}}
+ols_step_both_p(LM_ChlRmd_NPD_all)
+# diagnosis of colinearity
+#ols_coll_diag(LM_ChlRmd_NPD_all)
 ```
 
-FR X TPM
+```{r LM2_ChlRmd_NPD_all, fig.height=15, fig.width=6}
+LM2_ChlRmd_NPD_all <- lm(data = Deanza_data_all, pcnt_Chl_rmvd ~ Sal_ppt_Up)
+
+summary(LM2_ChlRmd_NPD_all)
+ols_regress(LM2_ChlRmd_NPD_all)
+```
+
+> Not sure stepwise regression is working here
+
+### FR - Deanza - Filtration Trials
+```{r LM_FR_NPD_filter, fig.height=15, fig.width=6}
+LM_FR_NPD_filter <- lm(data = Deanza_Filter_data, L_hr_m2 ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM + MB + 
+                         # Field notes logic variables
+                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
+                         # Quantatative variables
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
+# not enough degrees of freedom
+```
+
+```{r, fig.height=15, fig.width=6}}
+ols_step_both_p(LM_FR_NPD_filter)
+# diagnosis of colinearity
+#ols_coll_diag(LM_FR_NPD_filter)
+```
+
+### Chl Rmd - Deanza - Positive Filtration
+```{r LM_ChlRmd_NPD_PosFilter, fig.height=15, fig.width=6}
+LM_ChlRmd_NPD_PosFilter <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM + MB + 
+                         # Field notes logic variables
+                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
+                         # Quantatative variables
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
+# not enough degrees of freedom 
+```
+
+```{r, fig.height=15, fig.width=6}}
+ols_step_both_p(LM_ChlRmd_NPD_PosFilter)
+# diagnosis of colinearity
+#ols_coll_diag(LM_ChlRmd_NPD_PosFilter)
+```
+
+### FR - Deanza - Positive Filtration
+```{r LM_FR_NPD_filter, fig.height=15, fig.width=6}
+LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM + MB + 
+                         # Field notes logic variables
+                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
+                         # Quantatative variables
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
+# not enough degrees of freedom
+```
+
+```{r, fig.height=15, fig.width=6}}
+ols_step_both_p(LM_FR_NPD_Posfilter)
+# diagnosis of colinearity
+#ols_coll_diag(LM_FR_NPD_Posfilter)
+```
+
+TPM
 =====================================
 
 ### Filtration by site (all data)
