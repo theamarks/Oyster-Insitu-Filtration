@@ -400,33 +400,33 @@ ols_step_both_p(LM_FR_NPD_Posfilter)
 ##### Lots of errors #########
 ```
 
-TPM
+Filter & TPM
 =====================================
 
-### Filtration by site (all data)
-```{r FR vs TPM, fig.height=5, fig.width=12, cache=TRUE}
+### ***Filtration by site (Filtration Trials only)***
+```{r FR_ChlRmd_Filter, fig.height=5, fig.width=12, cache=TRUE}
 # Filtration_only_data defined in setup
 
-FR_TPM_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
+FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Hab_FR_Label)
 
-Chl_Rmd_TPM_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
+Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Prt_Chl_Label)
 
-grid.arrange(FR_TPM_box, Chl_Rmd_TPM_box, nrow = 1)
+grid.arrange(FR_box, Chl_Rmd_box, nrow = 1)
 
 ```
 
-### Filtration by site (Positive values only) 
-```{r FR by site positive only, fig.height=5, fig.width=12, cache=TRUE}
+### ***Filtration by site (Positive values only)*** 
+```{r FR_ChlRmd_TPM_posFilter, fig.height=5, fig.width=12, cache=TRUE}
 # Filtration_pos_data defined in setup
 
 FR_TPM_box_pos <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
@@ -437,11 +437,7 @@ FR_TPM_box_pos <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
        y = Hab_FR_Label,
        title = 'Positive L/hr/m^2 only')
 
-Chl_Rmd_data_pos <- Master_analysis_table %>% 
-                     filter(Experiment == "Filtration" &
-                            pcnt_Chl_rmvd > 0)
-
-Chl_Rmd_box_pos <- ggplot((Chl_Rmd_data_pos), aes(Site, pcnt_Chl_rmvd)) +
+Chl_Rmd_box_pos <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
@@ -452,7 +448,7 @@ Chl_Rmd_box_pos <- ggplot((Chl_Rmd_data_pos), aes(Site, pcnt_Chl_rmvd)) +
 grid.arrange(FR_TPM_box_pos, Chl_Rmd_box_pos, nrow = 1)
 ```
 
-### Filtration vs TPM (Filtration Trials only)
+### ***Filtration by TPM (Filtration Trials only)***
 ```{r, Filter by TPM filter only, fig.height=5, fig.width=12, cache=TRUE}
 FR_TPM_graph <- ggplot((Filtration_only_data), aes(Avg_TPM, L_hr_m2 )) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
@@ -491,19 +487,21 @@ Chl_Rmd_TPM_graph <- ggplot((Filtration_only_data), aes(Avg_TPM, pcnt_Chl_rmvd))
 grid.arrange(FR_TPM_graph, Chl_Rmd_TPM_graph, nrow = 1)
 ```
 
-### FR TPM Linear Model
-```{r LM FR x TPM, cache=TRUE}
+### ***FR ~ TPM Linear Model***
+```{r LM FR x TPM, fig.height=10, fig.width=6, cache=TRUE}
 FR_TPM_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Avg_TPM)
-summary(FR_TPM_lm)
+#summary(FR_TPM_lm)
+ols_regress(FR_TPM_lm)
 ```
 
-### ChlRmd TPM Linear Model
-```{r LM ChlRmd x TPM , cache=TRUE}
+### ***ChlRmd ~ TPM Linear Model***
+```{r LM ChlRmd x TPM, fig.height=10, fig.width=6, cache=TRUE}
 ChlRmd_TPM_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Avg_TPM)
-summary(ChlRmd_TPM_lm)
+#summary(ChlRmd_TPM_lm)
+ols_regress(ChlRmd_TPM_lm)
 ```
 
-### Filtration vs TPM (Positive Filtration Trials only)
+### ***Filtration vs TPM (Positive Filtration Trials only)***
 ```{r , fig.height=5, fig.width=12, cache=TRUE}
 FRPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, L_hr_m2 )) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
@@ -542,22 +540,62 @@ Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd
 grid.arrange(FRPos_TPM_graph, Chl_RmdPos_TPM_graph, nrow = 1)
 ```
 
-### FR Pos TPM Linear Model
-```{r, cache=TRUE}
+### ***FR Pos ~ TPM Linear Model***
+```{r, fig.height=10, fig.width=6, cache=TRUE}
 FRPos_TPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_TPM)
-summary(FR_TPM_lm)
+#summary(FR_TPM_lm)
+ols_regress(FRPos_TPM_lm)
 ```
 
-###ChlRmd Pos TPM Linear Model
-```{r, cache=TRUE}
-FRPos_TPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_TPM)
-summary(FRPos_TPM_lm)
+### ***Log FR Pos ~ Log TPM Linear Model***
+```{r, fig.height=10, fig.width=6, cache=TRUE}
+logFRPos_logTPM_lm <- lm(data = Filtration_pos_data, log(L_hr_m2) ~ log(Avg_TPM))
+#summary(FR_TPM_lm)
+ols_regress(logFRPos_logTPM_lm)
 ```
+
+> Doesn't not help R^2 or significance.
+
+### ***ChlRmd Pos ~ TPM Linear Model***
+```{r, fig.height=10, fig.width=6, cache=TRUE}
+ChlRmdPos_TPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_TPM)
+#summary(ChlRmdPos_TPM_lm)
+ols_regress(ChlRmdPos_TPM_lm)
+```
+
+### ***Log ChlRmd Pos ~ Log TPM Linear Model***
+```{r, fig.height=10, fig.width=6, cache=TRUE}
+logChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_TPM))
+#summary(ChlRmdPos_TPM_lm)
+ols_regress(logChlRmdPos_logTPM_lm)
+```
+
+> Not huge difference between regular and log transformed. Keep trying transformations? 
+
+### ***Deanza only FR vs TPM***
+```{r}
+NPD_FR_TPM_graph <- ggplot((Deanza_Filter_data), aes(Avg_TPM, L_hr_m2 )) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  geom_point() +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  #scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Hab_FR_Label) +
+  guides(fill = FALSE) +
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+```
+
 
 OC 
 =====================================
 
-### Filtration vs OC
+### ***Filtration vs OC***
 ```{r FR vs OC, fig.height=5, fig.width=12, cache=TRUE}
 FR_OC_graph <- ggplot(Filtration_only_data, aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
@@ -888,7 +926,7 @@ FR_pos_Sal <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, L_hr_m2)) +
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_pos_Sal <- ggplot(Chl_Rmd_data_pos, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
+Chl_Rmd_pos_Sal <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
@@ -973,7 +1011,7 @@ FR_pos_Chl <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, L_hr_m2)) +
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_pos_Chl <- ggplot(Chl_Rmd_data_pos, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
+Chl_Rmd_pos_Chl <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
