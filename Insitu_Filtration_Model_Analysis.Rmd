@@ -572,8 +572,8 @@ ols_regress(logChlRmdPos_logTPM_lm)
 
 > Not huge difference between regular and log transformed. Keep trying transformations? 
 
-### ***Deanza only FR vs TPM***
-```{r}
+### ***Deanza only Filtration vs TPM***
+```{r NPD_FR_TPM_graph, fig.height=5, fig.width=12, cache=TRUE}
 NPD_FR_TPM_graph <- ggplot((Deanza_Filter_data), aes(Avg_TPM, L_hr_m2 )) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point() +
@@ -589,8 +589,88 @@ NPD_FR_TPM_graph <- ggplot((Deanza_Filter_data), aes(Avg_TPM, L_hr_m2 )) +
                parse = TRUE,
                label.x = "right",
                label.y = "bottom")
+
+NPD_ChlRmd_TPM_graph <- ggplot((Deanza_Filter_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  geom_point() +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  #scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Prt_Chl_Label) +
+  guides(fill = FALSE) +
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+grid.arrange(NPD_FR_TPM_graph, NPD_ChlRmd_TPM_graph, nrow = 1)
 ```
 
+### ***Deanza Filter - FR ~ TPM***
+```{r}
+NPD_FR_TPM_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Avg_TPM)
+ols_regress(NPD_FR_TPM_lm)
+```
+
+### ***Deanza Filter - ChlRmd ~ TPM***
+```{r}
+NPD_ChlRmd_TPM_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Avg_TPM)
+ols_regress(NPD_ChlRmd_TPM_lm)
+```
+
+> Did not do further transformations, didn't look like obvious pattern to investigate
+
+### ***Deanza only Positive Filtration vs TPM***
+```{r NPD_FRPos_TPM_graph, fig.height=5, fig.width=12, cache=TRUE}
+NPD_FRPos_TPM_graph <- ggplot((Deanza_PosFilter_data), aes(Avg_TPM, L_hr_m2 )) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  geom_point() +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  #scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Hab_FR_Label) +
+  guides(fill = FALSE) +
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+NPD_ChlRmdPos_TPM_graph <- ggplot((Deanza_PosFilter_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  geom_point() +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  #scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Prt_Chl_Label) +
+  guides(fill = FALSE) +
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+grid.arrange(NPD_FRPos_TPM_graph, NPD_ChlRmdPos_TPM_graph, nrow = 1)
+```
+
+### ***Deanza Positive Filter - FR ~ TPM***
+```{r}
+NPD_PosFR_TPM_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Avg_TPM)
+ols_regress(NPD_PosFR_TPM_lm)
+```
+
+### ***Deanza Postive Filter - ChlRmd ~ TPM***
+```{r}
+NPD_PosChlRmd_TPM_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Avg_TPM)
+ols_regress(NPD_PosChlRmd_TPM_lm)
+```
+
+> Did not do further transformations, didn't look like obvious pattern to investigate
 
 OC 
 =====================================
