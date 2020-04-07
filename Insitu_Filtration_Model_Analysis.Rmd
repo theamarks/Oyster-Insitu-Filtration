@@ -121,32 +121,28 @@ Multiple Regression
 ### Chl Removed - All Data (Filtration and Negative Control)
 ```{r LM_Prct_Chl_All, fig.height=15, fig.width=6, cache=TRUE}
 
-LM_PrctChl_All <- lm(Master_analysis_table$pcnt_Chl_rmvd ~
+LM_PrctChl_All <- lm(data = Master_analysis_table, pcnt_Chl_rmvd ~
                       # site logic variables - SR not included - would break model
-                       Master_analysis_table$NPD + Master_analysis_table$NPSM + 
-                       Master_analysis_table$MB + Master_analysis_table$Filter_trial +
-                       Master_analysis_table$Wind + Master_analysis_table$G_upstream + 
-                       Master_analysis_table$Daylight + Master_analysis_table$Sonde_fell + 
-                       Master_analysis_table$Boat_wake + Master_analysis_table$Algae +
+                       NPD + NPSM + MB + 
+                       Filter_trial + Wind + G_upstream + Daylight + Sonde_fell + 
+                       Boat_wake + Algae +
                       # Quantatative variables
-                       Master_analysis_table$Temp_C_Up + Master_analysis_table$Sal_ppt_Up +
-                       Master_analysis_table$Turbidity_NTU_Up + Master_analysis_table$Chl_ug_L_Up +
-                       Master_analysis_table$avg_depth_cm + Master_analysis_table$d_bw_sondes_m +
-                       Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_OC_Ratio ) 
+                       Temp_C_Up + Sal_ppt_Up +  Turbidity_NTU_Up + Chl_ug_L_Up +
+                       avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio ) 
                       # Bivavle density is essentially the same as site, not sure if needed. 
                       # May be appropriate NPD vs NPSM  
-                      # Master_analysis_table$Bivalve_den_m2)
+                      # Bivalve_den_m2)
 
 # multiple regression summary
 summary(LM_PrctChl_All)
 ```
 
-```{r}
+```{r, fig.height=20, fig.width=6, cache=TRUE}
 # detailed multiple regression
 ols_regress(LM_PrctChl_All)
 ```
 
-```{r}
+```{r, fig.height=15, fig.width=6, cache=TRUE}
 # stepwise regression - enter and remove based on p-values
 ols_step_both_p(LM_PrctChl_All)
 # ols_step_backward_p(LM_PrctChl_All) # Not sure the difference from ols_step_both_p
@@ -160,32 +156,27 @@ ols_step_both_p(LM_PrctChl_All)
 ### FR - All Data (Filtration and Negative Control)
 ```{r LM_FR_All, fig.height=15, fig.width=6, cache=TRUE}
 
-LM_FR_All <- lm(Master_analysis_table$L_hr_m2 ~
+LM_FR_All <- lm(data = Master_analysis_table, L_hr_m2 ~
                         # site logic variables - SR not included - would break model
-                       Master_analysis_table$NPD + Master_analysis_table$NPSM + 
-                       Master_analysis_table$MB + Master_analysis_table$Filter_trial +
-                       Master_analysis_table$Wind + Master_analysis_table$G_upstream + 
-                       Master_analysis_table$Daylight + Master_analysis_table$Sonde_fell + 
-                       Master_analysis_table$Boat_wake + Master_analysis_table$Algae +
+                       NPD + NPSM + MB + Filter_trial +
+                       Wind + G_upstream +  Daylight + Sonde_fell +  Boat_wake + Algae +
                         # Quantatative variables
-                       Master_analysis_table$Temp_C_Up + Master_analysis_table$Sal_ppt_Up +
-                       Master_analysis_table$Turbidity_NTU_Up + Master_analysis_table$Chl_ug_L_Up +
-                       Master_analysis_table$avg_depth_cm + Master_analysis_table$d_bw_sondes_m +
-                       Master_analysis_table$avg_m_hr + Master_analysis_table$Avg_OC_Ratio ) 
+                       Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                       avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio ) 
                       # Bivavle density is essentially the same as site, not sure if needed. 
                       # May be appropriate NPD vs NPSM  
-                      # Master_analysis_table$Bivalve_den_m2)
+                      # Bivalve_den_m2)
 
 # multiple regression summary
 summary(LM_FR_All)
 ```
 
-```{R}
+```{r, fig.height=20, fig.width=6, cache=TRUE}
 # detailed multiple regression summary - ANOVA results
 ols_regress(LM_FR_All)
 ```
 
-```{r, fig.height=15, fig.width=6}
+```{r, fig.height=15, fig.width=6, cache=TRUE}
 # Stepwise regression
 ols_step_both_p(LM_FR_All)
 # # diagnosis of colinearity
@@ -195,31 +186,26 @@ ols_step_both_p(LM_FR_All)
 ### Chl Removed - Filtraiton Trials Only
 ```{r LM_PrctChl_Filter_only, fig.height=15, fig.width=6, cache=TRUE}
 # Filtration Trials only - no Negative Controls
-LM_PrctChl_Filter <- lm(Filtration_only_data$pcnt_Chl_rmvd ~
-                         # site logic variables - SR not included - would break model to include all sites
-                         Filtration_only_data$NPD + Filtration_only_data$NPSM + 
-                         Filtration_only_data$MB + 
+LM_PrctChl_Filter <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM +  MB + 
                          # Field notes logic variables
-                         Filtration_only_data$Wind + Filtration_only_data$G_upstream +
-                         Filtration_only_data$Daylight +
-                         Filtration_only_data$Sonde_fell + Filtration_only_data$Boat_wake + 
-                         Filtration_only_data$Algae +
+                         Wind + G_upstream + Daylight +
+                         Sonde_fell + Boat_wake +  Algae +
                          # Quantatative variables
-                         Filtration_only_data$Temp_C_Up + Filtration_only_data$Sal_ppt_Up +
-                         Filtration_only_data$Turbidity_NTU_Up + Filtration_only_data$Chl_ug_L_Up +
-                         Filtration_only_data$avg_depth_cm + Filtration_only_data$d_bw_sondes_m +
-                         Filtration_only_data$avg_m_hr + Filtration_only_data$Avg_OC_Ratio)
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 
 # multiple regression summary
 summary(LM_PrctChl_Filter)
 ```
 
-```{r, fig.height=15, fig.width=6}
+```{r, fig.height=20, fig.width=6, cache=TRUE}
 # detailed multiple regression summary - ANOVA results
 ols_regress(LM_PrctChl_Filter)
 ```
 
-```{r, fig.height=15, fig.width=6}
+```{r, fig.height=15, fig.width=6, cache=TRUE}
 # Stepwise regression
 ols_step_both_p(LM_PrctChl_Filter)
 # diagnosis of colinearity
@@ -229,31 +215,25 @@ ols_step_both_p(LM_PrctChl_Filter)
 ### FR - Filtraiton Trials Only
 ```{r LM_FR_Filter, fig.height=15, fig.width=6, cache=TRUE}
 # Filtration Trials only - no Negative Controls
-LM_FR_Filter <- lm(Filtration_only_data$L_hr_m2 ~
-                         # site logic variables - SR not included - would break model to include all sites
-                         Filtration_only_data$NPD + Filtration_only_data$NPSM + 
-                         Filtration_only_data$MB + 
+LM_FR_Filter <- lm(data = Filtration_only_data, L_hr_m2 ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM + MB + 
                          # Field notes logic variables
-                         Filtration_only_data$Wind + Filtration_only_data$G_upstream +
-                         Filtration_only_data$Daylight +
-                         Filtration_only_data$Sonde_fell + Filtration_only_data$Boat_wake + 
-                         Filtration_only_data$Algae +
+                         Wind + G_upstream +  Daylight + Sonde_fell + Boat_wake +  Algae +
                          # Quantatative variables
-                         Filtration_only_data$Temp_C_Up + Filtration_only_data$Sal_ppt_Up +
-                         Filtration_only_data$Turbidity_NTU_Up + Filtration_only_data$Chl_ug_L_Up +
-                         Filtration_only_data$avg_depth_cm + Filtration_only_data$d_bw_sondes_m +
-                         Filtration_only_data$avg_m_hr + Filtration_only_data$Avg_OC_Ratio)
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 
 # multiple regression summary
 summary(LM_FR_Filter)
 ```
 
-```{r ,fig.height=15, fig.width=6}
+```{r, fig.height=20, fig.width=6, cache=TRUE}
 # detailed multiple regression summary - ANOVA results
 ols_regress(LM_FR_Filter)
 ```
 
-```{r, fig.height=15, fig.width=6}
+```{r, fig.height=15, fig.width=6, cache=TRUE}
 # Stepwise regression
 ols_step_both_p(LM_FR_Filter)
 # diagnosis of colinearity
@@ -276,18 +256,18 @@ LM_PrctChl_pos_add <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
 summary(LM_PrctChl_pos_add)
 ```
 
-```{r ,fig.height=15, fig.width=6}
+```{r, fig.height=15, fig.width=6, cache=TRUE}
 # detailed multiple regression summary - ANOVA results
 ols_regress(LM_PrctChl_pos_add)
 ```
 
-```{r, fig.height=15, fig.width=6}
+```{r, fig.height=15, fig.width=6, cache=TRUE}
 # Stepwise regression
 ols_step_both_p(LM_PrctChl_pos_add)
 # Add NPSM & Avg_OC_Ratio into model
 ```
 
-```{r,fig.height=15, fig.width=6}
+```{r, fig.height=15, fig.width=6, cache=TRUE}
 LM2_PrctChl_pos_add <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ 
                           NPSM + Avg_OC_Ratio)
 
@@ -296,7 +276,7 @@ summary(LM2_PrctChl_pos_add)
 #ols_coll_diag(LM_PrctChl_pos_add)
 ```
 
-```{r ,fig.height=15, fig.width=6}
+```{r, fig.height=20, fig.width=6, cache=TRUE}
 # detailed multiple regression summary - ANOVA results
 ols_regress(LM2_PrctChl_pos_add)
 ```
@@ -317,12 +297,12 @@ LM_FR_pos <- lm(data = Filtration_pos_data, L_hr_m2 ~
 summary(LM_FR_pos)
 ```
 
-```{r ,fig.height=15, fig.width=6}
+```{r, fig.height=20, fig.width=6, cache=TRUE}
 # detailed multiple regression summary - ANOVA results
 ols_regress(LM_FR_pos)
 ```
 
-```{r, fig.height=15, fig.width=6}
+```{r, fig.height=15, fig.width=6, cache=TRUE}
 # Stepwise regression
 ols_step_both_p(LM_FR_pos)
 # diagnosis of colinearity
@@ -332,7 +312,7 @@ ols_step_both_p(LM_FR_pos)
 > NPSM is the only variable added in after stepwise 
 
 ### Chl Rmd - Deanza - Filtration Trials
-```{r LM_ChlRmd_NPD_filter, fig.height=15, fig.width=6}
+```{r LM_ChlRmd_NPD_filter, fig.height=15, fig.width=6, cache=TRUE}
 LM_ChlRmd_NPD_all <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
@@ -344,23 +324,25 @@ LM_ChlRmd_NPD_all <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~
 # not enough degrees of freedom 
 ```
 
-```{r, fig.height=15, fig.width=6}}
+```{r, fig.height=15, fig.width=6, cache=TRUE}
 ols_step_both_p(LM_ChlRmd_NPD_all)
 # diagnosis of colinearity
 #ols_coll_diag(LM_ChlRmd_NPD_all)
 ```
 
-```{r LM2_ChlRmd_NPD_all, fig.height=15, fig.width=6}
+```{r LM2_ChlRmd_NPD_all, fig.height=15, fig.width=6, cache=TRUE}
 LM2_ChlRmd_NPD_all <- lm(data = Deanza_data_all, pcnt_Chl_rmvd ~ Sal_ppt_Up)
-
 summary(LM2_ChlRmd_NPD_all)
+```
+
+```{r, fig.height=20, fig.width=6, cache=TRUE}
 ols_regress(LM2_ChlRmd_NPD_all)
 ```
 
 > Not sure stepwise regression is working here
 
 ### FR - Deanza - Filtration Trials
-```{r LM_FR_NPD_filter, fig.height=15, fig.width=6}
+```{r LM_FR_NPD_filter, fig.height=15, fig.width=6, cache=TRUE}
 LM_FR_NPD_filter <- lm(data = Deanza_Filter_data, L_hr_m2 ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
@@ -372,14 +354,14 @@ LM_FR_NPD_filter <- lm(data = Deanza_Filter_data, L_hr_m2 ~
 # not enough degrees of freedom
 ```
 
-```{r, fig.height=15, fig.width=6}}
+```{r, fig.height=15, fig.width=6, cache=TRUE}
 ols_step_both_p(LM_FR_NPD_filter)
 # diagnosis of colinearity
 #ols_coll_diag(LM_FR_NPD_filter)
 ```
 
 ### Chl Rmd - Deanza - Positive Filtration
-```{r LM_ChlRmd_NPD_PosFilter, fig.height=15, fig.width=6}
+```{r LM_ChlRmd_NPD_PosFilter, fig.height=15, fig.width=6, cache=TRUE}
 LM_ChlRmd_NPD_PosFilter <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
@@ -391,14 +373,14 @@ LM_ChlRmd_NPD_PosFilter <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~
 # not enough degrees of freedom 
 ```
 
-```{r, fig.height=15, fig.width=6}}
+```{r, fig.height=15, fig.width=6, cache=TRUE}
 ols_step_both_p(LM_ChlRmd_NPD_PosFilter)
 # diagnosis of colinearity
 #ols_coll_diag(LM_ChlRmd_NPD_PosFilter)
 ```
 
 ### FR - Deanza - Positive Filtration
-```{r LM_FR_NPD_filter, fig.height=15, fig.width=6}
+```{r LM_FR_NPD_Posfilter, fig.height=15, fig.width=6, cache=TRUE}
 LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
@@ -410,10 +392,12 @@ LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
 # not enough degrees of freedom
 ```
 
-```{r, fig.height=15, fig.width=6}}
+```{r eval=FALSE, fig.height=15, fig.width=6, cache=TRUE, include=FALSE}
 ols_step_both_p(LM_FR_NPD_Posfilter)
 # diagnosis of colinearity
 #ols_coll_diag(LM_FR_NPD_Posfilter)
+
+##### Lots of errors #########
 ```
 
 TPM
@@ -570,7 +554,7 @@ FRPos_TPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_TPM)
 summary(FRPos_TPM_lm)
 ```
 
-Filtration X OC 
+OC 
 =====================================
 
 ### Filtration vs OC
@@ -672,7 +656,7 @@ summary(ChlRmdPos_OC_lm)
 > Significant Avg_OC_Ratio *
 
 ### Deanza FR by OC
-```{r Deanza_Filter_OC, fig.height=5, fig.width=12}
+```{r Deanza_Filter_OC, fig.height=5, fig.width=12, cache=TRUE}
 FR_OC_NPD_graph <- ggplot(Filtration_only_data %>% filter(Site == "Deanza"),
                           aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
@@ -710,19 +694,19 @@ grid.arrange(FR_OC_NPD_graph, Chl_Rmd_OC_NPD_graph, nrow = 1)
 ```
 
 ### Deanza FR by OC Linear Model
-```{r}
+```{r, cache=TRUE}
 FR_OC_NPD_lm <- lm(data = (Filtration_only_data %>% filter(Site == "Deanza")), L_hr_m2 ~ Avg_OC_Ratio)
 summary(FR_OC_NPD_lm)
 ```
 
 ### Deanza ChlRmd by OC Linear Model
-```{r}
+```{r, cache=TRUE}
 ChlRmd_OC_NPD_lm <- lm(data = (Filtration_only_data %>% filter(Site == "Deanza")), pcnt_Chl_rmvd ~ Avg_OC_Ratio)
 summary(ChlRmd_OC_NPD_lm)
 ```
 
 ### Deanza FR Positive by OC
-```{r Deanza_Filter_Pos_OC, fig.height=5, fig.width=12}
+```{r Deanza_Filter_Pos_OC, fig.height=5, fig.width=12, cache=TRUE}
 FRPos_OC_NPD_graph <- ggplot(Filtration_pos_data %>% filter(Site == "Deanza"),
                           aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
@@ -760,14 +744,14 @@ grid.arrange(FRPos_OC_NPD_graph, Chl_RmdPos_OC_NPD_graph, nrow = 1)
 ```
 
 ### Deanza FR Positive by OC Linear Model
-```{r}
+```{r, cache=TRUE}
 FRPos_OC_NPD_lm <- lm(data = (Filtration_pos_data %>% filter(Site == "Deanza")), 
                       L_hr_m2 ~ Avg_OC_Ratio)
 summary(FRPos_OC_NPD_lm)
 ```
 
 ### Deanza ChlRmd Positive by OC Linear Model
-```{r}
+```{r, cache=TRUE}
 ChlRmdPos_OC_NPD_lm <- lm(data = (Filtration_pos_data %>% filter(Site == "Deanza")), 
                           pcnt_Chl_rmvd ~ Avg_OC_Ratio)
 summary(ChlRmdPos_OC_NPD_lm)
@@ -777,7 +761,7 @@ Filter X WQ
 =====================================
 
 ### Temperature
-```{r Filter_Temp, fig.height=10, fig.width=12, echo=FALSE}
+```{r Filter_Temp, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
 FR_Temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -838,31 +822,31 @@ grid.arrange(FR_Temp, Chl_Rmd_Temp, FR_pos_Temp, Chl_Rmd_pos_Temp, nrow = 2)
 ```
 
 ### FR by Temp LM (All Filter)
-```{r}
+```{r, cache=TRUE}
 FR_temp_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Temp_C_Up)
 summary(FR_temp_lm)
 ```
 
 ### ChlRmd X Temp LM (All Filter)
-```{r}
+```{r, cache=TRUE}
 ChlRmd_temp_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 summary(ChlRmd_temp_lm)
 ```
 
 ### FR Positive X Temp LM
-```{r}
+```{r, cache=TRUE}
 FRPos_temp_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 summary(FRPos_temp_lm)
 ```
 
 ### ChlRmd Positive X Temp LM
-```{r}
+```{r, cache=TRUE}
 ChlRmdPos_temp_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 summary(ChlRmdPos_temp_lm)
 ```
 
 ### Salinity
-```{r Filter_Salinity, fig.height=10, fig.width=12, echo=FALSE}
+```{r Filter_Salinity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
 
 FR_Sal <- ggplot(Filtration_only_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -922,25 +906,25 @@ grid.arrange(FR_Sal, Chl_Rmd_Sal, FR_pos_Sal, Chl_Rmd_pos_Sal, nrow = 2)
 ```
 
 ### FR by Salinity LM
-```{r}
+```{r, cache=TRUE}
 FR_Sal_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Sal_ppt_Up)
 summary(FR_Sal_lm)
 ```
 
 ### ChlRmd by Salinity LM
-```{r}
+```{r, cache=TRUE}
 ChlRmd_Sal_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
 summary(ChlRmd_Sal_lm)
 ```
 
 ### FR Pos by Salinity LM
-```{r}
+```{r, cache=TRUE}
 FRPos_Sal_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Sal_ppt_Up)
 summary(FRPos_Sal_lm)
 ```
 
 ### ChlRmd Pos by Salinity LM
-```{r}
+```{r, cache=TRUE}
 ChlRmdPos_Sal_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
 summary(ChlRmdPos_Sal_lm)
 ```
@@ -948,7 +932,7 @@ summary(ChlRmdPos_Sal_lm)
 > Salinity almost significant predictor of ChlRmd (Positive Filter)
 
 ### Chlorophyll 
-```{r Filter_Chl, fig.height=10, fig.width=12, echo=FALSE}
+```{r Filter_Chl, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
 FR_Chl <- ggplot(Filtration_only_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -1007,25 +991,25 @@ grid.arrange(FR_Chl, Chl_Rmd_Chl, FR_pos_Chl, Chl_Rmd_pos_Chl, nrow = 2)
 ```
 
 ### FR by Chl LM
-```{r}
+```{r, cache=TRUE}
 FR_Chl_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Chl_ug_L_Up)
 summary(FR_Chl_lm)
 ```
 
 ### ChlRmd by Chl LM
-```{r}
+```{r, cache=TRUE}
 ChlRmd_Chl_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
 summary(ChlRmd_Chl_lm)
 ```
 
 ### FR Pos by Chl LM
-```{r}
+```{r, cache=TRUE}
 FRPos_Chl_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Chl_ug_L_Up)
 summary(FRPos_Chl_lm)
 ```
 
 ### ChlRmd Pos by Chl LM
-```{r}
+```{r, cache=TRUE}
 ChlRmdPos_Chl_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
 summary(ChlRmdPos_Chl_lm)
 ```
@@ -1033,7 +1017,7 @@ summary(ChlRmdPos_Chl_lm)
 > Chl almost significant predictor of Chl Rmd (Pos Filter)
 
 ### Turbidity
-```{r Filter_Turbidity, fig.height=10, fig.width=12, echo=FALSE}
+```{r Filter_Turbidity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
 FR_Turb <- ggplot(Filtration_only_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -1094,34 +1078,34 @@ grid.arrange(FR_Turb, Chl_Rmd_Turb, FR_pos_Turb, Chl_Rmd_pos_Turb, nrow =2)
 ```
 
 ### FR by Turbidity LM
-```{r}
+```{r, cache=TRUE}
 FR_Turb_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Turbidity_NTU_Up)
 summary(FR_Turb_lm)
 ```
 
 ### ChlRmd by Turbidity LM
-```{r}
+```{r, cache=TRUE}
 ChlRmd_Turb_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Turbidity_NTU_Up)
 summary(ChlRmd_Turb_lm)
 ```
 
 ### FR Pos by Turbidity LM
-```{r}
+```{r, cache=TRUE}
 FRPos_Turb_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Turbidity_NTU_Up)
 summary(FRPos_Turb_lm)
 ```
 
 ### ChlRmd Pos by Turbidity LM
-```{r}
+```{r, cache=TRUE}
 ChlRmdPos_Turb_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Turbidity_NTU_Up)
 summary(ChlRmdPos_Turb_lm)
 ```
 
-TPM & OC
+TPM X OC
 =====================================
 
 ### TPM by OC
-```{r TPM vs OC, echo=FALSE}
+```{r TPM vs OC, cache=TRUE, echo=FALSE}
 TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -1140,7 +1124,7 @@ plot(TPM_OC)
 > No reason to exclude that low NPD value right?
 
 ### Individual Sites TPM vs OC
-```{r TPM_OC - By Site, echo=FALSE}
+```{r TPM_OC - By Site, cache=TRUE, echo=FALSE}
 OC_TPM_by_Site <- Avg_TPM_summary_table %>% 
   ggplot(aes(x = Avg_TPM, y = Avg_OC_Ratio, color = Site)) +
   geom_point(aes(color = Site)) + 
@@ -1162,7 +1146,7 @@ plot(OC_TPM_by_Site)
 > Large spread of relationship among sites. Different TPM:OC signatures and relationships at different sites.
 
 ### TPM vs OC by sites
-```{r TPM_OC_Sites, fig.height=10, fig.width=12,}
+```{r TPM_OC_Sites, fig.height=10, fig.width=12, cache=TRUE}
 TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")),
                         aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1227,7 +1211,7 @@ grid.arrange(TPM_OC_Deanza, TPM_OC_NPSM, TPM_OC_SR, TPM_OC_MB, nrow = 2)
 ```
 
 ### San Rafael TMP by OC
-```{r}
+```{r, cache=TRUE}
 TPM_SR <- Avg_TPM_summary_table %>% filter(Site == "San Rafael")
 
 OC_TPM_SR_LM <- lm(data = TPM_SR, Avg_OC_Ratio ~ Avg_TPM)
@@ -1235,7 +1219,7 @@ summary(OC_TPM_SR_LM)
 ```
 
 ### Morro Bay TMP by OC
-```{r}
+```{r, cache=TRUE}
 TPM_MB <- Avg_TPM_summary_table %>% filter(Site == "Morro Bay")
 
 OC_TPM_MB_LM <- lm(data = TPM_MB, Avg_OC_Ratio ~ Avg_TPM)
@@ -1243,7 +1227,7 @@ summary(OC_TPM_MB_LM)
 ```
 
 ### Shellmaker TMP by OC
-```{r}
+```{r, cache=TRUE}
 TPM_NPSM <- Avg_TPM_summary_table %>% filter(Site == "Shellmaker")
 
 OC_TPM_NPSM_LM <- lm(data = TPM_NPSM, Avg_OC_Ratio ~ Avg_TPM)
@@ -1251,7 +1235,7 @@ summary(OC_TPM_NPSM_LM)
 ```
 
 ### Deanza TMP by OC
-```{r}
+```{r, cache=TRUE}
 TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
 
 OC_TPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ Avg_TPM)
@@ -1260,11 +1244,11 @@ summary(OC_TPM_NPD_LM)
 
 > almost significant 
 
-DTW - Shell length
+DTW X Shell length
 =====================================
 
 ### Newport Olympia Shell length vs DTW
-```{r Oly_DTW_Shell_length, echo=FALSE}
+```{r Oly_DTW_Shell_length, cache=TRUE, echo=FALSE}
 #Olympia DTW predicted by Shell Length - Newport, CA
 # All excavation quadrat samples processed to date aggregated 
 NPD_oly <- NPD_density %>% 
@@ -1295,7 +1279,7 @@ plot(Oly_shell_DTW)
 > 1) Outlier probably sample processing error or error in data entry. 2) Negative DTW data point, doesn't make sense- remove?
 
 ### DTW Shell length Outlier analysis (mean -+ SD * 2.2)
-```{r Oly_DTW_Shell_length_outier_removed}
+```{r Oly_DTW_Shell_length_outier_removed, cache=TRUE}
 # Remove outlier and negative DTW value
 NPD_oly_outRmd <- NPD_oly %>%
   mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
@@ -1328,7 +1312,7 @@ plot(Oly_shell_DTW_rm_out)
 > Remove negative DTW data point. Doesn't make sense
 
 ### Linear model without outlier
-```{r Linear_model_DTW_length}
+```{r Linear_model_DTW_length, cache=TRUE}
 Oly_DTW_lm <- lm(data = NPD_oly_outRmd,
                          tissue_dry_weight_g ~ length_mm)
 
@@ -1336,7 +1320,7 @@ summary(Oly_DTW_lm)
 ```
 
 ### Log Transform DTW Graph
-```{r}
+```{r, cache=TRUE}
 Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, log(tissue_dry_weight_g))) +
   geom_smooth(method=lm, formula = x_y_formula, se=TRUE, level=0.95, color = 'grey50') +
   geom_point() +#aes(color = Site)) +
@@ -1361,7 +1345,7 @@ plot(Oly_shell_logDTW)
 > Is that the correct line equation?? 
 
 ### Log transform DTW
-```{r}
+```{r, cache=TRUE}
 Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd,
                     log(tissue_dry_weight_g) ~ length_mm)
 
@@ -1371,7 +1355,7 @@ summary(Oly_LogDTW_lm)
 > Explains 67% of variation. length significant predictor of log(DTW)
 
 ### Quadratic model x^2
-```{r Quad_model_DTW_length_2}
+```{r Quad_model_DTW_length_2, cache=TRUE}
 #Quadratic model using length^2
 length_2 <- NPD_oly_outRmd$length_mm^2
 
@@ -1383,7 +1367,7 @@ summary(Oly_DTW_Quad)
 > Not sure if this is the correct way to build this model. summary shows no significance in either variable. DTW = -1.468e-02 + https://www.theanalysisfactor.com/r-tutorial-4/
 
 ### Quadratic model Graph
-```{r Quad_model_DTW_graph}
+```{r Quad_model_DTW_graph, cache=TRUE}
 NPD_oly_outRmd %<>% 
   mutate(Quad_model = unname(predict(Oly_DTW_Quad)))
   # Could use predict(Oly_DTW_Quad, interval = 'confidence') to create confidence intervals columns
@@ -1403,7 +1387,7 @@ plot(Oly_DTW_Quad_graph)
 ```
 
 ### Quadratic model x^3
-```{r Quad_model_DTW_length_3}
+```{r Quad_model_DTW_length_3, cache=TRUE}
 #Quadratic model using length^2
 length_3 <- NPD_oly_outRmd$length_mm^3
 
@@ -1415,7 +1399,7 @@ summary(Oly_DTW_Quad)
 > doesn't fit better
 
 ### Total Wet Weight vs Dry Tissue Weight
-```{r}
+```{r, cache=TRUE}
 Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
    geom_point() +
@@ -1433,7 +1417,7 @@ plot(Oly_TWW_DTW)
 ```
 
 ### TWW vs DTW (remove outlier)
-```{r}
+```{r, cache=TRUE}
 # use DTW outlier data to plot graph
 Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1455,7 +1439,7 @@ plot(Oly_TWW_DTW_rm_out)
 > Gray and Langdon (2017): "Unless explicitly mentioned, DTW of experimental oysters was estimated using the species-specific allometric relationship between DTW and total wet weight (TWW), which were determined in preliminary analysis (O. lurida: DTW = 0.0044TWW − 0.043, R2 =0.93, F1,32 =78.80, p value <0.0001; C. gigas: DTW = 0.039TWW − 0.06, R2 =0.89, F1,29 = 225.97, p value <0.0001).
 
 ### Linear model without outlier
-```{r}
+```{r, cache=TRUE}
 Oly_TWW_DTW_lm_rm_out <- lm(data = NPD_oly_outRmd,
                          tissue_dry_weight_g ~ total_wet_weight_g)
 
@@ -1463,7 +1447,7 @@ summary(Oly_TWW_DTW_lm_rm_out)
 ```
 
 ### Log(TWW) vs DTW 
-```{r}
+```{r, cache=TRUE}
 # use DTW outlier data to plot graph
 Oly_logTWW_DTW <- ggplot(NPD_oly_outRmd, aes(log(total_wet_weight_g), log(tissue_dry_weight_g))) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1482,7 +1466,7 @@ plot(Oly_logTWW_DTW)
 ```
 
 ### Log DTW X  Log TWW LM
-```{r}
+```{r, cache=TRUE}
 Oly_TWW_DTW_log_LM <- lm(data = NPD_oly_outRmd %>% filter(total_wet_weight_g > 0), 
                          log(tissue_dry_weight_g) ~ log(total_wet_weight_g))
 summary(Oly_TWW_DTW_log_LM)
@@ -1492,7 +1476,7 @@ Up & Down Chl
 =====================================
 
 ### Facet Plots
-```{r Bar_Graphs_up_vs_down}
+```{r Bar_Graphs_up_vs_down, cache=TRUE}
 Bar_up_down_data <- Master_analysis_table %>%
   select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
   rename(Upstream = Chl_ug_L_Up, Downstream = Chl_ug_L_Down) %>%  
@@ -1522,7 +1506,7 @@ plot(Paired_bar_chl_graph)
 ```
 
 ### Graphs using grid.arrange()
-```{r Bar_Graphs_up_vs_down_grid.arrange}
+```{r Bar_Graphs_up_vs_down_grid.arrange, cache=TRUE}
 ############## Try 2 ####### make separate graphs, combine using grid.arrange()
 
 ##### Can't figure out how to properly label x axis. Works with Exp_Date, but can't shorten without messing up data:label pairs. Can't spend more time on this right now. come back if time -AM 2020_3_3
@@ -1623,7 +1607,7 @@ Bivalve Density
 =====================================
 
 ### Bivalve Density
-```{r Bivalve_Density, fig.height=6, fig.width=8}
+```{r Bivalve_Density, fig.height=6, fig.width=8, cache=TRUE}
 # read in bivalve density data from cleaned data file
 Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
 
