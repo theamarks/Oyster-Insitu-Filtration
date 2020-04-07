@@ -412,7 +412,7 @@ fwrite(Species_density_summary, file.path(Bivalve_output_directory, "Bivalve_Den
 ##############################################################
 # Create Master Analysis Table
 ##############################################################
-filtration_summary_table <- read_csv("output/4_Filtration_Calculations/Filtration_Summary/filtration_summary.csv")
+filtration_summary_table <- fread("output/4_Filtration_Calculations/Filtration_Summary/filtration_summary.csv")
 
 Master_analysis_table <- filtration_summary_table %>% 
   left_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
