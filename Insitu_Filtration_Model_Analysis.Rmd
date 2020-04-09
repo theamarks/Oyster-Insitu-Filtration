@@ -488,14 +488,14 @@ grid.arrange(FR_TPM_graph, Chl_Rmd_TPM_graph, nrow = 1)
 ```
 
 ### ***FR ~ TPM Linear Model***
-```{r LM FR x TPM, fig.height=10, fig.width=6, cache=TRUE}
+```{r LM FR x TPM, fig.height=6, fig.width=6, cache=TRUE}
 FR_TPM_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Avg_TPM)
 #summary(FR_TPM_lm)
 ols_regress(FR_TPM_lm)
 ```
 
 ### ***ChlRmd ~ TPM Linear Model***
-```{r LM ChlRmd x TPM, fig.height=10, fig.width=6, cache=TRUE}
+```{r LM ChlRmd x TPM, fig.height=6, fig.width=6, cache=TRUE}
 ChlRmd_TPM_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Avg_TPM)
 #summary(ChlRmd_TPM_lm)
 ols_regress(ChlRmd_TPM_lm)
@@ -541,14 +541,14 @@ grid.arrange(FRPos_TPM_graph, Chl_RmdPos_TPM_graph, nrow = 1)
 ```
 
 ### ***FR Pos ~ TPM Linear Model***
-```{r, fig.height=10, fig.width=6, cache=TRUE}
+```{r, fig.height=6, fig.width=6, cache=TRUE}
 FRPos_TPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_TPM)
 #summary(FR_TPM_lm)
 ols_regress(FRPos_TPM_lm)
 ```
 
 ### ***Log FR Pos ~ Log TPM Linear Model***
-```{r, fig.height=10, fig.width=6, cache=TRUE}
+```{r, fig.height=6, fig.width=6, cache=TRUE}
 logFRPos_logTPM_lm <- lm(data = Filtration_pos_data, log(L_hr_m2) ~ log(Avg_TPM))
 #summary(FR_TPM_lm)
 ols_regress(logFRPos_logTPM_lm)
@@ -557,14 +557,14 @@ ols_regress(logFRPos_logTPM_lm)
 > Doesn't not help R^2 or significance.
 
 ### ***ChlRmd Pos ~ TPM Linear Model***
-```{r, fig.height=10, fig.width=6, cache=TRUE}
+```{r, fig.height=6, fig.width=6, cache=TRUE}
 ChlRmdPos_TPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_TPM)
 #summary(ChlRmdPos_TPM_lm)
 ols_regress(ChlRmdPos_TPM_lm)
 ```
 
 ### ***Log ChlRmd Pos ~ Log TPM Linear Model***
-```{r, fig.height=10, fig.width=6, cache=TRUE}
+```{r, fig.height=6, fig.width=6, cache=TRUE}
 logChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_TPM))
 #summary(ChlRmdPos_TPM_lm)
 ols_regress(logChlRmdPos_logTPM_lm)
@@ -609,13 +609,13 @@ grid.arrange(NPD_FR_TPM_graph, NPD_ChlRmd_TPM_graph, nrow = 1)
 ```
 
 ### ***Deanza Filter - FR ~ TPM***
-```{r}
+```{r, fig.height=6, fig.width=6}
 NPD_FR_TPM_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Avg_TPM)
 ols_regress(NPD_FR_TPM_lm)
 ```
 
 ### ***Deanza Filter - ChlRmd ~ TPM***
-```{r}
+```{r, fig.height=6, fig.width=6}
 NPD_ChlRmd_TPM_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Avg_TPM)
 ols_regress(NPD_ChlRmd_TPM_lm)
 ```
@@ -659,13 +659,13 @@ grid.arrange(NPD_FRPos_TPM_graph, NPD_ChlRmdPos_TPM_graph, nrow = 1)
 ```
 
 ### ***Deanza Positive Filter - FR ~ TPM***
-```{r}
+```{r, fig.height=6, fig.width=6, cache=T}
 NPD_PosFR_TPM_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Avg_TPM)
 ols_regress(NPD_PosFR_TPM_lm)
 ```
 
 ### ***Deanza Postive Filter - ChlRmd ~ TPM***
-```{r}
+```{r, fig.height=6, fig.width=6, cache=T}
 NPD_PosChlRmd_TPM_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Avg_TPM)
 ols_regress(NPD_PosChlRmd_TPM_lm)
 ```
@@ -711,19 +711,19 @@ Chl_Rmd_OC_graph <- ggplot(Filtration_only_data, aes(Avg_OC_Ratio, pcnt_Chl_rmvd
 grid.arrange(FR_OC_graph, Chl_Rmd_OC_graph, nrow = 1)
 ```
 
-### FR by OC Linear Model
-```{r, cache =TRUE}
+### ***FR by OC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 FR_OC_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Avg_OC_Ratio)
-summary(FR_OC_lm)
+ols_regress(FR_OC_lm)
 ```
 
-### ChlRmd by OC Linear Model
-```{r, cache =TRUE}
+### ***ChlRmd by OC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmd_OC_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
-summary(ChlRmd_OC_lm)
+ols_regress(ChlRmd_OC_lm)
 ```
 
-### Filter Positive vs OC
+### ***Filter Positive vs OC***
 ```{r FRPos vs OC, fig.height=5, fig.width=12, cache=TRUE}
 FRPos_OC_graph <- ggplot(Filtration_pos_data, aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
@@ -759,27 +759,53 @@ Chl_RmdPos_OC_graph <- ggplot(Filtration_pos_data, aes(Avg_OC_Ratio, pcnt_Chl_rm
 grid.arrange(FRPos_OC_graph, Chl_RmdPos_OC_graph, nrow = 1)
 ```
 
-### FR Pos by OC Linear Model
-```{r, cache =TRUE}
+### ***FR Pos by OC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 FRPos_OC_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_OC_Ratio)
-summary(FRPos_OC_lm)
+ols_regress(FRPos_OC_lm)
 ```
 
-### ChlRmd Pos by OC Linear Model
-```{r, cache =TRUE}
+### ***ChlRmd Pos by OC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_OC_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
-summary(ChlRmdPos_OC_lm)
+ols_regress(ChlRmdPos_OC_lm)
 ```
 
-> Significant Avg_OC_Ratio *
+> Significant Avg_OC_Ratio * ChlRmd
 
-### Deanza FR by OC
-```{r Deanza_Filter_OC, fig.height=5, fig.width=12, cache=TRUE}
-FR_OC_NPD_graph <- ggplot(Filtration_only_data %>% filter(Site == "Deanza"),
-                          aes(Avg_OC_Ratio, L_hr_m2)) +
+### ***Log Transformation - Positive ChlRmd vs OC***
+```{r LogChlRmdPos_OC, fig.height=5, fig.width=12, cache=TRUE}
+logChl_RmdPos_logOC_graph <- ggplot(Filtration_pos_data, aes(log(Avg_OC_Ratio), log(pcnt_Chl_rmvd))) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors, guide=FALSE) +  
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'nlog Organic Content of Seston (fraction)',
+       y = paste("nlog", Prt_Chl_Label),
+       title = 'All Filtration Trials') +
+  guides(fill = FALSE) +
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+```
+
+### ***ChlRmd Pos by OC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+logChlRmdPos_logOC_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_OC_Ratio))
+ols_regress(logChlRmdPos_logOC_lm)
+```
+
+> Not a big difference between regular and log transformed model
+
+### ***Deanza Filter Only - FR by OC***
+```{r Deanza_Filter_OC, fig.height=5, fig.width=12, cache=TRUE}
+FR_OC_NPD_graph <- ggplot(Deanza_Filter_data, aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  geom_point() +
+  #scale_color_manual(values = Site_colors, guide=FALSE) +  
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = Hab_FR_Label,
@@ -792,11 +818,10 @@ FR_OC_NPD_graph <- ggplot(Filtration_only_data %>% filter(Site == "Deanza"),
                label.x = "right",
                label.y = "bottom")
 
-Chl_Rmd_OC_NPD_graph <- ggplot(Filtration_only_data %>% filter(Site == "Deanza"),
-                          aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
+Chl_Rmd_OC_NPD_graph <- ggplot(Deanza_Filter_data, aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors, guide=FALSE) +  
+  geom_point() +
+  #scale_color_manual(values = Site_colors, guide=FALSE) +  
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = Prt_Chl_Label,
@@ -811,25 +836,24 @@ Chl_Rmd_OC_NPD_graph <- ggplot(Filtration_only_data %>% filter(Site == "Deanza")
 grid.arrange(FR_OC_NPD_graph, Chl_Rmd_OC_NPD_graph, nrow = 1)
 ```
 
-### Deanza FR by OC Linear Model
-```{r, cache=TRUE}
-FR_OC_NPD_lm <- lm(data = (Filtration_only_data %>% filter(Site == "Deanza")), L_hr_m2 ~ Avg_OC_Ratio)
-summary(FR_OC_NPD_lm)
+### ***Deanza FR ~ OC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+FR_OC_NPD_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Avg_OC_Ratio)
+ols_regress(FR_OC_NPD_lm)
 ```
 
-### Deanza ChlRmd by OC Linear Model
-```{r, cache=TRUE}
-ChlRmd_OC_NPD_lm <- lm(data = (Filtration_only_data %>% filter(Site == "Deanza")), pcnt_Chl_rmvd ~ Avg_OC_Ratio)
-summary(ChlRmd_OC_NPD_lm)
+### ***Deanza ChlRmd ~ OC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmd_OC_NPD_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
+ols_regress(ChlRmd_OC_NPD_lm)
 ```
 
-### Deanza FR Positive by OC
+### ***Deanza FR Positive ~ OC***
 ```{r Deanza_Filter_Pos_OC, fig.height=5, fig.width=12, cache=TRUE}
-FRPos_OC_NPD_graph <- ggplot(Filtration_pos_data %>% filter(Site == "Deanza"),
-                          aes(Avg_OC_Ratio, L_hr_m2)) +
+FRPos_OC_NPD_graph <- ggplot(Deanza_PosFilter_data, aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors, guide=FALSE) +  
+  geom_point() +
+  #scale_color_manual(values = Site_colors, guide=FALSE) +  
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = Hab_FR_Label,
@@ -842,11 +866,10 @@ FRPos_OC_NPD_graph <- ggplot(Filtration_pos_data %>% filter(Site == "Deanza"),
                label.x = "right",
                label.y = "bottom")
 
-Chl_RmdPos_OC_NPD_graph <- ggplot(Filtration_pos_data %>% filter(Site == "Deanza"),
-                          aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
+Chl_RmdPos_OC_NPD_graph <- ggplot(Deanza_PosFilter_data, aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors, guide=FALSE) +  
+  geom_point() +
+  #scale_color_manual(values = Site_colors, guide=FALSE) +  
   theme_classic() +
   labs(x = 'Organic Content of Seston (fraction)',
        y = Prt_Chl_Label,
@@ -861,24 +884,30 @@ Chl_RmdPos_OC_NPD_graph <- ggplot(Filtration_pos_data %>% filter(Site == "Deanza
 grid.arrange(FRPos_OC_NPD_graph, Chl_RmdPos_OC_NPD_graph, nrow = 1)
 ```
 
-### Deanza FR Positive by OC Linear Model
-```{r, cache=TRUE}
-FRPos_OC_NPD_lm <- lm(data = (Filtration_pos_data %>% filter(Site == "Deanza")), 
-                      L_hr_m2 ~ Avg_OC_Ratio)
-summary(FRPos_OC_NPD_lm)
+### ***Deanza FR Positive by OC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+FRPos_OC_NPD_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Avg_OC_Ratio)
+ols_regress(FRPos_OC_NPD_lm)
 ```
 
-### Deanza ChlRmd Positive by OC Linear Model
-```{r, cache=TRUE}
-ChlRmdPos_OC_NPD_lm <- lm(data = (Filtration_pos_data %>% filter(Site == "Deanza")), 
-                          pcnt_Chl_rmvd ~ Avg_OC_Ratio)
-summary(ChlRmdPos_OC_NPD_lm)
+### ***Deanza ChlRmd Positive by OC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmdPos_OC_NPD_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
+ols_regress(ChlRmdPos_OC_NPD_lm)
 ```
 
-Filter X WQ
+### ***Log Deanza ChlRmd Positive by OC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmdPos_logOC_NPD_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ log(Avg_OC_Ratio))
+ols_regress(ChlRmdPos_logOC_NPD_lm)
+```
+
+> Only slight improvement by log(OC)
+
+Temperature
 =====================================
 
-### Temperature
+### ***Temperature ***
 ```{r Filter_Temp, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
 FR_Temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -887,7 +916,7 @@ FR_Temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, L_hr_m2)) +
   theme_classic() +
   labs(x = 'Temperature Upstream (C)',
        y = Hab_FR_Label,
-       title = 'FR by Temp (All Filtration Trials)') +
+       title = 'All Filtration Trials') +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
@@ -901,7 +930,7 @@ Chl_Rmd_Temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
   theme_classic() +
   labs(x = 'Temperature Upstream (C)',
        y = Prt_Chl_Label,
-       title = 'ChlRmd by Temp (All Filtration Trials)') +
+       title = 'All Filtration Trials') +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
@@ -939,40 +968,132 @@ Chl_Rmd_pos_Temp <- ggplot(Filtration_pos_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
 grid.arrange(FR_Temp, Chl_Rmd_Temp, FR_pos_Temp, Chl_Rmd_pos_Temp, nrow = 2)
 ```
 
-### FR by Temp LM (All Filter)
-```{r, cache=TRUE}
+### ***FR ~ Temp LM (All Filter)***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 FR_temp_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Temp_C_Up)
-summary(FR_temp_lm)
+ols_regress(FR_temp_lm)
 ```
 
-### ChlRmd X Temp LM (All Filter)
-```{r, cache=TRUE}
+### ***ChlRmd ~ Temp LM (All Filter)***
+```{r,fig.height=6, fig.width=6, cache =TRUE}
 ChlRmd_temp_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Temp_C_Up)
-summary(ChlRmd_temp_lm)
+ols_regress(ChlRmd_temp_lm)
 ```
 
-### FR Positive X Temp LM
-```{r, cache=TRUE}
+### ***FR Positive ~ Temp LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 FRPos_temp_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Temp_C_Up)
-summary(FRPos_temp_lm)
+ols_regress(FRPos_temp_lm)
 ```
 
-### ChlRmd Positive X Temp LM
-```{r, cache=TRUE}
+### ***ChlRmd Positive ~ Temp LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_temp_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Temp_C_Up)
-summary(ChlRmdPos_temp_lm)
+ols_regress(ChlRmdPos_temp_lm)
 ```
 
-### Salinity
-```{r Filter_Salinity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
+### ***Deanza Filtration - Temperature***
+```{r NPD_Filter_Temp, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
+NPD_FR_Temp <- ggplot(Deanza_Filter_data, aes(Temp_C_Up, L_hr_m2)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Temperature Upstream (C)',
+       y = Hab_FR_Label,
+       title = 'Deanza Filter Trials') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
 
+NPD_Chl_Rmd_Temp <- ggplot(Deanza_Filter_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Temperature Upstream (C)',
+       y = Prt_Chl_Label,
+       title = 'Deanza Filter Trials') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+NPD_FRPos_Temp <- ggplot(Deanza_PosFilter_data, aes(Temp_C_Up, L_hr_m2)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Temperature Upstream (C)',
+       y = Hab_FR_Label,
+       title = 'Deanza Positive Filter Trials') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+NPD_Chl_RmdPos_Temp <- ggplot(Deanza_PosFilter_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Temperature Upstream (C)',
+       y = Prt_Chl_Label,
+       title = 'Deanza Positive Filter Trials') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+grid.arrange(NPD_FR_Temp, NPD_Chl_Rmd_Temp , NPD_FRPos_Temp, NPD_Chl_RmdPos_Temp, nrow = 2)
+```
+
+### ***Deanza FR ~ Temp LM (All Filter)***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_FR_temp_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Temp_C_Up)
+ols_regress(NPD_FR_temp_lm)
+```
+
+### ***Deanza ChlRmd ~ Temp LM (All Filter)***
+```{r,fig.height=6, fig.width=6, cache =TRUE}
+NPD_ChlRmd_temp_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Temp_C_Up)
+ols_regress(NPD_ChlRmd_temp_lm)
+```
+
+### ***Deanza FR Positive ~ Temp LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_FRPos_temp_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Temp_C_Up)
+ols_regress(NPD_FRPos_temp_lm)
+```
+
+### ***Deanza ChlRmd Positive ~ Temp LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_ChlRmdPos_temp_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Temp_C_Up)
+ols_regress(NPD_ChlRmdPos_temp_lm)
+```
+
+### ***Deanza ChlRmd Positive ~ Log Temp LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_ChlRmdPos_logtemp_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ log(Temp_C_Up))
+ols_regress(NPD_ChlRmdPos_logtemp_lm)
+```
+
+> Log transforming does not help fit
+
+Salinity
+=====================================
+
+### ***Filtration - Salinity***
+```{r Filter_Salinity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
 FR_Sal <- ggplot(Filtration_only_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
   theme_classic() +
   labs(x = 'Salinity Upstream (ppt)',
-       y = Hab_FR_Label) +
+       y = Hab_FR_Label,
+       title = 'All Filtration Trials') +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
@@ -985,7 +1106,8 @@ Chl_Rmd_Sal <- ggplot(Filtration_only_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
   scale_color_manual(values = Site_colors) +  
   theme_classic() +
   labs(x = 'Salinity Upstream (ppt)',
-       y = Prt_Chl_Label) +
+       y = Prt_Chl_Label,
+       title = 'All Filtration Trials') +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
@@ -1023,31 +1145,138 @@ Chl_Rmd_pos_Sal <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
 grid.arrange(FR_Sal, Chl_Rmd_Sal, FR_pos_Sal, Chl_Rmd_pos_Sal, nrow = 2)
 ```
 
-### FR by Salinity LM
-```{r, cache=TRUE}
+### ***FR ~ Salinity LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 FR_Sal_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Sal_ppt_Up)
-summary(FR_Sal_lm)
+ols_regress(FR_Sal_lm)
 ```
 
-### ChlRmd by Salinity LM
-```{r, cache=TRUE}
+### ***ChlRmd ~ Salinity LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmd_Sal_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
-summary(ChlRmd_Sal_lm)
+ols_regress(ChlRmd_Sal_lm)
 ```
 
-### FR Pos by Salinity LM
-```{r, cache=TRUE}
+### ***FR Pos ~ Salinity LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 FRPos_Sal_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Sal_ppt_Up)
-summary(FRPos_Sal_lm)
+ols_regress(FRPos_Sal_lm)
 ```
 
-### ChlRmd Pos by Salinity LM
-```{r, cache=TRUE}
+### ***ChlRmd Pos ~ Salinity LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_Sal_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
-summary(ChlRmdPos_Sal_lm)
+ols_regress(ChlRmdPos_Sal_lm)
 ```
 
 > Salinity almost significant predictor of ChlRmd (Positive Filter)
+
+###***Log ChlRmd Pos - Log Salinity***
+```{r}
+logChlRmd_pos_logSal_graph <- ggplot(Filtration_pos_data, aes(log(Sal_ppt_Up), log(pcnt_Chl_rmvd))) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +  
+  theme_classic() +
+  labs(x = expression('log'[n]*'Salinity Upstream (ppt)'),
+       y = paste("log " , Prt_Chl_Label),
+       title = 'Positive Chl Removed Only') +
+  stat_poly_eq(formula = x_y_formula, parse = TRUE)
+
+plot(logChlRmd_pos_logSal_graph)
+```
+
+### ***ChlRmd Pos ~ log Salinity LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+logChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Sal_ppt_Up))
+ols_regress(logChlRmdPos_logSal_lm)
+```
+
+> Log(Y) = Log(k) + Log(X^k) - How to pull out equation for regression? 
+
+### ***Deanza only Filtration - Salinity***
+```{r NPD_Filter_Salinity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
+NPD_FR_Salinity <- ggplot(Deanza_Filter_data, aes(Sal_ppt_Up, L_hr_m2)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Salinity Upstream (ppt)',
+       y = Hab_FR_Label,
+       title = 'NPD Filtration Trials') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+NPD_ChlRmd_Salinity <- ggplot(Deanza_Filter_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Salinity Upstream (ppt)',
+       y = Prt_Chl_Label,
+       title = 'NPD Filtration Trials') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+NPD_FRPos_Salinity <- ggplot(Deanza_PosFilter_data, aes(Sal_ppt_Up, L_hr_m2)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Salinity Upstream (ppt)',
+       y = Hab_FR_Label,
+       title = 'NPD Positive Filtration Trials') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+NPD_ChlRmdPos_Salinity <- ggplot(Deanza_PosFilter_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Salinity Upstream (ppt)',
+       y = Prt_Chl_Label,
+       title = 'NPD Positive Filtration Trials') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+grid.arrange(NPD_FR_Salinity, NPD_ChlRmd_Salinity, 
+             NPD_FRPos_Salinity, NPD_ChlRmdPos_Salinity, nrow = 2)
+```
+
+### ***Deanza FR ~ Salinity LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_FR_Sal_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Sal_ppt_Up)
+ols_regress(NPD_FR_Sal_lm)
+```
+
+### ***Deanza ChlRmd ~ Salinity LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_ChlRmd_Sal_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
+ols_regress(NPD_ChlRmd_Sal_lm)
+```
+
+### ***Deanza Pos FR ~ Salinity LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_FRPos_Sal_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Sal_ppt_Up)
+ols_regress(NPD_FRPos_Sal_lm)
+```
+
+### ***Deanza Pos ChlRmd ~ Salinity LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_ChlRmdPos_Sal_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
+ols_regress(NPD_ChlRmdPos_Sal_lm)
+```
+
+Chlorophyll
+=====================================
 
 ### Chlorophyll 
 ```{r Filter_Chl, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
