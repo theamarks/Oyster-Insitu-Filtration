@@ -1278,7 +1278,7 @@ ols_regress(NPD_ChlRmdPos_Sal_lm)
 Chlorophyll
 =====================================
 
-### Chlorophyll 
+### ***All Filtration Trials***
 ```{r Filter_Chl, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
 FR_Chl <- ggplot(Filtration_only_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1337,33 +1337,116 @@ Chl_Rmd_pos_Chl <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) 
 grid.arrange(FR_Chl, Chl_Rmd_Chl, FR_pos_Chl, Chl_Rmd_pos_Chl, nrow = 2)
 ```
 
-### FR by Chl LM
-```{r, cache=TRUE}
+### FR ~ Chl LM
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 FR_Chl_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Chl_ug_L_Up)
-summary(FR_Chl_lm)
+ols_regress(FR_Chl_lm)
 ```
 
-### ChlRmd by Chl LM
-```{r, cache=TRUE}
+### ChlRmd ~ Chl LM
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmd_Chl_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
-summary(ChlRmd_Chl_lm)
+ols_regress(ChlRmd_Chl_lm)
 ```
 
-### FR Pos by Chl LM
-```{r, cache=TRUE}
+### FR Pos ~ Chl LM
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 FRPos_Chl_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Chl_ug_L_Up)
-summary(FRPos_Chl_lm)
+ols_regress(FRPos_Chl_lm)
 ```
 
-### ChlRmd Pos by Chl LM
-```{r, cache=TRUE}
+### ChlRmd Pos ~ Chl LM
+```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_Chl_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
-summary(ChlRmdPos_Chl_lm)
+ols_regress(ChlRmdPos_Chl_lm)
 ```
 
 > Chl almost significant predictor of Chl Rmd (Pos Filter)
 
-### Turbidity
+```{r NPD_Filter_Chl, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
+NPD_FR_Chl <- ggplot(Deanza_Filter_data, aes(Chl_ug_L_Up, L_hr_m2)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Chlorophyll Upstream (ug/L)',
+       y = Hab_FR_Label,
+       title = "NPD Filtraiton") +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+NPD_ChlRmd_Chl <- ggplot(Deanza_Filter_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Chlorophyll Upstream (ug/L)',
+       y = Prt_Chl_Label,
+       title = "NPD Filtraiton") +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+NPD_FRPos_Chl <- ggplot(Deanza_PosFilter_data, aes(Chl_ug_L_Up, L_hr_m2)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Chlorophyll Upstream (ug/L)',
+       y = Hab_FR_Label,
+       title = "NPD Positive Filtraiton") +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+NPD_ChlRmdPos_Chl <- ggplot(Deanza_Filter_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point() +
+  theme_classic() +
+  labs(x = 'Chlorophyll Upstream (ug/L)',
+       y = Prt_Chl_Label,
+       title = "NPD Positive Filtraiton") +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+grid.arrange(NPD_FR_Chl, NPD_ChlRmd_Chl, NPD_FRPos_Chl, NPD_ChlRmdPos_Chl, nrow = 2)
+```
+
+### Deanza FR ~ Chl LM
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_FR_Chl_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Chl_ug_L_Up)
+ols_regress(FR_Chl_lm)
+```
+
+### Deanza ChlRmd ~ Chl LM
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_ChlRmd_Chl_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
+ols_regress(ChlRmd_Chl_lm)
+```
+
+### Deanza FR Pos ~ Chl LM
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_FRPos_Chl_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Chl_ug_L_Up)
+ols_regress(FRPos_Chl_lm)
+```
+
+### ChlRmd Pos ~ Chl LM
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_ChlRmdPos_Chl_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
+ols_regress(ChlRmdPos_Chl_lm)
+```
+
+Turbidity
+=====================================
+
+### ***Filtration - Turbidity***
 ```{r Filter_Turbidity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
 FR_Turb <- ggplot(Filtration_only_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
