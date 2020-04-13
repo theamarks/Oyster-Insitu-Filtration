@@ -147,7 +147,7 @@ LM_PrctChl_Filter <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~
 summary(LM_PrctChl_Filter)
 ```
 
-> Only 3 degrees of freedom, no significant predictors of ChlRmd
+> Only 3 degrees of freedom, no significant predictors of ChlRmd. Try adding in log transformed salinity
 
 ### ***Filtration Trials ~ ChlRmd multiple linear regression***
 ```{r, fig.height=10, fig.width=6, cache=TRUE}
@@ -156,14 +156,14 @@ ols_regress(LM_PrctChl_Filter)
 ```
 
 ### ***Filtraiton Trials ~ ChlRmd Stepwise Linear Regression***
-```{r, fig.height=5, fig.width=6, cache=TRUE}
+```{r,cache=TRUE}
 # Stepwise regression
 ols_step_both_p(LM_PrctChl_Filter)
 # diagnosis of colinearity
 # ols_coll_diag(LM_PrctChl_Filter)
 ```
 
-> Newport Shellmaker was a predictor of ChlRmd... indication of site effect with 
+> Newport Shellmaker TRUE was a predictor of ChlRmd... indication of site effect? Really low R^2 value - 0.116
 
 ### ***FR - Filtraiton Trials Only***
 ```{r LM_FR_Filter, fig.height=10, fig.width=6, cache=TRUE}
@@ -174,12 +174,14 @@ LM_FR_Filter <- lm(data = Filtration_only_data, L_hr_m2 ~
                          # Field notes logic variables
                          Wind + G_upstream +  Daylight + Sonde_fell + Boat_wake +  Algae +
                          # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + #Chl_ug_L_Up +
                          avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 
 # multiple regression summary
 summary(LM_FR_Filter)
 ```
+
+> 3 degrees of freedom, no significant parameters in full model. Try log transformed salinity next.
 
 ### ***Filtration Only ~ FR Multiple Regression***
 ```{r, fig.height=10, fig.width=6, cache=TRUE}
@@ -195,7 +197,7 @@ ols_step_both_p(LM_FR_Filter)
 #ols_coll_diag(LM_FR_Filter)
 ```
 
->
+> NP Shellmaker True signature? low R^2 fit. 
 
 ### ***Chl Rmd - Positive Filtration Stepwise Multiple Regression***
 ```{r LM_PrctChl_pos_add, fig.height=5, fig.width=6, cache=TRUE}
@@ -207,13 +209,13 @@ LM_PrctChl_pos_add <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
                          # Field notes logic variables
                          Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
                          # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + #Chl_ug_L_Up +
                          avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 
 ols_step_both_p(LM_PrctChl_pos_add)
 ```
 
-> Not enough degrees of freedom to run full model. Stepwise selects variable with significant p-values
+> Not enough degrees of freedom to run full model. Stepwise selects variable with significant p-values. Try adding in log transformed Salinity. 
 
 ### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
 ```{r, fig.height=5, fig.width=6, cache=TRUE}
@@ -225,7 +227,7 @@ summary(LM2_PrctChl_pos_add)
 #ols_coll_diag(LM_PrctChl_pos_add)
 ```
 
->
+> Site and OC Ratio significant model to predict positive ChlRmd. 
 
 ### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
 ```{r, fig.height=10, fig.width=6, cache=TRUE}
@@ -233,10 +235,10 @@ summary(LM2_PrctChl_pos_add)
 ols_regress(LM2_PrctChl_pos_add)
 ```
 
->
+> Site and OC Ratio significant model to predict postivie ChlRmd. 
 
 ### ***FR - Positive Filtration Stepwise Multiple Regression***
-```{r LM_FR_pos, fig.height=5, fig.width=6, cache=TRUE}
+```{r LM_FR_pos, cache=TRUE}
 
 # Positive Percent Chl removed trials only
 LM_FR_pos <- lm(data = Filtration_pos_data, L_hr_m2 ~
@@ -245,7 +247,7 @@ LM_FR_pos <- lm(data = Filtration_pos_data, L_hr_m2 ~
                          # Field notes logic variables
                          Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
                          # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + # Chl_ug_L_Up +
                          avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 
 ols_step_both_p(LM_FR_pos)
@@ -253,22 +255,24 @@ ols_step_both_p(LM_FR_pos)
 
 > NPSM is the only variable added in after stepwise. Not enough DF to run full model
 
-### ***Chl Rmd - Deanza - Filtration Trials Stepwise Multiple Regression***
-```{r LM_ChlRmd_NPD_filter, fig.height=5, fig.width=6, cache=TRUE}
+### ***Deanza- Chl Rmd - Filtration Trials Stepwise Multiple Regression***
+```{r LM_ChlRmd_NPD_filter, cache=TRUE}
 LM_ChlRmd_NPD_filter <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
                          # Field notes logic variables
                          Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
                          # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + #Chl_ug_L_Up +
                          avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 # not enough degrees of freedom 
 ols_step_both_p(LM_ChlRmd_NPD_filter)
 ```
 
+> Lots of errors, not enough data to run all possible model combinations. Salinity shows as single predictive parameter. 
+
 ### ***FR - Deanza - Filtration Trials***
-```{r LM_FR_NPD_filter, fig.height=3, fig.width=6, cache=TRUE}
+```{r LM_FR_NPD_filter, cache=TRUE}
 LM_FR_NPD_filter <- lm(data = Deanza_Filter_data, L_hr_m2 ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
@@ -282,37 +286,39 @@ ols_step_both_p(LM_FR_NPD_filter)
 
 ```
 
+> Not enough data to run all combinations. Turbidity and Boat wake 
+
 ### ***Chl Rmd - Deanza - Positive Filtration***
-```{r LM_ChlRmd_NPD_PosFilter, fig.height=5, fig.width=6, cache=TRUE}
+```{r LM_ChlRmd_NPD_PosFilter, cache=TRUE}
 LM_ChlRmd_NPD_PosFilter <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
                          # Field notes logic variables
                          Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
                          # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + # Chl_ug_L_Up +
                          avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 # not enough degrees of freedom for full model
 ols_step_both_p(LM_ChlRmd_NPD_PosFilter)
 ```
 
-> failed because full model doesn't have enough DFs?
+> Not enough data to run all combinations. Lots of errors. Distance between sondes, Turbidity, Temp
 
 ### ***FR - Deanza - Positive Filtration***
-```{r LM_FR_NPD_Posfilter, eval=FALSE, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
+```{r LM_FR_NPD_Posfilter, cache=TRUE, include=FALSE}
 LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
                          # Field notes logic variables
                          Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
                          # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Chl_ug_L_Up +
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + #Chl_ug_L_Up +
                          avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 # not enough degrees of freedom for full model
 ols_step_both_p(LM_FR_NPD_Posfilter)
 ```
 
-> lots of errors
+> lots of errors, won't run, no output
 
 TPM
 =====================================
@@ -408,12 +414,16 @@ FR_TPM_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Avg_TPM)
 ols_regress(FR_TPM_lm)
 ```
 
+> Not significant
+
 ### ***ChlRmd ~ TPM Linear Model***
 ```{r LM ChlRmd x TPM, fig.height=6, fig.width=6, cache=TRUE}
 ChlRmd_TPM_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Avg_TPM)
 #summary(ChlRmd_TPM_lm)
 ols_regress(ChlRmd_TPM_lm)
 ```
+
+> Not significant
 
 ### ***Filtration vs TPM (Positive Filtration Trials only)***
 ```{r , fig.height=5, fig.width=12, cache=TRUE}
@@ -461,7 +471,7 @@ FRPos_TPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_TPM)
 ols_regress(FRPos_TPM_lm)
 ```
 
-
+> Not significant
 
 ### ***Log FR Pos ~ Log TPM Linear Model***
 ```{r, fig.height=6, fig.width=6, cache=TRUE}
@@ -470,7 +480,7 @@ logFRPos_logTPM_lm <- lm(data = Filtration_pos_data, log(L_hr_m2) ~ log(Avg_TPM)
 ols_regress(logFRPos_logTPM_lm)
 ```
 
-> Doesn't not help R^2 or significance.
+> Log transforming axes Doesn't not help R^2 or significance.
 
 ### ***ChlRmd Pos ~ TPM Linear Model***
 ```{r, fig.height=6, fig.width=6, cache=TRUE}
@@ -478,6 +488,8 @@ ChlRmdPos_TPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_TPM)
 #summary(ChlRmdPos_TPM_lm)
 ols_regress(ChlRmdPos_TPM_lm)
 ```
+
+> Not significant predictor
 
 ### ***Log ChlRmd Pos ~ Log TPM Linear Model***
 ```{r, fig.height=6, fig.width=6, cache=TRUE}
@@ -530,6 +542,8 @@ NPD_FR_TPM_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Avg_TPM)
 ols_regress(NPD_FR_TPM_lm)
 ```
 
+> Not significant predictor
+
 ### ***Deanza Filter - ChlRmd ~ TPM***
 ```{r, fig.height=6, fig.width=6}
 NPD_ChlRmd_TPM_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Avg_TPM)
@@ -579,6 +593,8 @@ grid.arrange(NPD_FRPos_TPM_graph, NPD_ChlRmdPos_TPM_graph, nrow = 1)
 NPD_PosFR_TPM_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Avg_TPM)
 ols_regress(NPD_PosFR_TPM_lm)
 ```
+
+> Not significant predictor
 
 ### ***Deanza Postive Filter - ChlRmd ~ TPM***
 ```{r, fig.height=6, fig.width=6, cache=T}
@@ -633,11 +649,15 @@ FR_OC_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Avg_OC_Ratio)
 ols_regress(FR_OC_lm)
 ```
 
+> Not significant predictor 
+
 ### ***ChlRmd by OC Linear Model***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmd_OC_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
 ols_regress(ChlRmd_OC_lm)
 ```
+
+> Not significant predictor 
 
 ### ***Filter Positive vs OC***
 ```{r FRPos vs OC, fig.height=5, fig.width=12, cache=TRUE}
@@ -681,13 +701,15 @@ FRPos_OC_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_OC_Ratio)
 ols_regress(FRPos_OC_lm)
 ```
 
+> Not significant predictor 
+
 ### ***ChlRmd Pos by OC Linear Model***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_OC_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
 ols_regress(ChlRmdPos_OC_lm)
 ```
 
-> Significant Avg_OC_Ratio * ChlRmd
+> Significant Avg_OC_Ratio p-value: 0.04
 
 ### ***Log Transformation - Positive ChlRmd vs OC***
 ```{r LogChlRmdPos_OC, fig.height=5, fig.width=12, cache=TRUE}
@@ -697,9 +719,9 @@ logChl_RmdPos_logOC_graph <- ggplot(Filtration_pos_data,
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +
   theme_classic() +
-  labs(x = 'nlog Organic Content of Seston (fraction)',
-       y = paste("nlog", Prt_Chl_Label),
-       title = 'All Filtration Trials') +
+  labs(x = expression(paste(log[n],' Organic Content of Seston (fraction)')),
+       y = expression(paste(log[n], " Percent Chlorophyll ", alpha, " Removed")),
+       title = 'Positive Filtration Trials') +
   guides(fill = FALSE) +
   # line equation on graph
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
@@ -710,13 +732,13 @@ logChl_RmdPos_logOC_graph <- ggplot(Filtration_pos_data,
 plot(logChl_RmdPos_logOC_graph)
 ```
 
-### ***ChlRmd Pos by OC Linear Model***
+### ***logChlRmd Pos by logOC Linear Model***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 logChlRmdPos_logOC_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_OC_Ratio))
 ols_regress(logChlRmdPos_logOC_lm)
 ```
 
-> Not a big difference between regular and log transformed model
+> Not a big difference between regular and log transformed model. p-value: 0.046
 
 ### ***Deanza Filter Only - FR by OC***
 ```{r Deanza_Filter_OC, fig.height=5, fig.width=12, cache=TRUE}
@@ -760,11 +782,15 @@ FR_OC_NPD_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Avg_OC_Ratio)
 ols_regress(FR_OC_NPD_lm)
 ```
 
+> Not significant
+
 ### ***Deanza ChlRmd ~ OC Linear Model***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmd_OC_NPD_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
 ols_regress(ChlRmd_OC_NPD_lm)
 ```
+
+> Not significant
 
 ### ***Deanza FR Positive ~ OC***
 ```{r Deanza_Filter_Pos_OC, fig.height=5, fig.width=12, cache=TRUE}
@@ -808,11 +834,15 @@ FRPos_OC_NPD_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Avg_OC_Ratio)
 ols_regress(FRPos_OC_NPD_lm)
 ```
 
+> Not significant
+
 ### ***Deanza ChlRmd Positive by OC Linear Model***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_OC_NPD_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
 ols_regress(ChlRmdPos_OC_NPD_lm)
 ```
+
+> Not significant. p-value: 0.112
 
 ### ***Log Deanza ChlRmd Positive by OC Linear Model***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -820,7 +850,15 @@ ChlRmdPos_logOC_NPD_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ log(A
 ols_regress(ChlRmdPos_logOC_NPD_lm)
 ```
 
-> Only slight improvement by log(OC)
+> Only slight improvement by log(OC). p-value: 0.106
+
+### ***Log Deanza ChlRmd Positive by logOC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+logChlRmdPos_logOC_NPD_lm <- lm(data = Deanza_PosFilter_data, log(pcnt_Chl_rmvd) ~ log(Avg_OC_Ratio))
+ols_regress(logChlRmdPos_logOC_NPD_lm)
+```
+
+> worse model than single x-axis transformation. p-value: 0.156 
 
 Temperature
 =====================================
@@ -892,11 +930,15 @@ FR_temp_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Temp_C_Up)
 ols_regress(FR_temp_lm)
 ```
 
+> Not significant
+
 ### ***ChlRmd ~ Temp LM (All Filter)***
 ```{r,fig.height=6, fig.width=6, cache =TRUE}
 ChlRmd_temp_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 ols_regress(ChlRmd_temp_lm)
 ```
+
+> Not significant
 
 ### ***FR Positive ~ Temp LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -904,11 +946,15 @@ FRPos_temp_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 ols_regress(FRPos_temp_lm)
 ```
 
+> Not significant
+
 ### ***ChlRmd Positive ~ Temp LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_temp_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 ols_regress(ChlRmdPos_temp_lm)
 ```
+
+> Not significant
 
 ### ***Deanza Filtration - Temperature***
 ```{r NPD_Filter_Temp, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
@@ -973,11 +1019,15 @@ NPD_FR_temp_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Temp_C_Up)
 ols_regress(NPD_FR_temp_lm)
 ```
 
+> Not significant
+
 ### ***Deanza ChlRmd ~ Temp LM (All Filter)***
 ```{r,fig.height=6, fig.width=6, cache =TRUE}
 NPD_ChlRmd_temp_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 ols_regress(NPD_ChlRmd_temp_lm)
 ```
+
+> Not significant
 
 ### ***Deanza FR Positive ~ Temp LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -985,11 +1035,15 @@ NPD_FRPos_temp_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 ols_regress(NPD_FRPos_temp_lm)
 ```
 
+> Not significant
+
 ### ***Deanza ChlRmd Positive ~ Temp LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 NPD_ChlRmdPos_temp_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 ols_regress(NPD_ChlRmdPos_temp_lm)
 ```
+
+> Not significant. p-value: 0.062
 
 ### ***Deanza ChlRmd Positive ~ Log Temp LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -997,7 +1051,15 @@ NPD_ChlRmdPos_logtemp_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ log
 ols_regress(NPD_ChlRmdPos_logtemp_lm)
 ```
 
-> Log transforming does not help fit
+> Log transforming x-axis does not help fit. p-value: 0.062
+
+### ***Deanza log ChlRmd Positive ~ Log Temp LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_logChlRmdPos_logtemp_lm <- lm(data = Deanza_PosFilter_data, log(pcnt_Chl_rmvd) ~ log(Temp_C_Up))
+ols_regress(NPD_logChlRmdPos_logtemp_lm)
+```
+
+> Log transforming both axes does not help fit. p-value: 0.081
 
 Salinity
 =====================================
@@ -1069,11 +1131,15 @@ FR_Sal_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Sal_ppt_Up)
 ols_regress(FR_Sal_lm)
 ```
 
+> Not significant
+
 ### ***ChlRmd ~ Salinity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmd_Sal_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
 ols_regress(ChlRmd_Sal_lm)
 ```
+
+> Not significant
 
 ### ***FR Pos ~ Salinity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -1081,36 +1147,46 @@ FRPos_Sal_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Sal_ppt_Up)
 ols_regress(FRPos_Sal_lm)
 ```
 
+> Not significant
+
 ### ***ChlRmd Pos ~ Salinity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_Sal_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
 ols_regress(ChlRmdPos_Sal_lm)
 ```
 
-> Salinity almost significant predictor of ChlRmd (Positive Filter)
+> Salinity almost significant predictor of ChlRmd (Positive Filter) p-value: 0.075
+
+### ***ChlRmd Pos ~ log Salinity LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Sal_ppt_Up))
+ols_regress(ChlRmdPos_logSal_lm)
+```
+
+> log transformation of x-axis doesn't change significance. p-value: 0.072
 
 ###***Log ChlRmd Pos - Log Salinity***
-```{r}
+```{r LogChlRmdPos_LogSalinity_graph, fig.height=5, fig.width=7, cache=TRUE}
 logChlRmd_pos_logSal_graph <- ggplot(Filtration_pos_data, aes(log(Sal_ppt_Up), log(pcnt_Chl_rmvd))) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
   theme_classic() +
-  labs(x = expression('log'[n]*'Salinity Upstream (ppt)'),
-       y = paste("log " , Prt_Chl_Label),
+  labs(x = expression('log'[n]*' Salinity Upstream (ppt)'),
+       y = expression(paste(log[n], " Percent Chlorophyll ", alpha, " Removed")),
        title = 'Positive Chl Removed Only') +
   stat_poly_eq(formula = x_y_formula, parse = TRUE)
 
 plot(logChlRmd_pos_logSal_graph)
 ```
 
-### ***ChlRmd Pos ~ log Salinity LM***
+### ***log ChlRmd Pos ~ log Salinity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 logChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Sal_ppt_Up))
 ols_regress(logChlRmdPos_logSal_lm)
 ```
 
-> Log(Y) = Log(k) + Log(X^k) - How to pull out equation for regression? 
+> Log(Y) = Log(k) + Log(X^k) - How to pull out equation for regression? p-value 0.019
 
 ### ***Deanza only Filtration - Salinity***
 ```{r NPD_Filter_Salinity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
@@ -1175,11 +1251,15 @@ NPD_FR_Sal_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Sal_ppt_Up)
 ols_regress(NPD_FR_Sal_lm)
 ```
 
+> Not significant - no obvious transformations
+
 ### ***Deanza ChlRmd ~ Salinity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 NPD_ChlRmd_Sal_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
 ols_regress(NPD_ChlRmd_Sal_lm)
 ```
+
+> Not significant - no obvious transformations
 
 ### ***Deanza Pos FR ~ Salinity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -1187,11 +1267,15 @@ NPD_FRPos_Sal_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Sal_ppt_Up)
 ols_regress(NPD_FRPos_Sal_lm)
 ```
 
+> Not significant - no obvious transformations
+
 ### ***Deanza Pos ChlRmd ~ Salinity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 NPD_ChlRmdPos_Sal_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
 ols_regress(NPD_ChlRmdPos_Sal_lm)
 ```
+
+> Not significant - no obvious transformations
 
 Chlorophyll
 =====================================
@@ -1255,32 +1339,55 @@ Chl_Rmd_pos_Chl <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) 
 grid.arrange(FR_Chl, Chl_Rmd_Chl, FR_pos_Chl, Chl_Rmd_pos_Chl, nrow = 2)
 ```
 
-### FR ~ Chl LM
+### ***FR ~ Chl LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 FR_Chl_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Chl_ug_L_Up)
 ols_regress(FR_Chl_lm)
 ```
 
-### ChlRmd ~ Chl LM
+> Not significant
+
+### ***ChlRmd ~ Chl LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmd_Chl_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
 ols_regress(ChlRmd_Chl_lm)
 ```
 
-### FR Pos ~ Chl LM
+> Not significant
+
+### ***FR Pos ~ Chl LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 FRPos_Chl_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Chl_ug_L_Up)
 ols_regress(FRPos_Chl_lm)
 ```
 
-### ChlRmd Pos ~ Chl LM
+> Not significant
+
+### ***ChlRmd Pos ~ Chl LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_Chl_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
 ols_regress(ChlRmdPos_Chl_lm)
 ```
 
-> Chl almost significant predictor of Chl Rmd (Pos Filter)
+> Chl almost significant predictor of Chl Rmd (Pos Filter). p-value: 0.089
 
+### ***ChlRmd Pos ~ logChl LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmdPos_logChl_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Chl_ug_L_Up))
+ols_regress(ChlRmdPos_logChl_lm)
+```
+
+> x-axis log transformation does not help fit. p-value: 0.242
+
+### ***logChlRmd Pos ~ logChl LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+logChlRmdPos_logChl_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Chl_ug_L_Up))
+ols_regress(logChlRmdPos_logChl_lm)
+```
+
+> log transformation of both axes does not help fit. p-value: 0.236
+
+### ***Newport Deanza Filtration***
 ```{r NPD_Filter_Chl, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
 NPD_FR_Chl <- ggplot(Deanza_Filter_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1343,11 +1450,15 @@ NPD_FR_Chl_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Chl_ug_L_Up)
 ols_regress(FR_Chl_lm)
 ```
 
+> not significant. No obvious transformation to make
+
 ### ***Deanza ChlRmd ~ Chl LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 NPD_ChlRmd_Chl_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
 ols_regress(ChlRmd_Chl_lm)
 ```
+
+> not significant. No obvious transformation to make
 
 ### ***Deanza FR Pos ~ Chl LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -1355,17 +1466,37 @@ NPD_FRPos_Chl_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Chl_ug_L_Up)
 ols_regress(FRPos_Chl_lm)
 ```
 
+> not significant. No obvious transformation to make
+
 ### ***ChlRmd Pos ~ Chl LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 NPD_ChlRmdPos_Chl_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
 ols_regress(ChlRmdPos_Chl_lm)
 ```
 
+> not significant. No obvious transformation to make. p-value: 0.089
+
+### ***ChlRmd Pos ~ logChl LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmdPos_logChl_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Chl_ug_L_Up))
+ols_regress(ChlRmdPos_logChl_lm)
+```
+
+> Log transforming x-axis didn't improve fit. p-value: 0.242
+
+### ***logChlRmd Pos ~ logChl LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+logChlRmdPos_logChl_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Chl_ug_L_Up))
+ols_regress(logChlRmdPos_logChl_lm)
+```
+
+> Log transforming both axes didn't improve fit. p-value: 0.236
+
 Turbidity
 =====================================
 
 ### ***Filtration - Turbidity***
-```{r Filter_Turbidity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
+```{r Filter_Turbidity, fig.height=10, fig.width=16, cache=TRUE, echo=FALSE}
 FR_Turb <- ggplot(Filtration_only_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -1431,11 +1562,15 @@ FR_Turb_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Turbidity_NTU_Up)
 ols_regress(FR_Turb_lm)
 ```
 
+> Not significant
+
 ### ***ChlRmd ~ Turbidity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmd_Turb_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Turbidity_NTU_Up)
 ols_regress(ChlRmd_Turb_lm)
 ```
+
+> Not significant
 
 ### ***FR Pos ~ Turbidity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -1443,11 +1578,15 @@ FRPos_Turb_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Turbidity_NTU_Up)
 ols_regress(FRPos_Turb_lm)
 ```
 
+> Not significant
+
 ### ***ChlRmd Pos ~ Turbidity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_Turb_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Turbidity_NTU_Up)
 ols_regress(ChlRmdPos_Turb_lm)
 ```
+
+> Not significant
 
 ### ***Deanza Filtration - Turbidity***
 ```{r NPD_Filter_Turbidity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
@@ -1513,11 +1652,15 @@ ND_FR_Turb_lm <- lm(data = Deanza_Filter_data, L_hr_m2 ~ Turbidity_NTU_Up)
 ols_regress(FR_Turb_lm)
 ```
 
+> Not significant
+
 ### ***Deanza ChlRmd~ Turbidity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 NPD_ChlRmd_Turb_lm <- lm(data = Deanza_Filter_data, pcnt_Chl_rmvd ~ Turbidity_NTU_Up)
 ols_regress(ND_FR_Turb_lm)
 ```
+
+> Not significant. Almost. p-value: 0.080
 
 ### ***Deanza FR Pos ~ Turbidity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -1525,17 +1668,21 @@ NPD_FRPos_Turb_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Turbidity_NTU_Up
 ols_regress(NPD_FRPos_Turb_lm)
 ```
 
+> Not significant. Almost. p-value: 0.086
+
 ### ***Deanza ChlRmd Pos ~ Turbidity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 NPD_ChlRmdPos_Turb_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Turbidity_NTU_Up)
 ols_regress(NPD_ChlRmdPos_Turb_lm)
 ```
 
+> Not significant
+
 TPM X OC
 =====================================
 
 ### ***TPM by OC***
-```{r TPM vs OC, fig.width=8, fig.height=5, cache=TRUE}
+```{r TPM_OC, fig.width=16, fig.height=10, cache=TRUE}
 TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -1574,13 +1721,15 @@ OC_TPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM)
 ols_regress(OC_TPM_all_LM)
 ```
 
+> Not significant
+
 ###***Log TPM All trials - OC***
 ```{r logTPM_OC, fig.width=8, fig.height=5, cache=TRUE}
 logTPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = log(Avg_TPM), y = Avg_OC_Ratio)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) + 
-  labs(x = paste("log",TPM_Label), 
+  labs(x = expression(paste(log[n], " Total Particulate Matter (", mu, "g/L)")), 
        y = "Average Organic Content Ratio", 
        title = "All Trials") + 
   theme_classic() +
@@ -1595,16 +1744,20 @@ plot(logTPM_OC)
 ```
 
 ### ***All logTMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r OC_logTPM_all_LM, fig.height=6, fig.width=6, cache =TRUE}
 OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
 ols_regress(OC_logTPM_all_LM)
 ```
 
+> significant. p-value: 0.004
+
 ### ***All logTMP ~ logOC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r logOC_logTPM_all_LM, fig.height=6, fig.width=6, cache =TRUE}
 logOC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM))
 ols_regress(logOC_logTPM_all_LM)
 ```
+
+> significant. p-value: 0.010
 
 ### ***TPM vs OC by sites***
 ```{r TPM_OC_Sites, fig.height=10, fig.width=12, cache=TRUE}
@@ -1679,6 +1832,8 @@ OC_TPM_SR_LM <- lm(data = TPM_SR, Avg_OC_Ratio ~ Avg_TPM)
 ols_regress(OC_TPM_SR_LM)
 ```
 
+> not significant
+
 ### ***Morro Bay TMP ~ OC***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 TPM_MB <- Avg_TPM_summary_table %>% filter(Site == "Morro Bay")
@@ -1686,6 +1841,8 @@ TPM_MB <- Avg_TPM_summary_table %>% filter(Site == "Morro Bay")
 OC_TPM_MB_LM <- lm(data = TPM_MB, Avg_OC_Ratio ~ Avg_TPM)
 ols_regress(OC_TPM_MB_LM)
 ```
+
+> not significant
 
 ### ***Shellmaker TMP ~ OC***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -1695,6 +1852,8 @@ OC_TPM_NPSM_LM <- lm(data = TPM_NPSM, Avg_OC_Ratio ~ Avg_TPM)
 ols_regress(OC_TPM_NPSM_LM)
 ```
 
+> not significant
+
 ### ***Deanza TMP ~ OC***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
@@ -1702,6 +1861,8 @@ TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
 OC_TPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ Avg_TPM)
 ols_regress(OC_TPM_NPD_LM)
 ```
+
+> not significant, almost. p-value: 0.94
 
 ### ***Deanza logTMP ~ OC***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -1711,6 +1872,8 @@ OC_logTPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ log(Avg_TPM))
 ols_regress(OC_logTPM_NPD_LM)
 ```
 
+> significant. p-value: 0.027
+
 ### ***Deanza logTMP ~ logOC***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
@@ -1718,6 +1881,8 @@ TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
 logOC_logTPM_NPD_LM <- lm(data = TPM_NPD, log(Avg_OC_Ratio) ~ log(Avg_TPM))
 ols_regress(logOC_logTPM_NPD_LM)
 ```
+
+> more significant. p-value: 0.013
 
 DTW X Shell length
 =====================================
