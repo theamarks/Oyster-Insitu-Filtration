@@ -247,9 +247,6 @@ for(file in 1 : length(all_files_Filtration))
 
 ```
 
-
-```{r TPM_POM_PIM, cache=TRUE}
-
 #######################################################################
 # Create directories for TPM 
 #######################################################################
@@ -420,7 +417,7 @@ Master_analysis_table <- filtration_summary_table %>%
   select(-c("estimate", "conf.high", "sample_type","Temp_C_Down", "SpCond_mS_cm_Down",
             "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down")) %>% 
   # Add in site simple variables for regression
-  mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
+   mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
          NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
          NPSM = ifelse(grepl("Shellmaker", filtration_summary_table$Site), T, F),
          MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F),
