@@ -2336,8 +2336,39 @@ Bivalve_Den_graph
 
 > Data for each site is from a single survey
 
-### Biomass estimate by Site
+### ***Biomass estimate by Site***
 ```{r}
 ##### Estimate Biomass per site here with equations
-  
+NPD_bivalve_biomass_data <- fread(file.path(Density_directory,"Insitu_Filter_NPD_bivalve_biomass_data.csv"))
+
+# what are the unique species in dataset
+unique(NPD_bivalve_biomass_data$species)
+
+NPD_bivalve_biomass_data <- NPD_bivalve_biomass_data %>% 
+  mutate(species = ifelse(grepl("adula", ignore.case = T, species), "Adula_diegensis",
+                          ifelse(grepl("muscul.", ignore.case = T, species), "Musculista_senhousia",
+                                 ifelse(grepl("myt", ignore.case = T, species), "Mytilus_galloprovincialis",
+                                        ifelse(grepl("^.lurida",ignore.case = T, species), "Ostrea_lurida",
+                                               ifelse(grepl("mussel",ignore.case = T, species), "Unknown_mussel",
+                                                       "Pattern Not Found")))))) %>% 
+  filter(!species %in% c("Pattern Not Found"))
+
+NPD_bivalve_biomass_graph <- NPD_bivalve_biomass_data %>% 
+  ggplot(aes(x = length_mm, y = tissue_dry_weight_g, group = species)) +
+  geom_point() +
+  facet_wrap(~species)
+
+NPD_bivalve_biomass_graph
+
+# Determine what quadrat samples have missing data (NAs)
+NPD_biv_bio_summary <- NPD_bivalve_biomass_data %>% 
+  group_by(excavation_sample) %>% 
+  summarize(avg_DTW = mean(tissue_dry_weight_g))
+
+
+# Q10, Q4, Q8 are missing DTW data. remove from dataset
+NPD_bivalve_biomass_data <- NPD_bivalve_biomass_data %>% 
+  filter(!excavation_sample %in% c("Q10", "Q4", "Q8"))
+
+
 ```
