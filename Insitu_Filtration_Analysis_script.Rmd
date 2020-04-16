@@ -247,26 +247,18 @@ for(file in 1 : length(all_files_Filtration))
 
 ```
 
-
-```{r TPM_Density, cache=TRUE}
-
 #######################################################################
-# Create directories for TPM & Density Data
+# Create directories for TPM 
 #######################################################################
 
 TPM_directory = "./Data"
-SR_Density_directory = "./Data/bivalve_density_community"
-NP_Density_directory = "./Data/bivalve_density_community"
+#TPM_output_directory creation is in functions.R
 
 #######################################################################
-# Read in data for TPM & Density Data
+# Read in data for TPM 
 #######################################################################
 
 TPM_data = fread(file.path(TPM_directory, "Insitu_Filter_POM_PIM_Data.csv"))
-
-SR_density_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_density.csv"))
-
-NP_density_data = fread(file.path(NP_Density_directory, "Insitu_filter_NP_may18_survey_counts.csv"))
 
 ######################################################################
 # Summary Table & Average Table per field day
@@ -297,141 +289,144 @@ fwrite(Avg_TPM_summary_table, file.path(TPM_output_directory, "Avg_TPM_summary_t
 
 ```{r Total_bivlave_density, cache=TRUE}
 #####################################################################
-# Total Bivalve Density
+# Total Bivalve Density - Data Directories
 #######################################################################
 
+SR_Density_directory = "./Data/bivalve_density_community"
+NP_Density_directory = "./Data/bivalve_density_community"
+# Bivalve_output_directory created in functions.R
+
+#####################################################################
+# Read in data
+#######################################################################
+
+SR_density_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_density.csv"))
+NP_density_data = fread(file.path(NP_Density_directory, "Insitu_filter_NP_may18_survey_counts.csv"))
+
 # San Rafael bivalve density based on data from Chela Zabin (November 2017 survey)
-SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
+#SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
 
 # Morro Bay total bivalve density - data from MBOC staff 
 MB_gigas_m2 = 600
 
 # Newport Deanza total bivalve Density - Data from Zacherl lab surveys 
 NP_excavation_quad_area = 0.0625
-
-NPD_may18_bivalve_den <- NP_density_data %>% 
-  filter(Site == 'Deanza') %>% 
-  select(1:10, 12) %>% 
-  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
-         key = 'Species',
-         value = 'n_individuals') %>% 
-  group_by(Quadrat) %>% 
-  summarise(n_bivalves = sum(n_individuals),
-            quad_den = n_bivalves / NP_excavation_quad_area)
-  
-NPD_may18_avg_m2 <- mean(NPD_may18_bivalve_den$quad_den) # Total Average bivalve density
-
-# Newport Shellmaker total bivalve density
-
-NPSM_may18_bivalve_den <- NP_density_data %>% 
-  filter(Site == 'Shellmaker') %>% 
-  select(1:10, 12) %>% 
-  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
-         key = 'Species',
-         value = 'n_individuals') %>% 
-  group_by(Quadrat) %>% 
-  summarise(n_bivalves = sum(n_individuals),
-            quad_den = n_bivalves / NP_excavation_quad_area)
-
-NPSM_may18_avg_m2 <- mean(NPSM_may18_bivalve_den$quad_den) # Total Average bivalve density
   
 #####################################################################
 # Densities by Bivalve Species
 ######################################################################
 # dataframe density by species - Deanza
+
 NPD_may18_species_den <- NP_density_data %>% 
   filter(Site == 'Deanza') %>% 
-  select(1:10, 12) %>% 
-  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
+ # select need columns & replace species names with full scientific names 
+  rename(Site = 1,
+         Treatment = 2, 
+         Quadrat = 3, 
+         Date = 4, 
+         Ostrea_lurida = 5, 
+         Crassostrea_gigas = 6,
+         Mytilus_galloprovincialis = 7, 
+         Musculista_senhousia = 8,
+         Geukensia_demissa = 9, 
+         Adula_diegensis = 10,
+         Argopecten_ventricosa = 12) %>% 
+  gather('Ostrea_lurida', 'Crassostrea_gigas', "Mytilus_galloprovincialis", "Musculista_senhousia",
+         "Geukensia_demissa", "Adula_diegensis", "Argopecten_ventricosa",
          key = 'Species',
          value = 'n_individuals') %>% 
-  group_by(Species, Site) %>% 
-  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area)
-
+  mutate(Date = mdy(Date)) %>% 
+  group_by(Site, Date, Species) %>% 
+  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area) %>% 
+  # remove species with 0 individuals per m^2
+  filter(!(species_den_m2 <= 0))
+  
+  
 # dataframe density by species - Shellmaker
 NPSM_may18_species_den <- NP_density_data %>% 
   filter(Site == 'Shellmaker') %>% 
-  select(1:10, 12) %>% 
-  gather('O. lurida', 'C. gigas', 'Mytilus', 'Musculista', 'Geukensia', 'Adula', 'Speckled_scallop',
+ # select need columns & replace species names with full scientific names 
+  rename(Site = 1,
+         Treatment = 2, 
+         Quadrat = 3, 
+         Date = 4, 
+         Ostrea_lurida = 5, 
+         Crassostrea_gigas = 6,
+         Mytilus_galloprovincialis = 7, 
+         Musculista_senhousia = 8,
+         Geukensia_demissa = 9, 
+         Adula_diegensis = 10,
+         Argopecten_ventricosa = 12) %>% 
+  gather('Ostrea_lurida', 'Crassostrea_gigas', "Mytilus_galloprovincialis", "Musculista_senhousia",
+         "Geukensia_demissa", "Adula_diegensis", "Argopecten_ventricosa",
          key = 'Species',
          value = 'n_individuals') %>% 
-  group_by(Species, Site) %>% 
-  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area)
+  mutate(Date = mdy(Date)) %>% 
+  group_by(Site, Date, Species) %>% 
+  summarise(species_den_m2 = (sum(n_individuals) / n()) / NP_excavation_quad_area) %>% 
+  # remove species with 0 individuals per m^2
+  filter(!(species_den_m2 <= 0))
 
 # dataframe density by species - San Rafael
-SR_nov18_species_den <- SR_density_data %>% 
-  mutate(Species = "O. lurida") %>% 
-  group_by(Species, Site) %>% 
+SR_nov17_species_den <- SR_density_data %>% 
+  mutate(Species = "Ostrea_lurida",
+         Date = mdy("11/1/17")) %>% # survey date from Chela Zabin
+  group_by(Site, Date, Species) %>% 
   summarise(species_den_m2 = mean(density_m2))
   
 # dataframe density by species - numbers from Morro Bay Oyster Company
-MB_species_den <- tibble(Species = "C. gigas", 
-                         Site = "Morro Bay",
+MB_species_den <- tibble(Site = "Morro Bay",
+                         Date = mdy("11/21/17"), # Date info was recorded in field notebook 
+                         Species = "Crassostrea_gigas", 
                          species_den_m2 = 600)
 
 # combine species density dataframes - All sites
 Species_density_summary <- bind_rows(NPD_may18_species_den,
                                      NPSM_may18_species_den,
-                                     SR_nov18_species_den,
+                                     SR_nov17_species_den,
                                      MB_species_den, .id = NULL)
+
+Species_density_summary <- Species_density_summary %>% 
+  pivot_wider(names_from = Species,
+              values_from = species_den_m2) %>% 
+  select(Site, Date,
+         "Adula_diegensis_m2" = Adula_diegensis,
+         "Musculista_senhousia_m2" = Musculista_senhousia,
+         "Mytilus_galloprovincialis_m2" = Mytilus_galloprovincialis,
+         "Ostrea_lurida_m2" = Ostrea_lurida,
+         "Argopecten_ventricosa_m2" = Argopecten_ventricosa,
+         "Geukensia_demissa_m2" = Geukensia_demissa,
+         "Crassostrea_gigas_m2" = Crassostrea_gigas) %>% 
+  # calculate total bivalve density
+  mutate(Bivalve_den_m2 = sum(Adula_diegensis_m2, Musculista_senhousia_m2, Mytilus_galloprovincialis_m2,
+           Ostrea_lurida_m2, Argopecten_ventricosa_m2, Geukensia_demissa_m2, Crassostrea_gigas_m2, na.rm = T))
+
+fwrite(Species_density_summary, file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
+
 ```
 
 ```{r Create_Master_Analysis_Table, cache=TRUE}
 ##############################################################
 # Create Master Analysis Table
 ##############################################################
+filtration_summary_table <- fread("output/4_Filtration_Calculations/Filtration_Summary/filtration_summary.csv")
+
 Master_analysis_table <- filtration_summary_table %>% 
   left_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
   # Exclude downstream average WQ values and unneeded single tail t-test results
-  select(-c("estimate", "conf.high", "method", "alternative", "sample_type","Temp_C_Down", "SpCond_mS_cm_Down",
+  select(-c("estimate", "conf.high", "sample_type","Temp_C_Down", "SpCond_mS_cm_Down",
             "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down")) %>% 
-  # remove San Diego from analysis table - set up not comparable
-  filter(!Site %in% c("San Diego")) %>% 
   # Add in site simple variables for regression
    mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
          NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
          NPSM = ifelse(grepl("Shellmaker", filtration_summary_table$Site), T, F),
-         MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F))
+         MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F),
+         Filter_trial = ifelse(grepl("Filtration", filtration_summary_table$Experiment), T, F)) %>% 
+  left_join(Species_density_summary, by = c("Site")) %>% 
+  select(-c("Date.y")) %>% 
+  rename(Date = Date.x)
+  
 
-# fwrite(Master_analysis_table, file.path('./Data', "Master_Filtration_analysis_table.csv"))
 fwrite(Master_analysis_table, file.path(filtration_summary_output_directory,
                                         "Master_Filtration_analysis_table.csv"))
-```
-
-```{r Species_Density_Graphs, echo=FALSE, cache=TRUE}
-# Graph Density by Species, exclude absent species
-
-############## Newport Deanza ###################
-(Graph_NPD_species_den <-
-   ggplot(NPD_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
-                               aes(Species, species_den_m2, fill = Species)) + 
-  geom_col() + # columns
-  theme_classic() + 
-  labs (x = 'Bivlave Species', 
-        y = 'Density (individuals / m^2)', 
-        title = 'Newport Deanza Bivalve Density',
-        subtitle = 'May 2018 Survey') +
-  guides(fill = FALSE) + # removes color legend
-  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
-                                                                      
-############## Newport Shellmaker ##############
-(Graph_NPSM_species_den <-   ggplot(NPSM_may18_species_den[which(NPD_may18_species_den$species_den_m2>0),], 
-                                 aes(Species, species_den_m2, fill = Species)) + 
-  geom_col() + # columns
-  theme_classic() + 
-  labs (x = 'Bivlave Species', 
-        y = 'Density (individuals / m^2)', 
-        title = 'Newport Shellmaker Bivalve Density',
-        subtitle = 'May 2018 Survey') +
-  guides(fill = FALSE) + # removes color legend
-  geom_text(aes(label = species_den_m2), vjust = -0.5)) # able to round values? 
-
-
-# Save graph to "./0_Graph_Output/Graphs_Bivalve_Density"
-# Not needed Whit Rmd Knit yet
-######### May need to reformat .pdf  ###########
-#ggsave(file.path(Bivlave_density_graph_directory, "NPD_may18_bivalve_species_density.pdf"), Graph_NPD_species_den )
-#ggsave(file.path(Bivlave_density_graph_directory, "NPSM_may18_bivalve_species_density.pdf"), Graph_NPSM_species_den )
-
-##### FIgure ####### -->> biomass comparison among species
 ```
