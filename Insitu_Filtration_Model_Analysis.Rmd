@@ -182,75 +182,6 @@ grid.arrange(FR_TPM_box_pos, Chl_Rmd_box_pos, nrow = 1)
 Multiple Regression
 =====================================
 
-### ***Chl Removed - Filtraiton Trials Only***
-```{r LM_PrctChl_Filter_only, fig.height=10, fig.width=6, cache=TRUE}
-# Filtration Trials only - no Negative Controls
-LM_PrctChl_Filter <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~
-                         # site logic variables - SR not included - break model to include all sites
-                         NPD + NPSM +  MB + 
-                         # Field notes logic variables
-                         Wind + G_upstream + Daylight +
-                         Sonde_fell + Boat_wake +  Algae +
-                         # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + # Chl_ug_L_Up +
-                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
-
-# multiple regression summary
-summary(LM_PrctChl_Filter)
-```
-
-> Only 3 degrees of freedom, no significant predictors of ChlRmd. Try adding in log transformed salinity
-
-### ***Filtration Trials ~ ChlRmd multiple linear regression***
-```{r, fig.height=10, fig.width=6, cache=TRUE}
-# detailed multiple regression summary - ANOVA results
-ols_regress(LM_PrctChl_Filter)
-```
-
-### ***Filtraiton Trials ~ ChlRmd Stepwise Linear Regression***
-```{r,cache=TRUE}
-# Stepwise regression
-ols_step_both_p(LM_PrctChl_Filter)
-# diagnosis of colinearity
-# ols_coll_diag(LM_PrctChl_Filter)
-```
-
-> Newport Shellmaker TRUE was a predictor of ChlRmd... indication of site effect? Really low R^2 value - 0.116
-
-### ***FR - Filtraiton Trials Only***
-```{r LM_FR_Filter, fig.height=10, fig.width=6, cache=TRUE}
-# Filtration Trials only - no Negative Controls
-LM_FR_Filter <- lm(data = Filtration_only_data, L_hr_m2 ~
-                         # site logic variables - SR not included - break model to include all sites
-                         NPD + NPSM + MB + 
-                         # Field notes logic variables
-                         Wind + G_upstream +  Daylight + Sonde_fell + Boat_wake +  Algae +
-                         # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + #Chl_ug_L_Up +
-                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
-
-# multiple regression summary
-summary(LM_FR_Filter)
-```
-
-> 3 degrees of freedom, no significant parameters in full model. Try log transformed salinity next.
-
-### ***Filtration Only ~ FR Multiple Regression***
-```{r, fig.height=10, fig.width=6, cache=TRUE}
-# detailed multiple regression summary - ANOVA results
-ols_regress(LM_FR_Filter)
-```
-
-### ***Filtration Only ~ FR Stepwise Multiple Regression***
-```{r, fig.height=5, fig.width=6, cache=TRUE}
-# Stepwise regression
-ols_step_both_p(LM_FR_Filter)
-# diagnosis of colinearity
-#ols_coll_diag(LM_FR_Filter)
-```
-
-> NP Shellmaker True signature? low R^2 fit. 
-
 ### ***Chl Rmd - Positive Filtration Stepwise Multiple Regression***
 ```{r LM_PrctChl_pos_add, fig.height=5, fig.width=6, cache=TRUE}
 
@@ -374,63 +305,6 @@ ols_step_both_p(LM_FR_NPD_Posfilter)
 
 TPM
 =====================================
-
-### ***Filtration by TPM (Filtration Trials only)***
-```{r, Filter by TPM filter only, fig.height=5, fig.width=14, cache=TRUE}
-FR_TPM_graph <- ggplot((Filtration_only_data), aes(Avg_TPM, L_hr_m2 )) +
-  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  # geom_abline(aes(intercept=0, slope=1)) +
-  scale_color_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = TPM_Label,
-       y = Hab_FR_Label,
-       title = 'All Filtration Trials') +
-  guides(fill = FALSE) +
-  # line equation on graph
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-Chl_Rmd_TPM_graph <- ggplot((Filtration_only_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
-  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  # geom_abline(aes(intercept=0, slope=1)) +
-  scale_color_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = TPM_Label,
-       y = Prt_Chl_Label,
-       title = 'All Filtration Trials') +
-  guides(fill = FALSE) +
-  # line equation on graph
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-grid.arrange(FR_TPM_graph, Chl_Rmd_TPM_graph, nrow = 1)
-```
-
-### ***FR ~ TPM Linear Model***
-```{r LM FR x TPM, fig.height=6, fig.width=6, cache=TRUE}
-FR_TPM_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Avg_TPM)
-#summary(FR_TPM_lm)
-ols_regress(FR_TPM_lm)
-```
-
-> Not significant
-
-### ***ChlRmd ~ TPM Linear Model***
-```{r LM ChlRmd x TPM, fig.height=6, fig.width=6, cache=TRUE}
-ChlRmd_TPM_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Avg_TPM)
-#summary(ChlRmd_TPM_lm)
-ols_regress(ChlRmd_TPM_lm)
-```
-
-> Not significant
 
 ### ***Filtration vs TPM (Positive Filtration Trials only)***
 ```{r , fig.height=5, fig.width=14, cache=TRUE}
@@ -613,58 +487,6 @@ ols_regress(NPD_PosChlRmd_TPM_lm)
 
 OC 
 =====================================
-
-### ***Filtration vs OC***
-```{r FR vs OC, fig.height=5, fig.width=14, cache=TRUE}
-FR_OC_graph <- ggplot(Filtration_only_data, aes(Avg_OC_Ratio, L_hr_m2)) +
-  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = 'Organic Content of Seston (fraction)',
-       y = Hab_FR_Label,
-       title = 'All Filtration Trials') +
-  guides(fill = FALSE) +
-  # line equation on graph
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-Chl_Rmd_OC_graph <- ggplot(Filtration_only_data, aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
-  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = 'Organic Content of Seston (fraction)',
-       y = Prt_Chl_Label,
-       title = 'All Filtration Trials') +
-  guides(fill = FALSE) +
-  # line equation on graph
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-grid.arrange(FR_OC_graph, Chl_Rmd_OC_graph, nrow = 1)
-```
-
-### ***FR by OC Linear Model***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-FR_OC_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Avg_OC_Ratio)
-ols_regress(FR_OC_lm)
-```
-
-> Not significant predictor 
-
-### ***ChlRmd by OC Linear Model***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-ChlRmd_OC_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
-ols_regress(ChlRmd_OC_lm)
-```
-
-> Not significant predictor 
 
 ### ***Filter Positive vs OC***
 ```{r FRPos vs OC, fig.height=5, fig.width=14, cache=TRUE}
@@ -872,33 +694,6 @@ Temperature
 
 ### ***Temperature***
 ```{r Filter_Temp, fig.height=10, fig.width=14, cache=TRUE, echo=FALSE}
-FR_Temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, L_hr_m2)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) +  
-  theme_classic() +
-  labs(x = 'Temperature Upstream (C)',
-       y = Hab_FR_Label,
-       title = 'All Filtration Trials') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-Chl_Rmd_Temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) +  
-  theme_classic() +
-  labs(x = 'Temperature Upstream (C)',
-       y = Prt_Chl_Label,
-       title = 'All Filtration Trials') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
 
 FR_pos_Temp <- ggplot(Filtration_pos_data, aes(Temp_C_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -928,24 +723,8 @@ Chl_Rmd_pos_Temp <- ggplot(Filtration_pos_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
                label.x = "right",
                label.y = "bottom")
 
-grid.arrange(FR_Temp, Chl_Rmd_Temp, FR_pos_Temp, Chl_Rmd_pos_Temp, nrow = 2)
+grid.arrange(FR_pos_Temp, Chl_Rmd_pos_Temp, nrow = 1)
 ```
-
-### ***FR ~ Temp LM (All Filter)***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-FR_temp_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Temp_C_Up)
-ols_regress(FR_temp_lm)
-```
-
-> Not significant
-
-### ***ChlRmd ~ Temp LM (All Filter)***
-```{r,fig.height=6, fig.width=6, cache =TRUE}
-ChlRmd_temp_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Temp_C_Up)
-ols_regress(ChlRmd_temp_lm)
-```
-
-> Not significant
 
 ### ***FR Positive ~ Temp LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -1073,33 +852,6 @@ Salinity
 
 ### ***Filtration - Salinity***
 ```{r Filter_Salinity, fig.height=10, fig.width=14, cache=TRUE, echo=FALSE}
-FR_Sal <- ggplot(Filtration_only_data, aes(Sal_ppt_Up, L_hr_m2)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) +  
-  theme_classic() +
-  labs(x = 'Salinity Upstream (ppt)',
-       y = Hab_FR_Label,
-       title = 'All Filtration Trials') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-Chl_Rmd_Sal <- ggplot(Filtration_only_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) +  
-  theme_classic() +
-  labs(x = 'Salinity Upstream (ppt)',
-       y = Prt_Chl_Label,
-       title = 'All Filtration Trials') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
 
 FR_pos_Sal <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1129,24 +881,8 @@ Chl_Rmd_pos_Sal <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
                label.x = "right",
                label.y = "bottom")
 
-grid.arrange(FR_Sal, Chl_Rmd_Sal, FR_pos_Sal, Chl_Rmd_pos_Sal, nrow = 2)
+grid.arrange(FR_pos_Sal, Chl_Rmd_pos_Sal, nrow = 1)
 ```
-
-### ***FR ~ Salinity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-FR_Sal_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Sal_ppt_Up)
-ols_regress(FR_Sal_lm)
-```
-
-> Not significant
-
-### ***ChlRmd ~ Salinity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-ChlRmd_Sal_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
-ols_regress(ChlRmd_Sal_lm)
-```
-
-> Not significant
 
 ### ***FR Pos ~ Salinity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -1289,31 +1025,6 @@ Chlorophyll
 
 ### ***Filtration - Chlorophyll***
 ```{r Filter_Chl, fig.height=10, fig.width=14, cache=TRUE, echo=FALSE}
-FR_Chl <- ggplot(Filtration_only_data, aes(Chl_ug_L_Up, L_hr_m2)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) +  
-  theme_classic() +
-  labs(x = 'Chlorophyll Upstream (ug/L)',
-       y = Hab_FR_Label) +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-Chl_Rmd_Chl <- ggplot(Filtration_only_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) +  
-  theme_classic() +
-  labs(x = 'Chlorophyll Upstream (ug/L)',
-       y = Prt_Chl_Label) +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
 
 FR_pos_Chl <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1343,24 +1054,8 @@ Chl_Rmd_pos_Chl <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) 
                label.x = "right",
                label.y = "bottom")
 
-grid.arrange(FR_Chl, Chl_Rmd_Chl, FR_pos_Chl, Chl_Rmd_pos_Chl, nrow = 2)
+grid.arrange(FR_pos_Chl, Chl_Rmd_pos_Chl, nrow = 1)
 ```
-
-### ***FR ~ Chl LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-FR_Chl_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Chl_ug_L_Up)
-ols_regress(FR_Chl_lm)
-```
-
-> Not significant
-
-### ***ChlRmd ~ Chl LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-ChlRmd_Chl_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
-ols_regress(ChlRmd_Chl_lm)
-```
-
-> Not significant
 
 ### ***FR Pos ~ Chl LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -1504,33 +1199,6 @@ Turbidity
 
 ### ***Filtration - Turbidity***
 ```{r Filter_Turbidity, fig.height=10, fig.width=14, cache=TRUE, echo=FALSE}
-FR_Turb <- ggplot(Filtration_only_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) + 
-  theme_classic() +
-  labs(x = 'Turbidity Upstream (NTU)',
-       y = Hab_FR_Label,
-       title = 'All Filtration Trials') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-Chl_Rmd_Turb <- ggplot(Filtration_only_data, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) + 
-  theme_classic() +
-  labs(x = 'Turbidity Upstream (NTU)',
-       y = Prt_Chl_Label,
-       title = 'All Filtration Trials') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
 
 FR_pos_Turb <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1560,24 +1228,8 @@ Chl_Rmd_pos_Turb <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, pcnt_Chl_r
                label.x = "right",
                label.y = "bottom")
 
-grid.arrange(FR_Turb, Chl_Rmd_Turb, FR_pos_Turb, Chl_Rmd_pos_Turb, nrow =2)
+grid.arrange(FR_pos_Turb, Chl_Rmd_pos_Turb, nrow =1)
 ```
-
-### ***FR ~ Turbidity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-FR_Turb_lm <- lm(data = Filtration_only_data, L_hr_m2 ~ Turbidity_NTU_Up)
-ols_regress(FR_Turb_lm)
-```
-
-> Not significant
-
-### ***ChlRmd ~ Turbidity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-ChlRmd_Turb_lm <- lm(data = Filtration_only_data, pcnt_Chl_rmvd ~ Turbidity_NTU_Up)
-ols_regress(ChlRmd_Turb_lm)
-```
-
-> Not significant
 
 ### ***FR Pos ~ Turbidity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
