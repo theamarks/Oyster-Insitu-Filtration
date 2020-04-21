@@ -1481,8 +1481,8 @@ NPD_oly_outRmd <- NPD_oly %>%
 # Graph with outliers removed
 Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
   geom_smooth(method=lm, formula = x_y_formula, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point() +#aes(color = Site)) +
-  #scale_color_manual(values = Site_colors, guide=FALSE) + 
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
  # scale_color_manual(values = Site_colors, guide=FALSE) + 
   labs(x = 'Shell Length (mm)',
@@ -1516,10 +1516,9 @@ ols_regress(Oly_DTW_lm)
 ```{r, fig.height=5, fig.width=6, cache=TRUE}
 Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, log(tissue_dry_weight_g))) +
   geom_smooth(method=lm, formula = x_y_formula, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point() +#aes(color = Site)) +
-  #scale_color_manual(values = Site_colors, guide=FALSE) + 
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
- # scale_color_manual(values = Site_colors, guide=FALSE) + 
   labs(x = 'Shell Length (mm)',
        y = expression('Log'[n]*' Dry Tissue Weight (g)'),
        title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
@@ -1546,7 +1545,8 @@ ols_regress(Oly_LogDTW_lm)
 ```{r, fig.height=5, fig.width=6, cache=TRUE}
 Oly_logshell_logDTW <- ggplot(NPD_oly_outRmd, aes(log(length_mm), log(tissue_dry_weight_g))) +
   geom_smooth(method=lm, formula = x_y_formula, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point() +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
   labs(x = expression("log"[n]*' Shell Length (mm)'),
        y = expression('Log'[n]*' Dry Tissue Weight (g)'),
@@ -1572,8 +1572,8 @@ ols_regress(Oly_LogDTW_logSH_lm)
 ```{r, fig.height=5, fig.width=6, cache=TRUE}
 Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-   geom_point() +
- # scale_color_manual(values = Site_colors, guide=FALSE) + 
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide=FALSE) + 
   theme_classic() +
   labs(x = 'Total wet weight (g)',
        y = 'Dry Tissue Weight (g)',
@@ -1591,8 +1591,8 @@ plot(Oly_TWW_DTW)
 # use DTW outlier data to plot graph
 Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point() +
-  #scale_color_manual(values = Site_colors, guide=FALSE) + 
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide=FALSE) +
   theme_classic() +
   labs(x = 'Total wet weight (g)',
        y = 'Dry Tissue Weight (g)',
