@@ -1786,7 +1786,8 @@ Species_colors <- c("Adula diegensis" = "#8D8680",
                     "Geukensia demissa" = "#524D4F",
                     "Musculista senhousia" = "#B0915B",
                     "Mytilus galloprovincialis" = "#7E4B41",
-                    "Ostrea lurida" = "#9986A5")
+                    "Ostrea lurida" = "#9986A5",
+                    "Unknown mussel" = "black")
 
 # Stacked bar graph
 Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) + 
@@ -1808,10 +1809,17 @@ Bivalve_Den_graph
 ##### Estimate Biomass per site here with equations
 NPD_bivalve_biomass_data <- fread(file.path(Density_directory,"Insitu_Filter_NPD_bivalve_biomass_data.csv"))
 
+# Determine what quadrat samples have missing data (NAs)
+NPD_biv_bio_summary <- NPD_bivalve_biomass_data %>% 
+  group_by(excavation_sample) %>% 
+  summarize(avg_DTW = mean(tissue_dry_weight_g))
+
 # what are the unique species in dataset
 unique(NPD_bivalve_biomass_data$species)
 
+# Still contains missing data --> which quadrats to use for analyses
 NPD_biomass_data_clean <- NPD_bivalve_biomass_data %>% 
+  filter(!excavation_sample %in% c("Q10", "Q4", "Q8")) %>% 
   mutate(species = ifelse(grepl("adula", ignore.case = T, species), "Adula diegensis",
                           ifelse(grepl("muscul.", ignore.case = T, species), "Musculista senhousia",
                                  ifelse(grepl("myt", ignore.case = T, species), "Mytilus galloprovincialis",
@@ -1853,15 +1861,7 @@ NPD_Posbiomass_graph <- NPD_Posbiomass_data %>%
 
 NPD_Posbiomass_graph
 
-# Determine what quadrat samples have missing data (NAs)
-NPD_biv_bio_summary <- NPD_bivalve_biomass_data %>% 
-  group_by(excavation_sample) %>% 
-  summarize(avg_DTW = mean(tissue_dry_weight_g))
 
-
-# Q10, Q4, Q8 are missing DTW data. remove from dataset
-NPD_bivalve_biomass_data <- NPD_bivalve_biomass_data %>% 
-  filter(!excavation_sample %in% c("Q10", "Q4", "Q8"))
 
 
 ```
