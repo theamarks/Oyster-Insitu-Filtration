@@ -1749,7 +1749,7 @@ plot(all_chl_graphs)
 #ggsave("Insitu_Filter_up_vs_down_all_sites.png", all_chl_graphs)
 ```
 
-Bivalve Density
+Density & Biomass
 =====================================
 
 ### ***Bivalve Density***
@@ -1762,13 +1762,14 @@ Bivalve_Den_data[is.na(Bivalve_Den_data)] <- 0
 
 Bivalve_Den_data <- Bivalve_Den_data %>% 
   # move species from individual columns to a single column with new density column to contain data
-  pivot_longer(c(Adula_diegensis_m2, Musculista_senhousia_m2,Mytilus_galloprovincialis_m2,
-                 Ostrea_lurida_m2, Crassostrea_gigas_m2,Argopecten_ventricosa_m2, 
+  pivot_longer(c(Adula_diegensis_m2, Musculista_senhousia_m2, Mytilus_galloprovincialis_m2,
+                 Ostrea_lurida_m2, Crassostrea_gigas_m2, Argopecten_ventricosa_m2, 
                  Geukensia_demissa_m2, Crassostrea_gigas_m2), 
                names_to = "Species", 
                values_to =  "individuals_m2") %>% 
   # remove "_m2" from species names in Species column
-  mutate(Species = str_replace(Species, "_m2", ""))
+  mutate(Species = str_replace(Species, "_m2", ""),
+         Species = str_replace(Species, "_", " "))
 
 #Reorder levels of Site factor - display North to South
 order_by_site <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
@@ -1776,7 +1777,16 @@ Bivalve_Den_data <- arrange(transform(Bivalve_Den_data, Site = factor(Site,level
 
 # wes_palettes # lists all current palattes 
 # Color palette for Species - Royal2, Darjeeling2, Cavalcanti1, BottleRocket2, IsleofDogs1
-Species_colors <- rev(wes_palette("IsleofDogs1", 7, type = c("continuous")))
+density_palette <- rev(wes_palette("IsleofDogs1", 7, type = c("continuous")))
+unique(Bivalve_Den_data$Species) # list each individual bivalve species
+# Assign species to specific color
+Species_colors <- c("Adula diegensis" = "#8D8680",
+                    "Argopecten ventricosa" = "#CCC3C5",
+                    "Crassostrea gigas" = "#6D6340",
+                    "Geukensia demissa" = "#524D4F",
+                    "Musculista senhousia" = "#B0915B",
+                    "Mytilus galloprovincialis" = "#7E4B41",
+                    "Ostrea lurida" = "#9986A5")
 
 # Stacked bar graph
 Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) + 
@@ -1802,20 +1812,35 @@ NPD_bivalve_biomass_data <- fread(file.path(Density_directory,"Insitu_Filter_NPD
 unique(NPD_bivalve_biomass_data$species)
 
 NPD_bivalve_biomass_data <- NPD_bivalve_biomass_data %>% 
-  mutate(species = ifelse(grepl("adula", ignore.case = T, species), "Adula_diegensis",
-                          ifelse(grepl("muscul.", ignore.case = T, species), "Musculista_senhousia",
-                                 ifelse(grepl("myt", ignore.case = T, species), "Mytilus_galloprovincialis",
-                                        ifelse(grepl("^.lurida",ignore.case = T, species), "Ostrea_lurida",
-                                               ifelse(grepl("mussel",ignore.case = T, species), "Unknown_mussel",
+  mutate(species = ifelse(grepl("adula", ignore.case = T, species), "Adula diegensis",
+                          ifelse(grepl("muscul.", ignore.case = T, species), "Musculista senhousia",
+                                 ifelse(grepl("myt", ignore.case = T, species), "Mytilus galloprovincialis",
+                                        ifelse(grepl(".lurida", ignore.case = T, species), "Ostrea lurida",
+                                               ifelse(grepl("mussel", ignore.case = T, species), "Unknown mussel",
                                                        "Pattern Not Found")))))) %>% 
-  filter(!species %in% c("Pattern Not Found"))
+  # Filter out unclassified/ empty species & samples less than 0g (processing error, doesn't make sense)
+  filter(!species %in% c("Pattern Not Found")) %>% 
+  arrange()
+
+NPD_bivalve_biomass_graph <- NPD_bivalve_biomass_data %>% 
+  ggplot(aes(x = length_mm, y = tissue_dry_weight_g, group = species, color = species)) +
+  geom_point() +
+  scale_color_manual(values = Species_colors, guide = FALSE) +
+  facet_wrap(~species) +
+  labs(x = "Shell length (mm)",
+       y = "Dry Tissue Weight (g)",
+       title = "Newport Deanza Bivalve Biomass") +
+  theme_classic() +
+  theme(strip.text = element_text(face = "italic"))
+
+NPD_bivalve_biomass_graph
 
 NPD_bivalve_biomass_graph <- NPD_bivalve_biomass_data %>% 
   ggplot(aes(x = length_mm, y = tissue_dry_weight_g, group = species)) +
   geom_point() +
-  facet_wrap(~species)
-
-NPD_bivalve_biomass_graph
+  facet_wrap(~species) +
+  theme_classic() +
+  theme(strip.text = element_text(face = "italic"))
 
 # Determine what quadrat samples have missing data (NAs)
 NPD_biv_bio_summary <- NPD_bivalve_biomass_data %>% 
