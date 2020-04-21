@@ -1419,17 +1419,40 @@ DTW X Shell length
 
 ### ***Newport Olympia Shell length vs DTW***
 ```{r Oly_DTW_Shell_length, fig.height=5, fig.width=6, cache=TRUE}
+
+# Determine what quadrat samples have missing data (NAs)
+NPD_biv_bio_summary <- NPD_density %>% 
+  group_by(excavation_sample) %>% 
+  summarize(avg_DTW = mean(tissue_dry_weight_g))
+
+# what are the unique species in dataset
+unique(NPD_density$species)
+
+# Still contains missing data --> which quadrats to use for analyses
+NPD_bivalve_data_clean <- NPD_density %>% 
+  filter(!excavation_sample %in% c("Q10", "Q4", "Q8")) %>% 
+  mutate(species = ifelse(grepl("adula", ignore.case = T, species), "Adula diegensis",
+                          ifelse(grepl("muscul.", ignore.case = T, species), "Musculista senhousia",
+                                 ifelse(grepl("myt", ignore.case = T, species), "Mytilus galloprovincialis",
+                                        ifelse(grepl(".lurida", ignore.case = T, species), "Ostrea lurida",
+                                               ifelse(grepl("mussel", ignore.case = T, species), "Unknown mussel",
+                                                      ifelse(grepl(".spinosum", ignore.case = T, species), "Crucibulum spinosum",
+                                                       "Pattern Not Found"))))))) %>% 
+  # Filter out unclassified/ empty species & samples less than 0g (processing error, doesn't make sense)
+  filter(!species %in% c("Pattern Not Found", "Crucibulum spinosum"))
+
+
 #Olympia DTW predicted by Shell Length - Newport, CA
 # All excavation quadrat samples processed to date aggregated 
-NPD_oly <- NPD_density %>% 
-  filter(species == "O. lurida") %>% 
+NPD_oly <- NPD_bivalve_data_clean %>% 
+  filter(species == "Ostrea lurida") %>% 
   drop_na() %>% 
   as_tibble() 
 
-Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g, color = species)) +
+Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
   geom_smooth(method = lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point() +
-  scale_fill_manual(values = Species_colors) +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
   labs(x = 'Shell Length (mm)',
        y = 'Dry Tissue Weight (g)',
@@ -1634,28 +1657,7 @@ ols_regress(Oly_logTWW_DTW_LM)
 ### ***NPD Bivalve SH DTW***
 ```{r NPD_Bivalve_SH_DTW, fig.height=6, fig.width=15, cache=TRUE}
 ##### Estimate Biomass per site here with equations
-NPD_bivalve_biomass_data <- fread(file.path(Density_directory,"Insitu_Filter_NPD_bivalve_biomass_data.csv"))
 
-# Determine what quadrat samples have missing data (NAs)
-NPD_biv_bio_summary <- NPD_bivalve_biomass_data %>% 
-  group_by(excavation_sample) %>% 
-  summarize(avg_DTW = mean(tissue_dry_weight_g))
-
-# what are the unique species in dataset
-unique(NPD_bivalve_biomass_data$species)
-
-# Still contains missing data --> which quadrats to use for analyses
-NPD_biomass_data_clean <- NPD_bivalve_biomass_data %>% 
-  filter(!excavation_sample %in% c("Q10", "Q4", "Q8")) %>% 
-  mutate(species = ifelse(grepl("adula", ignore.case = T, species), "Adula diegensis",
-                          ifelse(grepl("muscul.", ignore.case = T, species), "Musculista senhousia",
-                                 ifelse(grepl("myt", ignore.case = T, species), "Mytilus galloprovincialis",
-                                        ifelse(grepl(".lurida", ignore.case = T, species), "Ostrea lurida",
-                                               ifelse(grepl("mussel", ignore.case = T, species), "Unknown mussel",
-                                                      ifelse(grepl(".spinosum", ignore.case = T, species), "Crucibulum spinosum",
-                                                       "Pattern Not Found"))))))) %>% 
-  # Filter out unclassified/ empty species & samples less than 0g (processing error, doesn't make sense)
-  filter(!species %in% c("Pattern Not Found", "Crucibulum spinosum"))
 
 NPD_bivalve_biomass_graph <- NPD_biomass_data_clean %>% 
   ggplot(aes(x = length_mm, y = tissue_dry_weight_g, color = species)) +
