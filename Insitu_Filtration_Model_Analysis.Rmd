@@ -874,8 +874,11 @@ plot(logChlRmd_pos_logSal_graph)
 
 # dataframe with predicted values from log-log Salinity ChlRmd model.
 # used to graph model on plot
+## Not working - tried adding , predict(model, type="response") to predict in the scale of the response
 pred_loglog_Sal_df <- data.frame(pred_Sal = exp(predict(logChlRmdPos_logSal_lm)), 
                                            ChlRmd = Filtration_pos_data$pcnt_Chl_rmvd)
+
+coef(logChlRmdPos_logSal_lm)
 
 logChlRmd_pos_logSal_graph2 <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
   geom_line(data = pred_loglog_Sal_df, aes(x = pred_Sal, y = ChlRmd)) +
@@ -1544,7 +1547,7 @@ ols_regress(Oly_DTW_lm)
 > significant predictor. p-value: 0.000, R^2: 0.49
 
 ### ***Log Transform DTW***
-```{r, fig.height=5, fig.width=6, cache=TRUE}
+```{r, fig.height=5, fig.width=12, cache=TRUE}
 Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, log(tissue_dry_weight_g))) +
   geom_smooth(method=lm, formula = x_y_formula, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = species)) +
@@ -1557,7 +1560,24 @@ Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, log(tissue_dry_weight_
   stat_quadrant_counts(quadrants = 0L, label.x = "left", 
                        aes(label = sprintf("%i observations", stat(count))))
 
-plot(Oly_shell_logDTW)
+### Trying to add model line to regular axes using predicted data
+pred_logDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_lm)), SH = NPD_oly_outRmd$length_mm)
+
+Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
+  #geom_smooth(method=lm, formula = x_y_formula, se=TRUE, level=0.95, color = 'grey50') +
+  geom_line(data = pred_logDTW_SH, aes(x = SH, y = DTW_pred)) +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide = F) +
+  theme_classic() +
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
+       subtitle = 'Outlier removed (outside mean +- 2.2 SD)') +
+  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+                       aes(label = sprintf("%i observations", stat(count))))
+
+grid.arrange(Oly_shell_logDTW, Oly_shell_DTW_logline, nrow = 1)
+
 ```
 
 > ggpmisc package only works for linear and polynomial equations. Not logrithmic 
