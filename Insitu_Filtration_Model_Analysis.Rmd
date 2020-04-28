@@ -851,6 +851,13 @@ ols_regress(ChlRmdPos_logSal_lm)
 
 > log transformation of x-axis doesn't change significance. p-value: 0.072
 
+### ***ANOVA ChlRmd ~ Sal VS ChlRmd ~ log(Sal)***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+anova(ChlRmdPos_Sal_lm, ChlRmdPos_logSal_lm)
+```
+
+> Models are not significantly different
+
 ### ***Log ChlRmd Pos - Log Salinity***
 ```{r LogChlRmdPos_LogSalinity_graph, fig.height=5, fig.width=7, cache=TRUE}
 logChlRmd_pos_logSal_graph <- ggplot(Filtration_pos_data, aes(log(Sal_ppt_Up), log(pcnt_Chl_rmvd))) +
@@ -864,6 +871,23 @@ logChlRmd_pos_logSal_graph <- ggplot(Filtration_pos_data, aes(log(Sal_ppt_Up), l
   stat_poly_eq(formula = x_y_formula, parse = TRUE)
 
 plot(logChlRmd_pos_logSal_graph)
+
+# dataframe with predicted values from log-log Salinity ChlRmd model.
+# used to graph model on plot
+pred_loglog_Sal_df <- data.frame(pred_Sal = exp(predict(logChlRmdPos_logSal_lm)), 
+                                           ChlRmd = Filtration_pos_data$pcnt_Chl_rmvd)
+
+logChlRmd_pos_logSal_graph2 <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_loglog_Sal_df, aes(x = pred_Sal, y = ChlRmd)) +
+  #geom_smooth(formula = log(pcnt_Chl_rmvd) ~ log(Sal_ppt_Up)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +  
+  theme_classic() +
+  labs(x = 'Salinity Upstream (ppt)',
+       y = expression(paste(" Percent Chlorophyll ", alpha, " Removed")),
+       title = 'Positive Chl Removed Only')
+
+plot(logChlRmd_pos_logSal_graph2)
 ```
 
 ### ***log ChlRmd Pos ~ log Salinity LM***
@@ -873,6 +897,13 @@ ols_regress(logChlRmdPos_logSal_lm)
 ```
 
 > Log(Y) = Log(k) + Log(X^k) - How to pull out equation for regression? p-value 0.019
+
+### ***ANOVA model test ChlRmd ~ Sal VS log(ChlRmd) ~ log(Sal)***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+anova(ChlRmdPos_Sal_lm, logChlRmdPos_logSal_lm)
+```
+
+> Warning message: "log(pcnt_Chl_rmvd) removed becaues response differes from model1. How to test if transformation is actually better at predicting data?? 
 
 ### ***Deanza only Filtration - Salinity***
 ```{r NPD_Filter_Salinity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
