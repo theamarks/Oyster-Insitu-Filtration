@@ -193,97 +193,6 @@ Chl_Rmd_box_pos <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
 grid.arrange(FR_TPM_box_pos, Chl_Rmd_box_pos, nrow = 1)
 ```
 
-Multiple Regression
-=====================================
-
-### ***Chl Rmd - Positive Filtration Stepwise Multiple Regression***
-```{r LM_PrctChl_pos_add, fig.height=5, fig.width=6, cache=TRUE}
-
-# Positive Percent Chl removed trials only
-LM_PrctChl_pos_add <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
-                         # site logic variables - SR not included - break model to include all sites
-                         NPD + NPSM + MB + 
-                         # Field notes logic variables
-                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
-                         # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + #Chl_ug_L_Up +
-                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
-
-ols_step_both_p(LM_PrctChl_pos_add)
-```
-
-> Not enough degrees of freedom to run full model. Stepwise selects variable with significant p-values. Try adding in log transformed Salinity. 
-
-### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
-```{r, fig.height=5, fig.width=6, cache=TRUE}
-LM2_PrctChl_pos_add <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ 
-                          NPSM + Avg_OC_Ratio)
-
-summary(LM2_PrctChl_pos_add)
-# diagnosis of colinearity
-#ols_coll_diag(LM_PrctChl_pos_add)
-```
-
-> Site and OC Ratio significant model to predict positive ChlRmd. 
-
-### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
-```{r, fig.height=10, fig.width=6, cache=TRUE}
-# detailed multiple regression summary - ANOVA results
-ols_regress(LM2_PrctChl_pos_add)
-```
-
-> Site and OC Ratio significant model to predict postivie ChlRmd. 
-
-### ***FR - Positive Filtration Stepwise Multiple Regression***
-```{r LM_FR_pos, cache=TRUE}
-
-# Positive Percent Chl removed trials only
-LM_FR_pos <- lm(data = Filtration_pos_data, L_hr_m2 ~
-                         # site logic variables - SR not included - break model to include all sites
-                         NPD + NPSM + MB + 
-                         # Field notes logic variables
-                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
-                         # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + # Chl_ug_L_Up +
-                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
-
-ols_step_both_p(LM_FR_pos)
-```
-
-> NPSM is the only variable added in after stepwise. Not enough DF to run full model
-
-### ***Chl Rmd - Deanza - Positive Filtration***
-```{r LM_ChlRmd_NPD_PosFilter, cache=TRUE}
-LM_ChlRmd_NPD_PosFilter <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~
-                         # site logic variables - SR not included - break model to include all sites
-                         NPD + NPSM + MB + 
-                         # Field notes logic variables
-                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
-                         # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + # Chl_ug_L_Up +
-                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
-# not enough degrees of freedom for full model
-ols_step_both_p(LM_ChlRmd_NPD_PosFilter)
-```
-
-> Not enough data to run all combinations. Lots of errors. Distance between sondes, Turbidity, Temp
-
-### ***FR - Deanza - Positive Filtration***
-```{r LM_FR_NPD_Posfilter, eval=FALSE, cache=TRUE, include=FALSE}
-LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
-                         # site logic variables - SR not included - break model to include all sites
-                         NPD + NPSM + MB + 
-                         # Field notes logic variables
-                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
-                         # Quantatative variables
-                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + #Chl_ug_L_Up +
-                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
-# not enough degrees of freedom for full model
-ols_step_both_p(LM_FR_NPD_Posfilter)
-```
-
-> lots of errors, won't run, no output
-
 TPM
 =====================================
 
@@ -574,7 +483,7 @@ ChlRmdPos_OC_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
 ols_regress(ChlRmdPos_OC_lm)
 ```
 
-> Significant Avg_OC_Ratio p-value: 0.04
+> Significant Avg_OC_Ratio p-value: 0.040
 
 ### ***Log Transformation - Positive ChlRmd vs OC***
 ```{r LogChlRmdPos_OC, fig.height=5, fig.width=6, cache=TRUE}
@@ -664,6 +573,13 @@ ols_regress(ChlRmdPos_logOC_NPD_lm)
 ```
 
 > Only slight improvement by log(OC). p-value: 0.106
+
+### ***ANOVA b/w regular and log(x) models***
+```{r}
+anova(ChlRmdPos_OC_NPD_lm, ChlRmdPos_logOC_NPD_lm)
+```
+
+> Not significant difference between models
 
 ### ***Log Deanza ChlRmd Positive by logOC Linear Model***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -859,7 +775,7 @@ anova(ChlRmdPos_Sal_lm, ChlRmdPos_logSal_lm)
 > Models are not significantly different
 
 ### ***Log ChlRmd Pos - Log Salinity***
-```{r LogChlRmdPos_LogSalinity_graph, fig.height=5, fig.width=7, cache=TRUE}
+```{r LogChlRmdPos_LogSalinity_graph, fig.height=5, fig.width=12, cache=TRUE}
 logChlRmd_pos_logSal_graph <- ggplot(Filtration_pos_data, aes(log(Sal_ppt_Up), log(pcnt_Chl_rmvd))) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -870,27 +786,26 @@ logChlRmd_pos_logSal_graph <- ggplot(Filtration_pos_data, aes(log(Sal_ppt_Up), l
        title = 'Positive Chl Removed Only') +
   stat_poly_eq(formula = x_y_formula, parse = TRUE)
 
-plot(logChlRmd_pos_logSal_graph)
-
 # dataframe with predicted values from log-log Salinity ChlRmd model.
 # used to graph model on plot
-## Not working - tried adding , predict(model, type="response") to predict in the scale of the response
-pred_loglog_Sal_df <- data.frame(pred_Sal = exp(predict(logChlRmdPos_logSal_lm)), 
-                                           ChlRmd = Filtration_pos_data$pcnt_Chl_rmvd)
+logChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Sal_ppt_Up))
+pred_loglog_Sal_df <- data.frame(pred_ChlRmd = exp(predict(logChlRmdPos_logSal_lm)), 
+                                           Sal = Filtration_pos_data$Sal_ppt_Up)
 
 coef(logChlRmdPos_logSal_lm)
 
 logChlRmd_pos_logSal_graph2 <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
-  geom_line(data = pred_loglog_Sal_df, aes(x = pred_Sal, y = ChlRmd)) +
+  geom_line(data = pred_loglog_Sal_df, aes(x = Sal, y = pred_ChlRmd)) +
   #geom_smooth(formula = log(pcnt_Chl_rmvd) ~ log(Sal_ppt_Up)) +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
   theme_classic() +
   labs(x = 'Salinity Upstream (ppt)',
        y = expression(paste(" Percent Chlorophyll ", alpha, " Removed")),
-       title = 'Positive Chl Removed Only')
+       title = 'Positive Chl Removed Only',
+       subtitle = "Not sure if model x values are appropriate")
 
-plot(logChlRmd_pos_logSal_graph2)
+grid.arrange(logChlRmd_pos_logSal_graph, logChlRmd_pos_logSal_graph2, nrow = 1)
 ```
 
 ### ***log ChlRmd Pos ~ log Salinity LM***
@@ -899,7 +814,7 @@ logChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ lo
 ols_regress(logChlRmdPos_logSal_lm)
 ```
 
-> Log(Y) = Log(k) + Log(X^k) - How to pull out equation for regression? p-value 0.019
+> How to pull out equation for regression? p-value 0.019
 
 ### ***ANOVA model test ChlRmd ~ Sal VS log(ChlRmd) ~ log(Sal)***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -1561,6 +1476,8 @@ Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, log(tissue_dry_weight_
                        aes(label = sprintf("%i observations", stat(count))))
 
 ### Trying to add model line to regular axes using predicted data
+Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd,
+                    log(tissue_dry_weight_g) ~ length_mm)
 pred_logDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_lm)), SH = NPD_oly_outRmd$length_mm)
 
 Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
@@ -1591,6 +1508,13 @@ ols_regress(Oly_LogDTW_lm)
 ```
 
 > R^2: 0.67, length significant predictor of log(DTW) p-value: 0.000
+
+### ***ANOVA Lm VS log(DTW)~SH***
+```{r}
+anova(Oly_DTW_lm, Oly_LogDTW_lm )
+```
+
+> Warning Message: models with response ‘"log(tissue_dry_weight_g)"’ removed because response differs from model 1
 
 ### ***Log DTW, Log SH***
 ```{r, fig.height=5, fig.width=6, cache=TRUE}
@@ -2207,3 +2131,93 @@ plot(all_chl_graphs)
 #ggsave("Insitu_Filter_up_vs_down_all_sites.png", all_chl_graphs)
 ```
 
+Multiple Regression
+=====================================
+
+### ***Chl Rmd - Positive Filtration Stepwise Multiple Regression***
+```{r LM_PrctChl_pos_add, fig.height=5, fig.width=6, cache=TRUE}
+
+# Positive Percent Chl removed trials only
+LM_PrctChl_pos_add <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM + MB + 
+                         # Field notes logic variables
+                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
+                         # Quantatative variables
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + #Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
+
+ols_step_both_p(LM_PrctChl_pos_add)
+```
+
+> Not enough degrees of freedom to run full model. Stepwise selects variable with significant p-values. Try adding in log transformed Salinity. 
+
+### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
+```{r, fig.height=5, fig.width=6, cache=TRUE}
+LM2_PrctChl_pos_add <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ 
+                          NPSM + Avg_OC_Ratio)
+
+summary(LM2_PrctChl_pos_add)
+# diagnosis of colinearity
+#ols_coll_diag(LM_PrctChl_pos_add)
+```
+
+> Site and OC Ratio significant model to predict positive ChlRmd. 
+
+### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
+```{r, fig.height=10, fig.width=6, cache=TRUE}
+# detailed multiple regression summary - ANOVA results
+ols_regress(LM2_PrctChl_pos_add)
+```
+
+> Site and OC Ratio significant model to predict postivie ChlRmd. 
+
+### ***FR - Positive Filtration Stepwise Multiple Regression***
+```{r LM_FR_pos, cache=TRUE}
+
+# Positive Percent Chl removed trials only
+LM_FR_pos <- lm(data = Filtration_pos_data, L_hr_m2 ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM + MB + 
+                         # Field notes logic variables
+                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
+                         # Quantatative variables
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + # Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
+
+ols_step_both_p(LM_FR_pos)
+```
+
+> NPSM is the only variable added in after stepwise. Not enough DF to run full model
+
+### ***Chl Rmd - Deanza - Positive Filtration***
+```{r LM_ChlRmd_NPD_PosFilter, cache=TRUE}
+LM_ChlRmd_NPD_PosFilter <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM + MB + 
+                         # Field notes logic variables
+                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
+                         # Quantatative variables
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + # Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
+# not enough degrees of freedom for full model
+ols_step_both_p(LM_ChlRmd_NPD_PosFilter)
+```
+
+> Not enough data to run all combinations. Lots of errors. Distance between sondes, Turbidity, Temp
+
+### ***FR - Deanza - Positive Filtration***
+```{r LM_FR_NPD_Posfilter, eval=FALSE, cache=TRUE, include=FALSE}
+LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
+                         # site logic variables - SR not included - break model to include all sites
+                         NPD + NPSM + MB + 
+                         # Field notes logic variables
+                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
+                         # Quantatative variables
+                         Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + #Chl_ug_L_Up +
+                         avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
+# not enough degrees of freedom for full model
+ols_step_both_p(LM_FR_NPD_Posfilter)
+```
+
+> lots of errors, won't run, no output
