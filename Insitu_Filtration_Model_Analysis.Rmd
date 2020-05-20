@@ -244,6 +244,13 @@ ols_regress(FRPos_TPM_lm)
 
 > Not significant
 
+### ***FR Pos ~ Log TPM Linear Model***
+```{r, fig.height=6, fig.width=6, cache=TRUE}
+FRPos_logTPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ log(Avg_TPM))
+#summary(FR_TPM_lm)
+ols_regress(FRPos_logTPM_lm)
+```
+
 ### ***Log FR Pos ~ Log TPM Linear Model***
 ```{r, fig.height=6, fig.width=6, cache=TRUE}
 logFRPos_logTPM_lm <- lm(data = Filtration_pos_data, log(L_hr_m2) ~ log(Avg_TPM))
@@ -776,6 +783,7 @@ anova(ChlRmdPos_Sal_lm, ChlRmdPos_logSal_lm)
 
 ### ***Log ChlRmd Pos - Log Salinity***
 ```{r LogChlRmdPos_LogSalinity_graph, fig.height=5, fig.width=12, cache=TRUE}
+### Graph with log-log axes
 logChlRmd_pos_logSal_graph <- ggplot(Filtration_pos_data, aes(log(Sal_ppt_Up), log(pcnt_Chl_rmvd))) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -786,29 +794,82 @@ logChlRmd_pos_logSal_graph <- ggplot(Filtration_pos_data, aes(log(Sal_ppt_Up), l
        title = 'Positive Chl Removed Only') +
   stat_poly_eq(formula = x_y_formula, parse = TRUE)
 
-# dataframe with predicted values from log-log Salinity ChlRmd model.
-# used to graph model on plot
+# log-log model
 logChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Sal_ppt_Up))
-pred_loglog_Sal_df <- data.frame(pred_ChlRmd = exp(predict(logChlRmdPos_logSal_lm)), 
-                                           Sal = Filtration_pos_data$Sal_ppt_Up)
+# create range of Salinity values to predict with model
+Sal_newrange <- data.frame(Sal_ppt_Up = seq(from = 29, to = 38, by = 0.5))
+# predict alone gives log(y) values, exponentiate y to get regular values with exp()
+loglogSal_Pred <- data.frame(pred_ChlRmd = exp(predict(logChlRmdPos_logSal_lm, newdata = Sal_newrange)))
+pred_loglog_Sal_df <- data.frame(Sal_newrange, loglogSal_Pred)
 
+# model coefficents 
 coef(logChlRmdPos_logSal_lm)
 
+## Graph with regualar x & y axes, log-log model
 logChlRmd_pos_logSal_graph2 <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
-  geom_line(data = pred_loglog_Sal_df, aes(x = Sal, y = pred_ChlRmd)) +
-  #geom_smooth(formula = log(pcnt_Chl_rmvd) ~ log(Sal_ppt_Up)) +
+  geom_line(data = pred_loglog_Sal_df, aes(x = Sal_ppt_Up, y = pred_ChlRmd)) +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) +  
   theme_classic() +
   labs(x = 'Salinity Upstream (ppt)',
        y = expression(paste(" Percent Chlorophyll ", alpha, " Removed")),
        title = 'Positive Chl Removed Only',
-       subtitle = "Not sure if model x values are appropriate")
+       subtitle = "Log(y) ~ Log(x) pretty sure correct line")
 
-grid.arrange(logChlRmd_pos_logSal_graph, logChlRmd_pos_logSal_graph2, nrow = 1)
+# log X transformed model
+ChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Sal_ppt_Up))
+pred_ChlRmdPos_logSal_df <- data.frame(Sal_newrange,
+                                       pred_ChlRmd = predict(ChlRmdPos_logSal_lm, 
+                                                             newdata = Sal_newrange))
+
+ChlRmd_pos_logSal_graph <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_ChlRmdPos_logSal_df, aes(x = Sal_ppt_Up, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +  
+  theme_classic() +
+  labs(x = 'Salinity Upstream (ppt)',
+       y = expression(paste(" Percent Chlorophyll ", alpha, " Removed")),
+       title = 'Positive Chl Removed Only',
+       subtitle = "y ~ log(x)")
+
+# Polynomial ^2 transformation
+ChlRmdPos_Sal2_lm <- lm(data = Filtration_pos_data, 
+                        pcnt_Chl_rmvd ~ poly(Sal_ppt_Up, degree = 2, raw = T))
+# predict values with model and new Sal range values
+Sal2_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_Sal2_lm, newdata = Sal_newrange))
+pred_ChlRmdPos_Sal2_df2 <- data.frame(Sal_newrange, Sal2_Pred)
+
+ChlRmd_pos_Sal2_graph <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_ChlRmdPos_Sal2_df2, aes(x = Sal_ppt_Up, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +  
+  theme_classic() +
+  labs(x = 'Salinity Upstream (ppt)',
+       y = expression(paste(" Percent Chlorophyll ", alpha, " Removed")),
+       title = 'Positive Chl Removed Only',
+       subtitle = "y ~  x + x^2")
+
+# Polynomial ^3 transformation
+ChlRmdPos_Sal3_lm <- lm(data = Filtration_pos_data, 
+                        pcnt_Chl_rmvd ~ poly(Sal_ppt_Up, degree = 3, raw = T))
+pred_ChlRmdPos_Sal3_df <- data.frame(pred_ChlRmd = predict(ChlRmdPos_Sal3_lm, newdata = Sal_newrange),
+                                       Sal_newrange)
+
+ChlRmd_pos_Sal3_graph <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_ChlRmdPos_Sal3_df, aes(x = Sal_ppt_Up, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +  
+  theme_classic() +
+  labs(x = 'Salinity Upstream (ppt)',
+       y = expression(paste(" Percent Chlorophyll ", alpha, " Removed")),
+       title = 'Positive Chl Removed Only',
+       subtitle = "y ~  x + x^3")
+
+grid.arrange(logChlRmd_pos_logSal_graph, logChlRmd_pos_logSal_graph2, 
+             ChlRmd_pos_logSal_graph, ChlRmd_pos_Sal2_graph, ChlRmd_pos_Sal3_graph, nrow = 3)
 ```
 
-### ***log ChlRmd Pos ~ log Salinity LM***
+### ***log ~ log LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 logChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Sal_ppt_Up))
 ols_regress(logChlRmdPos_logSal_lm)
@@ -816,12 +877,29 @@ ols_regress(logChlRmdPos_logSal_lm)
 
 > How to pull out equation for regression? p-value 0.019
 
-### ***ANOVA model test ChlRmd ~ Sal VS log(ChlRmd) ~ log(Sal)***
+### ***Y ~ log LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
-anova(ChlRmdPos_Sal_lm, logChlRmdPos_logSal_lm)
+ChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Sal_ppt_Up))
+ols_regress(ChlRmdPos_logSal_lm)
 ```
 
-> Warning message: "log(pcnt_Chl_rmvd) removed becaues response differes from model1. How to test if transformation is actually better at predicting data?? 
+> p-value: 0.072
+
+### ***Y ~ X + X^2 LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmdPos_Sal2_lm <- lm(data = Filtration_pos_data, 
+                        pcnt_Chl_rmvd ~ poly(Sal_ppt_Up, degree = 2, raw = T))
+ols_regress(ChlRmdPos_Sal2_lm)
+```
+
+> p-value: 0.075
+
+### ***Y ~ X + X^3 LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmdPos_Sal3_lm <- lm(data = Filtration_pos_data, 
+                        pcnt_Chl_rmvd ~ poly(Sal_ppt_Up, degree = 3, raw = T))
+ols_regress(ChlRmdPos_Sal2_lm)
+```
 
 ### ***Deanza only Filtration - Salinity***
 ```{r NPD_Filter_Salinity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
