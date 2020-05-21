@@ -358,7 +358,7 @@ logChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ lo
 ols_regress(logChlRmdPos_logTPM_lm)
 ```
 
-> Not huge difference between regular and log transformed. Keep trying transformations? 
+> Not huge difference between regular and log transformed.
 
 ### ***Log ~ Log Diagnostics***
 ```{r, fig.height=6, fig.width=8, cache =TRUE}
@@ -448,6 +448,16 @@ ols_regress(NPD_PosChlRmd_TPM_lm)
 ```
 
 > Did not do further transformations, didn't look like obvious pattern to investigate
+
+### ***Y ~ X Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(NPD_PosChlRmd_TPM_lm)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(NPD_PosChlRmd_TPM_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(NPD_PosChlRmd_TPM_lm)
+```
 
 PIM
 =====================================
