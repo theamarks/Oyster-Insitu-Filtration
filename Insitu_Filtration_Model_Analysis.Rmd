@@ -641,7 +641,17 @@ ols_regress(ChlRmdPos_OC_lm)
 
 > Significant Avg_OC_Ratio p-value: 0.040
 
-### ***Log Transformation - Positive ChlRmd vs OC***
+### ***Y ~ X Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(ChlRmdPos_OC_lm)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(ChlRmdPos_OC_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(ChlRmdPos_OC_lm)
+```
+
+### ***Transformations - Positive ChlRmd vs OC***
 ```{r LogChlRmdPos_OC, fig.height=5, fig.width=6, cache=TRUE}
 logChl_RmdPos_logOC_graph <- ggplot(Filtration_pos_data, 
                                     aes(log(Avg_OC_Ratio), log(pcnt_Chl_rmvd))) +
@@ -652,23 +662,88 @@ logChl_RmdPos_logOC_graph <- ggplot(Filtration_pos_data,
   labs(x = expression(paste(log[n],' Organic Content of Seston (fraction)')),
        y = expression(paste(log[n], " Percent Chlorophyll ", alpha, " Removed")),
        title = 'Positive Filtration Trials') +
-  guides(fill = FALSE) +
-  # line equation on graph
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-plot(logChl_RmdPos_logOC_graph)
+  guides(fill = FALSE)
+
+# log-log model predicitons
+logChlRmdPos_logOC_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_OC_Ratio))
+# predict alone gives log(y) values, exponentiate y to get regular values with exp()
+OC_newrange <- data.frame(Avg_OC_Ratio = seq(from = 0.6, to = 1, by = 0.025))
+loglogOC_Pred <- data.frame(pred_ChlRmd = exp(predict(logChlRmdPos_logOC_lm, newdata = OC_newrange)))
+pred_loglogOC_df <- data.frame(OC_newrange, loglogOC_Pred)
+
+ChlRmdPos_loglogOC_graph <- ggplot((Filtration_pos_data), aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_loglogOC_df, aes(x = Avg_OC_Ratio, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Prt_Chl_Label,
+       title = 'Pos Filtration Trials',
+       subtitle = 'log(y) ~ log(x)') +
+  guides(fill = FALSE)
+
+# Y-log model predicitons
+ChlRmdPos_logOC_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Avg_OC_Ratio))
+logOC_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_logOC_lm, newdata = OC_newrange))
+pred_logOC_df <- data.frame(OC_newrange, logOC_Pred)
+
+ChlRmdPos_logOC_graph <- ggplot((Filtration_pos_data), aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_logOC_df, aes(x = Avg_OC_Ratio, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Prt_Chl_Label,
+       title = 'Pos Filtration Trials',
+       subtitle = 'y ~ log(x)') +
+  guides(fill = FALSE)
+
+# Y-x^2 model predicitons
+ChlRmdPos_OC2_lm <- lm(data = Filtration_pos_data, 
+                         pcnt_Chl_rmvd ~ poly(Avg_OC_Ratio, degree = 2, raw = T))
+OC2_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_OC2_lm, newdata = OC_newrange))
+pred_OC2_df <- data.frame(OC_newrange, OC2_Pred)
+
+ChlRmdPos_OC2_graph <- ggplot((Filtration_pos_data), aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_OC2_df, aes(x = Avg_OC_Ratio, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Prt_Chl_Label,
+       title = 'Pos Filtration Trials',
+       subtitle = 'y ~ x^2') +
+  guides(fill = FALSE)
+
+grid.arrange(logChl_RmdPos_logOC_graph, ChlRmdPos_loglogOC_graph,
+             ChlRmdPos_logOC_graph, ChlRmdPos_OC2_graph, nrow = 2)
+
 ```
 
-### ***logChlRmd Pos by logOC Linear Model***
+### ***logChlRmd Pos ~ logOC Linear Model***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 logChlRmdPos_logOC_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_OC_Ratio))
 ols_regress(logChlRmdPos_logOC_lm)
 ```
 
 > Not a big difference between regular and log transformed model. p-value: 0.046
+
+### ***ChlRmd Pos ~ logOC Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmdPos_logOC_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Avg_OC_Ratio))
+ols_regress(ChlRmdPos_logOC_lm)
+```
+
+> Y ~ X model better rthan logY ~logX p-value: 0.041
+
+### ***ChlRmd Pos ~ OC^2 Linear Model***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmdPos_OC2_lm <- lm(data = Filtration_pos_data, 
+                       pcnt_Chl_rmvd ~ poly(Avg_OC_Ratio, degree = 2, raw = T))
+ols_regress(ChlRmdPos_OC2_lm)
+```
+
+> Y ~ x^2 p-value: 0.87
 
 ### ***Deanza FR Positive ~ OC***
 ```{r Deanza_Filter_Pos_OC, fig.height=5, fig.width=12, cache=TRUE}
@@ -721,6 +796,16 @@ ols_regress(ChlRmdPos_OC_NPD_lm)
 ```
 
 > Not significant. p-value: 0.112
+
+### ***Y ~ X Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(ChlRmdPos_OC_NPD_lm)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(ChlRmdPos_OC_NPD_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(ChlRmdPos_OC_NPD_lm)
+```
 
 ### ***Log Deanza ChlRmd Positive by OC Linear Model***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
