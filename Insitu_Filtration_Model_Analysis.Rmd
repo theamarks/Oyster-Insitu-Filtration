@@ -514,6 +514,16 @@ ols_regress(ChlRmdPos_PIM_lm)
 
 > Not significant
 
+### ***Y ~ X Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(ChlRmdPos_PIM_lm)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(ChlRmdPos_PIM_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(ChlRmdPos_PIM_lm)
+```
+
 ### ***Deanza FR Positive ~ PIM***
 ```{r Deanza_Filter_Pos_PIM, fig.height=5, fig.width=12, cache=TRUE}
 NPD_FRPos_PIM_graph <- ggplot(Deanza_PosFilter_data, aes(Avg_PIM, L_hr_m2)) +
@@ -565,6 +575,16 @@ ols_regress(NPD_ChlRmdpos_PIM_lm)
 ```
 
 > Significant p-value: 0.045
+
+### ***Y ~ X Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(NPD_ChlRmdpos_PIM_lm)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(NPD_ChlRmdpos_PIM_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(NPD_ChlRmdpos_PIM_lm)
+```
 
 OC 
 =====================================
