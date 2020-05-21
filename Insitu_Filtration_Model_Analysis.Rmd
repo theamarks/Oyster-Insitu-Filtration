@@ -29,6 +29,8 @@ library(cowplot) # for arranging multiple plots into a single figure
 library(wesanderson)
 library(olsrr) # ols_step_backward_p() "builds regression model from a set of candidate predictor variables" 
 # replaces ols_step_backward()
+library(MASS) # collection of datasets and functions
+library(ISLR) # Dataset in Intro to statistical learning
 
 # source functions 
 source("functions.R")
@@ -82,7 +84,7 @@ Avg_TPM_summary_table <- arrange(transform(Avg_TPM_summary_table, Site = factor(
 # linear model formula
 x_y_formula <- y ~ x 
 # Quadratic model
-x2_y_formula <- y ~ x^2
+x2_y_formula <- y ~ poly(x, degree = 2)
 # Exponential model
 logy_x_formula <- log(y) ~ x
 # logx
@@ -244,23 +246,7 @@ ols_regress(FRPos_TPM_lm)
 
 > Not significant
 
-### ***FR Pos ~ Log TPM Linear Model***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
-FRPos_logTPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ log(Avg_TPM))
-#summary(FR_TPM_lm)
-ols_regress(FRPos_logTPM_lm)
-```
-
-### ***Log FR Pos ~ Log TPM Linear Model***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
-logFRPos_logTPM_lm <- lm(data = Filtration_pos_data, log(L_hr_m2) ~ log(Avg_TPM))
-#summary(FR_TPM_lm)
-ols_regress(logFRPos_logTPM_lm)
-```
-
-> Log transforming axes Doesn't not help R^2 or significance.
-
-### ***ChlRmd Pos ~ TPM Linear Model***
+### ***ChlRmd Y ~ X Linear Model***
 ```{r, fig.height=6, fig.width=6, cache=TRUE}
 ChlRmdPos_TPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_TPM)
 #summary(ChlRmdPos_TPM_lm)
@@ -269,7 +255,103 @@ ols_regress(ChlRmdPos_TPM_lm)
 
 > Not significant predictor
 
-### ***Log ChlRmd Pos ~ Log TPM Linear Model***
+### ***ChlRmd Y ~ X Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(ChlRmdPos_TPM_lm)
+
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(ChlRmdPos_TPM_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(ChlRmdPos_TPM_lm)
+```
+
+### ***ChlRmd vs TPM Transformations***
+```{r , fig.height=10, fig.width=12, cache=TRUE}
+Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
+  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Prt_Chl_Label,
+       title = 'Pos Filtration Trials') +
+  guides(fill = FALSE) +
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+# log-log model predicitons
+logChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_TPM))
+# create range of Salinity values to predict with model
+TPM_newrange <- data.frame(Avg_TPM = seq(from = 0, to = 0.04, by = 0.001))
+# predict alone gives log(y) values, exponentiate y to get regular values with exp()
+loglogTPM_Pred <- data.frame(pred_ChlRmd = exp(predict(logChlRmdPos_logTPM_lm, newdata = TPM_newrange)))
+pred_loglog_TPM_df <- data.frame(TPM_newrange, loglogTPM_Pred)
+  
+
+logChlRmdPos_logTPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_loglog_TPM_df, aes(x = Avg_TPM, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Prt_Chl_Label,
+       title = 'Pos Filtration Trials',
+       subtitle = 'log(Y) ~ log(X)') +
+  guides(fill = FALSE)
+
+# Y-log model predicitons
+ChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Avg_TPM))
+# predict alone gives log(y) values, exponentiate y to get regular values with exp()
+logTPM_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_logTPM_lm, newdata = TPM_newrange))
+pred_logTPM_df <- data.frame(TPM_newrange, logTPM_Pred)
+
+ChlRmdPos_logTPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_logTPM_df, aes(x = Avg_TPM, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Prt_Chl_Label,
+       title = 'Pos Filtration Trials',
+       subtitle = 'Y ~ log(X)') +
+  guides(fill = FALSE)
+
+# Y~x^2 model predicitons
+ChlRmdPos_TPM2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Avg_TPM, degree = 2, raw = T))
+# predict alone gives log(y) values, exponentiate y to get regular values with exp()
+TPM2_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_TPM2_lm, newdata = TPM_newrange))
+pred_TPM2_df <- data.frame(TPM_newrange, TPM2_Pred)
+
+ChlRmdPos_TPM2_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_TPM2_df, aes(x = Avg_TPM, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Prt_Chl_Label,
+       title = 'Pos Filtration Trials',
+       subtitle = 'Y ~ x^2') +
+  guides(fill = FALSE) +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x2_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "top")
+
+grid.arrange(Chl_RmdPos_TPM_graph, logChlRmdPos_logTPM_graph, 
+             ChlRmdPos_logTPM_graph, ChlRmdPos_TPM2_graph, nrow = 2)
+```
+
+### ***Log ~ Log Linear Model***
 ```{r, fig.height=6, fig.width=6, cache=TRUE}
 logChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_TPM))
 #summary(ChlRmdPos_TPM_lm)
@@ -277,6 +359,43 @@ ols_regress(logChlRmdPos_logTPM_lm)
 ```
 
 > Not huge difference between regular and log transformed. Keep trying transformations? 
+
+### ***Log ~ Log Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(logChlRmdPos_logTPM_lm)
+
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(logChlRmdPos_logTPM_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(logChlRmdPos_logTPM_lm)
+```
+
+### ***Y ~ log(x)***
+```{r, fig.height=6, fig.width=6, cache=TRUE}
+ChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Avg_TPM))
+#summary(ChlRmdPos_logTPM_lm)
+ols_regress(ChlRmdPos_logTPM_lm)
+```
+
+### ***Y ~ x^2***
+```{r, fig.height=6, fig.width=6, cache=TRUE}
+ChlRmdPos_TPM2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Avg_TPM, degree = 2, raw = T))
+#summary(ChlRmdPos_TPM_lm)
+ols_regress(ChlRmdPos_TPM2_lm)
+```
+
+> x^2 almost significant predictory p-value: 0.08
+
+### ***Y ~ x^2 Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(ChlRmdPos_TPM2_lm)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(logChlRmdPos_logTPM_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(logChlRmdPos_logTPM_lm)
+```
 
 ### ***Deanza only Positive Filtration vs TPM***
 ```{r NPD_FRPos_TPM_graph, fig.height=5, fig.width=12, cache=TRUE}
@@ -717,7 +836,7 @@ Salinity
 =====================================
 
 ### ***Filtration - Salinity***
-```{r Filter_Salinity, fig.height=10, fig.width=14, cache=TRUE, echo=FALSE}
+```{r Filter_Salinity, fig.height=5, fig.width=14, cache=TRUE, echo=FALSE}
 
 FR_pos_Sal <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -766,23 +885,19 @@ ols_regress(ChlRmdPos_Sal_lm)
 
 > Salinity almost significant predictor of ChlRmd (Positive Filter) p-value: 0.075
 
-### ***ChlRmd Pos ~ log Salinity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-ChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Sal_ppt_Up))
-ols_regress(ChlRmdPos_logSal_lm)
+### ***ChlRmd Pos ~ Salinity Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(ChlRmdPos_Sal_lm)
+
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(ChlRmdPos_Sal_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(ChlRmdPos_Sal_lm))
 ```
-
-> log transformation of x-axis doesn't change significance. p-value: 0.072
-
-### ***ANOVA ChlRmd ~ Sal VS ChlRmd ~ log(Sal)***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-anova(ChlRmdPos_Sal_lm, ChlRmdPos_logSal_lm)
-```
-
-> Models are not significantly different
 
 ### ***Log ChlRmd Pos - Log Salinity***
-```{r LogChlRmdPos_LogSalinity_graph, fig.height=5, fig.width=12, cache=TRUE}
+```{r LogChlRmdPos_LogSalinity_graph, fig.height=12, fig.width=12, cache=TRUE}
 ### Graph with log-log axes
 logChlRmd_pos_logSal_graph <- ggplot(Filtration_pos_data, aes(log(Sal_ppt_Up), log(pcnt_Chl_rmvd))) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -803,7 +918,7 @@ loglogSal_Pred <- data.frame(pred_ChlRmd = exp(predict(logChlRmdPos_logSal_lm, n
 pred_loglog_Sal_df <- data.frame(Sal_newrange, loglogSal_Pred)
 
 # model coefficents 
-coef(logChlRmdPos_logSal_lm)
+#coef(logChlRmdPos_logSal_lm)
 
 ## Graph with regualar x & y axes, log-log model
 logChlRmd_pos_logSal_graph2 <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
@@ -877,6 +992,17 @@ ols_regress(logChlRmdPos_logSal_lm)
 
 > How to pull out equation for regression? p-value 0.019
 
+### ***log ~ log Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(logChlRmdPos_logSal_lm)
+
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(logChlRmdPos_logSal_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(logChlRmdPos_logSal_lm))
+```
+
 ### ***Y ~ log LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Sal_ppt_Up))
@@ -884,6 +1010,24 @@ ols_regress(ChlRmdPos_logSal_lm)
 ```
 
 > p-value: 0.072
+
+### ***Y ~ log Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(ChlRmdPos_logSal_lm)
+
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(ChlRmdPos_logSal_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(ChlRmdPos_logSal_lm))
+```
+
+### ***ANOVA Y ~ X VS Y ~ log(X)***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+anova(ChlRmdPos_Sal_lm, ChlRmdPos_logSal_lm)
+```
+
+> Models are not significantly different
 
 ### ***Y ~ X + X^2 LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
@@ -902,7 +1046,7 @@ ols_regress(ChlRmdPos_Sal2_lm)
 ```
 
 ### ***Deanza only Filtration - Salinity***
-```{r NPD_Filter_Salinity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
+```{r NPD_Filter_Salinity, fig.height=5, fig.width=12, cache=TRUE, echo=FALSE}
 NPD_FRPos_Salinity <- ggplot(Deanza_PosFilter_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point() +
@@ -2085,14 +2229,12 @@ Up & Down
 ### ***Facet Plots***
 ```{r Bar_Graphs_up_vs_down, cache=TRUE}
 Bar_up_down_data <- Master_analysis_table %>%
-  select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
+ # select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
   rename(Upstream = Chl_ug_L_Up, Downstream = Chl_ug_L_Down) %>%  
   gather(Upstream, Downstream, key = Position, value = Chl_ug_L) %>% 
   mutate(Position = fct_relevel(Position, 'Upstream', 'Downstream')) %>% 
   mutate(Site = fct_relevel(Site, 'Deanza', 'Shellmaker', 'San Rafael', 'Morro Bay')) %>% 
-  mutate(Site_exp_date = paste(Site, Experiment,
-                                     Date,
-                                     sep = ' ')) %>% 
+  mutate(Site_exp_date = paste(Site, Experiment, Date, sep = ' ')) %>% 
   mutate(Exp_Date = paste(Experiment, Date, sep = ' ')) %>% 
   arrange(Site, mdy(Date))
 
