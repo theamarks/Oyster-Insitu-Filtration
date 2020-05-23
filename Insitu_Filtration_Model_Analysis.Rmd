@@ -324,7 +324,7 @@ ChlRmdPos_logTPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rm
        subtitle = 'Y ~ log(X)') +
   guides(fill = FALSE)
 
-# Y~x^2 model predicitons
+# Y~x + x^2 model predicitons
 ChlRmdPos_TPM2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Avg_TPM, degree = 2, raw = T))
 # predict alone gives log(y) values, exponentiate y to get regular values with exp()
 TPM2_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_TPM2_lm, newdata = TPM_newrange))
@@ -339,7 +339,7 @@ ChlRmdPos_TPM2_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd
   labs(x = TPM_Label,
        y = Prt_Chl_Label,
        title = 'Pos Filtration Trials',
-       subtitle = 'Y ~ x^2') +
+       subtitle = 'Y ~ x + x^2') +
   guides(fill = FALSE) +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x2_y_formula,
@@ -378,7 +378,7 @@ ChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Avg_TP
 ols_regress(ChlRmdPos_logTPM_lm)
 ```
 
-### ***Y ~ x^2***
+### ***Y ~ x + x^2***
 ```{r, fig.height=6, fig.width=6, cache=TRUE}
 ChlRmdPos_TPM2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Avg_TPM, degree = 2, raw = T))
 #summary(ChlRmdPos_TPM_lm)
@@ -387,7 +387,7 @@ ols_regress(ChlRmdPos_TPM2_lm)
 
 > x^2 almost significant predictory p-value: 0.08
 
-### ***Y ~ x^2 Diagnostics***
+### ***Y ~ x + x^2 Diagnostics***
 ```{r, fig.height=6, fig.width=8, cache =TRUE}
 par(mfrow=c(2,2))
 plot(ChlRmdPos_TPM2_lm)
@@ -698,7 +698,7 @@ ChlRmdPos_logOC_graph <- ggplot((Filtration_pos_data), aes(Avg_OC_Ratio, pcnt_Ch
        subtitle = 'y ~ log(x)') +
   guides(fill = FALSE)
 
-# Y-x^2 model predicitons
+# Y-x + x^2 model predicitons
 ChlRmdPos_OC2_lm <- lm(data = Filtration_pos_data, 
                          pcnt_Chl_rmvd ~ poly(Avg_OC_Ratio, degree = 2, raw = T))
 OC2_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_OC2_lm, newdata = OC_newrange))
@@ -712,7 +712,7 @@ ChlRmdPos_OC2_graph <- ggplot((Filtration_pos_data), aes(Avg_OC_Ratio, pcnt_Chl_
   labs(x = TPM_Label,
        y = Prt_Chl_Label,
        title = 'Pos Filtration Trials',
-       subtitle = 'y ~ x^2') +
+       subtitle = 'y ~ x + x^2') +
   guides(fill = FALSE)
 
 grid.arrange(logChl_RmdPos_logOC_graph, ChlRmdPos_loglogOC_graph,
@@ -743,7 +743,7 @@ ChlRmdPos_OC2_lm <- lm(data = Filtration_pos_data,
 ols_regress(ChlRmdPos_OC2_lm)
 ```
 
-> Y ~ x^2 p-value: 0.87
+> Y ~ x + x^2 p-value: 0.87
 
 ### ***Deanza FR Positive ~ OC***
 ```{r Deanza_Filter_Pos_OC, fig.height=5, fig.width=12, cache=TRUE}
@@ -884,6 +884,17 @@ ols_regress(ChlRmdPos_temp_lm)
 
 > Not significant
 
+### ***ChlRmd Pos ~ Temp Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(ChlRmdPos_temp_lm)
+
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(ChlRmdPos_temp_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(ChlRmdPos_temp_lm))
+```
+
 ### ***Deanza Filtration - Temperature***
 ```{r NPD_Filter_Temp, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
 
@@ -931,7 +942,7 @@ NPD_ChlRmdPos_loglogTemp_graph <- ggplot((Deanza_PosFilter_data), aes(Temp_C_Up,
        subtitle = 'log(y) ~ log(x)') +
   guides(fill = FALSE)
 
-# Predict Y ~ x^2 model
+# Predict Y ~ x + x^2 model
 NPD_ChlRmdPos_temp2_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ poly(Temp_C_Up, degree = 2, raw = T))
 Temp2_Pred <- data.frame(pred_ChlRmd = predict(NPD_ChlRmdPos_temp2_lm, newdata = Temp_newrange))
 pred_Temp2_df <- data.frame(Temp_newrange, Temp2_Pred)
@@ -943,7 +954,7 @@ NPD_ChlRmdPos_Temp2_graph <- ggplot((Deanza_PosFilter_data), aes(Temp_C_Up, pcnt
   labs(x = 'Temperature Upstream (C)',
        y = Prt_Chl_Label,
        title = 'NPD Pos Filtration Trials',
-       subtitle = 'y ~ x^2') +
+       subtitle = 'y ~ x + x^2') +
   guides(fill = FALSE)
 
 grid.arrange(NPD_Chl_RmdPos_Temp, NPD_ChlRmdPos_logTemp_graph,
@@ -975,7 +986,7 @@ ols_regress(NPD_logChlRmdPos_logtemp_lm)
 
 > Log transforming both axes does not help fit. p-value: 0.081
 
-### ***Deanza Y ~ x^2 LM***
+### ***Deanza Y ~ x + x^2 LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 NPD_ChlRmdPos_temp2_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ poly(Temp_C_Up, degree = 2, raw = T))
 ols_regress(NPD_ChlRmdPos_temp2_lm)
@@ -1246,7 +1257,7 @@ Chlorophyll
 =====================================
 
 ### ***Filtration - Chlorophyll***
-```{r Filter_Chl, fig.height=10, fig.width=14, cache=TRUE, echo=FALSE}
+```{r Filter_Chl, fig.height=15, fig.width=14, cache=TRUE, echo=FALSE}
 
 FR_pos_Chl <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1276,7 +1287,57 @@ Chl_Rmd_pos_Chl <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) 
                label.x = "right",
                label.y = "bottom")
 
-grid.arrange(FR_pos_Chl, Chl_Rmd_pos_Chl, nrow = 1)
+# Y-log model
+ChlRmdPos_logChl_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Chl_ug_L_Up))
+# create range of Salinity values to predict with model
+Chl_newrange <- data.frame(Chl_ug_L_Up = seq(from = 0, to = 8, by = 0.5))
+logChl_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_logChl_lm, newdata = Chl_newrange))
+pred_logChl_df <- data.frame(Chl_newrange, logChl_Pred)
+
+ChlRmdpos_Chllog_graph <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_logChl_df, aes(x = Chl_ug_L_Up, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +  
+  theme_classic() +
+  labs(x = 'Chlorophyll Upstream (ug/L)',
+       y = Prt_Chl_Label,
+       title = 'Positive Chl Removed Only',
+       subtitle = 'Y ~ log(x)')
+
+# log-log model
+ChlRmdPos_loglogChl_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Chl_ug_L_Up))
+# predict alone gives log(y) values, exponentiate y to get regular values with exp()
+loglogChl_Pred <- data.frame(pred_ChlRmd = exp(predict(ChlRmdPos_loglogChl_lm, newdata = Chl_newrange)))
+pred_loglogChl_df <- data.frame(Chl_newrange, loglogChl_Pred)
+
+ChlRmdpos_Chlloglog_graph <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_loglogChl_df, aes(x = Chl_ug_L_Up, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +  
+  theme_classic() +
+  labs(x = 'Chlorophyll Upstream (ug/L)',
+       y = Prt_Chl_Label,
+       title = 'Positive Chl Removed Only',
+       subtitle = 'log(y) ~ log(x)')
+
+# Y-x + x^2 model
+ChlRmdPos_Chl2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Chl_ug_L_Up, degree = 2, raw = T))
+Chl2_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_Chl2_lm, newdata = Chl_newrange))
+pred_Chl2_df <- data.frame(Chl_newrange, Chl2_Pred)
+
+ChlRmdpos_Chl2_graph <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_Chl2_df, aes(x = Chl_ug_L_Up, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +  
+  theme_classic() +
+  labs(x = 'Chlorophyll Upstream (ug/L)',
+       y = Prt_Chl_Label,
+       title = 'Positive Chl Removed Only',
+       subtitle = 'Y ~ x + x^2')
+
+grid.arrange(FR_pos_Chl, Chl_Rmd_pos_Chl, 
+             ChlRmdpos_Chllog_graph, ChlRmdpos_Chlloglog_graph, 
+             ChlRmdpos_Chl2_graph, nrow = 3)
 ```
 
 ### ***FR Pos ~ Chl LM***
@@ -1295,6 +1356,17 @@ ols_regress(ChlRmdPos_Chl_lm)
 
 > Chl almost significant predictor of Chl Rmd (Pos Filter). p-value: 0.089
 
+### ***Y ~ X Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(ChlRmdPos_Chl_lm)
+
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(ChlRmdPos_Chl_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(ChlRmdPos_Chl_lm))
+```
+
 ### ***ChlRmd Pos ~ logChl LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 ChlRmdPos_logChl_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Chl_ug_L_Up))
@@ -1311,8 +1383,15 @@ ols_regress(logChlRmdPos_logChl_lm)
 
 > log transformation of both axes does not help fit. p-value: 0.236
 
+### ***Y ~ x + x^2 LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmdPos_Chl2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Chl_ug_L_Up, degree = 2, raw = T))
+ols_regress(ChlRmdPos_Chl2_lm)
+```
+
+
 ### ***Newport Deanza Filtration***
-```{r NPD_Filter_Chl, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
+```{r NPD_Filter_Chl, fig.height=5, fig.width=12, cache=TRUE, echo=FALSE}
 
 NPD_FRPos_Chl <- ggplot(Deanza_PosFilter_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1359,6 +1438,16 @@ ols_regress(NPD_ChlRmdPos_Chl_lm)
 
 > not significant. No obvious transformation to make. p-value: 0.224
 
+### ***Y ~ X Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(NPD_ChlRmdPos_Chl_lm)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(NPD_ChlRmdPos_Chl_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(NPD_ChlRmdPos_Chl_lm))
+```
+
 ### ***Deanza ChlRmd Pos ~ logChl LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
 NPD_ChlRmdPos_logChl_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ log(Chl_ug_L_Up))
@@ -1375,11 +1464,19 @@ ols_regress(logChlRmdPos_logChl_lm)
 
 > Log transforming both axes didn't improve fit. p-value: 0.217
 
+### ***Y ~ x + x^2 LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+NPD_ChlRmdPos_Chl2_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ poly(Chl_ug_L_Up, degree = 2, raw = T))
+ols_regress(NPD_ChlRmdPos_Chl2_lm)
+```
+
+> polynomial transformation does not help fit
+
 Turbidity
 =====================================
 
 ### ***Filtration - Turbidity***
-```{r Filter_Turbidity, fig.height=10, fig.width=14, cache=TRUE, echo=FALSE}
+```{r Filter_Turbidity, fig.height=15, fig.width=14, cache=TRUE, echo=FALSE}
 
 FR_pos_Turb <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1409,7 +1506,60 @@ Chl_Rmd_pos_Turb <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, pcnt_Chl_r
                label.x = "right",
                label.y = "bottom")
 
-grid.arrange(FR_pos_Turb, Chl_Rmd_pos_Turb, nrow =1)
+# Y-log model
+ChlRmdPos_logTurb_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Turbidity_NTU_Up))
+Turb_newrange <- data.frame(Turbidity_NTU_Up = seq(from = 2, to = 31, by = 1))
+logTurb_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_logTurb_lm, newdata = Turb_newrange))
+pred_logTurb_df <- data.frame(Turb_newrange, logTurb_Pred)
+
+ChlRmdpos_Turblog_graph <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_logTurb_df, aes(x = Turbidity_NTU_Up, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) + 
+  theme_classic() +
+  labs(x = 'Turbidity Upstream (NTU)',
+       y = Prt_Chl_Label,
+       title = 'Positive Chl Removed Only',
+       subtitle = 'y ~ log(x)')
+
+#log-log model
+logChlRmdPos_logTurb_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Turbidity_NTU_Up))
+loglogTurb_Pred <- data.frame(pred_ChlRmd = exp(predict(logChlRmdPos_logTurb_lm, newdata = Turb_newrange)))
+pred_loglogTurb_df <- data.frame(Turb_newrange, loglogTurb_Pred)
+
+ChlRmdpos_Turbloglog_graph <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_loglogTurb_df, aes(x = Turbidity_NTU_Up, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) + 
+  theme_classic() +
+  labs(x = 'Turbidity Upstream (NTU)',
+       y = Prt_Chl_Label,
+       title = 'Positive Chl Removed Only',
+       subtitle = 'log(y) ~ log(x)')
+
+# Y ~ x + x^2 model
+ChlRmdPos_Turb2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Turbidity_NTU_Up, degree = 2, raw = T))
+Turb2_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_Turb2_lm, newdata = Turb_newrange))
+pred_Turb2_df <- data.frame(Turb_newrange, Turb2_Pred )
+
+ChlRmdpos_Turb2_graph <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_Turb2_df, aes(x = Turbidity_NTU_Up, y = pred_ChlRmd)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) + 
+  theme_classic() +
+  labs(x = 'Turbidity Upstream (NTU)',
+       y = Prt_Chl_Label,
+       title = 'Positive Chl Removed Only',
+       subtitle = 'Y ~ x + x^2') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "top")
+
+grid.arrange(FR_pos_Turb, Chl_Rmd_pos_Turb,
+             ChlRmdpos_Turblog_graph, ChlRmdpos_Turbloglog_graph,
+             ChlRmdpos_Turb2_graph, nrow = 3)
 ```
 
 ### ***FR Pos ~ Turbidity LM***
@@ -1444,8 +1594,16 @@ ols_regress(logChlRmdPos_logTurb_lm)
 
 > log transforming both axes doesn't help fit. p-value: 0.188 R^2: 0.166
 
+### ***Y ~ x + x^2 LM***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+ChlRmdPos_Turb2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Turbidity_NTU_Up, degree = 2, raw = T))
+ols_regress(ChlRmdPos_Turb2_lm)
+```
+
+> Polynomial transformation isn't sig better p-value: 0.68
+
 ### ***Deanza Filtration - Turbidity***
-```{r NPD_Filter_Turbidity, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
+```{r NPD_Filter_Turbidity, fig.height=5, fig.width=12, cache=TRUE, echo=FALSE}
 
 NPD_FRPos_Turb <- ggplot(Deanza_PosFilter_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1473,6 +1631,8 @@ NPD_ChlRmdPos_Turb <- ggplot(Deanza_PosFilter_data, aes(Turbidity_NTU_Up, pcnt_C
                label.x = "right",
                label.y = "bottom")
 
+
+
 grid.arrange(NPD_FRPos_Turb, NPD_ChlRmdPos_Turb, nrow = 1)
 
 ```
@@ -1484,39 +1644,6 @@ ols_regress(NPD_FRPos_Turb_lm)
 ```
 
 > Not significant. Almost. p-value: 0.086, R^2: 0.562
-
-### ***Deanza FR Pos ~ log Turbidity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-NPD_FRPos_logTurb_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ log(Turbidity_NTU_Up))
-ols_regress(NPD_FRPos_logTurb_lm)
-```
-
-> Worse fit than regular model. p-value: 0.103, R^2: 0.526
-
-### ***Deanza log FR Pos ~ log Turbidity LM***
-```{r}
-NPD_logFRPos_logTurb <- ggplot(Deanza_PosFilter_data, aes(log(Turbidity_NTU_Up), log(L_hr_m2))) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point() +
-  theme_classic() +
-  labs(x = expression(paste(log[n], ' Turbidity Upstream (NTU)')),
-       y = expression("Log"[n]*" Habitat Filtration Rate (L/hr/m"^2 * ")"),
-       title = 'Deanza - Positive Filtration Trials') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-plot(NPD_logFRPos_logTurb)
-```
-
-### ***Deanza log FR Pos ~ log Turbidity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-NPD_logFRPos_logTurb_lm <- lm(data = Deanza_PosFilter_data, log(L_hr_m2) ~ log(Turbidity_NTU_Up))
-ols_regress(NPD_logFRPos_logTurb_lm)
-```
-
-> Significant Model. p-value: 0.014, R^2: 0.816
 
 ### ***Deanza ChlRmd Pos ~ Turbidity LM***
 ```{r, fig.height=6, fig.width=6, cache =TRUE}
