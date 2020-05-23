@@ -1689,7 +1689,23 @@ OC_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_OC_Ratio)) +
        y = "Average Organic Content Ratio",
        title = "Seston Organic Content Ratio by Site")
 
-grid.arrange(OC_box, TPM_box, TPM_OC, nrow = 2)
+# Y-log model
+OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
+TPM_newrange <- data.frame(Avg_TPM = seq(from = 0, to = 0.075, by = 0.005))
+TPMlog_Pred <- data.frame(Avg_OC_Ratio = predict(OC_logTPM_all_LM, newdata = TPM_newrange))
+pred_TPMlog_df <- data.frame(TPM_newrange, TPMlog_Pred)
+
+OC_logTPM_graph <- ggplot(Avg_TPM_summary_table, aes(Avg_TPM, Avg_OC_Ratio)) +
+  geom_line(data = pred_TPMlog_df, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) + 
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = "Average Organic Content Ratio",
+       title = 'All trials',
+       subtitle = 'y ~ log(x)')
+
+grid.arrange(OC_box, TPM_box, TPM_OC, OC_logTPM_graph, nrow = 2)
 ```
 
 > All Filtration and Neg Control Trials included. Samples independent of kind of trial. Not sure why mean function isn't working on TPM boxplot
@@ -1702,25 +1718,6 @@ ols_regress(OC_TPM_all_LM)
 
 > Significant. p-value: 0.032, R^2: 0.164
 
-### ***Log TPM All trials - OC***
-```{r logTPM_OC, fig.width=7, fig.height=5, cache=TRUE}
-logTPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = log(Avg_TPM), y = Avg_OC_Ratio)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) + 
-  labs(x = expression(paste(Log[n], " Total Particulate Matter (", mu, "g/L)")), 
-       y = "Average Organic Content Ratio", 
-       title = "All Trials") + 
-  theme_classic() +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-plot(logTPM_OC)
-
-```
-
 ### ***All logTMP ~ OC***
 ```{r OC_logTPM_all_LM, fig.height=6, fig.width=6, cache =TRUE}
 OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
@@ -1728,6 +1725,16 @@ ols_regress(OC_logTPM_all_LM)
 ```
 
 > significant. p-value: 0.004, R^2: 0.279
+
+### ***Y ~ logX Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(OC_logTPM_all_LM)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(OC_logTPM_all_LM)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(OC_logTPM_all_LM))
+```
 
 ### ***All logTMP ~ logOC***
 ```{r logOC_logTPM_all_LM, fig.height=6, fig.width=6, cache =TRUE}
@@ -1952,8 +1959,7 @@ plot(Oly_shell_DTW_rm_out)
 
 ### ***Linear model without outlier***
 ```{r Linear_model_DTW_length, fig.height=6, fig.width=6, cache=TRUE}
-Oly_DTW_lm <- lm(data = NPD_oly_outRmd,
-                         tissue_dry_weight_g ~ length_mm)
+Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
 
 ols_regress(Oly_DTW_lm)
 ```
@@ -1970,9 +1976,11 @@ Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, log(tissue_dry_weight_
   labs(x = 'Shell Length (mm)',
        y = expression('Log'[n]*' Dry Tissue Weight (g)'),
        title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'Outlier removed (outside mean +- 2.2 SD)') +
+       subtitle = 'log(y) ~ log(x)') +
   stat_quadrant_counts(quadrants = 0L, label.x = "left", 
                        aes(label = sprintf("%i observations", stat(count))))
+
+
 
 ### Trying to add model line to regular axes using predicted data
 Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd,
@@ -1988,11 +1996,28 @@ Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight
   labs(x = 'Shell Length (mm)',
        y = 'Dry Tissue Weight (g)',
        title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'Outlier removed (outside mean +- 2.2 SD)') +
+       subtitle = 'log(y) ~ log(x)') +
   stat_quadrant_counts(quadrants = 0L, label.x = "left", 
                        aes(label = sprintf("%i observations", stat(count))))
 
-grid.arrange(Oly_shell_logDTW, Oly_shell_DTW_logline, nrow = 1)
+### Y ~ x + x^2
+Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
+SH_newrange <- data.frame(length_mm = seq(from = 2, to = 52, by = 1))
+pred_DTW2_SH_df <- data.frame(tissue_dry_weight_g = predict(Oly_DTW2_lm, newdata = SH_newrange), SH_newrange)
+
+Oly_SH_DTW2_graph <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
+  geom_line(data = pred_DTW2_SH_df, aes(x = length_mm, y = tissue_dry_weight_g)) +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide = F) +
+  theme_classic() +
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
+       subtitle = 'Y ~ x + x^2') +
+  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+                       aes(label = sprintf("%i observations", stat(count))))
+
+grid.arrange(Oly_shell_logDTW, Oly_shell_DTW_logline, Oly_SH_DTW2_graph, nrow = 2)
 
 ```
 
@@ -2007,13 +2032,6 @@ ols_regress(Oly_LogDTW_lm)
 ```
 
 > R^2: 0.67, length significant predictor of log(DTW) p-value: 0.000
-
-### ***ANOVA Lm VS log(DTW)~SH***
-```{r}
-anova(Oly_DTW_lm, Oly_LogDTW_lm )
-```
-
-> Warning Message: models with response ‘"log(tissue_dry_weight_g)"’ removed because response differs from model 1
 
 ### ***Log DTW, Log SH***
 ```{r, fig.height=5, fig.width=6, cache=TRUE}
