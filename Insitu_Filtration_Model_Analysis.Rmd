@@ -1968,33 +1968,55 @@ ols_regress(Oly_DTW_lm)
 
 ### ***Log Transform DTW***
 ```{r, fig.height=5, fig.width=12, cache=TRUE}
-Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, log(tissue_dry_weight_g))) +
-  geom_smooth(method=lm, formula = x_y_formula, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = species)) +
-  scale_color_manual(values = Species_colors, guide = F) +
-  theme_classic() +
-  labs(x = 'Shell Length (mm)',
-       y = expression('Log'[n]*' Dry Tissue Weight (g)'),
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'log(y) ~ log(x)') +
-  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-                       aes(label = sprintf("%i observations", stat(count))))
 
+### log(y) ~ x model ####
+Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
+# range of Shell length values
+SH_newrange <- data.frame(length_mm = seq(from = 0, to = 53, by = 1))
+# create new dataframe with model predicted values from new data range above
+pred_logxDTW_SH <- data.frame(DTW_pred = predict(Oly_LogxDTW_lm, newdata = SH_newrange), length_mm = SH_newrange)
 
-
-### Trying to add model line to regular axes using predicted data
-Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd,
-                    log(tissue_dry_weight_g) ~ length_mm)
-pred_logDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_lm)), SH = NPD_oly_outRmd$length_mm)
-
-Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
-  #geom_smooth(method=lm, formula = x_y_formula, se=TRUE, level=0.95, color = 'grey50') +
-  geom_line(data = pred_logDTW_SH, aes(x = SH, y = DTW_pred)) +
+# graph with model predicted values to draw line
+Oly_SH_logxDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
+  geom_line(data = pred_logxDTW_SH, aes(x = length_mm, y = DTW_pred)) +
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
   labs(x = 'Shell Length (mm)',
        y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
+       subtitle = 'y ~ log(x)') +
+  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+                       aes(label = sprintf("%i observations", stat(count))))
+
+### log(y) ~ x model ####
+Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
+pred_logDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_lm, newdata = SH_newrange)), length_mm = SH_newrange)
+
+Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
+  geom_line(data = pred_logDTW_SH, aes(x = length_mm, y = DTW_pred)) +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide = F) +
+  theme_classic() +
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
+       subtitle = 'log(y) ~ x') +
+  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+                       aes(label = sprintf("%i observations", stat(count))))
+
+### log(y) ~ log(x) model ###
+Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
+pred_loglogDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_logSH_lm, newdata = SH_newrange)), 
+                                length_mm = SH_newrange)
+
+Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
+  geom_line(data = pred_loglogDTW_SH, aes(x = length_mm, y = DTW_pred)) +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide = F) +
+  theme_classic() +
+  labs(x = 'Shell Length (mm)',
+       y = ' Dry Tissue Weight (g)',
        title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
        subtitle = 'log(y) ~ log(x)') +
   stat_quadrant_counts(quadrants = 0L, label.x = "left", 
@@ -2017,7 +2039,8 @@ Oly_SH_DTW2_graph <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g))
   stat_quadrant_counts(quadrants = 0L, label.x = "left", 
                        aes(label = sprintf("%i observations", stat(count))))
 
-grid.arrange(Oly_shell_logDTW, Oly_shell_DTW_logline, Oly_SH_DTW2_graph, nrow = 2)
+grid.arrange(Oly_SH_logxDTW, Oly_shell_DTW_logline, 
+             Oly_shell_logDTW, Oly_SH_DTW2_graph, nrow = 2)
 
 ```
 
@@ -2031,7 +2054,7 @@ Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd,
 ols_regress(Oly_LogDTW_lm)
 ```
 
-> R^2: 0.67, length significant predictor of log(DTW) p-value: 0.000
+> R^2: 0.67, length significant predictor of log(DTW) p-value: 0.000 
 
 ### ***Log DTW, Log SH***
 ```{r, fig.height=5, fig.width=6, cache=TRUE}
