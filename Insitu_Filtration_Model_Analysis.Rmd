@@ -1931,7 +1931,7 @@ plot(Oly_shell_DTW)
 # Remove outlier and negative DTW value
 NPD_oly_outRmd <- NPD_oly %>%
   mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
-  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) ### Is this right? Should this be and OR statement
+  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
 
 # Graph with outliers removed
 Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
@@ -2108,11 +2108,14 @@ plot(Oly_TWW_DTW)
 
 ### ***TWW vs DTW (remove outlier)***
 ```{r, fig.height=5, fig.width=6, cache=TRUE}
-# Add Gray & Langdon 2017 DTW x TWW Olympia model
+
+# Make sure only using positive TWW values, negative values indicate processing error
+NPD_oly_TWW <- NPD_oly_outRmd %>% filter(total_wet_weight_g > 0)
+# Gray & Langdon 2017 DTW x TWW Olympia model to add to graph
 Gray17_DTW_TWW_lm <- function(x) {0.0044*x - 0.043}
 
 # use DTW outlier data to plot graph
-Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide=FALSE) +
@@ -2128,7 +2131,62 @@ Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(total_wet_weight_g, tissue_dry_
                parse = TRUE,
                label.x = "left",
                label.y = "top")
-plot(Oly_TWW_DTW_rm_out)
+
+### log(y) ~ x
+Oly_TWW_DTW_log_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ total_wet_weight_g)
+TWW_newrange <- data.frame(total_wet_weight_g = seq(from = 0, to = 7, by = 0.01))
+pred_DTW_TWW_log_df <- data.frame(tissue_dry_weight_g = exp(predict(Oly_TWW_DTW_log_LM, newdata = TWW_newrange)),
+                              TWW_newrange)
+
+Oly_logTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_line(data = pred_DTW_TWW_log_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide=FALSE) + 
+  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue") +
+  xlim(0, 7) +
+  theme_classic() +
+  labs(x ="Total wet weight (g)",
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Total Wet Weight - Newport, CA',
+       subtitle = 'log(y) ~ x')
+
+### log(y) ~ log(x)
+Oly_TWW_DTW_loglog_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ log(total_wet_weight_g))
+pred_DTW_TWW_loglog_df <- data.frame(tissue_dry_weight_g = exp(predict(Oly_TWW_DTW_loglog_LM, newdata = TWW_newrange)),
+                              TWW_newrange)
+
+Oly_loglogTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_line(data = pred_DTW_TWW_loglog_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide=FALSE) + 
+  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue") +
+  xlim(0, 7) +
+  theme_classic() +
+  labs(x ="Total wet weight (g)",
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Total Wet Weight - Newport, CA',
+       subtitle = 'log(y) ~ log(x)')
+
+### y ~ x + x^2
+Oly_TWW2_DTW_LM <- lm(data = NPD_oly_TWW, 
+                        tissue_dry_weight_g ~ poly(total_wet_weight_g, degree = 2, raw = T))
+pred_DTW2_TWW_log_df <- data.frame(tissue_dry_weight_g = predict(Oly_TWW2_DTW_LM, newdata = TWW_newrange),
+                              TWW_newrange)
+
+Oly_TWW2_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_line(data = pred_DTW2_TWW_log_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide=FALSE) + 
+  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue") +
+  xlim(0, 7) +
+  theme_classic() +
+  labs(x ="Total wet weight (g)",
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Total Wet Weight - Newport, CA',
+       subtitle = 'y ~ x + x^2')
+       
+grid.arrange(Oly_TWW_DTW_rm_out, Oly_logTWW_DTW_graph,
+             Oly_loglogTWW_DTW_graph, Oly_TWW2_DTW_graph, nrow = 2)
 ```
 
 > Gray and Langdon (2017): "Unless explicitly mentioned, DTW of experimental oysters was estimated using the species-specific allometric relationship between DTW and total wet weight (TWW), which were determined in preliminary analysis (O. lurida: DTW = 0.0044TWW − 0.043, R2 =0.93, F1,32 =78.80, p value <0.0001; C. gigas: DTW = 0.039TWW − 0.06, R2 =0.89, F1,29 = 225.97, p value <0.0001).
@@ -2141,44 +2199,33 @@ Oly_TWW_DTW_lm_rm_out <- lm(data = NPD_oly_outRmd,
 ols_regress(Oly_TWW_DTW_lm_rm_out)
 ```
 
-> significant. p-value: 0.000, R^2 0.602, DTW = 0.0313TWW + 0.0139
+> significant. p-value: 0.000, R^2 adj 0.602, DTW = 0.0313TWW + 0.0139
 
-### ***Log TWW vs Log DTW*** 
-```{r, fig.height=5, fig.width=6, cache=TRUE}
-# use DTW outlier data to plot graph
-Oly_logTWW_DTW <- ggplot(NPD_oly_outRmd, aes(log(total_wet_weight_g), log(tissue_dry_weight_g))) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point() +
-  scale_fill_manual(values = Species_colors) + 
-  theme_classic() +
-  labs(x = expression('Log'[n]*" Total wet weight (g)"),
-       y = expression('Log'[n]*'Dry Tissue Weight (g)'),
-       title = 'Olympia Oyster DTW predicted by Total Wet Weight - Newport, CA') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-plot(Oly_logTWW_DTW)
+### ***log(y) ~ x***
+```{r, fig.height=6, fig.width=6, cache=TRUE}
+Oly_TWW_DTW_log_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ total_wet_weight_g)
+ols_regress(Oly_TWW_DTW_log_LM )
 ```
+
+> sig. p-valueL 0.000, R^2 adj: 0.636. Hardly better than y~x
 
 ### ***Log DTW X  Log TWW LM***
 ```{r, fig.height=6, fig.width=6, cache=TRUE}
-Oly_TWW_DTW_log_LM <- lm(data = NPD_oly_outRmd %>% filter(total_wet_weight_g > 0), 
+Oly_TWW_DTW_loglog_LM <- lm(data = NPD_oly_TWW, 
                          log(tissue_dry_weight_g) ~ log(total_wet_weight_g))
-ols_regress(Oly_TWW_DTW_log_LM)
+ols_regress(Oly_TWW_DTW_loglog_LM)
 ```
 
-> significnt. p-value: 0.00, R^2: 0.846
+> significnt. p-value: 0.00, R^2 adj: 0.845
 
-### ***DTW X  Log TWW LM***
+###***Y ~ x + x^2***
 ```{r, fig.height=6, fig.width=6, cache=TRUE}
-Oly_logTWW_DTW_LM <- lm(data = NPD_oly_outRmd %>% filter(total_wet_weight_g > 0), 
-                         tissue_dry_weight_g ~ log(total_wet_weight_g))
-ols_regress(Oly_logTWW_DTW_LM)
+Oly_TWW2_DTW_LM <- lm(data = NPD_oly_TWW, 
+                        tissue_dry_weight_g ~ poly(total_wet_weight_g, degree = 2, raw = T))
+ols_regress(Oly_TWW2_DTW_LM)
 ```
 
-> significant. p-value: 0.00, R^2: 0.493. Not as good as transforming both axes
+> x sig, x^2 not sig. R^2 adj: 0.607 Not a better fit than y~x
 
 ### ***NPD Bivalve SH DTW***
 ```{r NPD_Bivalve_SH_DTW, fig.height=6, fig.width=15, cache=TRUE}
