@@ -831,6 +831,222 @@ ols_regress(logChlRmdPos_logOC_NPD_lm)
 
 > worse model than single x-axis transformation. p-value: 0.156 
 
+TPM X OC
+=====================================
+
+### ***TPM by OC***
+```{r TPM_OC, fig.width=14, fig.height=10, cache=TRUE}
+TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) + 
+  labs(x = TPM_Label, 
+       y = "Average Organic Content Ratio", 
+       title = "All Trials") + 
+  theme_classic() +
+  #geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+TPM_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_TPM)) +
+  geom_boxplot(color = Site_colors) +
+  theme_classic() +
+  stat_summary(fun.data = n_mean_stats3, geom = "text") + # mean isn't working 
+  labs(x = 'Site',
+       y = TPM_Label,
+       title = "Total Particulate Matter by Site")
+
+OC_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_OC_Ratio)) +
+  geom_boxplot(color = Site_colors) +
+  theme_classic() +
+  stat_summary(fun.data = n_mean_stats3, geom = "text") + 
+  labs(x = 'Site',
+       y = "Average Organic Content Ratio",
+       title = "Seston Organic Content Ratio by Site")
+
+# Y-log model
+OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
+TPM_newrange <- data.frame(Avg_TPM = seq(from = 0, to = 0.075, by = 0.005))
+TPMlog_Pred <- data.frame(Avg_OC_Ratio = predict(OC_logTPM_all_LM, newdata = TPM_newrange))
+pred_TPMlog_df <- data.frame(TPM_newrange, TPMlog_Pred)
+
+OC_logTPM_graph <- ggplot(Avg_TPM_summary_table, aes(Avg_TPM, Avg_OC_Ratio)) +
+  geom_line(data = pred_TPMlog_df, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) + 
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = "Average Organic Content Ratio",
+       title = 'All trials',
+       subtitle = 'y ~ log(x)')
+
+grid.arrange(OC_box, TPM_box, TPM_OC, OC_logTPM_graph, nrow = 2)
+```
+
+> All Filtration and Neg Control Trials included. Samples independent of kind of trial. Not sure why mean function isn't working on TPM boxplot
+
+### ***All TMP ~ OC***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+OC_TPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM)
+ols_regress(OC_TPM_all_LM)
+```
+
+> Significant. p-value: 0.032, R^2: 0.164
+
+### ***All logTMP ~ OC***
+```{r OC_logTPM_all_LM, fig.height=6, fig.width=6, cache =TRUE}
+OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
+ols_regress(OC_logTPM_all_LM)
+```
+
+> significant. p-value: 0.004, R^2: 0.279
+
+### ***Y ~ logX Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(OC_logTPM_all_LM)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(OC_logTPM_all_LM)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(OC_logTPM_all_LM))
+```
+
+### ***All logTMP ~ logOC***
+```{r logOC_logTPM_all_LM, fig.height=6, fig.width=6, cache =TRUE}
+logOC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM))
+ols_regress(logOC_logTPM_all_LM)
+```
+
+> significant. p-value: 0.010, R^2: 0.202
+
+### ***TPM vs OC by sites***
+```{r TPM_OC_Sites, fig.height=10, fig.width=12, cache=TRUE}
+TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")),
+                        aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) + 
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = TPM_Label, 
+       y = "Average Organic Content Ratio", 
+       title = "Deanza") + 
+  theme_classic() +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+TPM_OC_NPSM <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Shellmaker")), 
+                     aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) + 
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = TPM_Label, 
+       y = "Average Organic Content Ratio", 
+       title = "Shellmaker") + 
+  theme_classic() +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+TPM_OC_SR <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "San Rafael")),
+                   aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) + 
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = TPM_Label, 
+       y = "Average Organic Content Ratio", 
+       title = "San Rafael") + 
+  theme_classic() +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+TPM_OC_MB <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay")), 
+                   aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) + 
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = TPM_Label, 
+       y = "Average Organic Content Ratio", 
+       title = "Morro Bay") + 
+  theme_classic() +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+grid.arrange(TPM_OC_Deanza, TPM_OC_NPSM, TPM_OC_SR, TPM_OC_MB, nrow = 2)
+```
+
+### ***San Rafael TMP ~ OC***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+TPM_SR <- Avg_TPM_summary_table %>% filter(Site == "San Rafael")
+
+OC_TPM_SR_LM <- lm(data = TPM_SR, Avg_OC_Ratio ~ Avg_TPM)
+ols_regress(OC_TPM_SR_LM)
+```
+
+> not significant
+
+### ***Morro Bay TMP ~ OC***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+TPM_MB <- Avg_TPM_summary_table %>% filter(Site == "Morro Bay")
+
+OC_TPM_MB_LM <- lm(data = TPM_MB, Avg_OC_Ratio ~ Avg_TPM)
+ols_regress(OC_TPM_MB_LM)
+```
+
+> not significant
+
+### ***Shellmaker TMP ~ OC***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+TPM_NPSM <- Avg_TPM_summary_table %>% filter(Site == "Shellmaker")
+
+OC_TPM_NPSM_LM <- lm(data = TPM_NPSM, Avg_OC_Ratio ~ Avg_TPM)
+ols_regress(OC_TPM_NPSM_LM)
+```
+
+> not significant
+
+### ***Deanza TMP ~ OC***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
+
+OC_TPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ Avg_TPM)
+ols_regress(OC_TPM_NPD_LM)
+```
+
+> not significant, almost. p-value: 0.94
+
+### ***Deanza logTMP ~ OC***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
+
+OC_logTPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ log(Avg_TPM))
+ols_regress(OC_logTPM_NPD_LM)
+```
+
+> significant. p-value: 0.027
+
+### ***Deanza logTMP ~ logOC***
+```{r, fig.height=6, fig.width=6, cache =TRUE}
+TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
+
+logOC_logTPM_NPD_LM <- lm(data = TPM_NPD, log(Avg_OC_Ratio) ~ log(Avg_TPM))
+ols_regress(logOC_logTPM_NPD_LM)
+```
+
+> more significant. p-value: 0.013
+
 Temperature
 =====================================
 
@@ -1653,221 +1869,7 @@ ols_regress(NPD_ChlRmdPos_Turb_lm)
 
 > Not significant
 
-TPM X OC
-=====================================
 
-### ***TPM by OC***
-```{r TPM_OC, fig.width=14, fig.height=10, cache=TRUE}
-TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) + 
-  labs(x = TPM_Label, 
-       y = "Average Organic Content Ratio", 
-       title = "All Trials") + 
-  theme_classic() +
-  #geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-TPM_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_TPM)) +
-  geom_boxplot(color = Site_colors) +
-  theme_classic() +
-  stat_summary(fun.data = n_mean_stats3, geom = "text") + # mean isn't working 
-  labs(x = 'Site',
-       y = TPM_Label,
-       title = "Total Particulate Matter by Site")
-
-OC_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_OC_Ratio)) +
-  geom_boxplot(color = Site_colors) +
-  theme_classic() +
-  stat_summary(fun.data = n_mean_stats3, geom = "text") + 
-  labs(x = 'Site',
-       y = "Average Organic Content Ratio",
-       title = "Seston Organic Content Ratio by Site")
-
-# Y-log model
-OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
-TPM_newrange <- data.frame(Avg_TPM = seq(from = 0, to = 0.075, by = 0.005))
-TPMlog_Pred <- data.frame(Avg_OC_Ratio = predict(OC_logTPM_all_LM, newdata = TPM_newrange))
-pred_TPMlog_df <- data.frame(TPM_newrange, TPMlog_Pred)
-
-OC_logTPM_graph <- ggplot(Avg_TPM_summary_table, aes(Avg_TPM, Avg_OC_Ratio)) +
-  geom_line(data = pred_TPMlog_df, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) + 
-  theme_classic() +
-  labs(x = TPM_Label,
-       y = "Average Organic Content Ratio",
-       title = 'All trials',
-       subtitle = 'y ~ log(x)')
-
-grid.arrange(OC_box, TPM_box, TPM_OC, OC_logTPM_graph, nrow = 2)
-```
-
-> All Filtration and Neg Control Trials included. Samples independent of kind of trial. Not sure why mean function isn't working on TPM boxplot
-
-### ***All TMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-OC_TPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM)
-ols_regress(OC_TPM_all_LM)
-```
-
-> Significant. p-value: 0.032, R^2: 0.164
-
-### ***All logTMP ~ OC***
-```{r OC_logTPM_all_LM, fig.height=6, fig.width=6, cache =TRUE}
-OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
-ols_regress(OC_logTPM_all_LM)
-```
-
-> significant. p-value: 0.004, R^2: 0.279
-
-### ***Y ~ logX Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
-par(mfrow=c(2,2))
-plot(OC_logTPM_all_LM)
-# Leverage Statistics - plots index of parameter elements against their leverage on the model
-# plot(hatvalues(OC_logTPM_all_LM)) 
-# identifies the index of the largest element of a vector
-# which.max(hatvalues(OC_logTPM_all_LM))
-```
-
-### ***All logTMP ~ logOC***
-```{r logOC_logTPM_all_LM, fig.height=6, fig.width=6, cache =TRUE}
-logOC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM))
-ols_regress(logOC_logTPM_all_LM)
-```
-
-> significant. p-value: 0.010, R^2: 0.202
-
-### ***TPM vs OC by sites***
-```{r TPM_OC_Sites, fig.height=10, fig.width=12, cache=TRUE}
-TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")),
-                        aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) + 
-  scale_color_manual(values = Site_colors, guide=FALSE) + 
-  labs(x = TPM_Label, 
-       y = "Average Organic Content Ratio", 
-       title = "Deanza") + 
-  theme_classic() +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-TPM_OC_NPSM <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Shellmaker")), 
-                     aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) + 
-  scale_color_manual(values = Site_colors, guide=FALSE) + 
-  labs(x = TPM_Label, 
-       y = "Average Organic Content Ratio", 
-       title = "Shellmaker") + 
-  theme_classic() +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-TPM_OC_SR <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "San Rafael")),
-                   aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) + 
-  scale_color_manual(values = Site_colors, guide=FALSE) + 
-  labs(x = TPM_Label, 
-       y = "Average Organic Content Ratio", 
-       title = "San Rafael") + 
-  theme_classic() +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-TPM_OC_MB <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay")), 
-                   aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) + 
-  scale_color_manual(values = Site_colors, guide=FALSE) + 
-  labs(x = TPM_Label, 
-       y = "Average Organic Content Ratio", 
-       title = "Morro Bay") + 
-  theme_classic() +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-grid.arrange(TPM_OC_Deanza, TPM_OC_NPSM, TPM_OC_SR, TPM_OC_MB, nrow = 2)
-```
-
-### ***San Rafael TMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-TPM_SR <- Avg_TPM_summary_table %>% filter(Site == "San Rafael")
-
-OC_TPM_SR_LM <- lm(data = TPM_SR, Avg_OC_Ratio ~ Avg_TPM)
-ols_regress(OC_TPM_SR_LM)
-```
-
-> not significant
-
-### ***Morro Bay TMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-TPM_MB <- Avg_TPM_summary_table %>% filter(Site == "Morro Bay")
-
-OC_TPM_MB_LM <- lm(data = TPM_MB, Avg_OC_Ratio ~ Avg_TPM)
-ols_regress(OC_TPM_MB_LM)
-```
-
-> not significant
-
-### ***Shellmaker TMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-TPM_NPSM <- Avg_TPM_summary_table %>% filter(Site == "Shellmaker")
-
-OC_TPM_NPSM_LM <- lm(data = TPM_NPSM, Avg_OC_Ratio ~ Avg_TPM)
-ols_regress(OC_TPM_NPSM_LM)
-```
-
-> not significant
-
-### ***Deanza TMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
-
-OC_TPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ Avg_TPM)
-ols_regress(OC_TPM_NPD_LM)
-```
-
-> not significant, almost. p-value: 0.94
-
-### ***Deanza logTMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
-
-OC_logTPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ log(Avg_TPM))
-ols_regress(OC_logTPM_NPD_LM)
-```
-
-> significant. p-value: 0.027
-
-### ***Deanza logTMP ~ logOC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
-TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
-
-logOC_logTPM_NPD_LM <- lm(data = TPM_NPD, log(Avg_OC_Ratio) ~ log(Avg_TPM))
-ols_regress(logOC_logTPM_NPD_LM)
-```
-
-> more significant. p-value: 0.013
 
 DTW X Shell length
 =====================================
@@ -2519,7 +2521,7 @@ ols_regress(NPD_Unknown_logDTW_logSH_lm)
 > not better, p-value: 0.036, R^2: 0.618
 
 ### ***Biomass estimate - Remove outliers***
-```{r Newport_Bivalve_biomass_outlier, fig.height=6, fig.width=8, cache=TRUE}
+```{r Newport_Bivalve_biomass_outlier, eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
 # remove outliers from data
 NPD_Posbiomass_outlier <- NPD_Posbiomass_data %>% 
   mutate(DTW_outlier = find_outlier(NPD_Posbiomass_data$tissue_dry_weight_g)) %>% 
@@ -2547,7 +2549,7 @@ NPD_Posbiomass_outlierrmd_graph
 ```
 
 ### ***NPD Bivalve Biomass***
-```{r}
+```{r eval=FALSE, include=FALSE}
 Bivalve_Biomass_graph <- ggplot(NPD_Posbiomass_outlier, aes(Site)) + 
   geom_col(aes(x = Site, y = tissue_dry_weight_g, fill = species)) +
   theme_classic() +
