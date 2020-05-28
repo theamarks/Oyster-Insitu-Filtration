@@ -590,7 +590,7 @@ OC
 =====================================
 
 ### ***Filter Positive vs OC***
-```{r FRPos vs OC, fig.height=5, fig.width=14, cache=TRUE}
+```{r FRPos vs OC, fig.height=5, fig.width=15, cache=TRUE}
 FRPos_OC_graph <- ggplot(Filtration_pos_data, aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -642,7 +642,7 @@ ols_regress(ChlRmdPos_OC_lm)
 > Significant Avg_OC_Ratio p-value: 0.040
 
 ### ***Y ~ X Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r, fig.height=10, fig.width=15, cache =TRUE}
 par(mfrow=c(2,2))
 plot(ChlRmdPos_OC_lm)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
@@ -1869,8 +1869,6 @@ ols_regress(NPD_ChlRmdPos_Turb_lm)
 
 > Not significant
 
-
-
 DTW X Shell length
 =====================================
 
@@ -1883,7 +1881,7 @@ NPD_biv_bio_summary <- NPD_density %>%
   summarize(avg_DTW = mean(tissue_dry_weight_g))
 
 # what are the unique species in dataset
-unique(NPD_density$species)
+#unique(NPD_density$species)
 
 # Still contains missing data --> which quadrats to use for analyses
 NPD_bivalve_data_clean <- NPD_density %>% 
@@ -1969,7 +1967,7 @@ ols_regress(Oly_DTW_lm)
 > significant predictor. p-value: 0.000, R^2: 0.49
 
 ### ***Log Transform DTW***
-```{r, fig.height=5, fig.width=12, cache=TRUE}
+```{r, fig.height=10, fig.width=12, cache=TRUE}
 
 ### y ~ log(x) model ####
 Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
@@ -2109,7 +2107,7 @@ plot(Oly_TWW_DTW)
 ```
 
 ### ***TWW vs DTW (remove outlier)***
-```{r, fig.height=5, fig.width=6, cache=TRUE}
+```{r, fig.height=10, fig.width=12, cache=TRUE}
 
 # Make sure only using positive TWW values, negative values indicate processing error
 NPD_oly_TWW <- NPD_oly_outRmd %>% filter(total_wet_weight_g > 0)
@@ -2265,7 +2263,7 @@ NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>%
   facet_wrap(~species) +
   labs(x = "Shell length (mm)",
        y = "Dry Tissue Weight (g)",
-       title = "Newport Deanza Bivalve Biomass - Positive DTW only") +
+       title = "Newport Deanza Bivalve Biomass - Positive DTW only - Outlier Rmd") +
   theme_classic() +
   theme(strip.text = element_text(face = "italic"))
 
@@ -2273,7 +2271,7 @@ grid.arrange(NPD_bivalve_biomass_graph, NPD_bivalve_outrmd_graph, nrow = 1)
 ```
 
 ### ***NPD Adula***
-```{r, fig.height=5, fig.width=6, cache=TRUE}
+```{r, fig.height=5, fig.width=12, cache=TRUE}
 NPD_Adula <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Adula diegensis"))
 
@@ -2342,7 +2340,7 @@ ols_regress(NPD_Adula_DTW_SH2_lm)
 > R^2 adj: 0.708, x^2 p-value: 0.002
 
 ### ***NPD Musculista*** 
-```{r}
+```{r, fig.height=5, fig.width=12, cache=TRUE}
 NPD_Musculista <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Musculista senhousia"))
 
@@ -2401,7 +2399,7 @@ ols_regress(NPD_Musculista_logDTW_logSH_lm)
 > significant p-value: 0.00, R^2: 0.587, not much better than y-axis transformation
 
 ### ***NPD Mytilus***
-```{r}
+```{r, fig.height=5, fig.width=12, cache=TRUE}
 
 NPD_Mytilus <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Mytilus galloprovincialis"))
@@ -2461,7 +2459,7 @@ ols_regress(NPD_Mytilus_logDTW_logSH_lm)
 > significant p-value: 0.00, R^2: 0.815
 
 ### ***LM - Unknown mussel***
-```{r}
+```{r, fig.height=5, fig.width=12, cache=TRUE}
 NPD_Unknown <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Unknown mussel"))
 
@@ -2589,7 +2587,7 @@ order_by_site <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza")
 Bivalve_Den_data <- arrange(transform(Bivalve_Den_data, Site = factor(Site,levels = order_by_site)), Site)
 
 
-unique(Bivalve_Den_data$Species) # list each individual bivalve species
+#unique(Bivalve_Den_data$Species) # list each individual bivalve species
 # Assign species to specific color
 Species_colors <- c("Adula diegensis" = "#8D8680",
                     "Argopecten ventricosa" = "#CCC3C5",
