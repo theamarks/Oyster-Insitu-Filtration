@@ -2201,6 +2201,16 @@ ols_regress(Oly_TWW_DTW_lm_rm_out)
 
 > significant. p-value: 0.000, R^2 adj 0.602, DTW = 0.0313TWW + 0.0139
 
+### ***y ~ x Diagnostics***
+```{r, fig.height=6, fig.width=8, cache =TRUE}
+par(mfrow=c(2,2))
+plot(Oly_TWW_DTW_lm_rm_out)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(Oly_TWW_DTW_lm_rm_out)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(Oly_TWW_DTW_lm_rm_out))
+```
+
 ### ***log(y) ~ x***
 ```{r, fig.height=6, fig.width=6, cache=TRUE}
 Oly_TWW_DTW_log_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ total_wet_weight_g)
@@ -2230,8 +2240,7 @@ ols_regress(Oly_TWW2_DTW_LM)
 ### ***NPD Bivalve SH DTW***
 ```{r NPD_Bivalve_SH_DTW, fig.height=6, fig.width=15, cache=TRUE}
 ##### Estimate Biomass per site here with equations
-
-NPD_bivalve_biomass_graph <- NPD_bivalve_data_clean %>% 
+NPD_bivalve_biomass_graph <-  NPD_bivalve_data_clean %>% 
   ggplot(aes(x = length_mm, y = tissue_dry_weight_g, color = species)) +
   geom_point() +
   scale_color_manual(values = Species_colors, guide = FALSE) +
@@ -2242,11 +2251,12 @@ NPD_bivalve_biomass_graph <- NPD_bivalve_data_clean %>%
   theme_classic() +
   theme(strip.text = element_text(face = "italic"))
 
-# Remove negative DTW (doesn't make sense to have negative #s, probably processing error)
-NPD_Posbiomass_data <- NPD_bivalve_data_clean %>% 
-  filter(tissue_dry_weight_g > 0)
+# Remove outlier and negative DTW value
+NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
+  mutate(DTW_outlier = find_outlier(NPD_bivalve_data_clean$tissue_dry_weight_g)) %>% 
+  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
 
-NPD_Posbiomass_graph <- NPD_Posbiomass_data %>% 
+NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>% 
   ggplot(aes(x = length_mm, y = tissue_dry_weight_g, group = species, color = species)) +
   geom_point() +
   scale_color_manual(values = Species_colors, guide = FALSE) +
@@ -2257,12 +2267,12 @@ NPD_Posbiomass_graph <- NPD_Posbiomass_data %>%
   theme_classic() +
   theme(strip.text = element_text(face = "italic"))
 
-grid.arrange(NPD_bivalve_biomass_graph, NPD_Posbiomass_graph, nrow = 1)
+grid.arrange(NPD_bivalve_biomass_graph, NPD_bivalve_outrmd_graph, nrow = 1)
 ```
 
 ### ***NPD Adula***
 ```{r, fig.height=5, fig.width=6, cache=TRUE}
-NPD_Adula <- NPD_Posbiomass_data %>% 
+NPD_Adula <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Adula diegensis"))
 
 NPD_Adula_Posbiomass_graph <- NPD_Adula %>% 
@@ -2279,6 +2289,8 @@ NPD_Adula_Posbiomass_graph <- NPD_Adula %>%
                parse = TRUE,
                label.x = "left",
                label.y = "top")
+
+# Predict new values with 
 
 NPD_Adula_Posbiomass_loggraph <- NPD_Adula %>% 
   ggplot(aes(x = log(length_mm), y = log(tissue_dry_weight_g))) +
@@ -2319,9 +2331,17 @@ ols_regress(NPD_Adula_logDTW_logSH_lm)
 
 > R^2 even better: 0.809
 
+### ***Y ~ x + x^2 ***
+```{r}
+NPD_Adula_DTW_SH2_lm <- lm(data = NPD_Adula, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
+ols_regress(NPD_Adula_DTW_SH2_lm)
+```
+
+> R^2 adj: 0.708, x^2 p-value: 0.002
+
 ### ***NPD Musculista*** 
 ```{r}
-NPD_Musculista <- NPD_Posbiomass_data %>% 
+NPD_Musculista <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Musculista senhousia"))
 
 NPD_Musculista_Posbiomass_graph <- NPD_Musculista %>% 
@@ -2381,7 +2401,7 @@ ols_regress(NPD_Musculista_logDTW_logSH_lm)
 ### ***NPD Mytilus***
 ```{r}
 
-NPD_Mytilus <- NPD_Posbiomass_data %>% 
+NPD_Mytilus <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Mytilus galloprovincialis"))
 
 NPD_Mytilus_Posbiomass_graph <- NPD_Mytilus %>% 
@@ -2440,7 +2460,7 @@ ols_regress(NPD_Mytilus_logDTW_logSH_lm)
 
 ### ***LM - Unknown mussel***
 ```{r}
-NPD_Unknown <- NPD_Posbiomass_data %>% 
+NPD_Unknown <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Unknown mussel"))
 
 NPD_Unknown_Posbiomass_graph <- NPD_Unknown %>% 
