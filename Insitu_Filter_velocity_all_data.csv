@@ -1,0 +1,141 @@
+﻿Date,Site,Experiment,Time,measure_position,measure_h_cm,total_depth_cm,m_s
+10/25/18,Deanza,Filtration,14:52:00,Mid,0,20,0.02
+10/25/18,Deanza,Filtration,14:53:00,Mid,20,20,0.1
+10/25/18,Deanza,Filtration,15:02:00,Mid,0,15,0.04
+10/25/18,Deanza,Filtration,15:03:00,Mid,10,15,0.1
+10/26/18,Deanza,Filtration,15:10:30,Mid,10,30,0.15
+10/26/18,Deanza,Filtration,15:28:00,Mid,10,20,0.07
+10/26/18,Deanza,Filtration,15:47:00,Mid,5,8,0.02
+4/15/19,Deanza,Filtration,11:05:00,Up,15,30,0.15
+4/15/19,Deanza,Filtration,11:07:00,Mid,10,25,0.09
+4/15/19,Deanza,Filtration,11:10:00,Down,10,25,0.08
+4/15/19,Deanza,Filtration,11:25:00,Up,15,20,0.06
+4/15/19,Deanza,Filtration,11:26:00,Mid,10,15,0.03
+4/17/19,Deanza,Filtration,12:35:00,Down,10,30,0.11
+5/9/19,Deanza,Filtration,4:42:30,Down,10,45,0.11
+5/9/19,Deanza,Filtration,4:43:00,Up,10,40,0.16
+5/9/19,Deanza,Filtration,4:46:30,Mid,10,40,0.07
+5/9/19,Deanza,Filtration,5:06:00,Mid,10,30,0.05
+5/9/19,Deanza,Filtration,5:20:00,Up,10,20,0.09
+5/9/19,Deanza,Filtration,5:23:00,Mid,10,20,0.04
+5/10/19,Deanza,Filtration,6:03:30,Up,10,38,0.17
+5/10/19,Deanza,Filtration,6:05:00,Mid,10,35,0.1
+5/10/19,Deanza,Filtration,6:06:00,Down,10,40,0.11
+5/10/19,Deanza,Filtration,6:35:00,Up,10,22,0.14
+5/10/19,Deanza,Filtration,6:36:00,Mid,10,19,0.06
+5/10/19,Deanza,Filtration,6:37:00,Down,10,25,0.09
+5/11/19,Deanza,Filtration,7:03:45,Up,10,40,0.15
+5/11/19,Deanza,Filtration,7:05:20,Mid,10,40,0.15
+5/11/19,Deanza,Filtration,7:06:00,Down,10,40,0.13
+5/11/19,Deanza,Filtration,7:29:30,Up,10,30,0.11
+5/11/19,Deanza,Filtration,7:30:40,Mid,10,25,0.06
+5/11/19,Deanza,Filtration,7:32:00,Down,10,30,0.07
+5/21/19,Deanza,Filtration,3:24:00,Up,10,20,0.15
+5/21/19,Deanza,Filtration,3:25:00,Down,10,30,0.08
+5/22/19,Deanza,Filtration,4:18:00,Up,10,25,0.12
+5/22/19,Deanza,Filtration,4:19:00,Mid,10,30,0.07
+5/22/19,Deanza,Filtration,4:22:00,Down,10,30,0.09
+5/22/19,Deanza,Filtration,4:41:00,Up,10,15,0.08
+5/22/19,Deanza,Filtration,4:43:00,Mid,10,15,0.02
+5/22/19,Deanza,Filtration,4:45:00,Down,10,15,0.06
+6/8/19,Deanza,Filtration,5:47:54,Up,10,28,0.13
+6/8/19,Deanza,Filtration,5:51:40,Down,10,32,0.11
+6/8/19,Deanza,Filtration,6:07:00,Up,10,22,0.08
+6/8/19,Deanza,Filtration,6:09:00,Down,10,23,0.07
+6/9/19,Deanza,Neg Control 1,5:57:00,Mid,10,45,0.16
+6/9/19,Deanza,Neg Control 1,6:00:00,Down,10,65,0.14
+6/9/19,Deanza,Neg Control 1,6:28:00,Mid,10,30,0.12
+6/9/19,Deanza,Neg Control 1,6:29:00,Down,10,50,0.05
+6/9/19,Deanza,Neg Control 2,6:28:00,Mid,10,30,0.12
+6/9/19,Deanza,Neg Control 2,6:29:00,Down,10,50,0.05
+6/9/19,Deanza,Neg Control 2,6:49:00,Mid,10,20,0.07
+6/9/19,Deanza,Neg Control 2,6:50:00,Down,10,38,0.01
+6/9/19,Deanza,Neg Control 3,7:11:00,Mid,10,20,0.1
+6/9/19,Deanza,Neg Control 3,7:12:00,Down,10,30,0.06
+6/9/19,Deanza,Neg Control 3,7:23:00,Mid,10,15,0.07
+6/9/19,Deanza,Neg Control 3,7:22:00,Down,10,20,0.01
+5/10/19,Shellmaker,Filtration,11:36:00,Down,10,NA,0.05
+5/10/19,Shellmaker,Filtration,12:01:00,Up,20,40,0.07
+5/10/19,Shellmaker,Filtration,12:05:00,Mid,10,NA,0.06
+5/10/19,Shellmaker,Filtration,12:06:00,Down,20,43,0.07
+5/11/19,Shellmaker,Filtration,12:29:00,Up,10,28,0.05
+5/11/19,Shellmaker,Filtration,12:31:00,Mid,10,20,0.05
+5/11/19,Shellmaker,Filtration,12:33:00,Down,10,25,0.03
+5/11/19,Shellmaker,Filtration,12:54:00,Up,10,35,0.06
+5/11/19,Shellmaker,Filtration,12:56:00,Mid,10,20,0.05
+5/11/19,Shellmaker,Filtration,12:57:00,Down,10,35,0.05
+5/22/19,Shellmaker,Filtration,9:25:00,Up,10,20,0.08
+5/22/19,Shellmaker,Filtration,9:26:00,Down,10,20,0.02
+5/22/19,Shellmaker,Filtration,9:27:00,Mid,10,20,0.04
+5/22/19,Shellmaker,Filtration,9:43:00,Up,10,28,0.1
+5/22/19,Shellmaker,Filtration,9:46:00,Mid,10,28,0.06
+5/22/19,Shellmaker,Filtration,9:45:00,Down,10,30,0.03
+6/8/19,Shellmaker,Filtration,10:57:00,Up,10,18,0.01
+6/8/19,Shellmaker,Filtration,10:58:00,Down,10,20,0.03
+6/8/19,Shellmaker,Filtration,11:16:00,Mid,10,,0.04
+6/8/19,Shellmaker,Filtration,11:29:00,Up,10,32,0.04
+6/8/19,Shellmaker,Filtration,11:30:00,Mid,10,,0.06
+6/8/19,Shellmaker,Filtration,11:31:00,Down,10,35,0.04
+6/9/19,Shellmaker,Neg Control 1,11:52:00,Mid,10,25,0.05
+6/9/19,Shellmaker,Neg Control 1,11:54:00,Down,10,30,0.04
+6/9/19,Shellmaker,Neg Control 3,12:24:00,Mid,10,40,0.06
+6/9/19,Shellmaker,Neg Control 3,12:25:00,Down,10,40,0.03
+6/9/19,Shellmaker,Neg Control 3,12:38:00,Mid,10,45,0.04
+6/9/19,Shellmaker,Neg Control 3,12:41:00,Down,10,45,0.07
+7/27/18,Morro Bay,Filtration,8:12:00,Up,25,35,0.05
+7/27/18,Morro Bay,Filtration,8:24:00,Down,15,25,0.03
+7/28/18,Morro Bay,Filtration,8:25:00,Up,10,15,0.02
+7/28/18,Morro Bay,Filtration,8:37:00,Down,15,25,0.01
+7/28/18,Morro Bay,Filtration,9:06:00,Up,10,35,0.04
+7/28/18,Morro Bay,Filtration,9:12:00,Down,15,43,0.02
+7/28/18,Morro Bay,Filtration,9:21:00,Mid,15,60,0.05
+5/18/19,Morro Bay,Filtration,8:35:30,Down,10,25,0.03
+5/18/19,Morro Bay,Filtration,8:38:30,Up,20,40,0.06
+5/18/19,Morro Bay,Filtration,9:07:00,Mid,20,50,0.12
+5/18/19,Morro Bay,Filtration,9:15:00,Up,20,60,0.09
+5/19/19,Morro Bay,Filtration,8:41:00,Up,30,40,0.05
+5/19/19,Morro Bay,Filtration,8:47:00,Down,20,35,0.01
+5/19/19,Morro Bay,Filtration,9:08:00,Down,20,40,0.04
+5/19/19,Morro Bay,Filtration,9:11:00,Up,30,55,0.06
+6/3/19,Morro Bay,Filtration,9:02:00,Up,20,28,0.02
+6/3/19,Morro Bay,Filtration,9:08:00,Down,15,20,0.06
+6/3/19,Morro Bay,Filtration,9:18:00,Down,15,25,0.05
+6/3/19,Morro Bay,Filtration,9:23:00,Up,20,38,0.05
+6/4/19,Morro Bay,Filtration,9:42:00,Up,20,25,0.05
+6/4/19,Morro Bay,Filtration,9:50:00,Down,10,17,0.02
+6/4/19,Morro Bay,Filtration,10:10:00,Down,10,25,0.04
+6/4/19,Morro Bay,Filtration,10:15:00,Up,20,40,0.04
+6/5/19,Morro Bay,Filtration,10:37:00,Down,10,15,0.01
+6/5/19,Morro Bay,Filtration,10:39:00,Up,20,30,0.04
+6/5/19,Morro Bay,Filtration,10:56:00,Down,10,25,0.04
+6/5/19,Morro Bay,Filtration,11:00:00,Up,15,40,0.05
+6/6/19,Morro Bay,Neg Control 1,11:28:00,Mid,10,28,0.05
+6/6/19,Morro Bay,Neg Control 1,11:34:00,Down,10,25,0.06
+6/6/19,Morro Bay,Neg Control 1,11:52:00,Mid,10,40,0.04
+6/6/19,Morro Bay,Neg Control 1,11:53:00,Down,10,35,0.04
+10/17/18,San Diego,Filtration,10:42:00,Mid,NA,NA,0.02
+10/17/18,San Diego,Filtration,10:50:00,Mid,NA,NA,0.06
+7/17/18,San Rafael,Filtration,11:44:00,Up,40,55,0.03
+7/17/18,San Rafael,Filtration,11:50:00,Down,40,60,0.02
+7/17/18,San Rafael,Filtration,12:30:00,Up,40,85,0.11
+7/17/18,San Rafael,Filtration,12:37:00,Down,40,90,0.04
+7/18/18,San Rafael,Filtration,11:58:00,Up,40,65,0.06
+7/18/18,San Rafael,Filtration,,Mid,40,,0.2
+7/18/18,San Rafael,Filtration,12:17:00,Down,40,70,0.2
+7/18/18,San Rafael,Filtration,12:55:00,Up,40,90,0.1
+9/10/18,San Rafael,Filtration,8:47:00,Down,45,70,0.03
+9/10/18,San Rafael,Filtration,8:53:00,Up,45,70,0.07
+9/10/18,San Rafael,Filtration,8:55:00,Mid,45,70,0.05
+9/10/18,San Rafael,Filtration,9:22:00,Up,45,90,0.03
+9/10/18,San Rafael,Filtration,9:24:00,Mid,45,90,0.08
+9/10/18,San Rafael,Filtration,9:27:00,Down,45,90,0.02
+9/10/18,San Rafael,Filtration,9:39:00,Up,45,105,0.09
+9/10/18,San Rafael,Filtration,9:48:00,Down,45,110,0.05
+11/7/18,San Rafael,Neg Control 1,16:36:30,Mid,30,,0.07
+11/7/18,San Rafael,Neg Control 1,17:11:00,Mid,30,33,0.05
+11/8/18,San Rafael,Filtration,16:34:00,Down,40,77,0.04
+11/8/18,San Rafael,Filtration,16:40:00,Up,40,75,0.1
+11/8/18,San Rafael,Filtration,16:49:00,Up,40,70,0.08
+11/8/18,San Rafael,Filtration,16:52:00,Down,40,67,0.03
+11/8/18,San Rafael,Filtration,17:02:00,Down,40,65,0.03
+11/8/18,San Rafael,Filtration,17:06:00,Up,40,62,0.05
