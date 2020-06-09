@@ -156,20 +156,27 @@ Filtration Ranges
 
 FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
   theme_classic() +
-  stat_summary(fun.data = n_mean_stats, geom = "text") +
+  stat_summary(fun.data = n_mean_stats, geom = "text", vjust = 0.2) +
   labs(x = 'Site',
-       y = Hab_FR_Label)
+       y = Hab_FR_Label) +
+  ylim(-2500, 1300)
 
 Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) +
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
   theme_classic() +
-  stat_summary(fun.data = n_mean_stats, geom = "text") +
+  stat_summary(fun.data = n_mean_stats, geom = "text", vjust = 0.2) +
   labs(x = 'Site',
-       y = Prt_Chl_Label)
+       y = Prt_Chl_Label) +
+  ylim(-61, 30)
 
 grid.arrange(FR_box, Chl_Rmd_box, nrow = 1)
-
 ```
 
 ### ***Filtration by site (Positive values only)*** 
@@ -263,7 +270,7 @@ plot(ChlRmdPos_TPM_lm)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
 # plot(hatvalues(ChlRmdPos_TPM_lm)) 
 # identifies the index of the largest element of a vector
-# which.max(hatvalues(ChlRmdPos_TPM_lm)
+# which.max(hatvalues(ChlRmdPos_TPM_lm))
 ```
 
 ### ***ChlRmd vs TPM Transformations***
@@ -347,8 +354,13 @@ ChlRmdPos_TPM2_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd
                label.x = "right",
                label.y = "top")
 
-grid.arrange(Chl_RmdPos_TPM_graph, logChlRmdPos_logTPM_graph, 
-             ChlRmdPos_logTPM_graph, ChlRmdPos_TPM2_graph, nrow = 2)
+ggpubr::ggarrange(Chl_RmdPos_TPM_graph, logChlRmdPos_logTPM_graph, 
+                  ChlRmdPos_logTPM_graph, ChlRmdPos_TPM2_graph, 
+                  ncol = 2, nrow = 2,
+                  common.legend = TRUE, legend="bottom")
+
+# grid.arrange(Chl_RmdPos_TPM_graph, logChlRmdPos_logTPM_graph, 
+#              ChlRmdPos_logTPM_graph, ChlRmdPos_TPM2_graph, nrow = 2)
 ```
 
 ### ***Log ~ Log Linear Model***
