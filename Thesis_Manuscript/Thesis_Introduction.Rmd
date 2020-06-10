@@ -41,8 +41,9 @@ output:
     
 ### History of Oysters on the West Coast
 
-The Olympia oyster (Ostrea lurida) is native to the Pacific North American coast, ranging from British Columbia, Canada (Polson and Zacherl 2009) to Baja California, Mexico (Raith et al. 2016). 
-Indeginous peoples along the coast Overharvest of *O. lurida* (Kirby 2004), nutrient and sediment pollution (Hopkins et al. 1931, Lotze et al. 2006), invasive species, and disease (Ruesink et al. 2005) led to the collapse of historical *O. lurida* populations. 
+The Olympia oyster (*Ostrea lurida*) is native to the Pacific North American coast, ranging from British Columbia, Canada (Polson and Zacherl 2009) to Baja California, Mexico (Raith et al. 2016). 
+Indegenous peoples along the coast harvested *O. lurida* as an important food source and often deposited shells into midens [@Merlin1977, @Elsasser1966, @Barner1981, Kidd 1967?]
+Overharvest of *O. lurida* (Kirby 2004), nutrient and sediment pollution (Hopkins et al. 1931, Lotze et al. 2006), invasive species, and disease (Ruesink et al. 2005) led to the collapse of historical *O. lurida* populations. 
 Currently, *O. lurida* abundances are less than 1% of historical estimates in California (Beck et al. 2011). 
 Non-native oyster species were introduced to the west coast starting in 1904 (reviewed in (Baker 1995)) [read Galtsoff 1929, Bonnot 1935, Elsasser and Heizer 1966, Kidd 1967, Baker 1995] to subsidize dwindling native *O. lurida* harvests. 
 [The most sucessful introduced oyster was the Japanese oyster, the most cultivated oyster worldwide, accounts for 90% of oyster aquaculture] The Japanese oyster (Crassostrea gigas) has established feral populations outside of aquaculture operations in Southern California (Crooks, Crooks and Crooks 2015; Zacherl, personal observations) [Am I talking about the whole coast or just Cali?]. 
