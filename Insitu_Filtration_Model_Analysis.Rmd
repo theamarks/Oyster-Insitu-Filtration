@@ -359,7 +359,7 @@ ggpubr::ggarrange(Chl_RmdPos_TPM_graph, logChlRmdPos_logTPM_graph,
                   ncol = 2, nrow = 2,
                   common.legend = TRUE, legend="bottom")
 
-# grid.arrange(Chl_RmdPos_TPM_graph, logChlRmdPos_logTPM_graph, 
+# grid.arrange(Chl_RmdPos_TPM_graph, logChlRmdPos_logTPM_graph,
 #              ChlRmdPos_logTPM_graph, ChlRmdPos_TPM2_graph, nrow = 2)
 ```
 
@@ -865,19 +865,27 @@ TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio
 
 TPM_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_TPM)) +
   geom_boxplot(color = Site_colors) +
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) + 
+  scale_fill_manual(values = Site_colors) +
   theme_classic() +
-  stat_summary(fun.data = n_mean_stats3, geom = "text") + # mean isn't working 
+  stat_summary(fun.data = n_mean_stats3, geom = "text", vjust = 0.1) + # mean isn't working 
   labs(x = 'Site',
        y = TPM_Label,
-       title = "Total Particulate Matter by Site")
+       title = "Total Particulate Matter by Site") +
+  ylim(0, 0.09)
 
 OC_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_OC_Ratio)) +
   geom_boxplot(color = Site_colors) +
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) + 
+  scale_fill_manual(values = Site_colors) +
   theme_classic() +
-  stat_summary(fun.data = n_mean_stats3, geom = "text") + 
+  stat_summary(fun.data = n_mean_stats3, geom = "text", vjust = 0.0) + 
   labs(x = 'Site',
        y = "Average Organic Content Ratio",
-       title = "Seston Organic Content Ratio by Site")
+       title = "Seston Organic Content Ratio by Site") +
+  ylim(0.3, 1)
 
 # Y-log model
 OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
@@ -1064,7 +1072,6 @@ Temperature
 
 ### ***Temperature***
 ```{r Filter_Temp, fig.height=5, fig.width=14, cache=TRUE, echo=FALSE}
-
 FR_pos_Temp <- ggplot(Filtration_pos_data, aes(Temp_C_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
