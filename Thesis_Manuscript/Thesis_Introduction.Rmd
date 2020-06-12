@@ -41,8 +41,9 @@ output:
     
 ### History of Oysters on the West Coast
 
-The Olympia oyster (*Ostrea lurida*) is the only native oyster to the North American Pacific coast from British Columbia, Canada (Polson and Zacherl 2009) to Baja California, Mexico (Raith et al. 2016). 
-This oyster once played an fundemental roll in esturine ecosystems and in peoples lives. 
+Since the late Miocene and early Pliocene the Olympia oyster (*Ostrea lurida*) has enhabited California esturines [@Arnold1909, @Howard1935] and is currently the only native oyster to the North American Pacific coast from British Columbia, Canada (Polson and Zacherl 2009) to Baja California, Mexico (Raith et al. 2016).
+*O. lurida* was a foundational species for estuarine ecosystems and indegenous peoples living along the coast from California to Washington [@Barner1981, @Elsasser1966, @Nelson1909, @Gifford1916].
+Contents of coastal shellmounds indicate *O. lurida* was a substancial component of indegenous peoples' diets as early as 3,500 years ago [@Nelson1909,  @Gifford1916].
 Historic shell midens built by indegenous peoples along the coast indicate that *O. lurida* was harvested as an important food source [@Merlin1977, @Elsasser1966, @Barner1981, Kidd 1967?].
 Non-indegenous settlers commercialized *O. lurida* harvests in the early 1800s in San Francisco, CA (Conte & Dupuy 1981 in Kirby 2005).
 The start of the gold rush in 1849 led to overfishing *O. lurida* in San Francsico (Beattie, McMillin & Wiegardt 1982 in Kirby 2004) and shipments of *O. lurida* from estuaries subsequently up the coast [@Kirby2004].
