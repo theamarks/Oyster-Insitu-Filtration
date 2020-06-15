@@ -41,9 +41,11 @@ output:
     
 ### History of Oysters on the West Coast
 
-Since the late Miocene and early Pliocene the Olympia oyster (*Ostrea lurida*) has enhabited California esturines [@Arnold1909, @Howard1935] and is currently the only native oyster to the North American Pacific coast from British Columbia, Canada (Polson and Zacherl 2009) to Baja California, Mexico (Raith et al. 2016).
-*O. lurida* was a foundational species for estuarine ecosystems and indegenous peoples living along the coast from California to Washington [@Barner1981, @Elsasser1966, @Nelson1909, @Gifford1916].
-Contents of coastal shellmounds indicate *O. lurida* was a substancial component of indegenous peoples' diets as early as 3,500 years ago [@Nelson1909,  @Gifford1916].
+The Olympia oyster (*Ostrea lurida*) has enhabited California estuaries since the late Miocene and early Pliocene [@Arnold1909, @Howard1935] and is currently the only native oyster to the North American Pacific coast from British Columbia, Canada (Polson and Zacherl 2009) to Baja California, Mexico (Raith et al. 2016).
+*O. lurida* is a foundation species for estuarine ecosystems and had a varied relationship with humans over time.
+
+
+Contents of coastal shellmounds indicate *O. lurida* was abundant and a substancial component of indegenous peoples' diets as early as 3,500 years ago [@Nelson1909,  @Gifford1916].
 Historic shell midens built by indegenous peoples along the coast indicate that *O. lurida* was harvested as an important food source [@Merlin1977, @Elsasser1966, @Barner1981, Kidd 1967?].
 Non-indegenous settlers commercialized *O. lurida* harvests in the early 1800s in San Francisco, CA (Conte & Dupuy 1981 in Kirby 2005).
 The start of the gold rush in 1849 led to overfishing *O. lurida* in San Francsico (Beattie, McMillin & Wiegardt 1982 in Kirby 2004) and shipments of *O. lurida* from estuaries subsequently up the coast [@Kirby2004].
@@ -53,6 +55,8 @@ Import of non-native oyster species.
 Currently, *O. lurida* abundances are less than 1% of historical estimates in California (Beck et al. 2011). 
 Non-native oyster species were introduced to the west coast starting in 1904 (reviewed in (Baker 1995)) [read Galtsoff 1929, Bonnot 1935, Elsasser and Heizer 1966, Kidd 1967, Baker 1995] to subsidize dwindling native *O. lurida* harvests. 
 [The most sucessful introduced oyster was the Japanese oyster, the most cultivated oyster worldwide, accounts for 90% of oyster aquaculture] The Japanese oyster (Crassostrea gigas) has established feral populations outside of aquaculture operations in Southern California (Crooks, Crooks and Crooks 2015; Zacherl, personal observations) [Am I talking about the whole coast or just Cali?]. 
+
+(Not sure if I need this sentence) indegenous peoples living along the coast from California to Washington [@Barner1981, @Elsasser1966, @Nelson1909, @Gifford1916].
 
 ### Oyster Provide Ecosystem Services
 
