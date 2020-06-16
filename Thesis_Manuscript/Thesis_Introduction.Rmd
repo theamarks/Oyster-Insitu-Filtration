@@ -20,7 +20,7 @@ output:
 ### History of Oysters on the West Coast
 
 The Olympia oyster (*Ostrea lurida*) has enhabited California estuaries since the late Miocene and early Pliocene [@Arnold1909; @Howard1935] and is currently the only native oyster to the North American Pacific coast from British Columbia, Canada [@Polson2009] to Baja California, Mexico [@Raith2016].
-*O. lurida* is concidered a foundation species in estuarine ecosystems because of the complex biogenic habitat they create. 
+*O. lurida* is concidered a foundation species [sensu @Dayton1972] in estuarine ecosystems because of the ecosystem functions complex biogenic habitat they create. 
 When spawining, *O. lurida* spermatozoa is filtered from the water column and transported to the mantle cavity where the eggs are fertilized and develop into veliger larvae [@Coe1932a]. 
 Veligers are released into the water column and seek out hard substrate to settle and grow on, often other oyster shells [@Prytherch1931].
 This behavior forms three dimensional structures known as beds or reefs depending on the extent of physical relief; greater than 0.5 m qualifys as a reef and less than 0.5 m qualifys as a bed [@Beck2009].
