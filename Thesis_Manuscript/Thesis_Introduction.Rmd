@@ -24,9 +24,10 @@ The Olympia oyster (*Ostrea lurida*) has enhabited California estuaries since th
 When spawining, *O. lurida* spermatozoa is filtered from the water column and transported to the mantle cavity where the eggs are fertilized and develop into veliger larvae [@Coe1932a]. 
 Veligers are released into the water column and seek out hard substrate to settle and grow on, often other oyster shells [@Prytherch1931].
 This behavior forms three dimensional structures known as beds or reefs depending on the extent of physical relief; greater than 0.5 m qualifys as a reef and less than 0.5 m qualifys as a bed [@Beck2009].
-The conglomerate of shells, living or dead, creates complex habitat for a multitude of invertebrates, juvenile fishes and feeding habitat for birds and larger fishes [@Coen2007], is thought to provide protection against shoreline erosion by diminishing wave energy in low energy environments [@Meyer1997; @Piazza2005] like estuaries and bays.
+The conglomerate of shells, living or dead, creates complex habitat for a multitude of invertebrates, juvenile fishes and feeding habitat for birds and larger fishes [@Coen2007], and is thought to provide protection against shoreline erosion by diminishing wave energy in low energy environments [@Meyer1997; @Piazza2005] like estuaries and bays.
 Indegenous peoples along the coast often lived close to these productive *O. lurida* beds (Steele 1957), where middens indicate *O. lurida* was abundant and a substancial component of indegenous peoples' diets [@Merlin1977; @Elsasser1966; @Barner1981; Kidd 1967?] as early as 3,500 years ago [@Nelson1909; @Gifford1916].
 
+Oyster habitat also provides filtration services as *O. lurida* and the suite of other organisms that recruit to oyster habitat (i.e. mussels, tunicates, scallops, and sponges) are filter-feeders that remove phytoplankton, bacteria, algae, and suspended sediments from the water column. 
 
 Non-indegenous settlers commercialized *O. lurida* harvests in the early 1800s in San Francisco, CA (Conte & Dupuy 1981 in Kirby 2005).
 The start of the gold rush in 1849 led to overfishing *O. lurida* in San Francsico (Beattie, McMillin & Wiegardt 1982 in Kirby 2004) and shipments of *O. lurida* from estuaries subsequently up the coast [@Kirby2004].
