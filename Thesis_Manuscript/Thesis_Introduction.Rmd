@@ -20,12 +20,12 @@ output:
 ### History of Oysters on the West Coast
 
 The Olympia oyster (*Ostrea lurida*) has enhabited California estuaries since the late Miocene and early Pliocene [@Arnold1909; @Howard1935] and is currently the only native oyster to the North American Pacific coast from British Columbia, Canada [@Polson2009] to Baja California, Mexico [@Raith2016].
-*O. lurida* is concidered a foundation species [sensu @Dayton1972] in estuarine ecosystems because of the complex biogenic habitat they create. 
+*O. lurida* is concidered a foundation species [*sensu* @Dayton1972] in estuarine ecosystems because of the complex biogenic habitat they create. 
 When spawining, *O. lurida* spermatozoa is filtered from the water column and transported to the mantle cavity where the eggs are fertilized and develop into veliger larvae [@Coe1932a]. 
 Veligers are released into the water column and seek out hard substrate to settle and grow on, often other oyster shells [@Prytherch1931].
 This behavior forms three dimensional structures known as beds or reefs depending on the extent of physical relief; greater than 0.5 m qualifys as a reef and less than 0.5 m qualifys as a bed [@Beck2009].
-The conglomerate of shells, living or dead, creates complex habitat for a multitude of invertebrates, juvenile fishes and feeding habitat for birds and larger fishes [@Coen2007], and is thought to provide protection against shoreline erosion by diminishing wave energy in low energy environments [@Meyer1997; @Piazza2005] like estuaries and bays.
-Indegenous peoples along the coast often lived close to these productive *O. lurida* beds (Steele 1957), where middens indicate *O. lurida* was abundant and a substancial component of indegenous peoples' diets [@Merlin1977; @Elsasser1966; @Barner1981; Kidd 1967?] as early as 3,500 years ago [@Nelson1909; @Gifford1916].
+The conglomerate of living and dead shells creates complex habitat for a multitude of invertebrates, juvenile fishes and feeding habitat for birds and larger fishes [@Coen2007], and is thought to provide protection against shoreline erosion by diminishing wave energy in low energy environments [@Meyer1997; @Piazza2005] like estuaries and bays.
+Indegenous peoples along the coast often lived close to these productive *O. lurida* beds (Steele 1957), where middens indicate *O. lurida* was abundant and a substancial component of indegenous peoples' diets [@Merlin1977; @Elsasser1966; @Barner1981; @Kidd1967] as early as 3,500 years ago [@Nelson1909; @Gifford1916].
 
 Oyster beds also provides filtration services as *O. lurida* and the suite of other organisms that recruit to oyster habitat (i.e. mussels, tunicates, scallops, and sponges) are filter-feeders. 
 Suspended phytoplankton, bacteria, algae, and sediments are removed from the water column by the filter feeders, foodstuff digested, and unused matter is deposited in the benthos thus increasing water clarity [@Newell2004b; @Grizzle2008] useful to benthic primary producers, like seagrasses [@Peterson1999]. 
