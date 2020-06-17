@@ -28,9 +28,11 @@ The conglomerate of living and dead shells creates complex habitat for a multitu
 Indegenous peoples along the coast often lived close to these productive *O. lurida* beds (Steele 1957), where middens indicate *O. lurida* was abundant and a substancial component of indegenous peoples' diets [@Merlin1977; @Elsasser1966; @Barner1981; @Kidd1967; @Nelson1909] as early as 3,500 years ago [@Gifford1916].
 
 Oyster beds also provides filtration services as *O. lurida* and the suite of other organisms that recruit to oyster habitat (i.e. mussels, tunicates, scallops, and sponges) are suspension feeders. 
-Suspended phytoplankton, bacteria, algae, and sediments are removed from the water column by the invertebrates, foodstuff digested, and unused matter is deposited in the benthos [@Baird1989] thus increasing water clarity [@Newell2004b; @Grizzle2008] useful to benthic primary producers, like seagrasses [@Peterson1999]. 
+Suspended phytoplankton, bacteria, algae, and sediments are removed from the water column by benthic suspension feeders, foodstuff digested, and unused matter is deposited in the benthos [@Baird1989] thus increasing water clarity [@Newell2004b; @Grizzle2008] useful to benthic primary producers, like seagrasses [@Peterson1999]. 
 
-Settlers of European descent commercialized *O. lurida* harvests in the early 1800s in San Francisco Bay, CA [@Conte1982] and the fishery along the west coast subsequently followed a linear collapse pattern [Kirby2004] of overfishing, non-nati. (Work on this sentence to introduce non-native introduction, pollution and sedimentation)
+Overfishing in concert with the introduction of non-native species, pollution, and exsessive sedimentaion has reduced *O.lurida* populations to less than 90% of historical abundances in parts of the Pacific Northwest, and to less than 99% in the rest of its geographic distribution [@Beck2011].
+Settlers of European descent commercialized *O. lurida* harvests in the early 1800s in San Francisco Bay, CA [@Conte1982].
+The fishery along the west coast subsequently followed a linear collapse pattern radiating out from San Francisco [Kirby2004].
 Destructive harvest [@Kirby2004], nutrient and sediment pollution (Hopkins et al. 1931, Lotze et al. 2006), invasive species, and disease (Ruesink et al. 2005) led to the collapse of historical *O. lurida* populations. 
 
 The population influx to California because of the gold rush starting in 1849 which led to destructive fishing of *O.lurida* (Beattie, McMillin & Wiegardt 1982 in Kirby 2004). 
