@@ -31,9 +31,11 @@ Oyster beds also provides filtration services as *O. lurida* and the suite of ot
 Suspended phytoplankton, bacteria, algae, and sediments are removed from the water column by benthic suspension feeders, foodstuff digested, and unused matter is deposited in the benthos [@Baird1989; @Dame1999] thus increasing water clarity [@Newell2004b; @Grizzle2008] useful to benthic primary producers, like seagrasses [@Peterson1999]. 
 
 Overfishing in concert with destructive fishing practices [@Kirby2004], introduction of non-native species, pollution, and exsessive sedimentaion [@Hopkins1931; @Lotze2006; @Nelson1909] have reduced *O.lurida* populations to less than 90% of historical abundances in parts of the Pacific Northwest, and to less than 99% in the rest of its geographic distribution [@Beck2011].
-Settlers of European descent commercialized *O. lurida* harvests in the early 1800s in San Francisco Bay, CA [@Conte1982].
-The fishery along the west coast subsequently followed a linear collapse pattern radiating out from San Francisco [Kirby2004].
-Destructive harvest [@Kirby2004], nutrient and sediment pollution (Hopkins et al. 1931, Lotze et al. 2006), invasive species, and disease (Ruesink et al. 2005) led to the collapse of historical *O. lurida* populations. 
+Settlers of European descent commercialized *O. lurida* harvests in the early 1800s in San Francisco Bay, CA [@Conte1982] and the fishery subsequently followed a linear collapse pattern up the coast from San Francsico [Kirby2004].
+
+
+The fishery along the west coast subsequently followed a linear collapse pattern radiating out from San Francisco Bay [Kirby2004].
+
 
 The population influx to California because of the gold rush starting in 1849 which led to destructive fishing of *O.lurida* (Beattie, McMillin & Wiegardt 1982 in Kirby 2004). 
 By 1850 *O. lurida* populations in San Francisco Bay no longer produced adequate amounts of oysters, so the market then relyed on *O. lurida* harvested from more northern esturaries up to Washington State up until 1869 [@Kirby2004; more!], when the transcontinental Central Pacific Railroad was completed [@Conte1982]. 
