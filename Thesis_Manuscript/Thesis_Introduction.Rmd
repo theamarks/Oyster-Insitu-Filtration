@@ -31,10 +31,10 @@ Suspended phytoplankton, bacteria, algae, and sediments are removed from the wat
 
 Overfishing in concert with destructive fishing practices [@Kirby2004], introduction of non-native species, pollution, and exsessive sedimentaion [@Hopkins1931; @Lotze2006; @Nelson1909] have reduced *O. lurida* populations to less than 90% of historical abundances in parts of the Pacific Northwest, and to less than 99% in the rest of its geographic distribution [@Beck2011]. (reduced populations and inhibit pop recovery perhaps, could include more citations from Ruesink 2005, Lotze 2006, Jackson 2001)
 Settlers of European descent commercialized *O. lurida* harvests in the early 1800s in San Francisco Bay, CA [@Conte1982] and the fishery subsequently followed a linear collapse pattern up the coast from San Francsico [Kirby2004].
-*O. lurida* was quickly overfished following the massive populaiton influx to California during the Gold Rush started in 1848 (Beattie, McMillin & Wiegardt 1982 in Kirby 2004, waiting for ILL pdf). 
+*O. lurida* was quickly overfished following the massive populaiton influx to California during the Gold Rush starting in 1848 (Beattie, McMillin & Wiegardt 1982 in Kirby 2004, waiting for ILL pdf). 
 In turn, the market transitioned to *O. lurida* harvested from esturaries up to Washington State until 1869 [@Kirby2004; more!], when the transcontinental Central Pacific Railroad was completed [@Conte1982].
 Railroad shipments of Eastern oysters (*Crassostrea virginica*) were introduced to the San Francisco Bay [@Galtsoff1929] and accounted for about 80% of the market in the late 1800s and early 1900s [@Conte1982].
-
+Gold mining in the Sierra Nevada mountains shifted to hydraulic mining that washed an estimated 876 million cubic meters of sediment into the San Francisco Bay, smothering intertidal habitats [@Gilbert1917].
 
 Hydraulic mining in Sierra Nevada mountains washed an estimated 1,146 million cubic yards - 876 million cubic meters into the San Francisco Bay, smothering intertidal habitats [@Gilbert1917]
 
