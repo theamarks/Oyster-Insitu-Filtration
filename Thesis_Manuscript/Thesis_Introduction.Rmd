@@ -38,12 +38,11 @@ Gold mining in the Sierra Nevada mountains shifted to hydraulic mining that wash
 A second non-native oyster, the Japanese oyster (*Crassostrea gigas*), was successfully cultivated in the Salish Sea in the early 1920s [@Quayle1988] and introduced to California in 1928 [@Conte1982].
 *C. gigas* now accounts for the overwhelming majority of commercial oyster harvest on the North American west coast (need citation), and has established ferral populations outside of aquaculture operations in the Salish Sea [@Quayle1988;] and Southern California [@Crooks2015a; @Polson2009; @Tronske2018].
 
-Perhaps less on the historical specifics and more on the confluence of factors that depleyed O. lurida and prevent population recovery.
-
+**Perhaps less on the historical specifics and more on the confluence of factors that depleyed O. lurida and prevent population recovery**
 
 The extreme reduction in native *O. lurida* abundances is coupled with the loss of important hard substrate habitat and its associated shoreline stablizaiton and filtration funcitons.
-Restoring this suite of ecosystem functions is a part of the impetus behind native *O. lurida* restoration efforts in Washington, Oregon, and California (Dinnel et al. 2009, Henderson et al. 2015, Latta & Boyer 2015, Wasson et al. 2015, Zacherl et al. 2015). 
-However, because of the small size of *O. lurida*, larger gill ostrea (Gray & Langdon) and thus lower filtration rate relative to larger oysters in the Crassostrea genus (zu Ermgassen et al. 2013a), the filtration services of *O. lurida* on the West Coast is in question.
+Restoring this suite of ecosystem functions is a part of the impetus behind native *O. lurida* restoration efforts along the coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; Zacherl2015a] (Ridlon2020?). 
+However, the filtration services of *O. lurida* is in question because of *O. lurida*'s the small size and large gill ostia [@Elsey1935], thus lower filtration rate relative to larger oysters in the Crassostrea genus [@ZuErmgassen2013c].
 
 ### Why We Need Insity Filtration Study
 	
