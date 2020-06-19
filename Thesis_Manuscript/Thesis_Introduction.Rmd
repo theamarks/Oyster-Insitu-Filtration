@@ -45,6 +45,7 @@ Restoring this suite of ecosystem functions is part of the impetus behind native
 However, the filtration services of *O. lurida*, even at historic abundances, is in question for several reasons.
 First, *O. lurida* is a relatively small oyster, adults range from 15-45mm in length (find real # and citation), and body size is positively related to filtration rate (citations).
 Second, *O. lurida*'s gill structure may not be as efficient at capturing smaller particles because of its relatively large gill ostia (90-180$\mu M$m height, 45-60$\mu M$m wide @Elsey1935) that allows water to flow through the particle capturing filaments and into the inner water canal [@Bayne2017].
+Third, the hydrodynamics of most west coast bay and estuaries are that water residence time is low, thus the water quality and phytoplankton community is of oceanic influence [@ZuErmgassen2013c].
 
 thus lower filtration rate relative to larger oysters in the Crassostrea genus [@ZuErmgassen2013c].
 
