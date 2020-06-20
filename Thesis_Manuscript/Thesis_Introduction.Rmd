@@ -40,14 +40,17 @@ A second non-native oyster, the Japanese oyster (*Crassostrea gigas*), was succe
 
 **Perhaps less on the historical specifics and more on the confluence of factors that depleyed O. lurida and prevent population recovery**
 
-The extreme reduction of native *O. lurida* abundances is coupled with the loss of important hard substrate habitat and its associated shoreline stablizaiton and filtration funcitons.
+The extreme reduction of native *O. lurida* abundances is coupled with the loss of important complex habitat, adjacent shoreline stablization, and water filtration functions.
 Restoring this suite of ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; Zacherl2015a] (Ridlon2020?). 
-However, the filtration services of *O. lurida*, even at historic abundances, is in question for several reasons.
-First, *O. lurida* is a relatively small oyster, adults range from 15-45mm in length (find real # and citation), and body size is positively related to filtration rate (citations).
-Second, *O. lurida*'s gill structure may not be as efficient at capturing smaller particles because of its relatively large gill ostia (90-180$\mu M$m height, 45-60$\mu M$m wide @Elsey1935) that allows water to flow through the particle capturing filaments and into the inner water canal [@Bayne2017].
-Third, the hydrodynamics of most west coast bay and estuaries are that water residence time is low, thus the water quality and phytoplankton community is of oceanic influence [@ZuErmgassen2013c].
+However, the filtration services of *O. lurida*, even at historic abundances, is in question for several reasons (need zu Ermgassen 2013 citation?).
+First, *O. lurida* has a relatively low mean size, adults range from 15-45mm in length (find real # and citation), and body size is positively related to filtration rate (citations).
+Second, *O. lurida*'s gill structure may not be as efficient at capturing smaller particles because of its relatively large gill ostia (90-180$\mu$m height, 45-60$\mu$m wide @Elsey1935) that allows water to flow through the particle capturing filaments and into the inner water canal [@Bayne2017].
+Third, most west coast bay and estuaries where *O. lurida* is found have low average residence times [citations in zu Ermgassen 2013], thus the water quality and phytoplankton community is likely of oceanic influence [@ZuErmgassen2013c].
 
-thus lower filtration rate relative to larger oysters in the Crassostrea genus [@ZuErmgassen2013c].
+While these factors may restrict *O. lurida*'s water filtration capacity, it is also necessary to consider the following when factors when thinking about the filtraiton functions of *O. lurida* habitat:
+1) *O. lurida* beds are complex habitat used by other filter feeding organisms (i.e. mussels, tunicates, scallops, and sponges) that may substantially contribute to net filtration, and differ among bays. 
+2) environmental conditions like temperature (Gray and Langdon 2017), seston organic content (Kreeger and Newell 2001; Gray and Langdon 2017), salinity (Gray and Langdon 2017), and water velocity (Grizzle, Langan and Howell 1992; Luckenbach and Harsh 1999) are all known to affect bivalve filtration rates, and are unique to each water body.
+3) *O. lurida* habitat may have stronger influence over water quality in back reaches of bays where the residence time can be substancially longer than the average.
 
 ### Why We Need Insity Filtration Study
 	
