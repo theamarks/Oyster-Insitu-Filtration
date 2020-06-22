@@ -50,7 +50,7 @@ Third, most west coast bay and estuaries where *O. lurida* resides have low aver
 
 While these factors may restrict *O. lurida*'s water filtration capacity, it is also necessary to consider the following factors when thinking about the filtraiton capacity of *O. lurida* habitat:
 1) *O. lurida* beds are complex habitat used by other filter feeding organisms (i.e. mussels, tunicates, scallops, and sponges) that may substantially contribute to net filtration.
-These filter-feeding communities that recruit to O. lurida habitat varies among bays, each potentially with a unique filtration rate.
+Filter-feeding species are documented to have species-specific feeding behaviors (citations), thus filtration capacity may vary with different community compositions on *O. lurida* habitat.
 2) Environmental conditions like temperature [@Gray2018; @ZuErmgassen2013c], seston organic content [@Gray2018; @Kreeger2001], salinity [@Gray2018], and water velocity [@Grizzle1992; @Luckenbach1999a] are all known to affect bivalve filtration rates, and are unique to each water body, and again could contribute to a unique filtration signature.
 3) *O. lurida* habitat may have stronger influence over water quality in back reaches of bays where the residence time can be substancially longer than the bay's average.
 4) Oyster culture raising *C. gigas* is present in many west coast bays.
