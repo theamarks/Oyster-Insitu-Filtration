@@ -39,22 +39,20 @@ Simultaneously, San Francisco Bay intertidal habitats were smothered by an estim
 A second non-native oyster, the Japanese oyster (*Crassostrea gigas*), was successfully cultivated in the Salish Sea in the early 1920s [@Quayle1988] and introduced to California in 1928 [@Conte1982].
 *C. gigas* now accounts for the overwhelming majority of commercial oyster harvest on the North American west coast (need citation), and has established ferral populations outside of aquaculture operations in the Salish Sea [@Quayle1988;], Willipa Bay, WA [@Kincaid1968], and Southern California [@Crooks2015a; @Polson2009; @Tronske2018].
 
-**Perhaps less on the historical specifics and more on the confluence of factors that depleyed O. lurida and prevent population recovery**
-
 The extreme reduction of native *O. lurida* abundances is coupled with the loss of important complex habitat, adjacent shoreline stablization, and water filtration functions.
 Restoring this suite of ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; Zacherl2015a] (Ridlon2020?). 
 However, the filtration capacity of *O. lurida*, even at historic abundances, is in question for several reasons (need zu Ermgassen 2013 citation?).
 First, *O. lurida* has a relatively small mean size, adults range from 15-45mm in length (find real # and citation), and body size is positively related to filtration rate (citations).
-Second, *O. lurida*'s gill structure may not be efficient at capturing small particles because of its relatively large gill ostia (90-180$\mu$m height, 45-60$\mu$m wide @Elsey1935) that allows water to flow through the particle capturing filaments and into the inner water canal [@Bayne2017].
+Second, *O. lurida*'s gill structure may not be efficient at capturing small particles because of its relatively large gill ostia (90-180 $\mu$m height, 45-60 $\mu$m wide @Elsey1935) that allows water to flow through the particle capturing filaments and into the inner water canal [@Bayne2017].
 Third, most west coast bay and estuaries where *O. lurida* resides have low average residence times [citations in zu Ermgassen 2013], thus the water quality and phytoplankton community are predomently oceanic influenced [@ZuErmgassen2013c].
 
 While these factors may restrict *O. lurida*'s water filtration capacity, it is also necessary to consider the following factors when thinking about the filtraiton capacity of *O. lurida* habitat:
 1) *O. lurida* beds are complex habitat used by other filter feeding organisms (i.e. mussels, tunicates, scallops, and sponges) that may substantially contribute to net filtration.
-Filter-feeding species are documented to have species-specific feeding behaviors (citations), thus filtration capacity may vary with different community compositions on *O. lurida* habitat.
-2) Environmental conditions like temperature [@Gray2018; @ZuErmgassen2013c], seston organic content [@Gray2018; @Kreeger2001], salinity [@Gray2018], and water velocity [@Grizzle1992; @Luckenbach1999a] are all known to affect bivalve filtration rates, and are unique to each water body, and again could contribute to a unique filtration signature.
+Filter-feeding species are documented to have species-specific feeding behaviors (citations in Gray & Langdon 2018), thus filtration capacity may vary with different community compositions on *O. lurida* habitat.
+2) Environmental conditions like temperature [@Gray2018; @ZuErmgassen2013c], seston organic content [@Gray2018; @Kreeger2001], salinity [@Gray2018], and water velocity [@Grizzle1992; @Luckenbach1999a] are all known to affect bivalve filtration rates, are unique to each water body, and again could contribute to a unique filtration signature.
 3) *O. lurida* habitat may have stronger influence over water quality in back reaches of bays where the residence time can be substancially longer than the bay's average.
-4) Oyster culture raising *C. gigas* is present in many west coast bays.
-*C. gigas* is fast growing and a larger oyster than *O. lurida* with a higher filtration rate.
+4) Oyster culture operations raising non-native *C. gigas* are present in many west coast bays.
+*C. gigas* is faster growing and larger oyster than *O. lurida* with a higher filtration rate [@Gray2018; @Gray2019].
 *C. gigas* cultivation has been shown to control phytoplankton concentrations in WA (Wheat & Ruesink 2013) and should be considered when estimating bay-wide filtration functions.
 
 ### Previous Research - Lab vs Insitu
