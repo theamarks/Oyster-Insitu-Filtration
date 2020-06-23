@@ -51,9 +51,8 @@ While these factors may restrict *O. lurida*'s water filtration capacity, it is 
 Filter-feeding species are documented to have species-specific feeding behaviors (citations in Gray & Langdon 2018), thus filtration capacity may vary with different community compositions on *O. lurida* habitat.
 2) Environmental conditions like temperature [@Gray2018; @ZuErmgassen2013c], seston organic content [@Gray2018; @Kreeger2001], salinity [@Gray2018], and water velocity [@Grizzle1992; @Luckenbach1999a] are all known to affect bivalve filtration rates, are unique to each water body, and again could contribute to a unique filtration signature.
 3) *O. lurida* habitat may have stronger influence over water quality in back reaches of bays where the residence time can be substancially longer than the bay's average.
-4) Oyster culture operations raising non-native *C. gigas* are present in many west coast bays.
-*C. gigas* is faster growing and larger oyster than *O. lurida* with a higher filtration rate [@Gray2018; @Gray2019].
-*C. gigas* cultivation has been shown to control phytoplankton concentrations in WA (Wheat & Ruesink 2013) and should be considered when estimating bay-wide filtration functions.
+4) Oyster culture operations raising non-native *C. gigas* are present in many west coast bays, and should be considered when estimating the bay-wide filtration services provided by oyster habiat.
+*C. gigas* is faster growing and larger oyster than *O. lurida* with a higher filtration rate [@Gray2018; @Gray2019] that is shown to draw down chlrophyll concentrations in Willipa Bay, WA (Wheat & Ruesink 2013).
 
 ### Previous Research - Lab vs Insitu
 
