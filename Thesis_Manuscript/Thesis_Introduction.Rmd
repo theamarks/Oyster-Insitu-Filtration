@@ -11,8 +11,6 @@ output:
 
 ## Theme - take home sentence
 
-**The filtration contributions of oyster habitat on the west coast are understudied, and need field measurements of both constructed restorations and aquaculture habitats to inform filtration estimates.**
-
 **Filtration estimates of oyster habitat on the west coast need measurements that incorporate the entire filter-feeding community of constructed oyster restorations and commercial aquaculture.**
   
   + Filtration services or functions? [Ted made this distinction]
@@ -62,15 +60,21 @@ Filter-feeding species are documented to have species-specific feeding behaviors
 4) Oyster culture operations raising non-native *C. gigas* are present in many west coast bays, and should be considered when estimating the bay-wide filtration services provided by oyster habiat.
 *C. gigas* is a faster growing and larger oyster than *O. lurida* with a higher filtration rate [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019] that is shown to decrease chlrophyll concentrations in Willipa Bay, WA [@Wheat2013].
 
-### Previous Research - Lab vs Insitu
+### Previous Research
 
 Several studies lay the ground work of estimating the filtration services of *O. lurida* habitat and cultured *C. gigas* in west coast bays, but leave room for further in situ investigations.
 @ZuErmgassen2013c calculated filtration rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of temperatures and oyster sizes in the labratory. 
 @Gray2018 expanded on the work by @ZuErmgassen2013c and deterimined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under a range of temperature, salinity, Total Particulate Matter (TPM), and Organic Conent (OC). Labratory and in situ trials were included in this study using the biodeposition method to calculate filtration. 
 However, both studies measured filtration in a single species context, and all oysters were from Coos Bay, OR and Yaquina Bay, OR.
-Thus, using these filtraiton models to estimate the filtration capacity of restored *O. lurida* habitat will not incorporate the multitude of other filter-feeders contributing.
+Thus, estimating the filtration capacity of restored *O. lurida* habitat with these filtration models may have limited application.
 
-### Why We Need Insity Filtration Study
+will not include the multitude of other filter-feeders contributing (Grizzle citation?), and will not represent the full range of environmental factors effecting filter-feeding (citations).
+
+### Need for in situ Study
+
+
+
+### Research Questions
 	
 
 This and many other studies use chlorophyll $\alpha$ as a metric for filtration (Luckenbach and Harsh 1999; Wasson et al. 2015; Grizzle, Greene, and Coen 2008; Grizzle et al. 2006) because chlorophyll $\alpha$ is a plant pigment whose concentration is a proxy for phytoplankton and algae fragments consumed by filter feeders [Is this the right place for this Chl info?]. 
