@@ -2811,7 +2811,6 @@ T_test_Table <- Master_analysis_table %>%
   arrange(Date, .by_group = T)
 # Make date formated as character to display properly
 T_test_Table$Date <- as.character(T_test_Table$Date)
-
 ```
 
 MLR
@@ -2822,14 +2821,13 @@ MLR
 # Positive Percent Chl removed trials only
 MLR_PrctChl_fwd <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
                          # Field notes Qualitative variables
-                         #Wind + G_upstream + Algae + #Daylight +  Sonde_fell + Boat_wake +
+                         # Wind + G_upstream + Algae + #Daylight +  Sonde_fell + Boat_wake +
                          # Quantatative variables
                          Temp_C_Up + Sal_ppt_Up + #Turbidity_NTU_Up + 
                          avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 
 summary(MLR_PrctChl_fwd)
 ```
-
 > Not enough degrees of freedom to run full model. Stepwise selects variable with significant p-values. Try adding in log transformed Salinity. 
 
 ### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
@@ -2845,7 +2843,7 @@ summary(LM2_PrctChl_pos_add)
 > Site and OC Ratio significant model to predict positive ChlRmd. 
 
 ### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
-```{r, fig.height=10, fig.width=6, cache=TRUE}
+```{r, fig.height=10, fig.width=6, cache=TRUE} 
 # detailed multiple regression summary - ANOVA results
 ols_regress(LM2_PrctChl_pos_add)
 ```
@@ -2874,9 +2872,14 @@ ols_step_both_p(LM_FR_pos)
 ```{r LM_ChlRmd_NPD_PosFilter, cache=TRUE}
 LM_ChlRmd_NPD_PosFilter <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~
                          # site logic variables - SR not included - break model to include all sites
-                         NPD + NPSM + MB + 
+                         # NPD + NPSM + MB + 
                          # Field notes logic variables
-                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
+                         Wind + 
+                         # G_upstream +  
+                         Daylight +  
+                         # Sonde_fell + 
+                         Boat_wake + 
+                         # Algae +
                          # Quantatative variables
                          Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + # Chl_ug_L_Up +
                          avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
@@ -2890,9 +2893,14 @@ ols_step_both_p(LM_ChlRmd_NPD_PosFilter)
 ```{r LM_FR_NPD_Posfilter, eval=FALSE, cache=TRUE, include=FALSE}
 LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
                          # site logic variables - SR not included - break model to include all sites
-                         NPD + NPSM + MB + 
+                         # NPD + NPSM + MB + 
                          # Field notes logic variables
-                         Wind + G_upstream +  Daylight +  Sonde_fell + Boat_wake + Algae +
+                         Wind + 
+                         # G_upstream +  
+                         Daylight +  
+                         # Sonde_fell + 
+                         Boat_wake + 
+                         # Algae +
                          # Quantatative variables
                          Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + #Chl_ug_L_Up +
                          avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
