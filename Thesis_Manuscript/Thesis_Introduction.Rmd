@@ -47,7 +47,7 @@ The extreme reduction of native *O. lurida* abundances is coupled with the loss 
 Restoring this suite of ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
 However, the filtration capacity of *O. lurida*, even at historic abundances, is in question for several reasons (need zu Ermgassen 2013 citation?).
 First, *O. lurida* has a relatively small mean size, adults range from 15-45mm in length (find real # and citation), and body size is positively related to filtration rate (citations).
-Second, *O. lurida*'s gill structure may not be efficient at capturing small particles because of its relatively large gill ostia (90-180 $\mu$m height, 45-60 $\mu$m wide @Elsey1935) that allows water to flow through the particle capturing filaments and into the inner water canal [@Bayne2017].
+Second, *O. lurida*'s gill structure may not be efficient at capturing small particles because of its relatively large gill ostia (90-180 $\mu$m height, 45-60 $\mu$m wide; @Elsey1935) that allows water to flow through the particle capturing filaments and into the inner water canal [@Bayne2017].
 Third, most west coast bay and estuaries where *O. lurida* resides have low average residence times [citations in zu Ermgassen 2013], thus the water quality and phytoplankton community are predomently oceanic influenced [@ZuErmgassen2013c].
 
 ### Other Filtration Factors
@@ -55,23 +55,23 @@ Third, most west coast bay and estuaries where *O. lurida* resides have low aver
 While these factors may restrict *O. lurida*'s water filtration capacity, it is also necessary to consider the following factors when thinking about the filtraiton capacity of *O. lurida* habitat:
 1) *O. lurida* beds are complex habitat used by other filter feeding organisms (i.e. mussels, tunicates, scallops, and sponges) that may substantially contribute to net filtration.
 Filter-feeding species are documented to have species-specific feeding behaviors (citations in Gray & Langdon 2018), thus filtration capacity may vary with different community compositions on *O. lurida* habitat.
-2) Environmental conditions like temperature [@Gray2018; @ZuErmgassen2013c], seston organic content [@Gray2018; @Kreeger2001], salinity [@Gray2018], and water velocity [@Grizzle1992; @Luckenbach1999a] are all known to affect bivalve filtration rates, are unique to each water body, and again could contribute to a unique filtration signature.
+2) Environmental conditions like temperature [@Gray2018; @ZuErmgassen2013c], seston organic content [@Gray2018; @Kreeger2001], salinity [@Gray2018], and water velocity [@Grizzle1992; @Harsh1999] are all known to affect bivalve filtration rates, are unique to each water body, and again could contribute to a unique filtration signature.
 3) *O. lurida* habitat may have stronger influence over water quality in back reaches of bays where the residence time can be substancially longer than the bay's average.
 4) Oyster culture operations raising non-native *C. gigas* are present in many west coast bays, and should be considered when estimating the bay-wide filtration services provided by oyster habiat.
-*C. gigas* is a faster growing and larger oyster than *O. lurida* with a higher filtration rate [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019] that is shown to decrease chlrophyll concentrations in Willipa Bay, WA [@Wheat2013].
+*C. gigas* is a faster growing and larger oyster than *O. lurida* with a higher filtration rate [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019] that is documented to decrease chlrophyll concentrations in Willipa Bay, WA [@Wheat2013].
 
 ### Previous Research
 
 Several studies lay the ground work of estimating the filtration services of *O. lurida* habitat and cultured *C. gigas* in west coast bays, but leave room for further in situ investigations.
 @ZuErmgassen2013c calculated filtration rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of temperatures and oyster sizes in the labratory. 
-@Gray2018 expanded on the work by @ZuErmgassen2013c and deterimined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under a range of temperature, salinity, Total Particulate Matter (TPM), and Organic Conent (OC). Labratory and in situ trials were included in this study using the biodeposition method to calculate filtration. 
+@Gray2018 expanded on this work and deterimined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under a range of temperature, salinity, Total Particulate Matter (TPM), and Organic Conent (OC). Labratory and in situ trials were included in this study using the biodeposition method to calculate filtration. 
 However, both studies measured filtration in a single species context, and all oysters were from Coos Bay, OR and Yaquina Bay, OR.
 Thus, estimating the filtration capacity of restored *O. lurida* habitat with these filtration models has limited application. (and may need field verification for other regional locations)
 
 ### Need for in situ Study
 
 In situ studies that measure the filtration of the entire *O. lurida* habtiat community in complex environmental conditions are needed to augment previous labratory and in situ single species studies. 
-Laboratory studies can not account for the myrid of environmental conditions interacting that may effect the filtraiton capacity of a specific oyster bed [@Gray2018 cites Cranford and Hill 1999; @Grizzle2008; @Cranford2011]
+Laboratory studies can not account for the myrid of interacting environmental conditions that may effect the filtraiton capacity of a specific oyster bed [@Gray2018 cites Cranford and Hill 1999; @Grizzle2008; @Cranford2011]
 Species-specific feeding behavior is well documented and not homogenous (@Gray2018 cites many works). 
 Texture of habitat leads to varied hydrodynamics and mixing (Harsh & Luckenback 1999) that can effect envirionmental that mediate filtraiton.
 Slow flow can lead to food depletion to downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
