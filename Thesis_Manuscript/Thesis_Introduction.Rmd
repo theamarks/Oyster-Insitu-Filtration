@@ -33,7 +33,7 @@ Suspended phytoplankton, bacteria, algae, and sediments are removed from the wat
 ### Olympia Decline & Non-native Oysters
 
 Overfishing in concert with destructive fishing practices [@Kirby2004], introduction of non-native species [@Bonnot1935], pollution, and exsessive sedimentaion [@Hopkins1931; @Lotze2006; @Nelson1909] have reduced *O. lurida* populations to less than 90% of historical abundances in parts of the Pacific Northwest, and to less than 99% in the rest of its geographic distribution [@Beck2011; @ZuErmgassen2012]. (reduced populations and inhibit pop recovery perhaps, could include more citations from Ruesink 2005, Lotze 2006, Jackson 2001)
-Settlers of European descent commercialized *O. lurida* harvests in the early 1800s in San Francisco Bay, CA [@Conte1982] and the fishery subsequently followed a linear collapse pattern up the coast from San Francsico [Kirby2004].
+Settlers of European descent commercialized *O. lurida* harvests in the early 1800s in San Francisco Bay, CA [@Conte1982] and the fishery subsequently followed a linear collapse pattern up the coast from San Francsico [@Kirby2004].
 *O. lurida* was quickly overfished following the massive populaiton influx to California during the Gold Rush starting in 1848 (Beattie, McMillin & Wiegardt 1982 in Kirby 2004, waiting for ILL pdf). 
 In turn, the market transitioned to imparting *O. lurida* from esturaries up to Washington State until 1869 [@Kirby2004; more!], when the transcontinental Central Pacific Railroad was completed [@Conte1982].
 Railroad shipments of Eastern oysters (*Crassostrea virginica*) were introduced to the San Francisco Bay [@Galtsoff1929] and accounted for about 80% of the market in the late 1800s and early 1900s [@Conte1982].
@@ -44,7 +44,7 @@ A second non-native oyster, the Japanese oyster (*Crassostrea gigas*), was succe
 ### Loss of Ecosystem Services
 
 The extreme reduction of native *O. lurida* abundances is coupled with the loss of important complex habitat, adjacent shoreline stablization, and water filtration functions.
-Restoring this suite of ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; Zacherl2015a] (Ridlon2020?). 
+Restoring this suite of ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
 However, the filtration capacity of *O. lurida*, even at historic abundances, is in question for several reasons (need zu Ermgassen 2013 citation?).
 First, *O. lurida* has a relatively small mean size, adults range from 15-45mm in length (find real # and citation), and body size is positively related to filtration rate (citations).
 Second, *O. lurida*'s gill structure may not be efficient at capturing small particles because of its relatively large gill ostia (90-180 $\mu$m height, 45-60 $\mu$m wide @Elsey1935) that allows water to flow through the particle capturing filaments and into the inner water canal [@Bayne2017].
