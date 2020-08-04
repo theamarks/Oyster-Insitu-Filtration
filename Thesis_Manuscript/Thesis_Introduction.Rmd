@@ -69,8 +69,8 @@ However, both studies measured filtration in a single species context, and all o
 Thus, estimating the filtration capacity of restored *O. lurida* habitat with these filtration models has limited application, and needs field verification before using in other regional locations.
 
 Laboratory studies can not account for the myrid of interacting environmental conditions that potentially effect the filtraiton capacity of a specific oyster bed [@Gray2018 cites Cranford and Hill 1999; @Grizzle2008; @Cranford2011].
+First, species-specific feeding behavior is well documented and can vary depending on local environmental conditions (@Gray2018 cites many works; @Møhlenberg1979; @Riisgard1988; @Riisgard2001). 
 
-Species-specific feeding behavior is well documented and not homogenous (@Gray2018 cites many works). 
 Texture of habitat leads to varied hydrodynamics and mixing (Harsh & Luckenback 1999) that can effect envirionmental that mediate filtraiton.
 Slow flow can lead to food depletion to downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
 Higher flows can redistribute particles throughout the water column replenishing food for bivalve filter feeders ( Officer 1982 & Fredett 1989 in Harsh & Lauckenbach1999)
