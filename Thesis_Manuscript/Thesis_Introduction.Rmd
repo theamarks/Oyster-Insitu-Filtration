@@ -46,7 +46,7 @@ A second non-native oyster, the Japanese oyster (*Crassostrea gigas*), was succe
 The extreme reduction of native *O. lurida* abundances is coupled with the loss of important complex habitat, adjacent shoreline stablization, and water filtration functions.
 Restoring this suite of ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
 However, the filtration capacity of *O. lurida*, even at historic abundances, is in question for several reasons (need zu Ermgassen 2013 citation?).
-First, *O. lurida* has a relatively small mean size, adults range from 15-45mm in length (find real # and citation), and body size is positively related to filtration rate (citations).
+First, *O. lurida* has a relatively small body size, adults range from 15-45mm in length (find real # and citation), and body size is positively related to clearance rate [@Cranford2011].
 Second, *O. lurida*'s gill structure may not be efficient at capturing small particles because of its relatively large gill ostia (90-180 $\mu$m height, 45-60 $\mu$m wide; @Elsey1935) that allows water to flow through the particle capturing filaments and into the inner water canal [@Bayne2017].
 Third, most west coast bay and estuaries where *O. lurida* resides have low average residence times [citations in zu Ermgassen 2013], thus the water quality and phytoplankton community are predomently oceanic influenced [@ZuErmgassen2013c].
 
@@ -64,12 +64,13 @@ Filter-feeding species are documented to have species-specific feeding behaviors
 
 Several studies lay the ground work of estimating the filtration services of *O. lurida* habitat and cultured *C. gigas* in west coast bays, but leave room for further in situ investigations.
 @ZuErmgassen2013c calculated filtration rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of temperatures and oyster sizes in the labratory. 
-@Gray2018 expanded on this work and deterimined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under ranges of temperature, salinity, Total Particulate Matter (TPM), and Organic Conent (OC). Labratory and in situ trials were included in this study using the biodeposition method to calculate filtration. 
+@Gray2018 expanded on this work and deterimined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under ranges of temperature, salinity, Total Particulate Matter (TPM), and Organic Conent (OC). Labratory and in situ trials were included in this study using the biodeposition method [@Hawkins1996] to calculate filtration. 
 However, both studies measured filtration in a single species context, and all oysters were from Coos Bay, OR and Yaquina Bay, OR.
 Thus, estimating the filtration capacity of restored *O. lurida* habitat with these filtration models has limited application, and needs field verification before using in other regional locations.
 
-Laboratory studies can not account for the myrid of interacting environmental conditions that potentially effect the filtraiton capacity of a specific oyster bed [@Gray2018 cites Cranford and Hill 1999; @Grizzle2008; @Cranford2011].
-First, species-specific feeding behavior is well documented and can vary depending on local environmental conditions (@Gray2018 cites many works; @Møhlenberg1979; @Riisgard1988; @Riisgard2001). 
+Laboratory studies can not account for the myrid of interacting environmental conditions that potentially effect the filtraiton capacity of a specific oyster bed [@Gray2018 cites Cranford and Hill 1999; @Grizzle2008; @Cranford2011]. --> Reword to something along the lines of needing to "move beyond labratory based oyster-only feeding rates to more ecologically realistic field stdies of how oyster reefs affect ecosystem processes (Grizzle et al. 2018 quote, includes list of citations)
+
+First, species-specific feeding behavior is well documented [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; Cranford2011] and can vary depending on spatial and temporal environmental conditions [@Moody2020a; Cranford1999] (citations in @Gray2018). 
 
 Texture of habitat leads to varied hydrodynamics and mixing (Harsh & Luckenback 1999) that can effect envirionmental that mediate filtraiton.
 Slow flow can lead to food depletion to downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
@@ -79,6 +80,8 @@ Deeper waters might limit the access that benthic bivalves have to food (citatio
 Orientation of oyster relative to flow effect feeding behavior [@Grizzle1992; @Harsh1999].
 Labratory studies often don't include oysters not feeding, closed valves, resulting in artifically high filtraiton rates [@Gray2018; @Harsh1999], and may partly explain why many field studies find lower FR than labortory studies [@Gray2018 cited Newell 2005; @Grizzle2008; @Cranford2011].
 In situ studies may not be able to produce the sophisticated models based on manipulated variables, but can record the range of Filtraiton capacity of a specific restoration or aquaculture operation within its complex environment.
+
+The objective of this study was to identify...
 
 
 ***Extra Text***
