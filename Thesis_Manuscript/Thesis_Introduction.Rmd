@@ -11,10 +11,20 @@ output:
 
 ## Theme - take home sentence
 
-**Filtration estimates of oyster habitat on the west coast need measurements that incorporate the entire filter-feeding community of constructed oyster restorations and commercial aquaculture.**
+Filtration estimates of oyster habitat on the west coast need measurements that incorporate the entire filter-feeding community of constructed oyster restorations and commercial aquaculture.
   
-  + Filtration services or functions? [Ted made this distinction]
+* Filtration services or functions? [Ted made this distinction]
   
+## Short Form Introduction
+  
+The Olympia oyster (*Ostrea lurida*) was formerly a foundation species in estuaries along the Pacific North American Coast [@Dayton1972]. 
+Overfishing in concert with destructive fishing practices [@Kirby2004], introduction of non-native species [@Bonnot1935], pollution, and excessive sedimentation [@Hopkins1931; @Lotze2006; @Nelson1909] have reduced *O. lurida* populations to less than 90% of historical abundances in parts of the Pacific Northwest, and to less than 99% in the rest of its geographic distribution [@Beck2011; @ZuErmgassen2012].
+The extreme reduction of native *O. lurida* abundances is coupled with the loss of complex biogenic habitat, and water filtration functions.
+Restoring this suite of ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
+However, models used to estimate the filtration capacity of natural and restored *O. lurida* habitat are based on single-species experiments. It is well documented that *O. lurida* habitat recruits a myriad of other filter-feeders that may substantial contribute to the overall filtration capacity of the habitat.
+
+## Long Form Introduction  
+
 ### Natural History 
 
 The Olympia oyster (*Ostrea lurida*) has inhabited California estuaries since the late Miocene and early Pliocene [@Arnold1909; @Howard1935] and is currently the only native oyster to the North American Pacific coast from British Columbia, Canada [@Polson2009] to Baja California, Mexico [@Raith2016].
@@ -84,7 +94,7 @@ In situ studies may not be able to produce the sophisticated models based on man
 The objective of this study was to identify...
 
 
-***Extra Text***
+##Extra Text##
 
 ### Research Questions
 	
