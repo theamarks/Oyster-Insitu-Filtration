@@ -5,6 +5,7 @@ header-includes: \usepackage{setspace}\doublespacing
 output:
   pdf_document:
     fig_caption: yes
+indent: true
 ---
 
 # Introduction
@@ -16,12 +17,22 @@ Filtration estimates of oyster habitat on the west coast need measurements that 
 * Filtration services or functions? [Ted made this distinction]
   
 ## Short Form Introduction
-  
-The Olympia oyster (*Ostrea lurida*) was formerly a foundation species in estuaries along the Pacific North American Coast [@Dayton1972]. 
+
+The Olympia oyster (*Ostrea lurida*) is a former foundation species in estuaries along the Pacific North American Coast by autogeneously providing complex three-dimensional habitat [@Dayton1972] used by a variety of invertebrates, juvenile fishes and feeding habitat for birds and larger fishes [@Coen2007; @Peterson2003].
+*O. lurida* and many of the invertebrates that recruit to the oyster habitat (i.e. mussels, tunicates, scallops, and sponges) are suspension feeders that remove bacteria, algae, and sediments from the water column and deposit unused material in the benthos  [@Baird1989; @Dame1999]. This feeding activity increases water clarity [@Newell2004b; @Grizzle2008] and enriches benthic sediments (need citations) useful to benthic primary producers like seagrasses [@Peterson1999].
 Overfishing in concert with destructive fishing practices [@Kirby2004], introduction of non-native species [@Bonnot1935], pollution, and excessive sedimentation [@Hopkins1931; @Lotze2006; @Nelson1909] have reduced *O. lurida* populations to less than 90% of historical abundances in parts of the Pacific Northwest, and to less than 99% in the rest of its geographic distribution [@Beck2011; @ZuErmgassen2012].
-The extreme reduction of native *O. lurida* abundances is coupled with the loss of complex biogenic habitat, and water filtration functions.
-Restoring this suite of ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
-However, models used to estimate the filtration capacity of natural and restored *O. lurida* habitat are based on single-species experiments. It is well documented that *O. lurida* habitat recruits a myriad of other filter-feeders that may substantial contribute to the overall filtration capacity of the habitat.
+The extreme reduction of native *O. lurida* abundances is coupled with the loss of estuarine habitat structure, and water filtration.
+Restoring these ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
+
+Estimating the filtration capacity of natural and restored *O. lurida* habitat currently relies on single-species models produced by a handfull of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; Gray2019a].
+@ZuErmgassen2013c used the decline in algal concentrations to calculate filtration rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of temperatures and oyster sizes in a laboratory.
+@Gray2018 expanded on this work and determined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under ranges of temperature, salinity, Total Particulate Matter (TPM), and Organic Content (OC) in laboratory and in situ experiments using the biodeposition method [@Hawkins1996].
+These studies lay an important groundwork for previously understudied *O. lurida* habitat, but many bivalve filtration studies call for the need to transition to in situ whole-habitat measurements [@Grizzle2018; more]
+
+
+
+In contrast, In comparison
+The models used to estimate the filtration capacity of natural and restored *O. lurida* habitat are based on single-species experiments. It is well documented that *O. lurida* habitat recruits a myriad of other filter-feeders that may substantial contribute to the overall filtration capacity of the habitat.
 
 ## Long Form Introduction  
 
