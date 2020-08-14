@@ -17,6 +17,7 @@ Filtration estimates of oyster habitat on the west coast need measurements that 
 * Filtration services or functions? [Ted made this distinction]
 * Clearance Rate vs. FIltration cpacity vs. Filtration Rate
 * First sentence list of fauna using habitat - mobile & sessile invertebrates, juvenille crabs and fishes? use east coast references? Thesis citation ok?
+* Olympia specific citations - invert community (Zacherl?)
   
 ## Short Form Introduction
 
@@ -30,21 +31,11 @@ Restoring these ecosystem functions is part of the impetus behind native *O. lur
 Estimating the filtration capacity of natural and restored *O. lurida* habitat currently relies on single-species models produced by a handfull of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a].
 @ZuErmgassen2013c used the decline in algal concentrations to calculate filtration rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of temperatures and oyster sizes in a laboratory.
 @Gray2018 expanded on this work and determined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under ranges of temperature, salinity, Total Particulate Matter (TPM), and Organic Content (OC) in laboratory and in situ experiments using the biodeposition method [@Hawkins1996] in Yaquin Bay, Oregon.
-These studies lay the foundation for estimating filtration capacity, however oyster-specific models do not account for the non-oyster, filter-feeding guild residing among oysters that differential effect the net filtration capacity [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014] (Olympia specific citations about invert community on restored habitats? Zacherl?)
-The community composition of filter-feeders living on oyster habitat may change regionally or locally depending on species' distributions, environmental tolerances, and the establishment of non-native species.
+These studies lay the foundation for estimating filtration capacity, however oyster-specific models do not account for the non-oyster, filter-feeding living among the oysters that may differential effect the net filtration capacity [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014].
+The composition of filter-feeders living on oyster habitat may change regionally or locally depending on species' distributions, environmental tolerances, and the establishment of non-native species.
 In turn, species-specific feeding behavior is well documented [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011] an can vary due to spatial and temporal environmental conditions [@Moody2020a; @Cranford1999], along with the presence of predators [@Byers2014].
 Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
-
-This suggests that filtration rates among *O. lurida* habitats, even with comparable environmental conditions, may have unique filtration rates. 
-
-
-* Different species - different overall filtration
-  + Species-specific feeding behavior - [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; Cranford2011]
-    - can vary depending on spatial and temporal environmental conditions [@Moody2020a; Cranford1999] (citations in @Gray2018). 
-  + Resource partitioning and/or competition - i.e. particle size [@Gedan2014; @Gray2016]
-  + Predator effects on filtration [@Byers2014]
-
-This suggests that applying *O. lurida* specific models to estimate *O. lurida* habitat filtration capacity 
+This suggests that filtration rates among *O. lurida* habitats, may have unique filtration rates locally or regionally depending on the composition of filter-feeders.
 
 ### in situ environmental conditions that affect filtration
 
@@ -59,6 +50,8 @@ This suggests that applying *O. lurida* specific models to estimate *O. lurida* 
   + In situ studies may not be able to produce the sophisticated models based on manipulated variables, but can record the range of Filtration capacity of a specific restoration or aquaculture operation within its complex environment.
 
 The models used to estimate the filtration capacity of natural and restored *O. lurida* habitat are based on single-species experiments. It is well documented that *O. lurida* habitat recruits a myriad of other filter-feeders that may substantial contribute to the overall filtration capacity of the habitat.
+
+This suggests that applying *O. lurida* specific models to estimate *O. lurida* habitat filtration capacity 
 
 ### introduce my study questions
 
