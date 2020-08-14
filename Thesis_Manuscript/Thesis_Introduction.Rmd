@@ -28,7 +28,7 @@ Restoring these ecosystem functions is part of the impetus behind native *O. lur
 Estimating the filtration capacity of natural and restored *O. lurida* habitat currently relies on single-species models produced by a handfull of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; Gray2019a].
 @ZuErmgassen2013c used the decline in algal concentrations to calculate filtration rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of temperatures and oyster sizes in a laboratory.
 @Gray2018 expanded on this work and determined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under ranges of temperature, salinity, Total Particulate Matter (TPM), and Organic Content (OC) in laboratory and in situ experiments using the biodeposition method [@Hawkins1996] in Yaquin Bay, Oregon.
-These studies lay the foundation for estimating filtraiton capacity, however oyster-specific models do not account for the non-oyster, filter-feeding guild residing on an oyster bed that may differcially affect the overall filtration capacity [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014].
+These studies lay the foundation for estimating filtraiton capacity, however oyster-specific models do not account for the non-oyster, filter-feeding guild residing on an oyster bed that may differcially affect the overall filtration capacity [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014] (Olympia specific citations about invert community on restored habitats?.
 * Different species - different overall filtration
   + Species-specific feeding behvior - [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; Cranford2011]
     - can vary depending on spatial and temporal environmental conditions [@Moody2020a; Cranford1999] (citations in @Gray2018). 
@@ -36,6 +36,16 @@ These studies lay the foundation for estimating filtraiton capacity, however oys
   + Predator effects on filtration [@Byers2014]
 
 ### in situ environmental conditions that affect filtraiton
+
+* Whole-habitat measurements also include realistic environmental conditions known to affect bivalve filtration rates
+  + Texture of habitat leads to varied hydrodynamics and mixing (Harsh & Luckenback 1999) that can effect environmental that mediate filtration.
+  + Slow flow can lead to food depletion to downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
+  + Higher flows can redistribute particles throughout the water column replenishing food for bivalve filter feeders ( Officer 1982 & Fredett 1989 in Harsh & Lauckenbach1999)
+  + Water dynamics in shallow estuaries often mixes water column "eliminating stratification of chlorophyll (Holligan et al. 1984 cited in @Judge1993).
+  + Deeper waters might limit the access that benthic bivalves have to food (citations in @Ruesink2005).
+  + Orientation of oyster relative to flow effect feeding behavior [@Grizzle1992; @Harsh1999].
+  + Laboratory studies often don't include oysters not feeding, closed valves, resulting in artificially high filtration rates [@Gray2018; @Harsh1999], and may partly explain why many field studies find lower FR than laboratory studies [@Gray2018 cited Newell 2005; @Grizzle2008; @Cranford2011].
+  + In situ studies may not be able to produce the sophisticated models based on manipulated variables, but can record the range of Filtration capacity of a specific restoration or aquaculture operation within its complex environment.
 
 In contrast, In comparison
 The models used to estimate the filtration capacity of natural and restored *O. lurida* habitat are based on single-species experiments. It is well documented that *O. lurida* habitat recruits a myriad of other filter-feeders that may substantial contribute to the overall filtration capacity of the habitat.
