@@ -29,8 +29,8 @@ Restoring these ecosystem functions is part of the impetus behind native *O. lur
 
 ### Single-species Reseach
 Estimating the filtration capacity of natural and restored *O. lurida* habitat currently relies on single-species models produced by a handfull of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a].
-@ZuErmgassen2013c used the decline in algal concentrations to calculate filtration rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of temperatures and oyster sizes in a laboratory.
-@Gray2018 expanded on this work and determined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under ranges of temperature, salinity, Total Particulate Matter (TPM), and Organic Content (OC) in laboratory and in situ experiments using the biodeposition method [@Hawkins1996] in Yaquin Bay, Oregon.
+@ZuErmgassen2013c used the decline in algal concentrations to calculate filtration rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of laboratory conditions.
+@Gray2018 expanded on this work and determined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under ranges conditions in laboratory and in situ experiments using the biodeposition method [@Hawkins1996] in Yaquin Bay, Oregon.
 These studies lay the foundation for estimating filtration capacity, however oyster-specific models do not account for the non-oyster, filter-feeding living among the oysters that may differential effect the net filtration capacity [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014].
 The composition of filter-feeders living on oyster habitat may change regionally or locally depending on species' distributions, environmental tolerances, and the establishment of non-native species.
 In turn, species-specific feeding behavior is well documented [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011] an can vary due to spatial and temporal environmental conditions [@Moody2020a; @Cranford1999], along with the presence of predators [@Byers2014].
@@ -38,6 +38,8 @@ Moreover, various filter-feeding taxa preferentially select for specific particl
 This suggests that filtration rates among *O. lurida* habitats, may have unique filtration rates locally or regionally depending on the composition of filter-feeders.
 
 ### in situ environmental conditions that affect filtration
+
+
 
 * Whole-habitat measurements also include realistic environmental conditions known to affect bivalve filtration rates
   + Texture of habitat leads to varied hydrodynamics and mixing (Harsh & Luckenback 1999) that can effect environmental that mediate filtration.
