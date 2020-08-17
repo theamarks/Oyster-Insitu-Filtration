@@ -35,11 +35,24 @@ These studies lay the foundation for estimating filtration capacity, however oys
 The composition of filter-feeders living on oyster habitat may change regionally or locally depending on species' distributions, environmental tolerances, and the establishment of non-native species.
 In turn, species-specific feeding behavior is well documented [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011] an can vary due to spatial and temporal environmental conditions [@Moody2020a; @Cranford1999], along with the presence of predators [@Byers2014].
 Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
-This suggests that filtration rates among *O. lurida* habitats, may have unique filtration rates locally or regionally depending on the composition of filter-feeders.
+This suggests that filtration rates among *O. lurida* habitats, may have unique filtration rates locally or regionally depending on the composition of filter-feeders, and laboratory methods a likely insufficient at estimating habitat-level filtration funcitons.
 
 ### in situ environmental conditions that affect filtration
 
-
+A less common way to measure filtration is in situ whole-habitat measurements, only a few studies have used these methods (Grizzle, Mildbrant, citations is Grizzle) compared to the myrid of labroratory studies.
+In sity whole-habitat measurements also encompass many realistic physical and biological conditions known to affect bivalve filtration.
+The bathometry of estuaries along with tidal prisms effect the water velocity over oyster habitats and thus their filtration functions.
+Slow velocity, although possibly ideal for individual filtration [@Grizzle1992], can lead to food depletion for downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
+On the other hand, both higherflows and shallow estuaries can redistribute particles throughout the watercolumn replenishing food for bivalve filterfeeders (Officer 1982 & Fredett 1989 in Harsh & Lauckenbach1999) (Holligan et al. 1984 cited in @Judge1993)
+In addition, deeper water might limit benthic bivalves access to food (citations in Ruesink et al. 2005), while the orientation of oysters relative to the waterflow may effect feeding behavior[@Grizzle1992; @Harsh1999].
+The ratio of organic matterial foodstuffs to inorganic particles in the seston along with teh quantity is documented to affect bivalve filtration, and subject to change seasonaly (Moody and Kreeger, Gray and Langdon 2018).
+The effects of site specific water velocity, water column mixing, individuals differntial feeding responses and seston quality and quantity are all complex environmental conditions hard to replicate in filtraiton studies.
+Filter feeders habe variable filtration rates studies. 
+Studies often report individuals not feeding while others are. Studies often discount/remove non-filtering individuals from their calculations, which presents a problem when scaling to habitat filtraiton estimates. 
+Whole -habitat measurements inately measure the habitat-level filtraiton reaction to hydrodynmaics and food availability.
+THis points to the need for insituy whole-habitat measurements to estimate individual habitat level filtration funciton.
+Grizzle et al. 2008, Mildbrant et al. 2015, and grizzle eta ll 2018 to date are the only insitu whole habitat filtration studies all are conductedon easter noyster habitat.
+The goal of this study is to provide the first snap shot filtraiton estimates of restored Olympia Oyster habitat. 
 
 * Whole-habitat measurements also include realistic environmental conditions known to affect bivalve filtration rates
   + Texture of habitat leads to varied hydrodynamics and mixing (Harsh & Luckenback 1999) that can effect environmental that mediate filtration.
