@@ -31,10 +31,12 @@ Restoring these ecosystem functions is part of the impetus behind native *O. lur
 Estimating the filtration capacity of natural and restored *O. lurida* habitat currently relies on single-species models produced by a handfull of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a].
 @ZuErmgassen2013c used the decline in algal concentrations to calculate filtration rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of laboratory conditions.
 @Gray2018 expanded on this work and determined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under a range of  laboratory and in situ conditions using the biodeposition method [@Hawkins1996].
-The models from these controlled studies provide important insights into *O. lurida* and *C. gigas* individual's feeding responses to specific conditions (temperature, salinity, Total Suspended Solids (TSS), and Organic Content (OC)) but are unable to fully replicate conditions of the natural environment [@Cranford2011].
+The models from these controlled studies provide important insights into *O. lurida* and *C. gigas* individual's feeding responses to specific conditions (temperature, salinity, Total Suspended Solids (TSS), and Organic Content (OC)) but are unable to fully replicate conditions of the natural environment [@Cranford2011] where feeding activity is more variable than laboratory conditions [@Newell2005; more citations]
 First, non-oyster filter-feedings living among the oysters differential effect the net filtration capacity [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014].
 Different bivalve filter-feeders have specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011] that can vary from spatial and temporal environmental conditions [@Moody2020a; @Cranford1999].
 The composition of this filter-feeding guild is likely to vary regionally depending on species' distributions and environmental tolerances, in turn affecting the filtration signature of specific *O. lurid* habitat.
+Second, water flow dynamics in the field are highly variable due to the interaction of tidal cycles and physical characteristics of estuaries (citations needed. @Judge1992 ?).
+Water depth and velocity affect watercolumn mixing and food availability for benthic filter-feeders (Monismith et al 1990 in Harsh & Luckenbach 1999) ( Holligan et al. 1984 cited in Judge et al. 1993).
 
 along with the presence of predators [@Byers2014].
 Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
