@@ -33,7 +33,8 @@ Estimating the filtration capacity of natural and restored *O. lurida* habitat c
 @Gray2018 expanded on this work and determined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under a range of  laboratory and in situ conditions using the biodeposition method [@Hawkins1996].
 The models from these controlled studies provide important insights into *O. lurida* and *C. gigas* individual's feeding responses to specific conditions (temperature, salinity, Total Suspended Solids (TSS), and Organic Content (OC)) but are unable to fully replicate conditions of the natural environment [@Cranford2011].
 First, non-oyster filter-feedings living among the oysters differential effect the net filtration capacity [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014].
-Species-specific feeding behavior is well documented [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011] and can vary due to spatial and temporal environmental conditions [@Moody2020a; @Cranford1999] affecting an oyster habitat's filtraiton function.
+Different bivalve filter-feeders have specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011] that can vary from spatial and temporal environmental conditions [@Moody2020a; @Cranford1999].
+The composition of this filter-feeding guild is likely to vary regionally depending on species' distributions and environmental tolerances, in turn affecting the filtration signature of specific *O. lurid* habitat.
 
 along with the presence of predators [@Byers2014].
 Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
