@@ -39,8 +39,9 @@ Add species particle size selection differences here?
 Second, water flow dynamics in the field are highly variable due to the interaction of tidal cycles and physical characteristics of estuaries (citations needed. @Judge1992).
 While the direct effects of water velocity on bivalve filter-feeding is unclear (@Grizzle1992; more), water depth and velocity affect water column mixing, thus food availability (and quality) for benthic filter-feeders (Monismith et al 1990 in Harsh & Luckenbach 1999) (Holligan et al. 1984 cited in Judge et al. 1993).
 Third, the quality and quantity of food/seston is well documented to effect bivalve-filtraiton [@Gray2018; Moody2020a; more] and can change among tidal cycle and seasonally (need citations).
-Although @Gray2018 measured *O. lurida* and *C. gigas* feeding responses to seston quality and quantity (TSS and OC), the authors used lab reared phytoplankton (*Isochrysis galbana*) and Kaolin powder (Sigma-Aldrich®) to simulate changes in seston. 
-
+Although @Gray2018 measured *O. lurida* and *C. gigas* feeding responses to seston quality and quantity (TSS and OC), the authors used laboratory reared phytoplankton (*Isochrysis galbana*) and Kaolin powder (Sigma-Aldrich®) to simulate changes in seston. 
+@Cranford2011 conducted a metaanalysis of 133 bivalve clearance rate studies, they found highly variable short-term flucuations in clearance rates, as well as intermitant feeding cessation, when bivalves were fed with natural seston.
+Find CSUF emeritis prof papers on chl sources.
 
 along with the presence of predators [@Byers2014].
 Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
