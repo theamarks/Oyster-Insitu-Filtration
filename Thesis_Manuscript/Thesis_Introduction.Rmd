@@ -16,6 +16,7 @@ Filtration estimates of oyster habitat on the west coast need measurements that 
   
 * Filtration services or functions? [Ted made this distinction]
 * Clearance Rate vs. FIltration cpacity vs. Filtration Rate
+  - Need to introduce difference
 * First sentence list of fauna using habitat - mobile & sessile invertebrates, juvenille crabs and fishes? use east coast references? Thesis citation ok?
 * Olympia specific citations - invert community (Zacherl?)
   
@@ -29,8 +30,8 @@ Restoring these ecosystem functions is part of the impetus behind native *O. lur
 
 ### Single-species Reseach
 Estimating the filtration capacity of natural and restored *O. lurida* habitat currently relies on single-species models produced by a handfull of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a].
-@ZuErmgassen2013c used the decline in algal concentrations to calculate filtration rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of laboratory conditions.
-@Gray2018 expanded on this work and determined the filtration rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under a range of  laboratory and in situ conditions using the biodeposition method [@Hawkins1996].
+@ZuErmgassen2013c used the decline in algal concentrations to calculate clearance rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of laboratory conditions.
+@Gray2018 expanded on this work and determined the clearance rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under a range of  laboratory and in situ conditions using the biodeposition method [@Hawkins1996].
 The models from these controlled studies provide important insights into *O. lurida* and *C. gigas* individual's feeding responses to specific conditions (temperature, salinity, Total Suspended Solids (TSS), and Organic Content (OC)) but are unable to fully replicate conditions of the natural environment [@Cranford2011] where feeding activity is more variable than laboratory conditions [@Newell2005; more citations]
 First, non-oyster filter-feedings living among the oysters differential effect the net filtration capacity [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014].
 Different bivalve filter-feeders have specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011] that can vary from spatial and temporal environmental conditions [@Moody2020a; @Cranford1999].
@@ -43,7 +44,6 @@ Although @Gray2018 measured *O. lurida* and *C. gigas* feeding responses to sest
 @Cranford2011 conducted a metaanalysis of 133 bivalve clearance rate studies, they found highly variable short-term flucuations in clearance rates, as well as intermitant feeding cessation, when bivalves were fed with natural seston.
 Natural seston is composed of phytoplankton [@Navarro1995], zooplankton [@Lehane2006; @Trottet2008], macroalgae detritus [@Page1997; @Kwak1997; @Gilbane2006], bacteria [@Newell1989], and inorganic sediments [@Newell1989] which changes spatially and temporally from tides, wind, bathometry, and proximety to benthic organisms [@Navarro1995; @Muschenheim1987; @Ashley1988; @Moody2020a). 
 
-Find CSUF emeritis prof papers on chl sources.
 
 along with the presence of predators [@Byers2014].
 Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
