@@ -19,6 +19,7 @@ Filtration estimates of oyster habitat on the west coast need measurements that 
   - Need to introduce difference
 * First sentence list of fauna using habitat - mobile & sessile invertebrates, juvenille crabs and fishes? use east coast references? Thesis citation ok?
 * Olympia specific citations - invert community (Zacherl?)
+* Could introduce whole-habitat filtration first, then go into Oly/West coast
   
 ## Short Form Introduction
 
@@ -32,11 +33,13 @@ Restoring these ecosystem functions is part of the impetus behind native *O. lur
 Estimating the filtration capacity of natural and restored *O. lurida* habitat currently relies on single-species models produced by a handfull of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a].
 @ZuErmgassen2013c used the decline in algal concentrations to calculate clearance rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of laboratory conditions.
 @Gray2018 expanded on this work and determined the clearance rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under a range of  laboratory and in situ conditions using the biodeposition method [@Hawkins1996].
-The models from these studies provide important insights into *O. lurida* and *C. gigas* individual's feeding responses to specific conditions (temperature, salinity, Total Suspended Solids (TSS), and Organic Content (OC)) but are unable to fully replicate conditions of the natural environment/habitat [@Cranford2011] where feeding activity is more variable than laboratory conditions [@Newell2005; more citations].
+The models from these studies provide important insights into *O. lurida* and *C. gigas* individual's feeding responses to specific conditions (temperature, salinity, Total Suspended Solids (TSS), and Organic Content (OC)) but are unable to fully replicate conditions of the natural environment/habitat [@Cranford2011] where feeding activity is more variable [@Newell2005] and different from laboratory measurements [@Gray2019; @Gray2018; @Velasco2005].
 First, non-oyster filter-feeders living in the oyster habitat contribute to the overall filtration capacity of the habitat [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014].
-The composition of this filter-feeding guild is likely to vary regionally affecting the filtration signature of specific *O. lurid* habitat because each species has specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011; Gray2016] that can variy with spatial and temporal environmental conditions [@Moody2020a; @Cranford1999].
+Filter-feeders have species-specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011; Gray2016; @Gedan2014] affected by loacl and seasonal environmental conditions [@Moody2020a; @Cranford1999].
+Moreover, the composition of the filer-feeding guild is likely to change across *O. lurida*'s distrubution leading one to expect specific *O. lurida* beds to have a wide range of filtration functionality.
 
-Add species particle size selection differences here?
+The composition of this filter-feeding guild is likely to vary regionally, affecting the filtration signature of specific *O. lurid* habitat because each species has specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011; Gray2016; @Gedan2014] that can variy with spatial and temporal environmental conditions [@Moody2020a; @Cranford1999].
+
 Second, water flow dynamics in the field are highly variable due to the interaction of tidal cycles and the physical characteristics of bays and estuaries (citations needed. @Judge1992).
 While the direct effects of water velocity on bivalve filter-feeding is unclear (@Grizzle1992; more), water depth and velocity affect water column mixing, thus food availability (and quality) for benthic filter-feeders (Monismith et al 1990 in Harsh & Luckenbach 1999 BAD) (Holligan et al. 1984 cited in Judge et al. 1993).
 Third, the quality and quantity of food/seston is well documented to effect bivalve-filtraiton [@Gray2018; Moody2020a; more] and can change among tidal cycle and seasonally (need citations).
