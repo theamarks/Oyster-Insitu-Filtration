@@ -31,8 +31,9 @@ Restoring these ecosystem functions is part of the impetus behind native *O. lur
 
 ### Single-species Reseach
 Estimating the filtration capacity of natural and restored *O. lurida* habitat currently relies on single-species models produced by a handfull of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a]. 
-@Gray2018 determined the clearance rates (Lhr^-1^g^-1^ Dry Tissue Weight) of *O. lurida* and *C. gigas* under a range of  laboratory and in situ conditions using the biodeposition method [@Hawkins1996].
-The models from these studies provide important insights into *O. lurida* and *C. gigas* individual's feeding responses to specific conditions (temperature, salinity, Total Suspended Solids (TSS), and Organic Content (OC)) but are unable to fully replicate conditions of the natural environment/habitat [@Cranford2011].
+@Gray2018 determined the clearance rates (Lhr^-1^g^-1^ Dry Tissue Weight) of *O. lurida* and *C. gigas* under a range of  laboratory and seasonal in situ conditions using the biodeposition method [@Hawkins1996].
+During the in situ trials individual oyster were placed in a flow through chamber filled with ambient seawater at a rate of 150-200 ml min^-1^.  
+The models from these studies provide important insights into *O. lurida* and *C. gigas* individual's feeding responses to specific conditions (temperature, salinity, turbidity, chlorophyll $\alpha$, Total Suspended Solids (TSS), and Organic Content (OC)) but are unable to fully replicate conditions of the natural environment/habitat [@Cranford2011].
 For example, non-oyster filter-feeders living in the oyster habitat contribute to the overall filtration capacity of the habitat [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014] and have species-specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011; Gray2016; @Gedan2014].
 The composition of this filer-feeding guild is likely to change across *O. lurida*'s distrubution, thus creating unique filtraiton signatures for different *O. lurida* habitat.
 
