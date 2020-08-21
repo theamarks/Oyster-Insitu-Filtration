@@ -30,9 +30,8 @@ The extreme reduction of native *O. lurida* abundances is coupled with the loss 
 Restoring these ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
 
 ### Single-species Reseach
-Estimating the filtration capacity of natural and restored *O. lurida* habitat currently relies on single-species models produced by a handfull of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a].
-@ZuErmgassen2013c used the decline in algal concentrations to calculate clearance rates (L/hr/g dry tissue weight) of *O. lurida* and *C. gigas* over a range of laboratory conditions.
-@Gray2018 expanded on this work and determined the clearance rates (L/hr/g DTW) of *O. lurida* and *C. gigas* under a range of  laboratory and in situ conditions using the biodeposition method [@Hawkins1996].
+Estimating the filtration capacity of natural and restored *O. lurida* habitat currently relies on single-species models produced by a handfull of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a]. 
+@Gray2018 determined the clearance rates (Lhr^-1^g^-1^ Dry Tissue Weight) of *O. lurida* and *C. gigas* under a range of  laboratory and in situ conditions using the biodeposition method [@Hawkins1996].
 The models from these studies provide important insights into *O. lurida* and *C. gigas* individual's feeding responses to specific conditions (temperature, salinity, Total Suspended Solids (TSS), and Organic Content (OC)) but are unable to fully replicate conditions of the natural environment/habitat [@Cranford2011].
 For example, non-oyster filter-feeders living in the oyster habitat contribute to the overall filtration capacity of the habitat [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014] and have species-specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011; Gray2016; @Gedan2014].
 The composition of this filer-feeding guild is likely to change across *O. lurida*'s distrubution, thus creating unique filtraiton signatures for different *O. lurida* habitat.
