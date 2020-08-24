@@ -1,17 +1,15 @@
 ---
-bibliography: library.bib
-csl: marine-ecology-progress-series.csl
-header-includes: \usepackage{setspace}\doublespacing\usepackage{rotating}
 output: 
   pdf_document: default
     fig_caption: yes
-indent: true
 ---
 #Results
 
 ```{r setup, include = F, cache=FALSE}
 # set working directory to R project instead of "./Thesis_Manuscript" folder
 setwd("./")
+# set default code chunk settings to save figures in Figures folder, show no output, and cache 
+knitr::opts_chunk$set(fig.path = "./Thesis_Manuscript/Figures", include=FALSE, cache=TRUE)
 ```
 
 ```{r load_packages_data, include=FALSE}
@@ -153,11 +151,8 @@ find_outlier <- function(data){
 }
 ```
 
-Filtration Ranges
-
-### ***Filtration by site (Filtration Trials only)***
-```{r FR_ChlRmd_Site_boxplot, echo=FALSE, fig.align="default", fig.asp=0.618, fig.width=6, cache=TRUE, out.width="50%"}
-# Filtration_only_data defined in setup
+```{r FR_ChlRmd_Site_boxplot}
+### Filtration by site (Filtration Trials only)
 
 FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
@@ -174,14 +169,19 @@ Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
   labs(x = 'Site',
        y = Prt_Chl_Label)
 
-FR_Site_boxplot <- grid.arrange(FR_box, Chl_Rmd_box, nrow = 1)
-FR_Site_boxplot
+#FR_Site_boxplot <- grid.arrange(FR_box, Chl_Rmd_box, nrow = 1)
+#FR_Site_boxplot
 #ggsave(FR_Site_boxplot, 
       # filename = "FR_Site_boxplot.pdf", 
       # path = "./Figures", 
        #fig.width = 6,
        #scale = 1 )
 
+```
+
+```{r Figure_FR_CHLRmd_Site_boxplot, fig.align="default", fig.width=4.3, fig.asp=0.618, out.width="50%", fig.show="hold"}
+FR_box
+Chl_Rmd_box
 ```
 
 ### ***Filtration by site (Positive values only)*** 
