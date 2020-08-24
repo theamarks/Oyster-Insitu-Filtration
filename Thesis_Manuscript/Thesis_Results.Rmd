@@ -3,13 +3,13 @@ output:
   pdf_document:
     fig_caption: yes
 ---
-#Results
+# Results
 
 ```{r setup, include = F, cache=FALSE}
 # set working directory to R project instead of "./Thesis_Manuscript" folder
 setwd("./")
 # set default code chunk settings to save figures in Figures folder, show no output, and cache 
-knitr::opts_chunk$set(fig.path = "./Thesis_Manuscript/Figures", include=FALSE, cache=TRUE)
+knitr::opts_chunk$set(fig.path = "./Thesis_Manuscript/Figures", echo = FALSE, cache=TRUE)
 ```
 
 ```{r load_packages_data, include=FALSE}
@@ -151,7 +151,7 @@ find_outlier <- function(data){
 }
 ```
 
-```{r FR_ChlRmd_Site_boxplot, fig.align="default", fig.width=4.3, fig.asp=0.618, out.width="50%", fig.show="hold"}
+```{r FR_ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=4.3, out.width="50%", fig.cap="The habitat level filtration rates and percent chlorophyll removed of all filtration trials across sites. \\label{figurelabel}"}
 ### Filtration by site (Filtration Trials only)
 
 FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
@@ -160,7 +160,7 @@ FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Hab_FR_Label)
-FR_box 
+plot(FR_box) 
 
 Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) +
@@ -169,7 +169,7 @@ Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Prt_Chl_Label)
-Chl_Rmd_box
+plot(Chl_Rmd_box)
 
 #FR_Site_boxplot <- grid.arrange(FR_box, Chl_Rmd_box, nrow = 1)
 #FR_Site_boxplot
