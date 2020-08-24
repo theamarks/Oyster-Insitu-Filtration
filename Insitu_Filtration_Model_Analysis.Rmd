@@ -163,12 +163,19 @@ FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
 
 Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) +
+  #scale_y_continuous(labels = percent) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Prt_Chl_Label)
 
-grid.arrange(FR_box, Chl_Rmd_box, nrow = 1)
+FR_Site_boxplot <- grid.arrange(FR_box, Chl_Rmd_box, nrow = 1)
+FR_Site_boxplot
+ggsave(FR_Site_boxplot, 
+       filename = "FR_Site_boxplot.pdf", 
+       path = "./Figures", 
+       fig.width = 6,
+       scale = 1 )
 
 ```
 
