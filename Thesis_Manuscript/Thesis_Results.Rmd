@@ -1,6 +1,6 @@
 ---
 output: 
-  pdf_document: default
+  pdf_document:
     fig_caption: yes
 ---
 #Results
@@ -151,7 +151,7 @@ find_outlier <- function(data){
 }
 ```
 
-```{r FR_ChlRmd_Site_boxplot}
+```{r FR_ChlRmd_Site_boxplot, fig.align="default", fig.width=4.3, fig.asp=0.618, out.width="50%", fig.show="hold"}
 ### Filtration by site (Filtration Trials only)
 
 FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
@@ -160,6 +160,7 @@ FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Hab_FR_Label)
+FR_box 
 
 Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) +
@@ -168,6 +169,7 @@ Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Prt_Chl_Label)
+Chl_Rmd_box
 
 #FR_Site_boxplot <- grid.arrange(FR_box, Chl_Rmd_box, nrow = 1)
 #FR_Site_boxplot
@@ -177,11 +179,6 @@ Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
        #fig.width = 6,
        #scale = 1 )
 
-```
-
-```{r Figure_FR_CHLRmd_Site_boxplot, fig.align="default", fig.width=4.3, fig.asp=0.618, out.width="50%", fig.show="hold"}
-FR_box
-Chl_Rmd_box
 ```
 
 ### ***Filtration by site (Positive values only)*** 
