@@ -2451,10 +2451,8 @@ T_test_Table$Date <- as.character(T_test_Table$Date)
 
 ```
 
-MLR
-
-### ***Chl Rmd Filtration Forward Stepwise Selection***
-```{r LM_PrctChl_pos_add, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
+```{r LM_PrctChl_pos_add, eval=FALSE, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
+# Multiple Linear Regression - Chl Rmd Filtration Forward Stepwise Selection
 # Positive Percent Chl removed trials only
 MLR_PrctChl_fwd <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
                          # Field notes Qualitative variables
@@ -2466,8 +2464,9 @@ MLR_PrctChl_fwd <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
 summary(MLR_PrctChl_fwd)
 ```
 
-### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
-```{r fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
+```{r eval=FALSE, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
+
+#Positive Filtration ~ ChlRmd Multiple Regression with selected variables
 LM2_PrctChl_pos_add <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ 
                           NPSM + Avg_OC_Ratio)
 
@@ -2476,15 +2475,14 @@ summary(LM2_PrctChl_pos_add)
 #ols_coll_diag(LM_PrctChl_pos_add)
 ```
 
-### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
-```{r fig.height=10, fig.width=6, cache=TRUE, include=FALSE}
+```{r eval=FALSE, fig.height=10, fig.width=6, cache=TRUE, include=FALSE}
+#Positive Filtration ~ ChlRmd Multiple Regression with selected variables
 # detailed multiple regression summary - ANOVA results
 ols_regress(LM2_PrctChl_pos_add)
 ```
 
-### ***FR - Positive Filtration Stepwise Multiple Regression***
-```{r LM_FR_pos, cache=TRUE, include=FALSE}
-
+```{r LM_FR_pos, eval=FALSE, cache=TRUE, include=FALSE}
+#FR - Positive Filtration Stepwise Multiple Regression
 # Positive Percent Chl removed trials only
 LM_FR_pos <- lm(data = Filtration_pos_data, L_hr_m2 ~
                          # site logic variables - SR not included - break model to include all sites
@@ -2498,8 +2496,8 @@ LM_FR_pos <- lm(data = Filtration_pos_data, L_hr_m2 ~
 ols_step_both_p(LM_FR_pos)
 ```
 
-### ***Chl Rmd - Deanza - Positive Filtration***
 ```{r LM_ChlRmd_NPD_PosFilter, eval=FALSE, cache=TRUE, include=FALSE}
+#Chl Rmd - Deanza - Positive Filtration
 LM_ChlRmd_NPD_PosFilter <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
@@ -2512,8 +2510,8 @@ LM_ChlRmd_NPD_PosFilter <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~
 ols_step_both_p(LM_ChlRmd_NPD_PosFilter)
 ```
 
-### ***FR - Deanza - Positive Filtration***
 ```{r LM_FR_NPD_Posfilter, eval=FALSE, cache=TRUE, include=FALSE}
+#FR - Deanza - Positive Filtration
 LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
