@@ -1704,7 +1704,7 @@ Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
 plot(Oly_shell_DTW)
 ```
 
-```{r Oly_DTW_SH_outlier_rmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=6, out.width="50%", fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. \\label{figurelabel}"}
+```{r Oly_DTW_SH_outlier_rmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. \\label{figurelabel}"}
 # Remove outlier and negative DTW value
 NPD_oly_outRmd <- NPD_oly %>%
   mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
@@ -1738,8 +1738,7 @@ Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
 ols_regress(Oly_DTW_lm)
 ```
 
-### ***Log Transform DTW***
-```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=6, out.width="50%", fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{figurelabel}"}
+```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{figurelabel}"}
 
 ### y ~ log(x) model ####
 Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
@@ -1861,10 +1860,11 @@ Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
                parse = TRUE,
                label.x = "right",
                label.y = "top")
+
 plot(Oly_TWW_DTW)
 ```
 
-```{r Oly_TWW_DTW_outRmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=6, out.width="50%", fig.cap="The relationship between *O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Blue lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW = 0.0044*TWW - 0.043) \\label{figurelabel}"}
+```{r Oly_TWW_DTW_outRmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The relationship between *O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Blue lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW = 0.0044*TWW - 0.043) \\label{figurelabel}"}
 
 # Make sure only using positive TWW values, negative values indicate processing error
 NPD_oly_TWW <- NPD_oly_outRmd %>% filter(total_wet_weight_g > 0)
@@ -1936,6 +1936,8 @@ Oly_TWW2_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_wei
        
 Oly_TWW_DTW_outRmd_graph <- grid.arrange(Oly_TWW_DTW_rm_out, Oly_logTWW_DTW_graph,
                                           Oly_loglogTWW_DTW_graph, Oly_TWW2_DTW_graph, nrow = 2)
+
+plot(Oly_TWW_DTW_outRmd_graph)
 ```
 
 ```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
@@ -1971,7 +1973,7 @@ Oly_TWW2_DTW_LM <- lm(data = NPD_oly_TWW,
 ols_regress(Oly_TWW2_DTW_LM)
 ```
 
-```{r NPD_Bivalve_SH_DTW, fig.height=6, fig.width=15, cache=TRUE, include=FALSE}
+```{r NPD_Bivalve_SH_DTW, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay, California. Graphs on left are raw data, graphs on the right are with outliers removed (+- 2.2 SD or negative values). \\label{figurelabel}"}
 ##### Estimate Biomass per site here with equations
 NPD_bivalve_biomass_graph <-  NPD_bivalve_data_clean %>% 
   ggplot(aes(x = length_mm, y = tissue_dry_weight_g, color = species)) +
@@ -2000,10 +2002,10 @@ NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>%
   theme_classic() +
   theme(strip.text = element_text(face = "italic"))
 
-grid.arrange(NPD_bivalve_biomass_graph, NPD_bivalve_outrmd_graph, nrow = 1)
+NPD_bi_Biomass_graphs <- grid.arrange(NPD_bivalve_biomass_graph, NPD_bivalve_outrmd_graph, nrow = 1)
+plot(NPD_bi_Biomass_graphs)
 ```
 
-### ***NPD Adula***
 ```{r eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 NPD_Adula <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Adula diegensis"))
@@ -2040,31 +2042,26 @@ NPD_Adula_Posbiomass_loggraph <- NPD_Adula %>%
 grid.arrange(NPD_Adula_Posbiomass_graph, NPD_Adula_Posbiomass_loggraph, nrow = 1)
 ```
 
-### ***LM - Adula DTW ~ SH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Adula_lm <- lm(data = NPD_Adula, tissue_dry_weight_g ~ length_mm)
 ols_regress(NPD_Adula_lm)
 ```
 
-### ***LM - Adula logDTW ~ SH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Adula_logDTW_lm <- lm(data = NPD_Adula, log(tissue_dry_weight_g) ~ length_mm)
 ols_regress(NPD_Adula_logDTW_lm)
 ```
 
-### ***LM - Adula logDTW ~ logSH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Adula_logDTW_logSH_lm <- lm(data = NPD_Adula, log(tissue_dry_weight_g) ~ log(length_mm))
 ols_regress(NPD_Adula_logDTW_logSH_lm)
 ```
 
-### ***Y ~ x + x^2 ***
 ```{r eval=FALSE, include=FALSE}
 NPD_Adula_DTW_SH2_lm <- lm(data = NPD_Adula, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
 ols_regress(NPD_Adula_DTW_SH2_lm)
 ```
 
-### ***NPD Musculista*** 
 ```{r eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 NPD_Musculista <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Musculista senhousia"))
@@ -2099,25 +2096,21 @@ NPD_Musculista_Posbiomass_loggraph <- NPD_Musculista %>%
 grid.arrange(NPD_Musculista_Posbiomass_graph, NPD_Musculista_Posbiomass_loggraph, nrow=1)
 ```
 
-### ***LM - Musculista DTW ~ SH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Musculista_lm <- lm(data = NPD_Musculista, tissue_dry_weight_g ~ length_mm)
 ols_regress(NPD_Musculista_lm)
 ```
 
-### ***LM - Musculista logDTW ~ SH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Musculista_logDTW_lm <- lm(data = NPD_Musculista, log(tissue_dry_weight_g) ~ length_mm)
 ols_regress(NPD_Musculista_logDTW_lm)
 ```
 
-### ***LM - Musculista logDTW ~ logSH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Musculista_logDTW_logSH_lm <- lm(data = NPD_Musculista, log(tissue_dry_weight_g) ~ log(length_mm))
 ols_regress(NPD_Musculista_logDTW_logSH_lm)
 ```
 
-### ***NPD Mytilus***
 ```{r eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 
 NPD_Mytilus <- NPD_bivalve_outrmd %>% 
@@ -2153,25 +2146,21 @@ NPD_Mytilus_Posbiomass_loggraph <- NPD_Mytilus %>%
 grid.arrange(NPD_Mytilus_Posbiomass_graph, NPD_Mytilus_Posbiomass_loggraph, nrow = 1)
 ```
 
-### ***LM - Mytilus DTW ~ SH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Mytilus_lm <- lm(data = NPD_Mytilus, tissue_dry_weight_g ~ length_mm)
 ols_regress(NPD_Mytilus_lm)
 ```
 
-### ***LM - Mytilus logDTW ~ SH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Mytilus_logDTW_lm <- lm(data = NPD_Mytilus, log(tissue_dry_weight_g) ~ length_mm)
 ols_regress(NPD_Mytilus_logDTW_lm)
 ```
 
-### ***LM - Mytilus logDTW ~ logSH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Mytilus_logDTW_logSH_lm <- lm(data = NPD_Mytilus, log(tissue_dry_weight_g) ~ log(length_mm))
 ols_regress(NPD_Mytilus_logDTW_logSH_lm)
 ```
 
-### ***LM - Unknown mussel***
 ```{r eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 NPD_Unknown <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Unknown mussel"))
@@ -2207,55 +2196,24 @@ grid.arrange(NPD_Unknown_Posbiomass_graph, NPD_Unknown_Posbiomass_loggraph, nrow
 
 ```
 
-### ***LM - Unknown mussel DTW ~ SH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Unknown_lm <- lm(data = NPD_Unknown, tissue_dry_weight_g ~ length_mm)
 ols_regress(NPD_Unknown_lm)
 ```
 
-### ***LM - Unknown mussel logDTW ~ SH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Unknown_logDTW_lm <- lm(data = NPD_Unknown, log(tissue_dry_weight_g) ~ length_mm)
 ols_regress(NPD_Unknown_logDTW_lm)
 ```
 
-### ***LM - Unknown mussel logDTW ~ logSH***
 ```{r eval=FALSE, include=FALSE}
 NPD_Unknown_logDTW_logSH_lm <- lm(data = NPD_Unknown, log(tissue_dry_weight_g) ~ log(length_mm))
 ols_regress(NPD_Unknown_logDTW_logSH_lm)
 ```
 
-### ***Biomass estimate - Remove outliers***
-```{r Newport_Bivalve_biomass_outlier, eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
-# remove outliers from data
-NPD_Posbiomass_outlier <- NPD_Posbiomass_data %>% 
-  mutate(DTW_outlier = find_outlier(NPD_Posbiomass_data$tissue_dry_weight_g)) %>% 
-  filter(DTW_outlier == FALSE)
-
-NPD_Posbiomass_outlierrmd_graph <- NPD_Posbiomass_outlier %>% 
-  ggplot(aes(x = length_mm, y = tissue_dry_weight_g, color = species)) +
-  geom_smooth(method = lm) +
-  geom_point() +
-  scale_color_manual(values = Species_colors, guide = FALSE) +
-  facet_wrap(~species) +
-  labs(x = "Shell length (mm)",
-       y = "Dry Tissue Weight (g)",
-       title = "Newport Deanza Bivalve Biomass",
-       subtitle = "Positive DTW, outliers removed") +
-  theme_classic() +
-  theme(strip.text = element_text(face = "italic")) +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-NPD_Posbiomass_outlierrmd_graph
-```
-
-### ***NPD Bivalve Biomass***
 ```{r eval=FALSE, include=FALSE}
-Bivalve_Biomass_graph <- ggplot(NPD_Posbiomass_outlier, aes(Site)) + 
+## Bar graph NPD Biomass / DTW by species
+Bivalve_Biomass_graph <- ggplot(NPD_bivalve_outrmd, aes(Site)) + 
   geom_col(aes(x = Site, y = tissue_dry_weight_g, fill = species)) +
   theme_classic() +
   scale_fill_manual(values = Species_colors) +
@@ -2270,7 +2228,7 @@ Bivalve_Biomass_graph
 Density & Biomass
 
 ### ***Bivalve Density***
-```{r Bivalve_Density, eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
+```{r Bivalve_Density, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The density of bivalves by species across sites. \\label{figurelabel}"}
 # read in bivalve density data from cleaned data file
 Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
 
@@ -2317,9 +2275,6 @@ Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) +
 Bivalve_Den_graph
 ```
 
-Up & Down
-
-### ***Facet Plots***
 ```{r Bar_Graphs_up_vs_down, eval=FALSE, cache=TRUE, include=FALSE}
 Bar_up_down_data <- Master_analysis_table %>%
  # select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
@@ -2347,8 +2302,7 @@ Paired_bar_chl_graph <- ggplot(data = Bar_up_down_data, aes(x = Site_exp_date, y
 plot(Paired_bar_chl_graph)
 ```
 
-### ***Graphs using grid.arrange()***
-```{r Bar_Graphs_up_vs_down_grid.arrange, eval=FALSE, cache=TRUE, include=FALSE}
+```{r Bar_Graphs_up_vs_down_grid.arrange, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="Chlorphyll concentrations measured at upstream and downstream instruments across all sites, filtration trials, and negative controls. \\label{figurelabel}"}
 ############## Try 2 ####### make separate graphs, combine using grid.arrange()
 
 ##### Can't figure out how to properly label x axis. Works with Exp_Date, but can't shorten without messing up data:label pairs. Can't spend more time on this right now. come back if time -AM 2020_3_3
