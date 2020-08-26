@@ -47,7 +47,7 @@ createOutputDirectories()
 Master_analysis_table <- fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
 Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
 Density_directory = "./Data/bivalve_density_community"
-NPD_density = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
+NPD_bivalves = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
 
 ##################### Data #########################################
 # Remove San Diego filtration trial - not applicable to this analysis - different experimental set up
@@ -1663,15 +1663,15 @@ ols_regress(NPD_ChlRmdPos_Turb_lm)
 ```{r Oly_DTW_Shell_length, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
 ############ Olympia DTW and Shell Length #####################
 # Determine what quadrat samples have missing data (NAs)
-NPD_biv_bio_summary <- NPD_density %>% 
+NPD_biv_bio_summary <- NPD_bivalves %>% 
   group_by(excavation_sample) %>% 
   summarize(avg_DTW = mean(tissue_dry_weight_g))
 
 # what are the unique species in dataset
-#unique(NPD_density$species)
+#unique(NPD_bivalves$species)
 
 # Still contains missing data --> which quadrats to use for analyses
-NPD_bivalve_data_clean <- NPD_density %>% 
+NPD_bivalve_data_clean <- NPD_bivalves %>% 
   filter(!excavation_sample %in% c("Q10", "Q4", "Q8")) %>% 
   mutate(species = ifelse(grepl("adula", ignore.case = T, species), "Adula diegensis",
                           ifelse(grepl("muscul.", ignore.case = T, species), "Musculista senhousia",
