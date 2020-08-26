@@ -37,16 +37,16 @@ library(MASS) # collection of datasets and functions
 library(ISLR) # Dataset in Intro to statistical learning
 
 # source functions 
-source("../functions.R")
+source("./functions.R")
 # define output directory
-output_directory = "../output"
+output_directory = "./output"
 # create output directories (same as Insitu_Filtraiton_Analysis_script.Rmd)
 createOutputDirectories()
 
 ##################### Read in Data from  project output ##########################
-Master_analysis_table <- fread(file.path('../output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
-Avg_TPM_summary_table <- fread(file.path('../output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
-Density_directory = "../Data/bivalve_density_community"
+Master_analysis_table <- fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
+Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
+Density_directory = "./Data/bivalve_density_community"
 NPD_density = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
 
 ##################### Data #########################################
@@ -1738,10 +1738,13 @@ Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_
 plot(Oly_shell_DTW_rm_out)
 ```
 
-```{r Linear_model_DTW_length, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
+```{r Linear_model_DTW_length, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
 
 ols_regress(Oly_DTW_lm)
+
+coef(Oly_DTW_lm)
+Oly_DTW_SL_formula <- function(length_mm) {length_mm + coef(Oly_DTW_lm)[,1]}
 ```
 
 ```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=8, fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{figurelabel}"}
@@ -2286,8 +2289,9 @@ Bivalve_Den_graph
 
 ```{r Bivlave_biomass_sites, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width="70%", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The biomass of bivalves by species across Olympia oyster restoration sites. \\label{figurelabel}"}
 # double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
-SR_Density_directory = "../Data/bivalve_density_community"
+SR_Density_directory = "./Data/bivalve_density_community"
 SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
+
 
 ```
 
