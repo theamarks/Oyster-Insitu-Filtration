@@ -2224,7 +2224,7 @@ NPD_Unknown_logDTW_logSH_lm <- lm(data = NPD_Unknown, log(tissue_dry_weight_g) ~
 ols_regress(NPD_Unknown_logDTW_logSH_lm)
 ```
 
-```{r eval=FALSE, include=FALSE}
+```{r echo=FALSE}
 ## Bar graph NPD Biomass / DTW by species
 Bivalve_Biomass_graph <- ggplot(NPD_bivalve_outrmd, aes(Site)) + 
   geom_col(aes(x = Site, y = tissue_dry_weight_g, fill = species)) +
@@ -2282,6 +2282,13 @@ Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) +
   labs(y = expression("Individuals per m"^2))
   
 Bivalve_Den_graph
+```
+
+```{r Bivlave_biomass_sites, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width="70%", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The biomass of bivalves by species across Olympia oyster restoration sites. \\label{figurelabel}"}
+# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
+SR_Density_directory = "../Data/bivalve_density_community"
+SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
+
 ```
 
 ```{r Bar_Graphs_up_vs_down, cache=TRUE, include=FALSE}
