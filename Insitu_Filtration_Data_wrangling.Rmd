@@ -388,15 +388,17 @@ MB_species_den <- tibble(Site = "Morro Bay",
                          species_den_m2 = 600)
 
 # combine species density dataframes - All sites
-Species_density_summary <- bind_rows(NPD_may18_species_den,
+Bivalve_summary <- bind_rows(NPD_may18_species_den,
                                      NPSM_may18_species_den,
                                      SR_nov17_species_den,
                                      MB_species_den, .id = NULL)
 
-Species_density_summary <- Species_density_summary %>% 
+fwrite(Bivalve_summary, file.path(Bivalve_output_directory, "Bivalve_Site_summary.csv"))
+
+Species_density_summary <- Bivalve_summary %>% 
   pivot_wider(names_from = Species,
               values_from = species_den_m2) %>% 
-  select(Site, Date,
+  dplyr::select(Site, Date,
          "Adula_diegensis_m2" = Adula_diegensis,
          "Musculista_senhousia_m2" = Musculista_senhousia,
          "Mytilus_galloprovincialis_m2" = Mytilus_galloprovincialis,
