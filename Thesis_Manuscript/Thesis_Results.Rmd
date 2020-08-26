@@ -1,14 +1,18 @@
 ---
-title: "In situ Filtration Analysis Models & Graphs"
 output: 
-  flexdashboard::flex_dashboard:
-    vertical_layout: scroll
-    theme: yeti
-editor_options: 
-  chunk_output_type: console
+  pdf_document:
+    fig_caption: yes
 ---
+# Results
 
-```{r setup, include=FALSE}
+```{r setup, include = F, cache=FALSE}
+# set working directory to R project instead of "./Thesis_Manuscript" folder
+setwd("./")
+# set default code chunk settings to save figures in Figures folder, show no output, and cache 
+knitr::opts_chunk$set(fig.path = "./Thesis_Manuscript/Figures", echo = FALSE, cache=TRUE, fig.asp=0.618, fig.align = "center")
+```
+
+```{r load_packages_data, include=FALSE}
 ################### Packages ###########################
 library(dplyr)
 library(tidyr)
@@ -33,7 +37,7 @@ library(MASS) # collection of datasets and functions
 library(ISLR) # Dataset in Intro to statistical learning
 
 # source functions 
-source("functions.R")
+source("./functions.R")
 # define output directory
 output_directory = "./output"
 # create output directories (same as Insitu_Filtraiton_Analysis_script.Rmd)
@@ -147,12 +151,8 @@ find_outlier <- function(data){
 }
 ```
 
-Filtration Ranges
-=====================================
-
-### ***Filtration by site (Filtration Trials only)***
-```{r FR_ChlRmd_Filter, fig.height=5, fig.width=14, cache=TRUE}
-# Filtration_only_data defined in setup
+```{r FR_ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=4.3, out.width="50%", fig.cap="The habitat level filtration rates and percent chlorophyll removed of all filtration trials across sites. \\label{figurelabel}"}
+### Filtration by site (Filtration Trials only)
 
 FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
@@ -160,6 +160,7 @@ FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Hab_FR_Label)
+plot(FR_box) 
 
 Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) +
@@ -168,102 +169,100 @@ Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Prt_Chl_Label)
+plot(Chl_Rmd_box)
 
-FR_Site_boxplot <- grid.arrange(FR_box, Chl_Rmd_box, nrow = 1)
-FR_Site_boxplot
-ggsave(FR_Site_boxplot, 
-       filename = "FR_Site_boxplot.pdf", 
-       path = "./Figures", 
-       fig.width = 6,
-       scale = 1 )
+#FR_Site_boxplot <- grid.arrange(FR_box, Chl_Rmd_box, nrow = 1)
+#FR_Site_boxplot
+#ggsave(FR_Site_boxplot, 
+      # filename = "FR_Site_boxplot.pdf", 
+      # path = "./Figures", 
+       #fig.width = 6,
+       #scale = 1 )
 
 ```
 
-### ***Filtration by site (Positive values only)*** 
-```{r FR_ChlRmd_TPM_posFilter, fig.height=5, fig.width=14, cache=TRUE}
+```{r FR_ChlRmd_Site_posFilter_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=4.3, out.width="50%", fig.cap="The habitat level filtration rates and percent chlorophyll removed of filtration trials (positive values only) across sites. \\label{figurelabel}"}
 # Filtration_pos_data defined in setup
 
-FR_TPM_box_pos <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
+FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
-       y = Hab_FR_Label,
-       title = 'Positive L/hr/m^2 only')
+       y = Hab_FR_Label)
 
-Chl_Rmd_box_pos <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
+plot(FR_pos_box)
+
+ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
-       y = Prt_Chl_Label,
-       title = 'Positive % Chl Rmd only')
+       y = Prt_Chl_Label)
+plot(ChlRmd_pos_box)
 
-grid.arrange(FR_TPM_box_pos, Chl_Rmd_box_pos, nrow = 1)
+#grid.arrange(FR_TPM_box_pos, Chl_Rmd_box_pos, nrow = 1)
 ```
 
-TPM
-=====================================
-
-### ***Filtration vs TPM (Positive Filtration Trials only)***
-```{r , fig.height=5, fig.width=14, cache=TRUE}
+```{r FR_ChlRmd_TPM_point, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=4.3, out.width="50%", fig.cap="The habitat level filtration rates and percent chlorophyll removed of positive filtration trials in response to seston total particulate matter (TPM) . \\label{figurelabel}"}
 FRPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, L_hr_m2 )) +
-  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  #geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
   scale_color_manual(values = Site_colors) +
   theme_classic() +
   labs(x = TPM_Label,
-       y = Hab_FR_Label,
-       title = 'Pos Filtration Trials') +
-  guides(fill = FALSE) +
+       y = Hab_FR_Label) +
+  guides(color = FALSE)
   # line equation on graph
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
+ # ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+  #             formula = x_y_formula,
+   #            parse = TRUE,
+     #          label.x = "right",
+      #         label.y = "bottom")
+
+plot(FRPos_TPM_graph)
 
 Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
-  geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
+  #geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
   scale_color_manual(values = Site_colors) +
   theme_classic() +
+  theme(legend.position = c(.85,.75),
+        legend.title = element_blank(),
+        legend.background = element_blank(),
+        legend.box.background = element_rect(colour = "black")) + 
   labs(x = TPM_Label,
-       y = Prt_Chl_Label,
-       title = 'Pos Filtration Trials') +
-  guides(fill = FALSE) +
+       y = Prt_Chl_Label) 
+ # guides(color = FALSE) 
   # line equation on graph
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
+  #ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+   #            formula = x_y_formula,
+    #           parse = TRUE,
+     #          label.x = "right",
+      #         label.y = "bottom")
 
-grid.arrange(FRPos_TPM_graph, Chl_RmdPos_TPM_graph, nrow = 1)
+plot(Chl_RmdPos_TPM_graph)
+
+#grid.arrange(FRPos_TPM_graph, Chl_RmdPos_TPM_graph, nrow = 1)
 ```
 
-### ***FR Pos ~ TPM Linear Model***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r FRpos_TPM_LM, eval=FALSE, cache=TRUE, include=FALSE}
 FRPos_TPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_TPM)
 #summary(FR_TPM_lm)
 ols_regress(FRPos_TPM_lm)
+# Not significant
 ```
 
-> Not significant
-
-### ***ChlRmd Y ~ X Linear Model***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r ChlRmdpos_TPM_LM, eval=FALSE, cache=TRUE, include=FALSE}
 ChlRmdPos_TPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_TPM)
 #summary(ChlRmdPos_TPM_lm)
 ols_regress(ChlRmdPos_TPM_lm)
+# Not significant
 ```
 
-> Not significant predictor
-
-### ***ChlRmd Y ~ X Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r ChlRmdpos_TPM_LM_diagnostics, eval=FALSE, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(ChlRmdPos_TPM_lm)
 
@@ -273,8 +272,7 @@ plot(ChlRmdPos_TPM_lm)
 # which.max(hatvalues(ChlRmdPos_TPM_lm)
 ```
 
-### ***ChlRmd vs TPM Transformations***
-```{r , fig.height=10, fig.width=12, cache=TRUE}
+```{r ChlRmd_TPM_Transform, eval=FALSE, fig.width=12, include=FALSE}
 Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -358,17 +356,13 @@ grid.arrange(Chl_RmdPos_TPM_graph, logChlRmdPos_logTPM_graph,
              ChlRmdPos_logTPM_graph, ChlRmdPos_TPM2_graph, nrow = 2)
 ```
 
-### ***Log ~ Log Linear Model***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r logChlRmdPos_logTPM_lm, eval=FALSE, cache=TRUE, include=FALSE}
 logChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_TPM))
 #summary(ChlRmdPos_TPM_lm)
 ols_regress(logChlRmdPos_logTPM_lm)
 ```
 
-> Not huge difference between regular and log transformed.
-
-### ***Log ~ Log Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r logChlRmdPos_logTPM_lm_diag, eval=FALSE, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(logChlRmdPos_logTPM_lm)
 
@@ -378,24 +372,19 @@ plot(logChlRmdPos_logTPM_lm)
 # which.max(hatvalues(logChlRmdPos_logTPM_lm)
 ```
 
-### ***Y ~ log(x)***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r ChlRmdPos_logTPM_lm, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Avg_TPM))
 #summary(ChlRmdPos_logTPM_lm)
 ols_regress(ChlRmdPos_logTPM_lm)
 ```
 
-### ***Y ~ x + x^2***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r ChlRmdPos_TPM2_lm, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_TPM2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Avg_TPM, degree = 2, raw = T))
 #summary(ChlRmdPos_TPM_lm)
 ols_regress(ChlRmdPos_TPM2_lm)
 ```
 
-> x^2 almost significant predictory p-value: 0.08
-
-### ***Y ~ x + x^2 Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r ChlRmdPos_TPM2_lm_diag, eval=FALSE, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(ChlRmdPos_TPM2_lm)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
@@ -404,60 +393,54 @@ plot(ChlRmdPos_TPM2_lm)
 # which.max(hatvalues(logChlRmdPos_logTPM_lm)
 ```
 
-### ***Deanza only Positive Filtration vs TPM***
-```{r NPD_FRPos_TPM_graph, fig.height=5, fig.width=12, cache=TRUE}
+```{r NPD_FRPos_TPM_graph, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=4.3, out.width="50%", fig.cap="The positive habitat level filtration rates in response to seston total particulate matter (TPM) at the Deanza site in Newport Bay, California. \\label{figurelabel}"}
 NPD_FRPos_TPM_graph <- ggplot((Deanza_PosFilter_data), aes(Avg_TPM, L_hr_m2 )) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
-  geom_point() +
+  geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
-  #scale_color_manual(values = Site_colors) +
+  scale_color_manual(values = Site_colors) +
   theme_classic() +
   labs(x = TPM_Label,
        y = Hab_FR_Label) +
-  guides(fill = FALSE) +
+  guides(color = FALSE) +
   # line equation on graph
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
                label.x = "right",
                label.y = "bottom")
+plot(NPD_FRPos_TPM_graph)
 
 NPD_ChlRmdPos_TPM_graph <- ggplot((Deanza_PosFilter_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
-  geom_point() +
+  geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
-  #scale_color_manual(values = Site_colors) +
+  scale_color_manual(values = Site_colors) +
   theme_classic() +
   labs(x = TPM_Label,
        y = Prt_Chl_Label) +
-  guides(fill = FALSE) +
+  guides(color = FALSE) +
   # line equation on graph
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
                label.x = "right",
                label.y = "bottom")
-grid.arrange(NPD_FRPos_TPM_graph, NPD_ChlRmdPos_TPM_graph, nrow = 1)
+plot(NPD_ChlRmdPos_TPM_graph)
+#grid.arrange(NPD_FRPos_TPM_graph, NPD_ChlRmdPos_TPM_graph, nrow = 1)
 ```
 
-### ***Deanza Positive Filter - FR ~ TPM***
-```{r, fig.height=6, fig.width=6, cache=T}
+```{r NPD_FRpos_TPM_LM, eval=FALSE, cache=T, include=FALSE}
 NPD_PosFR_TPM_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Avg_TPM)
 ols_regress(NPD_PosFR_TPM_lm)
 ```
 
-> Not significant predictor
-
-### ***Deanza Postive Filter - ChlRmd ~ TPM***
-```{r, fig.height=6, fig.width=6, cache=T}
+```{r NPD_ChlRmdPos_TPM_LM, eval=FALSE, cache=T, include=FALSE}
 NPD_PosChlRmd_TPM_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Avg_TPM)
 ols_regress(NPD_PosChlRmd_TPM_lm)
 ```
 
-> Did not do further transformations, didn't look like obvious pattern to investigate
-
-### ***Y ~ X Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r NPD_PosChlRmd_TPM_lm_diag, eval=FALSE, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(NPD_PosChlRmd_TPM_lm)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
@@ -466,11 +449,7 @@ plot(NPD_PosChlRmd_TPM_lm)
 # which.max(hatvalues(NPD_PosChlRmd_TPM_lm)
 ```
 
-PIM
-=====================================
-
-### ***Filter Positive vs PIM***
-```{r FRPos vs PIM, fig.height=5, fig.width=14, cache=TRUE}
+```{r FRPos_Chlpos_PIM, eval=FALSE, include=FALSE}
 FRPos_PIM_graph <- ggplot(Filtration_pos_data, aes(Avg_PIM, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -486,6 +465,7 @@ FRPos_PIM_graph <- ggplot(Filtration_pos_data, aes(Avg_PIM, L_hr_m2)) +
                parse = TRUE,
                label.x = "right",
                label.y = "bottom")
+plot(FRPos_PIM_graph)
 
 Chl_RmdPos_PIM_graph <- ggplot(Filtration_pos_data, aes(Avg_PIM, pcnt_Chl_rmvd)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
@@ -502,27 +482,21 @@ Chl_RmdPos_PIM_graph <- ggplot(Filtration_pos_data, aes(Avg_PIM, pcnt_Chl_rmvd))
                parse = TRUE,
                label.x = "right",
                label.y = "bottom")
-grid.arrange(FRPos_PIM_graph, Chl_RmdPos_PIM_graph, nrow = 1)
+plot(FRPos_PIM_graph)
+#grid.arrange(FRPos_PIM_graph, Chl_RmdPos_PIM_graph, nrow = 1)
 ```
 
-### ***FR Pos ~ PIM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r FRPos_PIM_LM, eval=FALSE, cache=TRUE, include=FALSE}
 FRPos_PIM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_PIM)
 ols_regress(FRPos_PIM_lm)
 ```
 
-> Not significant
-
-### ***ChlRmd Pos ~ PIM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r ChlRmdPos_PIM_LM, eval=FALSE, cache=TRUE, include=FALSE}
 ChlRmdPos_PIM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_PIM)
 ols_regress(ChlRmdPos_PIM_lm)
 ```
 
-> Not significant
-
-### ***Y ~ X Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r ChlRmdPos_PIM_LM_Diag, eval=FALSE, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(ChlRmdPos_PIM_lm)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
@@ -531,8 +505,7 @@ plot(ChlRmdPos_PIM_lm)
 # which.max(hatvalues(ChlRmdPos_PIM_lm)
 ```
 
-### ***Deanza FR Positive ~ PIM***
-```{r Deanza_Filter_Pos_PIM, fig.height=5, fig.width=12, cache=TRUE}
+```{r Deanza_Filter_Pos_PIM, eval=FALSE, cache=TRUE, include=FALSE}
 NPD_FRPos_PIM_graph <- ggplot(Deanza_PosFilter_data, aes(Avg_PIM, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point() +
@@ -567,24 +540,17 @@ NPD_ChlRmdPos_PIM_graph <- ggplot(Deanza_PosFilter_data, aes(Avg_PIM, pcnt_Chl_r
 grid.arrange(NPD_FRPos_PIM_graph, NPD_ChlRmdPos_PIM_graph, nrow = 1)
 ```
 
-### ***NPD FRPos ~ PIM LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r NPD_FRpos_PIM_LM, eval=FALSE, cache=TRUE, include=FALSE}
 NPD_FRpos_PIM_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Avg_PIM)
 ols_regress(NPD_FRpos_PIM_lm)
 ```
 
-> Not significant
-
-### ***NPD ChlRmdPos ~ PIM LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r NPD_ChlRmdpos_PIM_LM, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_ChlRmdpos_PIM_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Avg_PIM)
 ols_regress(NPD_ChlRmdpos_PIM_lm)
 ```
 
-> Significant p-value: 0.045
-
-### ***Y ~ X Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r NPD_ChlRmdpos_PIM_LM_diag, eval=FALSE, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(NPD_ChlRmdpos_PIM_lm)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
@@ -593,11 +559,7 @@ plot(NPD_ChlRmdpos_PIM_lm)
 # which.max(hatvalues(NPD_ChlRmdpos_PIM_lm)
 ```
 
-OC 
-=====================================
-
-### ***Filter Positive vs OC***
-```{r FRPos vs OC, fig.height=5, fig.width=15, cache=TRUE}
+```{r FRPos_OC, eval=FALSE,  cache=TRUE, include=FALSE}
 FRPos_OC_graph <- ggplot(Filtration_pos_data, aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -632,24 +594,17 @@ Chl_RmdPos_OC_graph <- ggplot(Filtration_pos_data, aes(Avg_OC_Ratio, pcnt_Chl_rm
 grid.arrange(FRPos_OC_graph, Chl_RmdPos_OC_graph, nrow = 1)
 ```
 
-### ***FR Pos by OC Linear Model***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r FRPos_OC_LM, eval=FALSE, cache=TRUE, include=FALSE}
 FRPos_OC_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_OC_Ratio)
 ols_regress(FRPos_OC_lm)
 ```
 
-> Not significant predictor 
-
-### ***ChlRmd Pos by OC Linear Model***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r ChlrRmdPos_OC_LM, eval=FALSE, cache=TRUE, include=FALSE}
 ChlRmdPos_OC_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
 ols_regress(ChlRmdPos_OC_lm)
 ```
 
-> Significant Avg_OC_Ratio p-value: 0.040
-
-### ***Y ~ X Diagnostics***
-```{r, fig.height=10, fig.width=15, cache =TRUE}
+```{r ChlRmdPos_OC_LM_diag, eval=FALSE, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(ChlRmdPos_OC_lm)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
@@ -658,8 +613,7 @@ plot(ChlRmdPos_OC_lm)
 # which.max(hatvalues(ChlRmdPos_OC_lm)
 ```
 
-### ***Transformations - Positive ChlRmd vs OC***
-```{r LogChlRmdPos_OC, fig.height=5, fig.width=6, cache=TRUE}
+```{r ChlRmdPos_OC_LM_Trans, eval=FALSE, cache=TRUE, include=FALSE}
 logChl_RmdPos_logOC_graph <- ggplot(Filtration_pos_data, 
                                     aes(log(Avg_OC_Ratio), log(pcnt_Chl_rmvd))) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
@@ -727,33 +681,23 @@ grid.arrange(logChl_RmdPos_logOC_graph, ChlRmdPos_loglogOC_graph,
 
 ```
 
-### ***logChlRmd Pos ~ logOC Linear Model***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r ChlRmdPos_Loglog_LM, eval=FALSE, cache=TRUE, include=FALSE}
 logChlRmdPos_logOC_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_OC_Ratio))
 ols_regress(logChlRmdPos_logOC_lm)
 ```
 
-> Not a big difference between regular and log transformed model. p-value: 0.046
-
-### ***ChlRmd Pos ~ logOC Linear Model***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r ChlRmdPos_OC_logLM, eval=FALSE, cache=TRUE, include=FALSE}
 ChlRmdPos_logOC_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Avg_OC_Ratio))
 ols_regress(ChlRmdPos_logOC_lm)
 ```
 
-> Y ~ X model better rthan logY ~logX p-value: 0.041
-
-### ***ChlRmd Pos ~ OC^2 Linear Model***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r ChlrRmdPos_OC_PolyLM, eval=FALSE, cache=TRUE, include=FALSE}
 ChlRmdPos_OC2_lm <- lm(data = Filtration_pos_data, 
                        pcnt_Chl_rmvd ~ poly(Avg_OC_Ratio, degree = 2, raw = T))
 ols_regress(ChlRmdPos_OC2_lm)
 ```
 
-> Y ~ x + x^2 p-value: 0.87
-
-### ***Deanza FR Positive ~ OC***
-```{r Deanza_Filter_Pos_OC, fig.height=5, fig.width=12, cache=TRUE}
+```{r Deanza_Filter_Pos_OC_graph, eval=FALSE, cache=TRUE, include=FALSE}
 FRPos_OC_NPD_graph <- ggplot(Deanza_PosFilter_data, aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point() +
@@ -769,6 +713,7 @@ FRPos_OC_NPD_graph <- ggplot(Deanza_PosFilter_data, aes(Avg_OC_Ratio, L_hr_m2)) 
                parse = TRUE,
                label.x = "right",
                label.y = "bottom")
+plor(FRPos_OC_NPD_graph)
 
 Chl_RmdPos_OC_NPD_graph <- ggplot(Deanza_PosFilter_data, aes(Avg_OC_Ratio, pcnt_Chl_rmvd)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
@@ -785,28 +730,21 @@ Chl_RmdPos_OC_NPD_graph <- ggplot(Deanza_PosFilter_data, aes(Avg_OC_Ratio, pcnt_
                parse = TRUE,
                label.x = "right",
                label.y = "bottom")
-
-grid.arrange(FRPos_OC_NPD_graph, Chl_RmdPos_OC_NPD_graph, nrow = 1)
+plot(Chl_RmdPos_OC_NPD_graph)
+#grid.arrange(FRPos_OC_NPD_graph, Chl_RmdPos_OC_NPD_graph, nrow = 1)
 ```
 
-### ***Deanza FR Positive by OC Linear Model***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r NPD_FRpos_OC_LM, eval=FALSE, cache=TRUE, include=FALSE}
 FRPos_OC_NPD_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Avg_OC_Ratio)
 ols_regress(FRPos_OC_NPD_lm)
 ```
 
-> Not significant
-
-### ***Deanza ChlRmd Positive by OC Linear Model***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r NPD_ChlRmdpos_OC_LM, eval=FALSE, cache=TRUE, include=FALSE}
 ChlRmdPos_OC_NPD_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Avg_OC_Ratio)
 ols_regress(ChlRmdPos_OC_NPD_lm)
 ```
 
-> Not significant. p-value: 0.112
-
-### ***Y ~ X Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r NPD_ChlRmdpos_OC_LM_diag, eval=FALSE, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(ChlRmdPos_OC_NPD_lm)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
@@ -815,49 +753,42 @@ plot(ChlRmdPos_OC_NPD_lm)
 # which.max(hatvalues(ChlRmdPos_OC_NPD_lm)
 ```
 
-### ***Log Deanza ChlRmd Positive by OC Linear Model***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r NPD_ChlRmdpos_OC_logLM, eval=FALSE, cache=TRUE, include=FALSE}
 ChlRmdPos_logOC_NPD_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ log(Avg_OC_Ratio))
 ols_regress(ChlRmdPos_logOC_NPD_lm)
 ```
 
-> Only slight improvement by log(OC). p-value: 0.106
-
-### ***ANOVA b/w regular and log(x) models***
-```{r}
+```{r ANOVA_ChlRmdPos_OC_NPD_LM, eval=FALSE, include=FALSE}
 anova(ChlRmdPos_OC_NPD_lm, ChlRmdPos_logOC_NPD_lm)
 ```
 
-> Not significant difference between models
-
-### ***Log Deanza ChlRmd Positive by logOC Linear Model***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r NPD_ChlRmdpos_OC_loglogLM, eval=FALSE, cache=TRUE, include=FALSE}
 logChlRmdPos_logOC_NPD_lm <- lm(data = Deanza_PosFilter_data, log(pcnt_Chl_rmvd) ~ log(Avg_OC_Ratio))
 ols_regress(logChlRmdPos_logOC_NPD_lm)
 ```
 
-> worse model than single x-axis transformation. p-value: 0.156 
+```{r TPM_OC_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.asp=0.618, fig.show="hold", fig.width=6, out.width = "70%", fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all filtration and negative control trials. \\label{figurelabel}"}
 
-TPM X OC
-=====================================
-
-### ***TPM by OC***
-```{r TPM_OC, fig.width=14, fig.height=10, cache=TRUE}
 TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) + 
   labs(x = TPM_Label, 
-       y = "Average Organic Content Ratio", 
-       title = "All Trials") + 
+       y = "Average Organic Content Ratio") + 
   theme_classic() +
+  theme(legend.title = element_blank(),
+        legend.background = element_blank(),
+        legend.box.background = element_rect(colour = "black"),
+        legend.position = c(.9,.25)) +
   #geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
-               label.x = "right",
+               label.x = "center",
                label.y = "bottom")
+plot(TPM_OC)
 
+# I don't think a box plot is valuable to show the relationship (AM- 2020_8_24)
 TPM_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_TPM)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
@@ -865,7 +796,7 @@ TPM_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_TPM)) +
   labs(x = 'Site',
        y = TPM_Label,
        title = "Total Particulate Matter by Site")
-
+# I don't think a box plot is valuable to show the relationship (AM- 2020_8_24)
 OC_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_OC_Ratio)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
@@ -875,6 +806,7 @@ OC_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_OC_Ratio)) +
        title = "Seston Organic Content Ratio by Site")
 
 # Y-log model
+# I don't think a log transformation is valuable to show the relationship (AM- 2020_8_24)
 OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
 TPM_newrange <- data.frame(Avg_TPM = seq(from = 0, to = 0.075, by = 0.005))
 TPMlog_Pred <- data.frame(Avg_OC_Ratio = predict(OC_logTPM_all_LM, newdata = TPM_newrange))
@@ -890,29 +822,20 @@ OC_logTPM_graph <- ggplot(Avg_TPM_summary_table, aes(Avg_TPM, Avg_OC_Ratio)) +
        title = 'All trials',
        subtitle = 'y ~ log(x)')
 
-grid.arrange(OC_box, TPM_box, TPM_OC, OC_logTPM_graph, nrow = 2)
+# grid.arrange(OC_box, TPM_box, TPM_OC, OC_logTPM_graph, nrow = 2)
 ```
 
-> All Filtration and Neg Control Trials included. Samples independent of kind of trial. Not sure why mean function isn't working on TPM boxplot
-
-### ***All TMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r TPM_OC_LM, eval=FALSE, cache=TRUE, include=FALSE}
 OC_TPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM)
 ols_regress(OC_TPM_all_LM)
 ```
 
-> Significant. p-value: 0.032, R^2: 0.164
-
-### ***All logTMP ~ OC***
-```{r OC_logTPM_all_LM, fig.height=6, fig.width=6, cache =TRUE}
+```{r OC_logTPM_all_LM, eval=FALSE, cache=TRUE, include=FALSE}
 OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
 ols_regress(OC_logTPM_all_LM)
 ```
 
-> significant. p-value: 0.004, R^2: 0.279
-
-### ***Y ~ logX Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r OC_logTPM_all_LM_diag, eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(OC_logTPM_all_LM)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
@@ -921,16 +844,13 @@ plot(OC_logTPM_all_LM)
 # which.max(hatvalues(OC_logTPM_all_LM))
 ```
 
-### ***All logTMP ~ logOC***
-```{r logOC_logTPM_all_LM, fig.height=6, fig.width=6, cache =TRUE}
+```{r logOC_logTPM_all_LM, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 logOC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM))
 ols_regress(logOC_logTPM_all_LM)
 ```
 
-> significant. p-value: 0.010, R^2: 0.202
+```{r TPM_OC_Sites_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=8, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. \\label{figurelabel}"}
 
-### ***TPM vs OC by sites***
-```{r TPM_OC_Sites, fig.height=10, fig.width=12, cache=TRUE}
 TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")),
                         aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -991,74 +911,54 @@ TPM_OC_MB <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay"
                label.x = "right",
                label.y = "bottom")
 
-grid.arrange(TPM_OC_Deanza, TPM_OC_NPSM, TPM_OC_SR, TPM_OC_MB, nrow = 2)
+TPM_OC_bysite_graph <- grid.arrange(TPM_OC_Deanza, TPM_OC_NPSM, TPM_OC_SR, TPM_OC_MB, nrow = 2)
+# using plot() renders plot twice. Grid.arrange must render on its own
+# plot(TPM_OC_bysite_graph)
 ```
 
-### ***San Rafael TMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r SR_TPM_OC_LM, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 TPM_SR <- Avg_TPM_summary_table %>% filter(Site == "San Rafael")
 
 OC_TPM_SR_LM <- lm(data = TPM_SR, Avg_OC_Ratio ~ Avg_TPM)
 ols_regress(OC_TPM_SR_LM)
 ```
 
-> not significant
-
-### ***Morro Bay TMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r MB_TPM_OC_LM, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 TPM_MB <- Avg_TPM_summary_table %>% filter(Site == "Morro Bay")
 
 OC_TPM_MB_LM <- lm(data = TPM_MB, Avg_OC_Ratio ~ Avg_TPM)
 ols_regress(OC_TPM_MB_LM)
 ```
 
-> not significant
-
-### ***Shellmaker TMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r NPSM_TPM_OC_LM, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 TPM_NPSM <- Avg_TPM_summary_table %>% filter(Site == "Shellmaker")
 
 OC_TPM_NPSM_LM <- lm(data = TPM_NPSM, Avg_OC_Ratio ~ Avg_TPM)
 ols_regress(OC_TPM_NPSM_LM)
 ```
 
-> not significant
-
-### ***Deanza TMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r NPD_TPM_OC_LM, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
 
 OC_TPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ Avg_TPM)
 ols_regress(OC_TPM_NPD_LM)
 ```
 
-> not significant, almost. p-value: 0.94
-
-### ***Deanza logTMP ~ OC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r NPD_TPM_OC_LMlog, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
 
 OC_logTPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ log(Avg_TPM))
 ols_regress(OC_logTPM_NPD_LM)
 ```
 
-> significant. p-value: 0.027
-
-### ***Deanza logTMP ~ logOC***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r NPD_TPM_OC_LMloglog, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
 
 logOC_logTPM_NPD_LM <- lm(data = TPM_NPD, log(Avg_OC_Ratio) ~ log(Avg_TPM))
 ols_regress(logOC_logTPM_NPD_LM)
 ```
 
-> more significant. p-value: 0.013
-
-Temperature
-=====================================
-
-### ***Temperature***
-```{r Filter_Temp, fig.height=5, fig.width=14, cache=TRUE, echo=FALSE}
+```{r Filter_Temp, eval=FALSE, fig.height=5, fig.width=14, cache=TRUE, include=FALSE}
 
 FR_pos_Temp <- ggplot(Filtration_pos_data, aes(Temp_C_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1091,24 +991,17 @@ Chl_Rmd_pos_Temp <- ggplot(Filtration_pos_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
 grid.arrange(FR_pos_Temp, Chl_Rmd_pos_Temp, nrow = 1)
 ```
 
-### ***FR Positive ~ Temp LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r FRpos_Temp_LM, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 FRPos_temp_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 ols_regress(FRPos_temp_lm)
 ```
 
-> Not significant
-
-### ***ChlRmd Positive ~ Temp LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r ChlRmdpos_Temp_LM, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_temp_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 ols_regress(ChlRmdPos_temp_lm)
 ```
 
-> Not significant
-
-### ***ChlRmd Pos ~ Temp Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r ChlRmdpos_Temp_diag, eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(ChlRmdPos_temp_lm)
 
@@ -1118,8 +1011,7 @@ plot(ChlRmdPos_temp_lm)
 # which.max(hatvalues(ChlRmdPos_temp_lm))
 ```
 
-### ***Deanza Filtration - Temperature***
-```{r NPD_Filter_Temp, fig.height=10, fig.width=12, cache=TRUE, echo=FALSE}
+```{r NPD_Filter_Temp, eval=FALSE, fig.height=10, fig.width=12, cache=TRUE, include=FALSE}
 
 NPD_Chl_RmdPos_Temp <- ggplot(Deanza_PosFilter_data, aes(Temp_C_Up, pcnt_Chl_rmvd)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1184,43 +1076,27 @@ grid.arrange(NPD_Chl_RmdPos_Temp, NPD_ChlRmdPos_logTemp_graph,
              NPD_ChlRmdPos_loglogTemp_graph, NPD_ChlRmdPos_Temp2_graph, nrow = 2)
 ```
 
-
-### ***Deanza ChlRmd Positive ~ Temp LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r NPD_ChlRmdpos_Temp_LM, eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_ChlRmdPos_temp_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Temp_C_Up)
 ols_regress(NPD_ChlRmdPos_temp_lm)
 ```
 
-> Close to significant p-value: 0.062
-
-### ***Deanza ChlRmd Positive ~ Log Temp LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_ChlRmdPos_logtemp_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ log(Temp_C_Up))
 ols_regress(NPD_ChlRmdPos_logtemp_lm)
 ```
 
-> Log transforming x-axis does not help fit. p-value: 0.062
-
-### ***Deanza log ChlRmd Positive ~ Log Temp LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_logChlRmdPos_logtemp_lm <- lm(data = Deanza_PosFilter_data, log(pcnt_Chl_rmvd) ~ log(Temp_C_Up))
 ols_regress(NPD_logChlRmdPos_logtemp_lm)
 ```
 
-> Log transforming both axes does not help fit. p-value: 0.081
-
-### ***Deanza Y ~ x + x^2 LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_ChlRmdPos_temp2_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ poly(Temp_C_Up, degree = 2, raw = T))
 ols_regress(NPD_ChlRmdPos_temp2_lm)
 ```
 
-
-Salinity
-=====================================
-
-### ***Filtration - Salinity***
-```{r Filter_Salinity, fig.height=5, fig.width=14, cache=TRUE, echo=FALSE}
+```{r Filter_Salinity, eval=FALSE, fig.height=5, fig.width=14, cache=TRUE, include=FALSE}
 
 FR_pos_Sal <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1253,24 +1129,17 @@ Chl_Rmd_pos_Sal <- ggplot(Filtration_pos_data, aes(Sal_ppt_Up, pcnt_Chl_rmvd)) +
 grid.arrange(FR_pos_Sal, Chl_Rmd_pos_Sal, nrow = 1)
 ```
 
-### ***FR Pos ~ Salinity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 FRPos_Sal_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Sal_ppt_Up)
 ols_regress(FRPos_Sal_lm)
 ```
 
-> Not significant
-
-### ***ChlRmd Pos ~ Salinity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_Sal_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
 ols_regress(ChlRmdPos_Sal_lm)
 ```
 
-> Salinity almost significant predictor of ChlRmd (Positive Filter) p-value: 0.075
-
-### ***ChlRmd Pos ~ Salinity Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(ChlRmdPos_Sal_lm)
 
@@ -1280,8 +1149,7 @@ plot(ChlRmdPos_Sal_lm)
 # which.max(hatvalues(ChlRmdPos_Sal_lm))
 ```
 
-### ***Log ChlRmd Pos - Log Salinity***
-```{r LogChlRmdPos_LogSalinity_graph, fig.height=12, fig.width=12, cache=TRUE}
+```{r LogChlRmdPos_LogSalinity_graph, eval=FALSE, fig.height=12, fig.width=12, cache=TRUE, include=FALSE}
 ### Graph with log-log axes
 logChlRmd_pos_logSal_graph <- ggplot(Filtration_pos_data, aes(log(Sal_ppt_Up), log(pcnt_Chl_rmvd))) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1368,16 +1236,12 @@ grid.arrange(logChlRmd_pos_logSal_graph, logChlRmd_pos_logSal_graph2,
              ChlRmd_pos_logSal_graph, ChlRmd_pos_Sal2_graph, ChlRmd_pos_Sal3_graph, nrow = 3)
 ```
 
-### ***log ~ log LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 logChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Sal_ppt_Up))
 ols_regress(logChlRmdPos_logSal_lm)
 ```
 
-> How to pull out equation for regression? p-value 0.019
-
-### ***log ~ log Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(logChlRmdPos_logSal_lm)
 
@@ -1387,16 +1251,12 @@ plot(logChlRmdPos_logSal_lm)
 # which.max(hatvalues(logChlRmdPos_logSal_lm))
 ```
 
-### ***Y ~ log LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_logSal_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Sal_ppt_Up))
 ols_regress(ChlRmdPos_logSal_lm)
 ```
 
-> p-value: 0.072
-
-### ***Y ~ log Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(ChlRmdPos_logSal_lm)
 
@@ -1406,31 +1266,23 @@ plot(ChlRmdPos_logSal_lm)
 # which.max(hatvalues(ChlRmdPos_logSal_lm))
 ```
 
-### ***ANOVA Y ~ X VS Y ~ log(X)***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 anova(ChlRmdPos_Sal_lm, ChlRmdPos_logSal_lm)
 ```
 
-> Models are not significantly different
-
-### ***Y ~ X + X^2 LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_Sal2_lm <- lm(data = Filtration_pos_data, 
                         pcnt_Chl_rmvd ~ poly(Sal_ppt_Up, degree = 2, raw = T))
 ols_regress(ChlRmdPos_Sal2_lm)
 ```
 
-> p-value: 0.075
-
-### ***Y ~ X + X^3 LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_Sal3_lm <- lm(data = Filtration_pos_data, 
                         pcnt_Chl_rmvd ~ poly(Sal_ppt_Up, degree = 3, raw = T))
 ols_regress(ChlRmdPos_Sal2_lm)
 ```
 
-### ***Deanza only Filtration - Salinity***
-```{r NPD_Filter_Salinity, fig.height=5, fig.width=12, cache=TRUE, echo=FALSE}
+```{r NPD_Filter_Salinity, eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 NPD_FRPos_Salinity <- ggplot(Deanza_PosFilter_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point() +
@@ -1460,27 +1312,17 @@ NPD_ChlRmdPos_Salinity <- ggplot(Deanza_PosFilter_data, aes(Sal_ppt_Up, pcnt_Chl
 grid.arrange(NPD_FRPos_Salinity, NPD_ChlRmdPos_Salinity, nrow = 1)
 ```
 
-### ***Deanza Pos FR ~ Salinity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_FRPos_Sal_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Sal_ppt_Up)
 ols_regress(NPD_FRPos_Sal_lm)
 ```
 
-> Not significant - no obvious transformations
-
-### ***Deanza Pos ChlRmd ~ Salinity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_ChlRmdPos_Sal_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Sal_ppt_Up)
 ols_regress(NPD_ChlRmdPos_Sal_lm)
 ```
 
-> Not significant - no obvious transformations
-
-Chlorophyll
-=====================================
-
-### ***Filtration - Chlorophyll***
-```{r Filter_Chl, fig.height=15, fig.width=14, cache=TRUE, echo=FALSE}
+```{r Filter_Chl, eval=FALSE, fig.height=15, fig.width=14, cache=TRUE, include=FALSE}
 
 FR_pos_Chl <- ggplot(Filtration_pos_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1563,24 +1405,17 @@ grid.arrange(FR_pos_Chl, Chl_Rmd_pos_Chl,
              ChlRmdpos_Chl2_graph, nrow = 3)
 ```
 
-### ***FR Pos ~ Chl LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 FRPos_Chl_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Chl_ug_L_Up)
 ols_regress(FRPos_Chl_lm)
 ```
 
-> Not significant
-
-### ***ChlRmd Pos ~ Chl LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_Chl_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
 ols_regress(ChlRmdPos_Chl_lm)
 ```
 
-> Chl almost significant predictor of Chl Rmd (Pos Filter). p-value: 0.089
-
-### ***Y ~ X Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(ChlRmdPos_Chl_lm)
 
@@ -1590,31 +1425,22 @@ plot(ChlRmdPos_Chl_lm)
 # which.max(hatvalues(ChlRmdPos_Chl_lm))
 ```
 
-### ***ChlRmd Pos ~ logChl LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_logChl_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Chl_ug_L_Up))
 ols_regress(ChlRmdPos_logChl_lm)
 ```
 
-> x-axis log transformation does not help fit. p-value: 0.242
-
-### ***logChlRmd Pos ~ logChl LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 logChlRmdPos_logChl_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Chl_ug_L_Up))
 ols_regress(logChlRmdPos_logChl_lm)
 ```
 
-> log transformation of both axes does not help fit. p-value: 0.236
-
-### ***Y ~ x + x^2 LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_Chl2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Chl_ug_L_Up, degree = 2, raw = T))
 ols_regress(ChlRmdPos_Chl2_lm)
 ```
 
-
-### ***Newport Deanza Filtration***
-```{r NPD_Filter_Chl, fig.height=5, fig.width=12, cache=TRUE, echo=FALSE}
+```{r NPD_Filter_Chl, eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 
 NPD_FRPos_Chl <- ggplot(Deanza_PosFilter_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1645,24 +1471,17 @@ NPD_ChlRmdPos_Chl <- ggplot(Deanza_Filter_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd))
 grid.arrange(NPD_FRPos_Chl, NPD_ChlRmdPos_Chl, nrow = 1)
 ```
 
-### ***Deanza FR Pos ~ Chl LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_FRPos_Chl_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Chl_ug_L_Up)
 ols_regress(NPD_FRPos_Chl_lm)
 ```
 
-> not significant. No obvious transformation to make
-
-### ***Deanza ChlRmd Pos ~ Chl LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_ChlRmdPos_Chl_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Chl_ug_L_Up)
 ols_regress(NPD_ChlRmdPos_Chl_lm)
 ```
 
-> not significant. No obvious transformation to make. p-value: 0.224
-
-### ***Y ~ X Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(NPD_ChlRmdPos_Chl_lm)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
@@ -1671,35 +1490,22 @@ plot(NPD_ChlRmdPos_Chl_lm)
 # which.max(hatvalues(NPD_ChlRmdPos_Chl_lm))
 ```
 
-### ***Deanza ChlRmd Pos ~ logChl LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_ChlRmdPos_logChl_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ log(Chl_ug_L_Up))
 ols_regress(NPD_ChlRmdPos_logChl_lm)
 ```
 
-> Log transforming x-axis didn't improve fit. p-value: 0.244
-
-### ***Deanza logChlRmd Pos ~ logChl LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 logChlRmdPos_logChl_lm <- lm(data = Deanza_PosFilter_data, log(pcnt_Chl_rmvd) ~ log(Chl_ug_L_Up))
 ols_regress(logChlRmdPos_logChl_lm)
 ```
 
-> Log transforming both axes didn't improve fit. p-value: 0.217
-
-### ***Y ~ x + x^2 LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_ChlRmdPos_Chl2_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ poly(Chl_ug_L_Up, degree = 2, raw = T))
 ols_regress(NPD_ChlRmdPos_Chl2_lm)
 ```
 
-> polynomial transformation does not help fit
-
-Turbidity
-=====================================
-
-### ***Filtration - Turbidity***
-```{r Filter_Turbidity, fig.height=15, fig.width=14, cache=TRUE, echo=FALSE}
+```{r Filter_Turbidity, eval=FALSE, fig.height=15, fig.width=14, cache=TRUE, include=FALSE}
 
 FR_pos_Turb <- ggplot(Filtration_pos_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1785,48 +1591,32 @@ grid.arrange(FR_pos_Turb, Chl_Rmd_pos_Turb,
              ChlRmdpos_Turb2_graph, nrow = 3)
 ```
 
-### ***FR Pos ~ Turbidity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 FRPos_Turb_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Turbidity_NTU_Up)
 ols_regress(FRPos_Turb_lm)
 ```
 
-> Not significant
-
-### ***ChlRmd Pos ~ Turbidity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_Turb_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Turbidity_NTU_Up)
 ols_regress(ChlRmdPos_Turb_lm)
 ```
 
-> Not significant
-
-### ***ChlRmd Pos ~ logTurbidity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_logTurb_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Turbidity_NTU_Up))
 ols_regress(ChlRmdPos_logTurb_lm)
 ```
 
-> log transforming Turb doesn't help fit. p-value: 0.398 R^2: 0.072
-
-### ***logChlRmd Pos ~ logTurbidity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 logChlRmdPos_logTurb_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Turbidity_NTU_Up))
 ols_regress(logChlRmdPos_logTurb_lm)
 ```
 
-> log transforming both axes doesn't help fit. p-value: 0.188 R^2: 0.166
-
-### ***Y ~ x + x^2 LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 ChlRmdPos_Turb2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Turbidity_NTU_Up, degree = 2, raw = T))
 ols_regress(ChlRmdPos_Turb2_lm)
 ```
 
-> Polynomial transformation isn't sig better p-value: 0.68
-
-### ***Deanza Filtration - Turbidity***
-```{r NPD_Filter_Turbidity, fig.height=5, fig.width=12, cache=TRUE, echo=FALSE}
+```{r NPD_Filter_Turbidity, eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 
 NPD_FRPos_Turb <- ggplot(Deanza_PosFilter_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
@@ -1860,28 +1650,18 @@ grid.arrange(NPD_FRPos_Turb, NPD_ChlRmdPos_Turb, nrow = 1)
 
 ```
 
-### ***Deanza FR Pos ~ Turbidity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_FRPos_Turb_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Turbidity_NTU_Up)
 ols_regress(NPD_FRPos_Turb_lm)
 ```
 
-> Not significant. Almost. p-value: 0.086, R^2: 0.562
-
-### ***Deanza ChlRmd Pos ~ Turbidity LM***
-```{r, fig.height=6, fig.width=6, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 NPD_ChlRmdPos_Turb_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Turbidity_NTU_Up)
 ols_regress(NPD_ChlRmdPos_Turb_lm)
 ```
 
-> Not significant
-
-DTW X Shell length
-=====================================
-
-### ***Newport Olympia Shell length vs DTW***
-```{r Oly_DTW_Shell_length, fig.height=5, fig.width=6, cache=TRUE}
-
+```{r Oly_DTW_Shell_length, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
+############ Olympia DTW and Shell Length #####################
 # Determine what quadrat samples have missing data (NAs)
 NPD_biv_bio_summary <- NPD_density %>% 
   group_by(excavation_sample) %>% 
@@ -1931,10 +1711,7 @@ Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
 plot(Oly_shell_DTW)
 ```
 
-> Outlier probably sample processing error or error in data entry. Negative DTW data point, doesn't make sense. remove?
-
-### ***DTW Shell length Outlier analysis***
-```{r Oly_DTW_SH_outLier_removed, fig.height=5, fig.width=6, cache=TRUE}
+```{r Oly_DTW_SH_outlier_rmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width = "70%", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{figurelabel}"}
 # Remove outlier and negative DTW value
 NPD_oly_outRmd <- NPD_oly %>%
   mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
@@ -1949,32 +1726,32 @@ Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_
  # scale_color_manual(values = Site_colors, guide=FALSE) + 
   labs(x = 'Shell Length (mm)',
        y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'Outlier removed (outside mean +- 2.2 SD)') +
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA') +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
                label.x = "right",
-               label.y = "bottom") +
-  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-                       aes(label = sprintf("%i observations", stat(count))))
+               label.y = "bottom") 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
 
 plot(Oly_shell_DTW_rm_out)
 ```
 
-> Shell length explains 49% of Dry Tissue Weight. Compare this relationship [Gray unpublished cited in Blake & zu Ermgassen 2015] (Yaquina Bay) --> DTW = 6x10e-6 * SH^3.06. Negative DTW data point doesn't make senese
-
-### ***Linear model without outlier***
-```{r Linear_model_DTW_length, fig.height=6, fig.width=6, cache=TRUE}
+```{r Linear_model_DTW_length, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
+# Linear model to predict Dry Tissue weight (g) with Oly shell length (mm)
 Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
-
 ols_regress(Oly_DTW_lm)
+
+# coeficent results from linear model
+Oly_DTW_SL_coef <- coef(Oly_DTW_lm)
+# y-intercept in [[1]] position
+Oly_DTW_SL_coef[[1]]
+# creat function from model results
+Oly_DTW_SL_model <- function(length_mm) {length_mm + Oly_DTW_SL_coef[[1]]}
 ```
 
-> significant predictor. p-value: 0.000, R^2: 0.49
-
-### ***Log Transform DTW***
-```{r, fig.height=10, fig.width=12, cache=TRUE}
+```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=8, fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{figurelabel}"}
 
 ### y ~ log(x) model ####
 Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
@@ -1989,12 +1766,12 @@ Oly_SH_logxDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
+  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
+  annotate("text", x = 10, y = 0.2, label = "y ~ log(x)") +
   labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'y ~ log(x)') +
-  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-                       aes(label = sprintf("%i observations", stat(count))))
+       y = 'Dry Tissue Weight (g)') 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
 
 ### log(y) ~ x model ####
 Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
@@ -2005,12 +1782,12 @@ Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
+  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
+  annotate("text", x = 10, y = 0.2, label = "y ~ log(x)")+
   labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'log(y) ~ x') +
-  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-                       aes(label = sprintf("%i observations", stat(count))))
+       y = 'Dry Tissue Weight (g)') 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
 
 ### log(y) ~ log(x) model ###
 Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
@@ -2022,12 +1799,12 @@ Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) 
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
+  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
+  annotate("text", x = 10, y = 0.2, label = "y ~ log(x)")+
   labs(x = 'Shell Length (mm)',
-       y = ' Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'log(y) ~ log(x)') +
-  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-                       aes(label = sprintf("%i observations", stat(count))))
+       y = ' Dry Tissue Weight (g)') 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
 
 ### Y ~ x + x^2
 Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
@@ -2039,46 +1816,36 @@ Oly_SH_DTW2_graph <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g))
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
+  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
+  annotate("text", x = 10, y = 0.2, label = "Y ~ x + x^2")+
   labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'Y ~ x + x^2') +
-  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-                       aes(label = sprintf("%i observations", stat(count))))
+       y = 'Dry Tissue Weight (g)') 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
 
-grid.arrange(Oly_SH_logxDTW, Oly_shell_DTW_logline, 
-             Oly_shell_logDTW, Oly_SH_DTW2_graph, nrow = 2)
+OlySH_DTW_Trans_graphs <- grid.arrange(Oly_SH_logxDTW, Oly_shell_DTW_logline, 
+                                        Oly_shell_logDTW, Oly_SH_DTW2_graph, nrow = 2)
+
+#plot(OlySH_DTW_Trans_graphs)
 
 ```
 
-> ggpmisc package only works for linear and polynomial equations. Not logrithmic 
-
-### ***Y ~ log(x) model***
-```{r}
+```{r eval=FALSE, include=FALSE}
 Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
 ols_regress(Oly_LogxDTW_lm)
 ```
 
-> R^2 adj: 0.423, p-value: 0.00
-
-### ***log(y) ~ x***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
 ols_regress(Oly_LogDTW_lm)
 ```
 
-> R^2 adj: 0.67, length significant predictor of log(DTW) p-value: 0.000 
-
-### ***log(y) ~ log(x)***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
 ols_regress(Oly_LogDTW_logSH_lm)
 ```
 
-> R^2 adj: 0.72. p-value: 0.000. Slightly better fit than just y-axis transformation. Interpret the x coefficient as the percent increase in y for every 1% increase in x (log-log)
-
-### ***log(y) ~ log(x) Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(Oly_LogDTW_logSH_lm)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
@@ -2087,16 +1854,12 @@ plot(Oly_LogDTW_logSH_lm)
 # which.max(hatvalues(Oly_LogDTW_logSH_lm))
 ```
 
-### ***y ~ x + x^2***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
 ols_regress(Oly_DTW2_lm)
 ```
 
-> R^2 adj: 0.49, p-value: x 0.546, x^2 0.146
-
-### ***Total Wet Weight vs Dry Tissue Weight***
-```{r, fig.height=5, fig.width=6, cache=TRUE}
+```{r Oly_TWW_DTW, eval=FALSE, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
 Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = species)) +
@@ -2110,11 +1873,11 @@ Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
                parse = TRUE,
                label.x = "right",
                label.y = "top")
+
 plot(Oly_TWW_DTW)
 ```
 
-### ***TWW vs DTW (remove outlier)***
-```{r, fig.height=10, fig.width=12, cache=TRUE}
+```{r Oly_TWW_DTW_outRmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=8, fig.cap="The relationship between *O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW = 0.0044*TWW - 0.043) \\label{figurelabel}"}
 
 # Make sure only using positive TWW values, negative values indicate processing error
 NPD_oly_TWW <- NPD_oly_outRmd %>% filter(total_wet_weight_g > 0)
@@ -2126,13 +1889,11 @@ Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_wei
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide=FALSE) +
-  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue") +
+  stat_function(fun = function(total_wet_weight_g) (0.0044*total_wet_weight_g) - 0.043, colour = "blue", linetype="dashed") +
   xlim(0, 7) +
   theme_classic() +
   labs(x = 'Total wet weight (g)',
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Total Wet Weight - Newport, CA',
-       subtitle = 'Gray & Langdon 2017 relationship in blue DTW = 0.0044TWW − 0.043') +
+       y = 'Dry Tissue Weight (g)') +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
@@ -2149,13 +1910,12 @@ Oly_logTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_w
   geom_line(data = pred_DTW_TWW_log_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide=FALSE) + 
-  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue") +
+  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue", linetype="dashed") +
   xlim(0, 7) +
   theme_classic() +
+  annotate("text", x = 1, y = .25, label = "log(y) ~ x") +
   labs(x ="Total wet weight (g)",
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Total Wet Weight - Newport, CA',
-       subtitle = 'log(y) ~ x')
+       y = 'Dry Tissue Weight (g)')
 
 ### log(y) ~ log(x)
 Oly_TWW_DTW_loglog_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ log(total_wet_weight_g))
@@ -2166,13 +1926,12 @@ Oly_loglogTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dr
   geom_line(data = pred_DTW_TWW_loglog_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide=FALSE) + 
-  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue") +
+  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue", linetype="dashed") +
   xlim(0, 7) +
   theme_classic() +
+  annotate("text", x = 1, y = .25, label = "log(y) ~ log(x)") +
   labs(x ="Total wet weight (g)",
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Total Wet Weight - Newport, CA',
-       subtitle = 'log(y) ~ log(x)')
+       y = 'Dry Tissue Weight (g)')
 
 ### y ~ x + x^2
 Oly_TWW2_DTW_LM <- lm(data = NPD_oly_TWW, 
@@ -2184,32 +1943,27 @@ Oly_TWW2_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_wei
   geom_line(data = pred_DTW2_TWW_log_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide=FALSE) + 
-  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue") +
+  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue", linetype="dashed") +
   xlim(0, 7) +
   theme_classic() +
+  annotate("text", x = 1, y = .25, label = "y ~ x + x^2") +
   labs(x ="Total wet weight (g)",
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Total Wet Weight - Newport, CA',
-       subtitle = 'y ~ x + x^2')
+       y = 'Dry Tissue Weight (g)')
        
-grid.arrange(Oly_TWW_DTW_rm_out, Oly_logTWW_DTW_graph,
-             Oly_loglogTWW_DTW_graph, Oly_TWW2_DTW_graph, nrow = 2)
+Oly_TWW_DTW_outRmd_graph <- grid.arrange(Oly_TWW_DTW_rm_out, Oly_logTWW_DTW_graph,
+                                          Oly_loglogTWW_DTW_graph, Oly_TWW2_DTW_graph, nrow = 2)
+
+#plot(Oly_TWW_DTW_outRmd_graph)
 ```
 
-> Gray and Langdon (2017): "Unless explicitly mentioned, DTW of experimental oysters was estimated using the species-specific allometric relationship between DTW and total wet weight (TWW), which were determined in preliminary analysis (O. lurida: DTW = 0.0044TWW − 0.043, R2 =0.93, F1,32 =78.80, p value <0.0001; C. gigas: DTW = 0.039TWW − 0.06, R2 =0.89, F1,29 = 225.97, p value <0.0001).
-
-### ***Linear model without outlier***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 Oly_TWW_DTW_lm_rm_out <- lm(data = NPD_oly_outRmd,
                          tissue_dry_weight_g ~ total_wet_weight_g)
 
 ols_regress(Oly_TWW_DTW_lm_rm_out)
 ```
 
-> significant. p-value: 0.000, R^2 adj 0.602, DTW = 0.0313TWW + 0.0139
-
-### ***y ~ x Diagnostics***
-```{r, fig.height=6, fig.width=8, cache =TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
 par(mfrow=c(2,2))
 plot(Oly_TWW_DTW_lm_rm_out)
 # Leverage Statistics - plots index of parameter elements against their leverage on the model
@@ -2218,34 +1972,24 @@ plot(Oly_TWW_DTW_lm_rm_out)
 # which.max(hatvalues(Oly_TWW_DTW_lm_rm_out))
 ```
 
-### ***log(y) ~ x***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 Oly_TWW_DTW_log_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ total_wet_weight_g)
 ols_regress(Oly_TWW_DTW_log_LM )
 ```
 
-> sig. p-valueL 0.000, R^2 adj: 0.636. Hardly better than y~x
-
-### ***Log DTW X  Log TWW LM***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 Oly_TWW_DTW_loglog_LM <- lm(data = NPD_oly_TWW, 
                          log(tissue_dry_weight_g) ~ log(total_wet_weight_g))
 ols_regress(Oly_TWW_DTW_loglog_LM)
 ```
 
-> significnt. p-value: 0.00, R^2 adj: 0.845
-
-###***Y ~ x + x^2***
-```{r, fig.height=6, fig.width=6, cache=TRUE}
+```{r eval=FALSE, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
 Oly_TWW2_DTW_LM <- lm(data = NPD_oly_TWW, 
                         tissue_dry_weight_g ~ poly(total_wet_weight_g, degree = 2, raw = T))
 ols_regress(Oly_TWW2_DTW_LM)
 ```
 
-> x sig, x^2 not sig. R^2 adj: 0.607 Not a better fit than y~x
-
-### ***NPD Bivalve SH DTW***
-```{r NPD_Bivalve_SH_DTW, fig.height=6, fig.width=15, cache=TRUE}
+```{r NPD_Bivalve_SH_DTW, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width = "100%", fig.asp=0.618, fig.show="hold", fig.width=8.6, fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay, California. Raw data. \\label{figurelabel}"}
 ##### Estimate Biomass per site here with equations
 NPD_bivalve_biomass_graph <-  NPD_bivalve_data_clean %>% 
   ggplot(aes(x = length_mm, y = tissue_dry_weight_g, color = species)) +
@@ -2254,10 +1998,14 @@ NPD_bivalve_biomass_graph <-  NPD_bivalve_data_clean %>%
   facet_wrap(~species) +
   labs(x = "Shell length (mm)",
        y = "Dry Tissue Weight (g)",
-       title = "Newport Deanza Bivalve Biomass - Raw data") +
+       title = "NPD Bivalve Biomass - Raw data") +
   theme_classic() +
   theme(strip.text = element_text(face = "italic"))
 
+plot(NPD_bivalve_biomass_graph)
+```
+
+```{r NPD_Bivalve_SH_DTW_outrmd, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width = "100%", fig.asp=0.618, fig.show="hold", fig.width=8.6, fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay, California. Negative and outliers removed (+- 2.2 SD). \\label{figurelabel}"}
 # Remove outlier and negative DTW value
 NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
   mutate(DTW_outlier = find_outlier(NPD_bivalve_data_clean$tissue_dry_weight_g)) %>% 
@@ -2270,15 +2018,15 @@ NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>%
   facet_wrap(~species) +
   labs(x = "Shell length (mm)",
        y = "Dry Tissue Weight (g)",
-       title = "Newport Deanza Bivalve Biomass - Positive DTW only - Outlier Rmd") +
+       title = "NPD Bivalve Biomass - Pos DTW Outlier Rmd") +
   theme_classic() +
   theme(strip.text = element_text(face = "italic"))
 
-grid.arrange(NPD_bivalve_biomass_graph, NPD_bivalve_outrmd_graph, nrow = 1)
+# NPD_bi_Biomass_graphs <- grid.arrange(NPD_bivalve_biomass_graph, NPD_bivalve_outrmd_graph, nrow = 1)
+plot(NPD_bivalve_outrmd_graph)
 ```
 
-### ***NPD Adula***
-```{r, fig.height=5, fig.width=12, cache=TRUE}
+```{r eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 NPD_Adula <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Adula diegensis"))
 
@@ -2314,40 +2062,27 @@ NPD_Adula_Posbiomass_loggraph <- NPD_Adula %>%
 grid.arrange(NPD_Adula_Posbiomass_graph, NPD_Adula_Posbiomass_loggraph, nrow = 1)
 ```
 
-### ***LM - Adula DTW ~ SH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Adula_lm <- lm(data = NPD_Adula, tissue_dry_weight_g ~ length_mm)
 ols_regress(NPD_Adula_lm)
 ```
 
-> SH significant predictor of DTW. p-value: 0.00, R^2: 0.64
-
-### ***LM - Adula logDTW ~ SH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Adula_logDTW_lm <- lm(data = NPD_Adula, log(tissue_dry_weight_g) ~ length_mm)
 ols_regress(NPD_Adula_logDTW_lm)
 ```
 
-> R^2 slightly better: 0.76
-
-### ***LM - Adula logDTW ~ logSH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Adula_logDTW_logSH_lm <- lm(data = NPD_Adula, log(tissue_dry_weight_g) ~ log(length_mm))
 ols_regress(NPD_Adula_logDTW_logSH_lm)
 ```
 
-> R^2 even better: 0.809
-
-### ***Y ~ x + x^2 ***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Adula_DTW_SH2_lm <- lm(data = NPD_Adula, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
 ols_regress(NPD_Adula_DTW_SH2_lm)
 ```
 
-> R^2 adj: 0.708, x^2 p-value: 0.002
-
-### ***NPD Musculista*** 
-```{r, fig.height=5, fig.width=12, cache=TRUE}
+```{r eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 NPD_Musculista <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Musculista senhousia"))
 
@@ -2381,32 +2116,22 @@ NPD_Musculista_Posbiomass_loggraph <- NPD_Musculista %>%
 grid.arrange(NPD_Musculista_Posbiomass_graph, NPD_Musculista_Posbiomass_loggraph, nrow=1)
 ```
 
-### ***LM - Musculista DTW ~ SH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Musculista_lm <- lm(data = NPD_Musculista, tissue_dry_weight_g ~ length_mm)
 ols_regress(NPD_Musculista_lm)
 ```
 
-> Significant p-value: 0.00 R^2 0.432
-
-### ***LM - Musculista logDTW ~ SH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Musculista_logDTW_lm <- lm(data = NPD_Musculista, log(tissue_dry_weight_g) ~ length_mm)
 ols_regress(NPD_Musculista_logDTW_lm)
 ```
 
-> significant p-value: 0.00, R^2: 0.584
-
-### ***LM - Musculista logDTW ~ logSH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Musculista_logDTW_logSH_lm <- lm(data = NPD_Musculista, log(tissue_dry_weight_g) ~ log(length_mm))
 ols_regress(NPD_Musculista_logDTW_logSH_lm)
 ```
 
-> significant p-value: 0.00, R^2: 0.587, not much better than y-axis transformation
-
-### ***NPD Mytilus***
-```{r, fig.height=5, fig.width=12, cache=TRUE}
+```{r eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 
 NPD_Mytilus <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Mytilus galloprovincialis"))
@@ -2441,32 +2166,22 @@ NPD_Mytilus_Posbiomass_loggraph <- NPD_Mytilus %>%
 grid.arrange(NPD_Mytilus_Posbiomass_graph, NPD_Mytilus_Posbiomass_loggraph, nrow = 1)
 ```
 
-### ***LM - Mytilus DTW ~ SH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Mytilus_lm <- lm(data = NPD_Mytilus, tissue_dry_weight_g ~ length_mm)
 ols_regress(NPD_Mytilus_lm)
 ```
 
-> Significant p-value: 0.00, R^2: 0.718
-
-### ***LM - Mytilus logDTW ~ SH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Mytilus_logDTW_lm <- lm(data = NPD_Mytilus, log(tissue_dry_weight_g) ~ length_mm)
 ols_regress(NPD_Mytilus_logDTW_lm)
 ```
 
-> significant p-value: 0.00 R^2: 0.904
-
-### ***LM - Mytilus logDTW ~ logSH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Mytilus_logDTW_logSH_lm <- lm(data = NPD_Mytilus, log(tissue_dry_weight_g) ~ log(length_mm))
 ols_regress(NPD_Mytilus_logDTW_logSH_lm)
 ```
 
-> significant p-value: 0.00, R^2: 0.815
-
-### ***LM - Unknown mussel***
-```{r, fig.height=5, fig.width=12, cache=TRUE}
+```{r eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 NPD_Unknown <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Unknown mussel"))
 
@@ -2501,61 +2216,24 @@ grid.arrange(NPD_Unknown_Posbiomass_graph, NPD_Unknown_Posbiomass_loggraph, nrow
 
 ```
 
-### ***LM - Unknown mussel DTW ~ SH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Unknown_lm <- lm(data = NPD_Unknown, tissue_dry_weight_g ~ length_mm)
 ols_regress(NPD_Unknown_lm)
 ```
 
-> Not significant p-value: 0.063, R^2: 0.532
-
-### ***LM - Unknown mussel logDTW ~ SH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Unknown_logDTW_lm <- lm(data = NPD_Unknown, log(tissue_dry_weight_g) ~ length_mm)
 ols_regress(NPD_Unknown_logDTW_lm)
 ```
 
-> significant p-value: 0.024, R^2: 0.673
-
-### ***LM - Unknown mussel logDTW ~ logSH***
-```{r}
+```{r eval=FALSE, include=FALSE}
 NPD_Unknown_logDTW_logSH_lm <- lm(data = NPD_Unknown, log(tissue_dry_weight_g) ~ log(length_mm))
 ols_regress(NPD_Unknown_logDTW_logSH_lm)
 ```
 
-> not better, p-value: 0.036, R^2: 0.618
-
-### ***Biomass estimate - Remove outliers***
-```{r Newport_Bivalve_biomass_outlier, eval=FALSE, fig.height=6, fig.width=8, cache=TRUE, include=FALSE}
-# remove outliers from data
-NPD_Posbiomass_outlier <- NPD_Posbiomass_data %>% 
-  mutate(DTW_outlier = find_outlier(NPD_Posbiomass_data$tissue_dry_weight_g)) %>% 
-  filter(DTW_outlier == FALSE)
-
-NPD_Posbiomass_outlierrmd_graph <- NPD_Posbiomass_outlier %>% 
-  ggplot(aes(x = length_mm, y = tissue_dry_weight_g, color = species)) +
-  geom_smooth(method = lm) +
-  geom_point() +
-  scale_color_manual(values = Species_colors, guide = FALSE) +
-  facet_wrap(~species) +
-  labs(x = "Shell length (mm)",
-       y = "Dry Tissue Weight (g)",
-       title = "Newport Deanza Bivalve Biomass",
-       subtitle = "Positive DTW, outliers removed") +
-  theme_classic() +
-  theme(strip.text = element_text(face = "italic")) +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-NPD_Posbiomass_outlierrmd_graph
-```
-
-### ***NPD Bivalve Biomass***
-```{r eval=FALSE, include=FALSE}
-Bivalve_Biomass_graph <- ggplot(NPD_Posbiomass_outlier, aes(Site)) + 
+```{r echo=FALSE}
+## Bar graph NPD Biomass / DTW by species
+Bivalve_Biomass_graph <- ggplot(NPD_bivalve_outrmd, aes(Site)) + 
   geom_col(aes(x = Site, y = tissue_dry_weight_g, fill = species)) +
   theme_classic() +
   scale_fill_manual(values = Species_colors) +
@@ -2566,12 +2244,7 @@ Bivalve_Biomass_graph
 # Order species by DTW not alphabetical order
 ```
 
-
-Density & Biomass
-=====================================
-
-### ***Bivalve Density***
-```{r Bivalve_Density, fig.height=6, fig.width=8, cache=TRUE}
+```{r Bivalve_Density, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width="70%", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The density of bivalves by species across sites. \\label{figurelabel}"}
 # read in bivalve density data from cleaned data file
 Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
 
@@ -2618,13 +2291,15 @@ Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) +
 Bivalve_Den_graph
 ```
 
-> Data for each site is from a single survey
+```{r Bivlave_biomass_sites, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width="70%", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The biomass of bivalves by species across Olympia oyster restoration sites. \\label{figurelabel}"}
+# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
+SR_Density_directory = "../Data/bivalve_density_community"
+SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
 
-Up & Down
-=====================================
 
-### ***Facet Plots***
-```{r Bar_Graphs_up_vs_down, cache=TRUE}
+```
+
+```{r Bar_Graphs_up_vs_down, cache=TRUE, include=FALSE}
 Bar_up_down_data <- Master_analysis_table %>%
  # select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
   rename(Upstream = Chl_ug_L_Up, Downstream = Chl_ug_L_Down) %>%  
@@ -2651,8 +2326,7 @@ Paired_bar_chl_graph <- ggplot(data = Bar_up_down_data, aes(x = Site_exp_date, y
 plot(Paired_bar_chl_graph)
 ```
 
-### ***Graphs using grid.arrange()***
-```{r Bar_Graphs_up_vs_down_grid.arrange, cache=TRUE}
+```{r Bar_Graphs_up_vs_down_grid.arrange, fig.keep = 'all', dev = 'pdf', out.width = "100%", fig.align="default", fig.asp=0.75, fig.show="hold", fig.width=8.6, fig.cap="Chlorphyll concentrations measured at upstream and downstream instruments across all sites, filtration trials, and negative controls. \\label{figurelabel}"}
 ############## Try 2 ####### make separate graphs, combine using grid.arrange()
 
 ##### Can't figure out how to properly label x axis. Works with Exp_Date, but can't shorten without messing up data:label pairs. Can't spend more time on this right now. come back if time -AM 2020_3_3
@@ -2744,13 +2418,12 @@ all_chl_graphs <- grid.arrange(grobs = Chl_graphs,
              widths = c(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
              layout_matrix = rbind(c(NA,1,1,1,1,1,1,1,1,1,1,1,1, NA),
                                    c(2,2,2,2,2,3,3,3,3,3,4,4,4,4)))
-plot(all_chl_graphs)
+#plot(all_chl_graphs)
 #ggsave("Insitu_Filter_up_vs_down_all_sites.png", all_chl_graphs)
 ```
 
 
 Table
-=====================================
 
 ```{r Final_Summary_table, eval=FALSE, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
 # Organize & clean summary table data
@@ -2802,11 +2475,8 @@ T_test_Table$Date <- as.character(T_test_Table$Date)
 
 ```
 
-MLR
-=====================================
-
-### ***Chl Rmd Filtration Forward Stepwise Selection***
-```{r LM_PrctChl_pos_add, fig.height=5, fig.width=6, cache=TRUE}
+```{r LM_PrctChl_pos_add, eval=FALSE, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
+# Multiple Linear Regression - Chl Rmd Filtration Forward Stepwise Selection
 # Positive Percent Chl removed trials only
 MLR_PrctChl_fwd <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
                          # Field notes Qualitative variables
@@ -2818,10 +2488,9 @@ MLR_PrctChl_fwd <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
 summary(MLR_PrctChl_fwd)
 ```
 
-> Not enough degrees of freedom to run full model. Stepwise selects variable with significant p-values. Try adding in log transformed Salinity. 
+```{r eval=FALSE, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
 
-### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
-```{r, fig.height=5, fig.width=6, cache=TRUE}
+#Positive Filtration ~ ChlRmd Multiple Regression with selected variables
 LM2_PrctChl_pos_add <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ 
                           NPSM + Avg_OC_Ratio)
 
@@ -2830,19 +2499,14 @@ summary(LM2_PrctChl_pos_add)
 #ols_coll_diag(LM_PrctChl_pos_add)
 ```
 
-> Site and OC Ratio significant model to predict positive ChlRmd. 
-
-### ***Positive Filtration ~ ChlRmd Multiple Regression with selected variables***
-```{r, fig.height=10, fig.width=6, cache=TRUE}
+```{r eval=FALSE, fig.height=10, fig.width=6, cache=TRUE, include=FALSE}
+#Positive Filtration ~ ChlRmd Multiple Regression with selected variables
 # detailed multiple regression summary - ANOVA results
 ols_regress(LM2_PrctChl_pos_add)
 ```
 
-> Site and OC Ratio significant model to predict postivie ChlRmd. 
-
-### ***FR - Positive Filtration Stepwise Multiple Regression***
-```{r LM_FR_pos, cache=TRUE}
-
+```{r LM_FR_pos, eval=FALSE, cache=TRUE, include=FALSE}
+#FR - Positive Filtration Stepwise Multiple Regression
 # Positive Percent Chl removed trials only
 LM_FR_pos <- lm(data = Filtration_pos_data, L_hr_m2 ~
                          # site logic variables - SR not included - break model to include all sites
@@ -2856,10 +2520,8 @@ LM_FR_pos <- lm(data = Filtration_pos_data, L_hr_m2 ~
 ols_step_both_p(LM_FR_pos)
 ```
 
-> NPSM is the only variable added in after stepwise. Not enough DF to run full model
-
-### ***Chl Rmd - Deanza - Positive Filtration***
-```{r LM_ChlRmd_NPD_PosFilter, cache=TRUE}
+```{r LM_ChlRmd_NPD_PosFilter, eval=FALSE, cache=TRUE, include=FALSE}
+#Chl Rmd - Deanza - Positive Filtration
 LM_ChlRmd_NPD_PosFilter <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
@@ -2872,10 +2534,8 @@ LM_ChlRmd_NPD_PosFilter <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~
 ols_step_both_p(LM_ChlRmd_NPD_PosFilter)
 ```
 
-> Not enough data to run all combinations. Lots of errors. Distance between sondes, Turbidity, Temp
-
-### ***FR - Deanza - Positive Filtration***
 ```{r LM_FR_NPD_Posfilter, eval=FALSE, cache=TRUE, include=FALSE}
+#FR - Deanza - Positive Filtration
 LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
                          # site logic variables - SR not included - break model to include all sites
                          NPD + NPSM + MB + 
@@ -2887,5 +2547,3 @@ LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
 # not enough degrees of freedom for full model
 ols_step_both_p(LM_FR_NPD_Posfilter)
 ```
-
-> lots of errors, won't run, no output
