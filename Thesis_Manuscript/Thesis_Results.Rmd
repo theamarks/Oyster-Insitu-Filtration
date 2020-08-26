@@ -1685,7 +1685,7 @@ NPD_bivalve_data_clean <- NPD_bivalves %>%
 
 
 #Olympia DTW predicted by Shell Length - Newport, CA
-# All excavation quadrat samples processed to date aggregated 
+# All excavation quadrat samples processed to date aggregated (summer 2020)
 NPD_oly <- NPD_bivalve_data_clean %>% 
   filter(species == "Ostrea lurida") %>% 
   drop_na() %>% 
