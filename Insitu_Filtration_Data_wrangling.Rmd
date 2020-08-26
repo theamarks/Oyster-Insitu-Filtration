@@ -368,12 +368,18 @@ NPSM_may18_species_den <- NP_density_data %>%
   # remove species with 0 individuals per m^2
   filter(!(species_den_m2 <= 0))
 
-# dataframe density by species - San Rafael
-SR_nov17_species_den <- SR_density_data %>% 
+# dataframe density by Treatment (Oyster & Eelgrass_oyster) - San Rafael
+SR_nov17_den_summary <- SR_density_data %>% 
   mutate(Species = "Ostrea_lurida",
          Date = mdy("11/1/17")) %>% # survey date from Chela Zabin
-  group_by(Site, Date, Species) %>% 
+  group_by(Site, Treatment, Date, Species) %>% 
   summarise(species_den_m2 = mean(density_m2))
+
+# select only Oyster treatment
+SR_nov17_species_den <- SR_nov17_den_summary %>% 
+  filter(Treatment %in% c("Oyster")) %>% # only use Oyster treatment
+  ungroup() %>% # ungroup
+  dplyr::select(Site, Date, Species, species_den_m2) # select all but treatment column 
   
 # dataframe density by species - numbers from Morro Bay Oyster Company
 MB_species_den <- tibble(Site = "Morro Bay",
