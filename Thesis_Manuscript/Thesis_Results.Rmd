@@ -1749,6 +1749,7 @@ Oly_DTW_SL_coef <- coef(Oly_DTW_lm)
 Oly_DTW_SL_coef[[1]]
 # creat function from model results
 Oly_DTW_SL_model <- function(length_mm) {length_mm + Oly_DTW_SL_coef[[1]]}
+
 ```
 
 ```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=8, fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{figurelabel}"}
@@ -1881,7 +1882,7 @@ plot(Oly_TWW_DTW)
 
 # Make sure only using positive TWW values, negative values indicate processing error
 NPD_oly_TWW <- NPD_oly_outRmd %>% filter(total_wet_weight_g > 0)
-# Gray & Langdon 2017 DTW x TWW Olympia model to add to graph
+# Gray & Langdon 2017 TWW ~ DTW Olympia model to add to graph
 Gray17_DTW_TWW_lm <- function(x) {0.0044*x - 0.043}
 
 # use DTW outlier data to plot graph
@@ -2242,6 +2243,7 @@ Bivalve_Biomass_graph <- ggplot(NPD_bivalve_outrmd, aes(Site)) +
 
 Bivalve_Biomass_graph
 # Order species by DTW not alphabetical order
+
 ```
 
 ```{r Bivalve_Density, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width="70%", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The density of bivalves by species across sites. \\label{figurelabel}"}
@@ -2293,8 +2295,15 @@ Bivalve_Den_graph
 
 ```{r Bivlave_biomass_sites, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width="70%", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The biomass of bivalves by species across Olympia oyster restoration sites. \\label{figurelabel}"}
 # double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
-SR_Density_directory = "../Data/bivalve_density_community"
+SR_Density_directory = "./Data/bivalve_density_community"
 SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
+
+######## Predict SR DTW with shell length #########
+
+SR_Oly_Shelllength_data <- SR_Oly_Shelllength_data %>% 
+  mutate(length_mm = length_cm*10, # convert cm length to mm
+         DTW_g = Oly_DTW_SL_model(length_mm)) # predict Oly Dry tissue weight with length_mm
+
 
 
 ```
