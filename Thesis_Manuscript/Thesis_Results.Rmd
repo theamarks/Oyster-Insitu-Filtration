@@ -1661,7 +1661,7 @@ ols_regress(NPD_ChlRmdPos_Turb_lm)
 ```
 
 ```{r Oly_DTW_Shell_length, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
-
+############ Olympia DTW and Shell Length #####################
 # Determine what quadrat samples have missing data (NAs)
 NPD_biv_bio_summary <- NPD_density %>% 
   group_by(excavation_sample) %>% 
@@ -1739,12 +1739,16 @@ plot(Oly_shell_DTW_rm_out)
 ```
 
 ```{r Linear_model_DTW_length, fig.height=6, fig.width=6, cache=TRUE, include=FALSE}
+# Linear model to predict Dry Tissue weight (g) with Oly shell length (mm)
 Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
-
 ols_regress(Oly_DTW_lm)
 
-coef(Oly_DTW_lm)
-Oly_DTW_SL_formula <- function(length_mm) {length_mm + coef(Oly_DTW_lm)[,1]}
+# coeficent results from linear model
+Oly_DTW_SL_coef <- coef(Oly_DTW_lm)
+# y-intercept in [[1]] position
+Oly_DTW_SL_coef[[1]]
+# creat function from model results
+Oly_DTW_SL_model <- function(length_mm) {length_mm + Oly_DTW_SL_coef[[1]]}
 ```
 
 ```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.show="hold", fig.width=8, fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{figurelabel}"}
@@ -2289,7 +2293,7 @@ Bivalve_Den_graph
 
 ```{r Bivlave_biomass_sites, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width="70%", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The biomass of bivalves by species across Olympia oyster restoration sites. \\label{figurelabel}"}
 # double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
-SR_Density_directory = "./Data/bivalve_density_community"
+SR_Density_directory = "../Data/bivalve_density_community"
 SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
 
 
