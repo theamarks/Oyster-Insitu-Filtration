@@ -167,7 +167,8 @@ FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
 plot(FR_box) 
 
 Chl_Rmd_box <- ggplot(Filtration_only_data, aes(Site, pcnt_Chl_rmvd)) +
-  geom_boxplot(color = Site_colors) + geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
   scale_fill_manual(values = Site_colors) +
   #scale_y_continuous(labels = percent) +
@@ -192,6 +193,9 @@ plot(Chl_Rmd_box)
 
 FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
@@ -201,6 +205,9 @@ plot(FR_pos_box)
 
 ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) +
+    geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
