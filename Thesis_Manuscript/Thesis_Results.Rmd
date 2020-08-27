@@ -6,11 +6,11 @@ output:
 # Results
 
 ```{r setup, include = F, cache=FALSE}
-
+library(knitr)
 # set default code chunk settings to save figures in Figures folder, show no output, and cache 
-knitr::opts_chunk$set(fig.path = "./Thesis_Manuscript/Figures", 
-                      root.dir = normalizePath('../'), # set working directory to one set below thesis folder
-                      echo = FALSE, cache=TRUE, fig.asp=0.618, fig.align = "center")
+knitr::opts_knit$set(root.dir = normalizePath('../')) # set working directory to project level
+                      #fig.path = "./Thesis_Manuscript/Figures", 
+                     # echo = FALSE, cache=TRUE, fig.asp=0.618, fig.align = "center")
 ```
 
 ```{r load_packages_data, include=FALSE}
