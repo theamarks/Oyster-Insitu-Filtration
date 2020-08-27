@@ -1748,7 +1748,7 @@ Oly_DTW_SL_coef <- coef(Oly_DTW_lm)
 # y-intercept in [[1]] position
 Oly_DTW_SL_coef[[1]]
 # creat function from model results
-Oly_DTW_SL_model <- function(length_mm) {length_mm + Oly_DTW_SL_coef[[1]]}
+Oly_DTW_SL_model <- function(length_mm) {length_mm*Oly_DTW_SL_coef[[2]] + Oly_DTW_SL_coef[[1]]}
 
 ```
 
@@ -2027,7 +2027,7 @@ NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>%
 plot(NPD_bivalve_outrmd_graph)
 ```
 
-```{r eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
+```{r fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 NPD_Adula <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Adula diegensis"))
 
@@ -2066,6 +2066,11 @@ grid.arrange(NPD_Adula_Posbiomass_graph, NPD_Adula_Posbiomass_loggraph, nrow = 1
 ```{r eval=FALSE, include=FALSE}
 NPD_Adula_lm <- lm(data = NPD_Adula, tissue_dry_weight_g ~ length_mm)
 ols_regress(NPD_Adula_lm)
+
+########## Model to predict Adual DTW ##############
+Adula_coef <- coef(NPD_Adula_lm)
+Adula_DTW_SL_model <- function(length_mm) {length_mm*Adula_coef[[2]] + Adula_coef[[1]]}
+
 ```
 
 ```{r eval=FALSE, include=FALSE}
@@ -2083,7 +2088,12 @@ NPD_Adula_DTW_SH2_lm <- lm(data = NPD_Adula, tissue_dry_weight_g ~ poly(length_m
 ols_regress(NPD_Adula_DTW_SH2_lm)
 ```
 
-```{r eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
+```{r NPD_Adula_ANOVA}
+##### Use ANOVA to compare models?? 
+```
+
+
+```{r fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 NPD_Musculista <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Musculista senhousia"))
 
@@ -2120,6 +2130,9 @@ grid.arrange(NPD_Musculista_Posbiomass_graph, NPD_Musculista_Posbiomass_loggraph
 ```{r eval=FALSE, include=FALSE}
 NPD_Musculista_lm <- lm(data = NPD_Musculista, tissue_dry_weight_g ~ length_mm)
 ols_regress(NPD_Musculista_lm)
+
+Musculista_coef <- coef(NPD_Musculista_lm)
+Musculista_DTW_SL_model <- function(length_mm) {length_mm*Musculista_coef[[2]] + Musculista_coef[[1]]}
 ```
 
 ```{r eval=FALSE, include=FALSE}
@@ -2132,7 +2145,7 @@ NPD_Musculista_logDTW_logSH_lm <- lm(data = NPD_Musculista, log(tissue_dry_weigh
 ols_regress(NPD_Musculista_logDTW_logSH_lm)
 ```
 
-```{r eval=FALSE, fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
+```{r fig.height=5, fig.width=12, cache=TRUE, include=FALSE}
 
 NPD_Mytilus <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Mytilus galloprovincialis"))
@@ -2170,6 +2183,9 @@ grid.arrange(NPD_Mytilus_Posbiomass_graph, NPD_Mytilus_Posbiomass_loggraph, nrow
 ```{r eval=FALSE, include=FALSE}
 NPD_Mytilus_lm <- lm(data = NPD_Mytilus, tissue_dry_weight_g ~ length_mm)
 ols_regress(NPD_Mytilus_lm)
+
+Mytilus_coef <- coef(NPD_Mytilus_lm)
+Mytilus_DTW_SL_model <- function(length_mm) {length_mm*Mytilus_coef[[2]] + Mytilus_coef[[1]]}
 ```
 
 ```{r eval=FALSE, include=FALSE}
@@ -2244,6 +2260,20 @@ Bivalve_Biomass_graph <- ggplot(NPD_bivalve_outrmd, aes(Site)) +
 Bivalve_Biomass_graph
 # Order species by DTW not alphabetical order
 
+################### Biomass by species across sites ####################
+# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
+SR_Density_directory = "./Data/bivalve_density_community"
+SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
+
+######## Predict SR DTW with shell length #########
+
+SR_Oly_Shelllength_data <- SR_Oly_Shelllength_data %>% 
+  mutate(length_mm = length_cm*10, # convert cm length to mm
+         DTW_g = Oly_DTW_SL_model(length_mm)) # predict Oly Dry tissue weight with length_mm
+
+NPD_bivalve_DTW_predict <- NPD_bivalve_outrmd %>% 
+  mutate(DTW)
+
 ```
 
 ```{r Bivalve_Density, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width="70%", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The density of bivalves by species across sites. \\label{figurelabel}"}
@@ -2291,21 +2321,6 @@ Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) +
   labs(y = expression("Individuals per m"^2))
   
 Bivalve_Den_graph
-```
-
-```{r Bivlave_biomass_sites, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width="70%", fig.asp=0.618, fig.show="hold", fig.width=6, fig.cap="The biomass of bivalves by species across Olympia oyster restoration sites. \\label{figurelabel}"}
-# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
-SR_Density_directory = "./Data/bivalve_density_community"
-SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
-
-######## Predict SR DTW with shell length #########
-
-SR_Oly_Shelllength_data <- SR_Oly_Shelllength_data %>% 
-  mutate(length_mm = length_cm*10, # convert cm length to mm
-         DTW_g = Oly_DTW_SL_model(length_mm)) # predict Oly Dry tissue weight with length_mm
-
-
-
 ```
 
 ```{r Bar_Graphs_up_vs_down, cache=TRUE, include=FALSE}
