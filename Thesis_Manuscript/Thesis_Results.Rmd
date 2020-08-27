@@ -18,6 +18,7 @@ knitr::opts_knit$set(root.dir = normalizePath('../'), # set working directory to
 ################### Packages ###########################
 library(dplyr)
 library(tidyr)
+library(magrittr)
 library(data.table)
 library(magrittr)
 library(lubridate) # dealing with time and dates
@@ -2461,13 +2462,10 @@ all_chl_graphs <- grid.arrange(grobs = Chl_graphs,
 #ggsave("Insitu_Filter_up_vs_down_all_sites.png", all_chl_graphs)
 ```
 
-
-Table
-
-```{r Final_Summary_table, eval=FALSE, fig.height=5, fig.width=6, cache=TRUE, include=FALSE}
+```{r Final_Summary_table, cache=TRUE, include=FALSE}
 # Organize & clean summary table data
-Final_table <- Master_analysis_table %>% 
-    mutate(Date = mdy(Date),
+Final_table <- Master_analysis_table %>%
+  mutate(Date = mdy(Date),
          Temp_C_Up = round(Temp_C_Up, digits = 2),
          Sal_ppt_Up = round(Sal_ppt_Up, digits = 1),
          Turbidity_NTU_Up = round(Turbidity_NTU_Up, digits = 1),
@@ -2478,11 +2476,11 @@ Final_table <- Master_analysis_table %>%
          avg_depth_m = avg_depth_cm*100,
          avg_m_hr = round(avg_m_hr, digits = 0),
          pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1),
-         L_hr_m2 = round(L_hr_m2, digits = 0)) %>% 
+         L_hr_m2 = round(L_hr_m2, digits = 0)) %>%
   dplyr::select(Site, Date, Experiment, Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM, 
           Avg_OC_Ratio, Chl_ug_L_Up, Chl_ug_L_Down, avg_depth_cm, d_bw_sondes_m, avg_m_hr, 
           pcnt_Chl_rmvd, L_hr_m2) %>% 
-  arrange(site_by_lat, desc(Date))
+ dplyr::arrange(Site, desc(Date))
 # Make date formated as character to display properly
 Final_table$Date <- as.character(Final_table$Date)
 
