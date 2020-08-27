@@ -6,10 +6,11 @@ output:
 # Results
 
 ```{r setup, include = F, cache=FALSE}
-# set working directory to R project instead of "./Thesis_Manuscript" folder
-setwd("./")
+
 # set default code chunk settings to save figures in Figures folder, show no output, and cache 
-knitr::opts_chunk$set(fig.path = "./Thesis_Manuscript/Figures", echo = FALSE, cache=TRUE, fig.asp=0.618, fig.align = "center")
+knitr::opts_chunk$set(fig.path = "./Thesis_Manuscript/Figures", 
+                      root.dir = normalizePath('../'), # set working directory to one set below thesis folder
+                      echo = FALSE, cache=TRUE, fig.asp=0.618, fig.align = "center")
 ```
 
 ```{r load_packages_data, include=FALSE}
@@ -2261,7 +2262,7 @@ NPD_Unknown_logDTW_logSH_lm <- lm(data = NPD_Unknown, log(tissue_dry_weight_g) ~
 ols_regress(NPD_Unknown_logDTW_logSH_lm)
 ```
 
-```{r echo=FALSE}
+```{r eval=FALSE, include=FALSE}
 ## Bar graph NPD Biomass / DTW by species
 Bivalve_Biomass_graph <- ggplot(NPD_bivalve_outrmd, aes(Site)) + 
   geom_col(aes(x = Site, y = tissue_dry_weight_g, fill = species)) +
