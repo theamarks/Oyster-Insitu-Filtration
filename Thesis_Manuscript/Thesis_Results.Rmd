@@ -5,6 +5,8 @@ output:
 ---
 # Results
 
+Field work was conducted from February 2018 to June 2019, that produced 28 usable trials (filtration and negative controls).
+
 ```{r setup, include = F, cache=FALSE}
 library(knitr)
 # set default code chunk settings to save figures in Figures folder, show no output, and cache 
@@ -153,6 +155,8 @@ find_outlier <- function(data){
          TRUE, FALSE)
 }
 ```
+
+
 
 ```{r FR_ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.asp=0.618, fig.width=4.3, out.width="50%", message= F, fig.cap="The habitat level filtration rates and percent chlorophyll removed of all filtration trials across sites. \\label{figurelabel}"}
 ### Filtration by site (Filtration Trials only)
@@ -2462,9 +2466,10 @@ all_chl_graphs <- grid.arrange(grobs = Chl_graphs,
 #ggsave("Insitu_Filter_up_vs_down_all_sites.png", all_chl_graphs)
 ```
 
-```{r Final_Summary_table, echo=FALSE, results = 'asis'}
+```{r Final_Summary_table, eval=FALSE, include=FALSE}
+#results= 'asis'
 library(xtable) # load xtable package 
-options(xtable.floating = FALSE)
+#options(xtable.floating = FALSE)
 options(xtable.timestamp = FALSE)
 
 # Organize & clean summary table data
@@ -2484,17 +2489,19 @@ Final_table <- Master_analysis_table %>%
   dplyr::select(Site, Date, Experiment, Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM, 
           Avg_OC_Ratio, Chl_ug_L_Up, Chl_ug_L_Down, avg_depth_cm, d_bw_sondes_m, avg_m_hr, 
           pcnt_Chl_rmvd, L_hr_m2) %>% 
- dplyr::arrange(Site, desc(Date))
+ dplyr::arrange(Site, Date)
 # Make date formated as character to display properly
 Final_table$Date <- as.character(Final_table$Date)
-colnames(Final_table) <- c("", "Site", "Date", "Experiment", "Temp ($\textdegree$C)","Salinity (ppt)", "Turbidity (NTU)", "TPM ($\\mu$g/L)", 
+colnames(Final_table) <- c( "Site", "Date", "Experiment", "Temp ($\\textdegree$C)","Salinity (ppt)", "Turbidity (NTU)", "TPM ($\\mu$g/L)",
                            "OC", "Chl $\\alpha$ up ($\\mu$g/L)", "Chl $\\alpha$ down ($\\mu$g/L)", 
-                           "Depth (m)", "Water veolcity (m/hr)", "% Chl $\\alpha$ removal", "Clearance rate (L/hr/$m^2$)")
-
+                           "Depth (m)","Distance (m)", "Water veolcity (m/hr)", "% Chl $\\alpha$ removal", "Clearance rate (L/hr/$m^2$)")
 # create xtable
-sumtable_side_LaTex <- xtable(Final_table, caption = "Summary Table of all field days")
+sumtable_side_LaTex <- xtable(Final_table, caption = c("Summary Table of all field days"), 
+                              display= c("s","s","s","s","f","f","f","f","f","f","f","f","f","f","f","f"))
+
 # print LaTex code for sideways table
-print(sumtable_side_LaTex)
+print.xtable(sumtable_side_LaTex, type = "latex", include.rownames = FALSE)
+#sanitize.colnames.function=function(x){x}
 # sanitize.text.function=function(x){x}
   #sanitize.text.function = xtable::sanatize(),
   #include.rownames = FALSE
@@ -2508,9 +2515,12 @@ df <- data.frame(A = c(1:10),
                  B = c(11:20),
                  C = c(21:30))
 
-Table_LaTeX <- xtable(df, caption = "Summary table of all field days")
+xtable(df)
+df
 # print LaTex code for sideways table
-print(sumtable_side_LaTex, floating = TRUE, floating.environment = "sidewaystable")
+print.xtable(xtable(df))
+sum_table2 <- xtable(df, display = c("s","f","f","f"))
+sum_table2
 ```
 
 ```{r T_test_table, eval=FALSE, fig.height=5, fig.width=6,  include=FALSE}
