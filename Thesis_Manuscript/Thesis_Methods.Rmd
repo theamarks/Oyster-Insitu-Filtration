@@ -37,10 +37,10 @@ However, the in situ methods described in @Grizzle2006 measure an entire filter-
 @Grizzle2008’s results inform the Atlantic and Gulf Coasts' *C. virginica* habitat filtration models in ~~the National Oceans and Atmopsheric Administration's (NOAA) and The Nature Concervancy's~~ "A Manager's Guide: Setting Objectives for Oyster Habitat Restoration Using Ecosystem Services" and associated online tool at https://oceanwealth.org/tools/oyster-calculator/ [@ZuErmgassen2016]. 
 This research aims to provide field filtraiton rates for the *O. lurida* habitat model using similar methods.
 
-Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$), temperature, salinity, and turbidity across the oyster habitat. 
+Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
 The instruments hung inside of free standing PVC (polyvinyl chloride) housings (Figure \ref{fig:fieldgear}) to align the sesnsors with the approximate height of the oyster habitat. 
-I positioned the instruments upstream and downstream of the oyster habitat and released a water tracing dye (Rhodamine WT) at the upstream instrument. 
-The dye provided a visual indication of water flow direction and highlighted any cross currents or eddies that invalidate the measurements. 
+I released a water tracing dye (Rhodamine WT) to provide a visual indicator of water flow direction and any cross currents or eddies.
+The instruments were positioned based on a linear water flow across the oyster habitat.
 I repositioned the instruments based on the dye release to measure a linear water flow traveling from the upstream instrument, over the oyster habitat, to the downstream instrument. 
 Once the instruments were properly positioned, an electromagnetic meter (Marsh McBirney Flo Mate 2000) measured water velocity at each instrument and in the center of the habitat at the depth of the sensors. 
 I measured water velocity and water column depth at the begining, middle, and end of the filtration trial and the distance between instruments after the filtraiton trial. 
