@@ -31,14 +31,17 @@ MBOC grows *C. gigas* in plastic mesh bags measuring about (insert dimensions) a
 The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
 
 ## Exerpimental Setup
+Methods were adapted from @Grizzle2006 and @Grizzle2008's in situ filtration measurements of bivalve beds on the Atlantic coast.
 Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
 The sondes hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and hung at hiehgt to align the sesnsors with the approximate height of the oyster habitat. 
 Water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and any cross currents or eddies.
-The PVC housing with sondes were positioned to measure an uninterupted linear water flow across the oyster habitat based on the dye.
+The sonde housings were positioned to measure an uninterupted linear water flow across the oyster habitat based on the dye.
+Linear water flow assumes that the upstream instrument is measureing the same water as the downstream instrument.
 An electromagnetic meter (Marsh McBirney Flo Mate 2000) measured water velocity in the center of the habitat at the depth of the sensors during the begining, middle, and end of each trial. 
-At the conclusion of the trial, the distance between instruments was recorded.
+Slow water velocity (between 0.1 – 0.3 m/s) and no wind conditions are ideal to reduce the resuspension of benthic sediments into the water column that can obfuscate the filtration signal [@Grizzle2008].
+Depth measurements were recorded at each sonde housing at the begining and end of the filtration trial along with the distance between sondes.
 The sondes recorded measurements every 1 second, and filtration trials lasted as long as field conditions were appropriate; anywhere from 5 and 30 minutes. 
-I took detailed notes of all field events and disturbances with a watch synced to the sondes' internal clocks.
+Detailed notes of all field events and disturbances were recorded with a watch synced to the sondes' internal clocks.
 
 ## Chlorphyll $\alpha$ Corrections
 In addition to the filtration trial, two side-by-side trials were conducted before and after the filtration tial to record and correct any chlorophyll $\alpha$ sensor differences.
@@ -46,8 +49,7 @@ In the side-by-side trials, I placed the instruments adjacent to compare the sen
 The time series data was reviewed for extreme Chl $\alpha$ spikes that would skew the average Chl $\alpha$.
 Extreme Chl $\alpha$ values were removed from the time series along with the corresponding data from the other sonde.
 The average Chl $\alpha$ difference between sondes in the side-by-side trail was divided in half to get a correction term for filtration trial Chl $\alpha$ measurements.
-The sonde reading higher in the side-by-side trial was corrected in the filtration trial by subtracting the correction term, and the lower reading sonde was corrected by adding the correction.
-
+The sonde with higher Chl $\alpha$ in the side-by-side trial was corrected in the filtration trial by subtracting the correction term from Chl $\alpha$ measurements, and the lower reading sonde was corrected by adding the correction term.
 
 \begin{figure}[h]
   \centering
@@ -56,23 +58,14 @@ The sonde reading higher in the side-by-side trial was corrected in the filtrati
   \label{fig:fieldgear}
 \end{figure}
 
-### Methodology Assumpitons
-In situ filtration measurements based on @Grizzle2006 require: 1) linear water flow across the habitat; 2) slow water velocity (between 0.1 – 0.3 m/s); 3) shallow water depths; and 4) little to no wind (@Grizzle2008, and @Milbrandt2015a). 
-Linear water flow assumes that the upstream instrument is measureing the same water as the downstream instrument.
-Eddies or side currents in the water course invalidate this assumption by mixing with the measured water. 
-Slow water velocities minimize the amound of benthic sediments resupended into the water column and is associated with higher filtration rates in non siphonated bivalves like oysters (@Grizzle1992) [More references]. 
-The oyster habitat must be completely submerged in the water column for filtraiton to occur, and a shallow water column prevents large amounts of water drownding out the filtration signal. 
-Lastly, strong winds can generate water flows that resuspend benthic sediments into the water column, clouding out chlorophyll $\alpha$ draw down between instruments (@Grizzle2008). [read Dame 1985 & 1992]
-
-### Seston Organic Content
-The ratio of seston organic content effects bivalve clearance rates **(Need references)**. 
-Higher organic content means a higher proportion of digestable food, which increases clearance rates (@Gray2017a). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
-To determine seston content, I collected water samples adjacent to the study area, filtered the water through 
-Whatman GF/F pre-wash and weighed filters, and stored the samples on ice until they could be stored in a freezer. 
+### Seston Content
+I determined seston Total Particulate Content (TPM), Particulate Inorganic Matter (PIM), Particulate Organic Matter (POM), and Organic content (OC) by collecting water samples adjacent to the study area. 
+The water samples were filtered through Whatman GF/F pre-wash and weighed filters in the field, and filters were stored on ice until they could be stored in a freezer. 
 Thawed filters were rinsed with a 0.5 M ammonium formate solution to remove salt. 
-Typically this step follows filtering (@Gray2017a), but this was not possible to do in the field. 
-Filters were then dried in an 60C oven for 48 hours, and weighed to determine total particulate matter (TPM; \ref{eq:TPM}). 
-Next, the dried filters were ashed at 450C for \( \leq 4 \) hours and weighed to determine particulate inorganic matter (PIM; \ref{eq:PIM}) and particulate organic matter (POM; \ref{eq:POM}).
+Typically this step follows immediately after filtering [@Gray2018], but this was not possible to do in the field. 
+Filters were then dried in an 60&deg;C oven for 48 hours, and weighed to determine TPM (\ref{eq:TPM}). 
+Next, the dried filters were ashed at 450&deg;C for \( \leq 4 \) hours and weighed to determine PIM (\ref{eq:PIM}) and POM (\ref{eq:POM}). Seston OC is simple the ratio of POM to TPM.
+***Need to address my filter weight mistakes?***
 
 \begin{equation}
 \label{Eq:TPM}
@@ -90,20 +83,21 @@ POM (mg/L) = TPM (mg/L) - PIM (mg/L)
 \end{equation}
 
 ### Filtration Calculations & Analysis
-To calculate filtration I first paired upstream and downstream measurements using average velocity and instrument distance to calculate travel time. 
-Downstream measurement times were corrected by the travel time to pair with upstream sonde measurements, unpaired measurements were discarded. 
-Next, I corrected the chlorophyll $\alpha$ measurements by the average difference calculated from the side-by-side trials and calculated percent chlorophyll removal (\(\autoref{Eq:PrctChl}\)) and habitat filtration (\(\autoref{Eq:Lhrm2}\)). 
+To calculate filtration I first paired upstream and downstream measurements. 
+I used average water velocity and sonde distance to estimate the time it took a parcile of water to travel from the upstream sonde to the downstream sonde. 
+The travel time was subtracted from downstream measurement timestamps to pair with upstream sonde measurements; unpaired measurements were discarded. 
+Next, I calculated percent Chl $\alpha$ removal (\(\autoref{Eq:PrctChl}\)) and habitat clearance rate (\(\autoref{Eq:Lhrm2}\)). 
 Percent chlorophyll $\alpha$ removed is simply the relative change in chlorophyll $\alpha$ concentration from upstream ($Chl_{up}$) to downstream ($Chl_{down}$). Habitat filtration, originally used by @Milbrandt2015a, expresses filtration as a rate and in terms of habitat area rather than the traditional dry tissue weight **(Need references)**. 
 $A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$ assumed 1 m width), *V* is the average water velocity (m/hr), *1000* is the conversion factor from $m^2$ to L, $A_{habitat}$ is the area being measured (distance between the instruments $\times$ assumed 1 m width), $Chl_{up}$ is the upstream chlorophyll $\alpha$ concentration, and $Chl_{down}$ is the downstream chlorophyll $\alpha$ concentration.
 
 \begin{equation}
 \label{Eq:PrctChl}
-Percent Chlorophyll\alpha Removed = \frac{Chl_{up} - Chl_{down}}{Chl_{up}} \times 100
+\% Chl\alpha Removal = \frac{Chl_{up} - Chl_{down}}{Chl_{up}} \times 100
 \end{equation}
 
 \begin{equation}
 \label{Eq:Lhrm2}
-Habitat Filtration Rate (Lhr^{-1}m^2) = \frac{A_{Xsec} \times V \times 1000}{A_{habitat}} \times \frac{Chl_{up} - Chl_{down}}{Chl_{up}}
+HFR (Lhr^{-1}m^2) = \frac{A_{Xsec} \times V \times 1000}{A_{habitat}} \times \frac{Chl_{up} - Chl_{down}}{Chl_{up}}
 \end{equation}
 
 ## Test Table
@@ -151,6 +145,8 @@ Final_table_LaTex is object with this LaTex code
 
 
 ## Extra text
+
+Higher organic content means a higher proportion of digestable food, which increases clearance rates (@Gray2017a). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
 
 The San Diego site is a FLoating UPwelling SYstem (FLUPSY) aquaculture structure operated by the Port of San Diego Blue Economy Incubator Program. 
 A FLUPSY is an upwelling system that pulls water up through baskets submerged at the water surface. 
