@@ -11,7 +11,8 @@ indent: true
 # Methods
 
 ## Study Sites
-I conducted my research from February 2018 to June 2019 at four sties along the California coast. The sites represent a range of constructed oyster habitats including shell reef, shell bed, and floating aquaculture lines.
+I selected four sites along the California coast to measure in situ filtration.
+The sites represent a range of constructed oyster habitats including shell reef, shell bed, and floating aquaculture lines.
 The San Francisco Living Shorelines Project, San Francisco Bay, California was constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015]. 
 It is a large-scale experiment that investigates the effects of various reef designs and *Z. marina* plantings on biological habitat and physical shoreline protection [@EnvironmentalScienceAssociates2014]. 
 The project has two major sites, The Nature Conservancy site in San Rafael, CA and the Eden Landing Ecological Reserve in Hayward, CA. 
@@ -64,7 +65,7 @@ The water samples were filtered through Whatman GF/F pre-wash and weighed filter
 Thawed filters were rinsed with a 0.5 M ammonium formate solution to remove salt. 
 Typically this step follows immediately after filtering [@Gray2018], but this was not possible to do in the field. 
 Filters were then dried in an 60&deg;C oven for 48 hours, and weighed to determine TPM (\ref{eq:TPM}). 
-Next, the dried filters were ashed at 450&deg;C for \( \leq 4 \) hours and weighed to determine PIM (\ref{eq:PIM}) and POM (\ref{eq:POM}). Seston OC is simple the ratio of POM to TPM.
+Next, the dried filters were ashed at 450&deg;C for \( \leq 4 \) hours and weighed to determine PIM (\ref{eq:PIM}) and POM (\ref{eq:POM}). Seston OC is simply the ratio of POM to TPM.
 ***Need to address my filter weight mistakes?***
 
 \begin{equation}
@@ -86,9 +87,8 @@ POM (mg/L) = TPM (mg/L) - PIM (mg/L)
 To calculate filtration I first paired upstream and downstream measurements. 
 I used average water velocity and sonde distance to estimate the time it took a parcile of water to travel from the upstream sonde to the downstream sonde. 
 The travel time was subtracted from downstream measurement timestamps to pair with upstream sonde measurements; unpaired measurements were discarded. 
-Next, I calculated percent Chl $\alpha$ removal (\(\autoref{Eq:PrctChl}\)) and habitat clearance rate (\(\autoref{Eq:Lhrm2}\)). 
-Percent chlorophyll $\alpha$ removed is simply the relative change in chlorophyll $\alpha$ concentration from upstream ($Chl_{up}$) to downstream ($Chl_{down}$). Habitat filtration, originally used by @Milbrandt2015a, expresses filtration as a rate and in terms of habitat area rather than the traditional dry tissue weight **(Need references)**. 
-$A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$ assumed 1 m width), *V* is the average water velocity (m/hr), *1000* is the conversion factor from $m^2$ to L, $A_{habitat}$ is the area being measured (distance between the instruments $\times$ assumed 1 m width), $Chl_{up}$ is the upstream chlorophyll $\alpha$ concentration, and $Chl_{down}$ is the downstream chlorophyll $\alpha$ concentration.
+Next, I calculated percent Chl $\alpha$ removal (\(\autoref{Eq:PrctChl}\)) and habitat clearance rate (HCR; \(\autoref{Eq:Lhrm2}\)). 
+Percent chlorophyll $\alpha$ removed is simply the relative change in chlorophyll $\alpha$ concentration from upstream ($Chl_{up}$) to downstream ($Chl_{down}$).
 
 \begin{equation}
 \label{Eq:PrctChl}
@@ -100,11 +100,13 @@ $A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$
 HFR (Lhr^{-1}m^2) = \frac{A_{Xsec} \times V \times 1000}{A_{habitat}} \times \frac{Chl_{up} - Chl_{down}}{Chl_{up}}
 \end{equation}
 
+$A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$ assumed 1 m width), *V* is the average water velocity (m/hr), *1000* is the conversion factor from $m^2$ to L, $A_{habitat}$ is the area being measured (distance between the instruments $\times$ assumed 1 m width), $Chl_{up}$ is the upstream chlorophyll $\alpha$ concentration, and $Chl_{down}$ is the downstream chlorophyll $\alpha$ concentration.
+Data cleaning, corrections, and calculations were made in R (1.2.5) and the code is available at github/InsituFiltration Repo.
+I evaluated if upstream Chl $\alpha$ concentrations were higher than downstream concentrations using a single tail t-test. Further analysis looking at the affect of bivalve community composition or biomass on filtration was not possible with exsisting data.
+
 ## Test Table
 
-Final_table_LaTex is object with this LaTex code
-
-\begin{sidewaystable}[ht]
+\begin{sidewaystable}
 \centering
 \begin{tabular}{rlllrrrrrrrrrrrr}
   \hline
@@ -163,12 +165,5 @@ Filter feeder species richness, density, and shell height at each study site wil
 
 These methods were originally designed for shellfish beds on the East Coast; two features of O. lurida require us to perform a positive control for the proposed methods. 
 O. lurida have a lower filtration rate compared to larger species such as C. gigas and C. virginica (zu Ermgassen, Gray, et al. 2013, Gray & Langdon 2017), and grow in smaller, less dense beds then the reefs formed by Crassostrea species (Beck et al. 2009). 
-
-### Experimental Design
-This research is based on previous in situ filtration studies of Atlantic bivalve reefs by @Grizzle2006, @Grizzle2008, and @Milbrandt2015a. 
-More precice methods of measuring bivalve filtration exsist, like the biodeposition method used in @Gray2017a and @Hawkins1996a. 
-However, the in situ methods described in @Grizzle2006 measure an entire filter-feeding community within an oyster habitat with natural water quality and flow dynamics. 
-@Grizzle2008’s results inform the Atlantic and Gulf Coasts' *C. virginica* habitat filtration models in ~~the National Oceans and Atmopsheric Administration's (NOAA) and The Nature Concervancy's~~ "A Manager's Guide: Setting Objectives for Oyster Habitat Restoration Using Ecosystem Services" and associated online tool at https://oceanwealth.org/tools/oyster-calculator/ [@ZuErmgassen2016]. 
-This research aims to provide field filtraiton rates for the *O. lurida* habitat model using similar methods.
 
 ## References
