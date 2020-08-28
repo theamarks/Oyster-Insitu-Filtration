@@ -33,7 +33,7 @@ The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float
 
 ## Exerpimental Setup
 Methods were adapted from @Grizzle2006 and @Grizzle2008's in situ filtration measurements of bivalve beds on the Atlantic coast.
-Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
+Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (hensforth Chl $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
 The sondes hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and hung at hiehgt to align the sesnsors with the approximate height of the oyster habitat. 
 Water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and any cross currents or eddies.
 The sonde housings were positioned to measure an uninterupted linear water flow across the oyster habitat based on the dye.
@@ -64,8 +64,8 @@ I determined seston Total Particulate Content (TPM), Particulate Inorganic Matte
 The water samples were filtered through Whatman GF/F pre-wash and weighed filters in the field, and filters were stored on ice until they could be stored in a freezer. 
 Thawed filters were rinsed with a 0.5 M ammonium formate solution to remove salt. 
 Typically this step follows immediately after filtering [@Gray2018], but this was not possible to do in the field. 
-Filters were then dried in an 60&deg;C oven for 48 hours, and weighed to determine TPM (\ref{eq:TPM}). 
-Next, the dried filters were ashed at 450&deg;C for \( \leq 4 \) hours and weighed to determine PIM (\ref{eq:PIM}) and POM (\ref{eq:POM}). Seston OC is simply the ratio of POM to TPM.
+Filters were then dried in an 60&deg;C oven for 48 hours, and weighed to determine TPM (\ref{Eq:TPM}). 
+Next, the dried filters were ashed at 450&deg;C for \( \leq 4 \) hours and weighed to determine PIM (\ref{Eq:PIM}) and POM (\ref{Eq:POM}). Seston OC is simply the ratio of POM to TPM.
 ***Need to address my filter weight mistakes?***
 
 \begin{equation}
