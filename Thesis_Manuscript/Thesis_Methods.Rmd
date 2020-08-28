@@ -10,7 +10,7 @@ indent: true
 
 # Methods
 
-### Study Sites
+## Study Sites
 I conducted my research from February 2018 to June 2019 at four sties along the California coast. The sites represent a range of constructed oyster habitats including shell reef, shell bed, and floating aquaculture lines.
 The San Francisco Living Shorelines Project, San Francisco Bay, California was constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015]. 
 It is a large-scale experiment that investigates the effects of various reef designs and *Z. marina* plantings on biological habitat and physical shoreline protection [@EnvironmentalScienceAssociates2014]. 
@@ -30,24 +30,24 @@ The Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Mor
 MBOC grows *C. gigas* in plastic mesh bags measuring about (insert dimensions) attached to floating lines that stretch across an area about 75 m x 75 m. 
 The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
 
-### Experimental Design
-This research is based on previous in situ filtration studies of Atlantic bivalve reefs by @Grizzle2006, @Grizzle2008, and @Milbrandt2015a. 
-More precice methods of measuring bivalve filtration exsist, like the biodeposition method used in @Gray2017a and @Hawkins1996a. 
-However, the in situ methods described in @Grizzle2006 measure an entire filter-feeding community within an oyster habitat with natural water quality and flow dynamics. 
-@Grizzle2008’s results inform the Atlantic and Gulf Coasts' *C. virginica* habitat filtration models in ~~the National Oceans and Atmopsheric Administration's (NOAA) and The Nature Concervancy's~~ "A Manager's Guide: Setting Objectives for Oyster Habitat Restoration Using Ecosystem Services" and associated online tool at https://oceanwealth.org/tools/oyster-calculator/ [@ZuErmgassen2016]. 
-This research aims to provide field filtraiton rates for the *O. lurida* habitat model using similar methods.
-
+## Exerpimental Setup
 Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
-The instruments hung inside of free standing PVC (polyvinyl chloride) housings (Figure \ref{fig:fieldgear}) to align the sesnsors with the approximate height of the oyster habitat. 
-I released a water tracing dye (Rhodamine WT) to provide a visual indicator of water flow direction and any cross currents or eddies.
-The instruments were positioned based on a linear water flow across the oyster habitat.
-I repositioned the instruments based on the dye release to measure a linear water flow traveling from the upstream instrument, over the oyster habitat, to the downstream instrument. 
-Once the instruments were properly positioned, an electromagnetic meter (Marsh McBirney Flo Mate 2000) measured water velocity at each instrument and in the center of the habitat at the depth of the sensors. 
-I measured water velocity and water column depth at the begining, middle, and end of the filtration trial and the distance between instruments after the filtraiton trial. 
-The instruments recorded measurements every 1 second. Filtration trials lasted as long as field conditions were appropriate; anywhere from 5 and 30 minutes. 
-In addition to the filtration trial, two side-by-side trials were conducted before and after the filtration tial. In the side-by-side trial, I placed the instruments adjacent to one another to compare the sensors' chlorophyll $\alpha$ measurements in the same mass of water. 
-The average chlorophyll $\alpha$ difference corrected sensor differences in the filtration trial data. 
+The sondes hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and hung at hiehgt to align the sesnsors with the approximate height of the oyster habitat. 
+Water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and any cross currents or eddies.
+The PVC housing with sondes were positioned to measure an uninterupted linear water flow across the oyster habitat based on the dye.
+An electromagnetic meter (Marsh McBirney Flo Mate 2000) measured water velocity in the center of the habitat at the depth of the sensors during the begining, middle, and end of each trial. 
+At the conclusion of the trial, the distance between instruments was recorded.
+The sondes recorded measurements every 1 second, and filtration trials lasted as long as field conditions were appropriate; anywhere from 5 and 30 minutes. 
 I took detailed notes of all field events and disturbances with a watch synced to the sondes' internal clocks.
+
+## Chlorphyll $\alpha$ Corrections
+In addition to the filtration trial, two side-by-side trials were conducted before and after the filtration tial to record and correct any chlorophyll $\alpha$ sensor differences.
+In the side-by-side trials, I placed the instruments adjacent to compare the sensors' chlorophyll $\alpha$ measurements in the same mass of water for about 10 minuets.  
+The time series data was reviewed for extreme Chl $\alpha$ spikes that would skew the average Chl $\alpha$.
+Extreme Chl $\alpha$ values were removed from the time series along with the corresponding data from the other sonde.
+The average Chl $\alpha$ difference between sondes in the side-by-side trail was divided in half to get a correction term for filtration trial Chl $\alpha$ measurements.
+The sonde reading higher in the side-by-side trial was corrected in the filtration trial by subtracting the correction term, and the lower reading sonde was corrected by adding the correction.
+
 
 \begin{figure}[h]
   \centering
@@ -167,5 +167,12 @@ Filter feeder species richness, density, and shell height at each study site wil
 
 These methods were originally designed for shellfish beds on the East Coast; two features of O. lurida require us to perform a positive control for the proposed methods. 
 O. lurida have a lower filtration rate compared to larger species such as C. gigas and C. virginica (zu Ermgassen, Gray, et al. 2013, Gray & Langdon 2017), and grow in smaller, less dense beds then the reefs formed by Crassostrea species (Beck et al. 2009). 
+
+### Experimental Design
+This research is based on previous in situ filtration studies of Atlantic bivalve reefs by @Grizzle2006, @Grizzle2008, and @Milbrandt2015a. 
+More precice methods of measuring bivalve filtration exsist, like the biodeposition method used in @Gray2017a and @Hawkins1996a. 
+However, the in situ methods described in @Grizzle2006 measure an entire filter-feeding community within an oyster habitat with natural water quality and flow dynamics. 
+@Grizzle2008’s results inform the Atlantic and Gulf Coasts' *C. virginica* habitat filtration models in ~~the National Oceans and Atmopsheric Administration's (NOAA) and The Nature Concervancy's~~ "A Manager's Guide: Setting Objectives for Oyster Habitat Restoration Using Ecosystem Services" and associated online tool at https://oceanwealth.org/tools/oyster-calculator/ [@ZuErmgassen2016]. 
+This research aims to provide field filtraiton rates for the *O. lurida* habitat model using similar methods.
 
 ## References
