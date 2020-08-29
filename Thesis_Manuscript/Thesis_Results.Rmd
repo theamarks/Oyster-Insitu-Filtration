@@ -77,6 +77,22 @@ SR_NC_sum <- Master_analysis_table %>%
   filter(Site %in% c("San Rafael"),
          grepl("Neg Control*", Experiment)) 
 
+MB_filter_sum <- Master_analysis_table %>% 
+  filter(Site %in% c("Morro Bay"),
+         Experiment %in% c("Filtration"))
+
+MB_NC_sum <- Master_analysis_table %>% 
+  filter(Site %in% c("Morro Bay"),
+         grepl("Neg Control*", Experiment)) 
+
+NPD_filter_sum <- Master_analysis_table %>% 
+  filter(Site %in% c("Deanza"),
+         Experiment %in% c("Filtration"))
+
+NPD_NC_sum <- Master_analysis_table %>% 
+  filter(Site %in% c("Deanza"),
+         grepl("Neg Control*", Experiment)) 
+
 # Filtration trials only - exclude Negative controls & Percent Chl removed greater than 0
 ### Important Note ## When Percent Chl removed is positive, so is L/hr/m^2 and vice visa. 
 # Filtering by pcnt_Chl_rmvd effectively filters both values the same, so further analysis 
@@ -167,7 +183,7 @@ find_outlier <- function(data){
 # Results
 
 Field work was conducted from February 2018 to June 2019 and produced 28 usable trials (filtration and negative controls) across the four sites.
-Percent Chl $\alpha$ removal at the San Rafael *O. lurida* reef ranged from `r round(min(SR_filter_sum$pcnt_Chl_rmvd),1)`\% to `r round(max(SR_filter_sum$pcnt_Chl_rmvd),1)`\% and recorded `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\%.
+Percent Chl $\alpha$ removal at the San Rafael *O. lurida* reef ranged from `r round(min(SR_filter_sum$pcnt_Chl_rmvd),1)`\% to `r round(max(SR_filter_sum$pcnt_Chl_rmvd),1)`\% and recorded `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the negative control over bare mudflat. Morro Bay *C. gigas* aquaculture lines ranged from `r round(min(MB_filter_sum$pcnt_Chl_rmvd),1)`\% to `r round(max(MB_filter_sum$pcnt_Chl_rmvd),1)`\% and over bare mud flat `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\%. At the Newport Bay Deanza *O. lurida* bed, Chl $\alpha$ removal ranged from `r round(min(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% to `r round(max(SR_filter_sum$pcnt_Chl_rmvd),1)`\% and recorded `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the negative control
 
 ```{r FR_ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.asp=0.618, fig.width=4.3, out.width="50%", message= F, fig.cap="The habitat level filtration rates and percent chlorophyll removed of all filtration trials across sites. \\label{figurelabel}"}
 ### Filtration by site (Filtration Trials only)
