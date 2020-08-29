@@ -84,11 +84,12 @@ POM (mg/L) = TPM (mg/L) - PIM (mg/L)
 \end{equation}
 
 ### Filtration Calculations & Analysis
-To calculate filtration I first paired upstream and downstream measurements. 
+To calculate filtration I first checked the filtration trial raw time series for extreme Chl $\alpha$ and turbidity spikes indicating disturbance.
+Extreme spikes were cross referenced with field notes and removed from the time series. 
+Next I paired upstream and downstream Chl $\alpha$ measurements. 
 I used average water velocity and sonde distance to estimate the time it took a parcile of water to travel from the upstream sonde to the downstream sonde. 
 The travel time was subtracted from downstream measurement timestamps to pair with upstream sonde measurements; unpaired measurements were discarded. 
-Next, I calculated percent Chl $\alpha$ removal (\(\autoref{Eq:PrctChl}\)) and habitat clearance rate (HCR; \(\autoref{Eq:Lhrm2}\)). 
-Percent chlorophyll $\alpha$ removed is simply the relative change in chlorophyll $\alpha$ concentration from upstream ($Chl_{up}$) to downstream ($Chl_{down}$).
+Next, I calculated percent Chl $\alpha$ removal (\(\autoref{Eq:PrctChl}\)) and habitat clearance rate (HCR; \(\autoref{Eq:Lhrm2}\)) using average Chl $\alpha$ values. 
 
 \begin{equation}
 \label{Eq:PrctChl}
