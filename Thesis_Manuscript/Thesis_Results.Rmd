@@ -200,7 +200,7 @@ Table 1 summarizes water quality, field conditions, and calculations of all fiel
 Reference Figure 1 Chl removal. 
 
 Habitat clearance rates (HCR) adjust the percent Chl $\alpha$ by the area of habitat contributing to the Chl $\alpha$ drawdown.
-HCR at Ran Rafael ranged from `r round(min(SR_filter_sum$L_hr_m2),1)`\% to `r round(max(SR_filter_sum$pcnt_Chl_rmvd),1)`\%
+HCR at Ran Rafael ranged from `r round(max(SR_filter_sum$pcnt_Chl_rmvd),1)` Lhr^-1^m^2^.
 
 ```{r FR_ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.asp=0.618, fig.width=4.3, out.width="50%", message= F, fig.cap="The habitat level filtration rates and percent chlorophyll removed of all filtration trials across sites. \\label{figurelabel}"}
 ### Filtration by site (Filtration Trials only)
