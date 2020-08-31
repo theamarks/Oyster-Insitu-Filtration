@@ -190,14 +190,16 @@ find_outlier <- function(data){
 
 # Results
 
-### Chlorophyll drawdown
-
 Field work was conducted from February 2018 to June 2019 and produced 28 usable trials (filtration and negative controls) across the four sites.
 Filtration trials at San Rafael were conducted on the ebb and flood tides surround a low tide.
-Three filtration trials conducted on flood tides (7/7/18, 7/18/18, 9/10/18), 1 ebb filtration trial (11/8/18), and 1 ebb negative control (11/7/18).
+Three filtration trials conducted on flood tides (2018/7/7, 2018/7/18, 2018/9/10), 1 ebb filtration trial (2018/11/8), and 1 ebb negative control (2018/11/7).
 We recorded 4 filtration trials and 1 negative control at Morro Bay, all conducted on flood tides (Table 1).
 At Newport Shellmaker we recorded 4 filtration and 1 negative control trial on flood tides.
 Newport Deanza had the most field days with 10 filtration and 3 negative controls all conducted on ebb tides. 
+
+### Chlorophyll drawdown
+
+The mean difference between upstream and downstream Chl $\alpha$ (paired by water travel time) was compared using a single sided t-test. 
 
 ### Percent chlorophyll $\alpha$ removal
 
