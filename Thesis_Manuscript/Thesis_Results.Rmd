@@ -268,6 +268,8 @@ Newport Deanza's three consecutive negative control trials ranged from `r format
 
 ### Field Conditions 
 
+### Filter-feeding Community
+
 ```{r Final_Summary_table, eval=FALSE, include=FALSE}
 #results= 'asis'
 library(xtable) # load xtable package 
@@ -285,18 +287,18 @@ Final_table <- Master_analysis_table %>%
          Chl_ug_L_Up = round(Chl_ug_L_Up, digits = 1),
          Chl_ug_L_Down = round(Chl_ug_L_Down, digits = 1),
          avg_depth_m = round((avg_depth_cm/100), digits = 2),
-         avg_m_hr = round(avg_m_hr, digits = 0),
+         avg_m_sec = round(avg_m_hr/3600, 2),
          pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1),
          L_hr_m2 = round(L_hr_m2, digits = 0)) %>%
   dplyr::select(Site, Date, Experiment, Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM, 
-          Avg_OC_Ratio, Chl_ug_L_Up, Chl_ug_L_Down, avg_depth_m, d_bw_sondes_m, avg_m_hr, 
+          Avg_OC_Ratio, Chl_ug_L_Up, Chl_ug_L_Down, avg_depth_m, d_bw_sondes_m, avg_m_sec, 
           pcnt_Chl_rmvd, L_hr_m2) %>% 
  dplyr::arrange(Site, Date)
 # Make date formated as character to display properly
 Final_table$Date <- as.character(Final_table$Date)
 colnames(Final_table) <- c( "Site", "Date", "Experiment", "Temp ($\\textdegree$C)","Salinity (ppt)", "Turbidity (NTU)", "TPM (mg/L)",
                            "OC", "Chl $\\alpha$ up ($\\mu$g/L)", "Chl $\\alpha$ down ($\\mu$g/L)", 
-                           "Depth (m)","Distance (m)", "Water veolcity (m/hr)", "% Chl $\\alpha$ removal", "Clearance rate (L/hr/$m^2$)")
+                           "Depth (m)","Distance (m)", "Water veolcity (m/s)", "% Chl $\\alpha$ removal", "Clearance rate (L/hr/$m^2$)")
 # create xtable
 sumtable_side_LaTex <- xtable(Final_table, caption = c("Summary Table of all field days"), 
                               display= c("s","s","s","s","f","f","f","f","f","f","f","f","f","f","f","f"))
