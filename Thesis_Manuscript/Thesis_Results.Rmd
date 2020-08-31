@@ -188,6 +188,43 @@ find_outlier <- function(data){
 }
 ```
 
+```{r T_test_table, eval=FALSE, fig.height=5, fig.width=6,  include=FALSE}
+
+T_test_Table <- Master_analysis_table %>%
+  mutate(Date = mdy(Date),
+         pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1), # Do I need Percent Chl removed here? Presented in other table
+         Mean_Chl_diff = round(Mean_Chl_diff, digits = 2),
+         StDev_Chl_diff = round(StDev_Chl_diff, digits = 2),
+         StEr_Chl_diff = round(StEr_Chl_diff, digits = 2),
+         statistic = round(statistic, digits = 2), # t-statistic 
+         p.value = round(p.value, digits = 2),
+         parameter = round(parameter, digits = 2),
+         conf.low = round(conf.low, digits = 2)) %>% 
+  dplyr::select(Site, Date, Experiment, pcnt_Chl_rmvd, Mean_Chl_diff, StDev_Chl_diff, StEr_Chl_diff,
+                statistic, p.value, parameter, conf.low) %>% 
+  group_by(Site) %>% 
+  arrange(Date, .by_group = T)
+# Make date formated as character to display properly
+T_test_Table$Date <- as.character(T_test_Table$Date)
+
+# Make xtable to render LaTex table in pdf
+
+############ Chl diff single tailed t-test Values ################
+SR_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("San Rafael"))
+
+MB_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("Morro Bay"))
+
+NPSM_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("Shellmaker"))
+
+NPD_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("Deanza"))
+
+
+```
+
 # Results
 
 Field work was conducted from February 2018 to June 2019 and produced 28 usable trials (filtration and negative controls) across the four sites.
@@ -200,6 +237,8 @@ Newport Deanza had the most field days with 10 filtration and 3 negative control
 ### Chlorophyll drawdown
 
 The mean difference between upstream and downstream Chl $\alpha$ (paired by water travel time) was compared using a single sided t-test. 
+Three filtraiton trials at San Rafael recorded significantly lower Chl $\alpha$ downstream of the *O. lurida* shell bags than Chl $\alpha$ upstream ( Table X).
+One filtration trial (2018/7/17) and the negative control did not show a significant difference reduction of Chl $\alpha$ over the habitat from the upstream to downstream positions. 
 
 ### Percent chlorophyll $\alpha$ removal
 
@@ -282,7 +321,7 @@ sum_table2
 
 T_test_Table <- Master_analysis_table %>%
   mutate(Date = mdy(Date),
-         pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1),
+         pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1), # Do I need Percent Chl removed here? Presented in other table
          Mean_Chl_diff = round(Mean_Chl_diff, digits = 2),
          StDev_Chl_diff = round(StDev_Chl_diff, digits = 2),
          StEr_Chl_diff = round(StEr_Chl_diff, digits = 2),
@@ -296,6 +335,22 @@ T_test_Table <- Master_analysis_table %>%
   arrange(Date, .by_group = T)
 # Make date formated as character to display properly
 T_test_Table$Date <- as.character(T_test_Table$Date)
+
+# Make xtable to render LaTex table in pdf
+
+############ Chl diff single tailed t-test Values ################
+SR_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("San Rafael"))
+
+MB_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("Morro Bay"))
+
+NPSM_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("Shellmaker"))
+
+NPD_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("Deanza"))
+
 
 ```
 
