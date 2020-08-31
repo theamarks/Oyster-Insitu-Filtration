@@ -62,6 +62,12 @@ site_by_lat <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza")
 
 # transform Site variable to factor and arange by Latitude
 Master_analysis_table <- arrange(transform(Master_analysis_table, Site = factor(Site,levels = site_by_lat)), Site)
+# convert TPM, PIM, POM from g/L to mg/L
+Master_analysis_table  <- Master_analysis_table %>% 
+  mutate(Avg_TPM = Avg_TPM*1000,
+         Avg_PIM = Avg_PIM*1000,
+         Avg_POM = Avg_POM*1000,
+         Avg_OC_Ratio = round(Avg_OC_Ratio,2))
 
  # Filtration trials only - exclude Negative controls
 Filtration_only_data <- Master_analysis_table %>% 
@@ -120,6 +126,12 @@ Deanza_PosFilter_data <- Deanza_Filter_data %>%
 
 ### Average TPM Data ######################
 Avg_TPM_summary_table <- arrange(transform(Avg_TPM_summary_table, Site = factor(Site, levels = site_by_lat)), Site)
+Avg_TPM_summary_table <- Avg_TPM_summary_table %>% 
+  # convert g/L to mg/L like Gray and Langdon 2018
+  mutate(Avg_TPM = Avg_TPM*1000,
+         Avg_PIM = Avg_PIM*1000,
+         Avg_POM = Avg_POM*1000,
+         Avg_OC_Ratio = round(Avg_OC_Ratio, 2))
 
 ############### model formulas ###############
 # linear model formula
@@ -157,8 +169,8 @@ Species_colors <- c("Adula diegensis" = "#8D8680",
 Hab_FR_Label <- expression('Habitat Filtration Rate (L/hr/m'^2*')')
 Prt_Chl_Label <- expression(paste('Percent Chlorophyll ', alpha, ' Removed'))
 Chl_ugL_Label <- expression(paste("Chlorophyll ", alpha, " (", mu, "g/L) "))
-TPM_Label <- expression(paste('Total Particulate Matter (', mu,"g/L)"))
-PIM_Label <- expression(paste('Particulate Inorganic Matter (', mu,"g/L)"))
+TPM_Label <- c('Total Particulate Matter mg/L')
+PIM_Label <- c('Particulate Inorganic Matter mg/L')
 
 ###################### Functions ####################################
 # function for number of samples - display on graph
@@ -952,6 +964,10 @@ logChlRmdPos_logOC_NPD_lm <- lm(data = Deanza_PosFilter_data, log(pcnt_Chl_rmvd)
 ols_regress(logChlRmdPos_logOC_NPD_lm)
 ```
 
+### Seston
+
+The water column Total Particulate Matter (TPM) 
+
 ```{r TPM_OC_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.asp=0.618, fig.width=6, out.width = "70%", message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all filtration and negative control trials. \\label{figurelabel}"}
 
 TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
@@ -964,13 +980,13 @@ TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio
   theme(legend.title = element_blank(),
         legend.background = element_blank(),
         legend.box.background = element_rect(colour = "black"),
-        legend.position = c(.9,.25)) +
+        legend.position = c(.9,.25)) 
   #geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "center",
-               label.y = "bottom")
+  #ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+   #            formula = x_y_formula,
+    #           parse = TRUE,
+     #          label.x = "center",
+      #         label.y = "bottom")
 plot(TPM_OC)
 
 # I don't think a box plot is valuable to show the relationship (AM- 2020_8_24)
