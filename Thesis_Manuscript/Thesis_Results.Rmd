@@ -1057,10 +1057,11 @@ TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza
                         aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) + 
+  ylim(0,1) +
   scale_color_manual(values = Site_colors, guide=FALSE) + 
   labs(x = TPM_Label, 
        y = "Average Organic Content Ratio", 
-       title = "Deanza") + 
+       title = "Newport Deanza") + 
   theme_classic() +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
@@ -1072,10 +1073,11 @@ TPM_OC_NPSM <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Shellmak
                      aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) + 
+  ylim(0,1) +
   scale_color_manual(values = Site_colors, guide=FALSE) + 
   labs(x = TPM_Label, 
        y = "Average Organic Content Ratio", 
-       title = "Shellmaker") + 
+       title = "Newport Shellmaker") + 
   theme_classic() +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
@@ -1087,6 +1089,7 @@ TPM_OC_SR <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "San Rafael
                    aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) + 
+  ylim(0,1) +
   scale_color_manual(values = Site_colors, guide=FALSE) + 
   labs(x = TPM_Label, 
        y = "Average Organic Content Ratio", 
@@ -1102,6 +1105,7 @@ TPM_OC_MB <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay"
                    aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) + 
+  ylim(0,1) +
   scale_color_manual(values = Site_colors, guide=FALSE) + 
   labs(x = TPM_Label, 
        y = "Average Organic Content Ratio", 
@@ -1113,7 +1117,7 @@ TPM_OC_MB <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay"
                label.x = "right",
                label.y = "bottom")
 
-TPM_OC_bysite_graph <- grid.arrange(TPM_OC_Deanza, TPM_OC_NPSM, TPM_OC_SR, TPM_OC_MB, nrow = 2)
+TPM_OC_bysite_graph <- grid.arrange(TPM_OC_SR, TPM_OC_MB, TPM_OC_NPSM, TPM_OC_Deanza, nrow = 2)
 # using plot() renders plot twice. Grid.arrange must render on its own
 # plot(TPM_OC_bysite_graph)
 ```
