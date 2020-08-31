@@ -237,8 +237,14 @@ Newport Deanza had the most field days with 10 filtration and 3 negative control
 ### Chlorophyll drawdown
 
 The mean difference between upstream and downstream Chl $\alpha$ (paired by water travel time) was compared using a single sided t-test. 
-Three filtraiton trials at San Rafael recorded significantly lower Chl $\alpha$ downstream of the *O. lurida* shell bags than Chl $\alpha$ upstream ( Table X).
-One filtration trial (2018/7/17) and the negative control did not show a significant difference reduction of Chl $\alpha$ over the habitat from the upstream to downstream positions. 
+Three filtraiton trials at San Rafael recorded significantly lower (p < 0.05) Chl $\alpha$ downstream of the *O. lurida* shell bags than Chl $\alpha$ upstream ( Table X).
+One filtration trial (2018/7/17) and the negative control did not show a significant difference (p > 0.05) reduction of Chl $\alpha$ over the habitat from the upstream to downstream positions. 
+At Morro Bay two of the four filtration trials showed a significant reduction in Chl $\alpha$ across the *C. gigas* aquaculture lines. 
+Two filtration trials and the single negative control trial did not show Chl $\alpha$ removal.
+Newport Shellmaker had significant Chl $\alpha$ reduction across the *O. lurida* shellbed at two of the four filtration trials.
+The remaining two filtration trials and the negative control trial did not have significant Chl $\alpha$ reduction.
+Five of the ten filtration trials at Newport Deanza recorded significant reduction of Chl $\alpha$ from the upstream to downstream measurements. 
+Five filtraiton trials and the three negative trials did not have significant removal of Chl $\alpha$.
 
 ### Percent chlorophyll $\alpha$ removal
 
