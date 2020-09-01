@@ -2023,6 +2023,7 @@ pred_logxDTW_SH <- data.frame(DTW_pred = predict(Oly_LogxDTW_lm, newdata = SH_ne
 Oly_SH_logxDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
   geom_line(data = pred_logxDTW_SH, aes(x = length_mm, y = DTW_pred)) +
   geom_point(aes(color = species)) +
+  ylim(0,0.3) +
   scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
   scale_x_continuous(breaks = c(0,10,20,30,40,50))+
@@ -2039,10 +2040,11 @@ pred_logDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_lm, newdata = SH_
 Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
   geom_line(data = pred_logDTW_SH, aes(x = length_mm, y = DTW_pred)) +
   geom_point(aes(color = species)) +
+  ylim(0,0.3) +
   scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
   scale_x_continuous(breaks = c(0,10,20,30,40,50))+
-  annotate("text", x = 10, y = 0.2, label = "y ~ log(x)")+
+  annotate("text", x = 10, y = 0.2, label = "log(y) ~ x")+
   labs(x = 'Shell Length (mm)',
        y = 'Dry Tissue Weight (g)') 
   #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
@@ -2056,10 +2058,11 @@ pred_loglogDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_logSH_lm, newd
 Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
   geom_line(data = pred_loglogDTW_SH, aes(x = length_mm, y = DTW_pred)) +
   geom_point(aes(color = species)) +
+  ylim(0,0.3) +
   scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
   scale_x_continuous(breaks = c(0,10,20,30,40,50))+
-  annotate("text", x = 10, y = 0.2, label = "y ~ log(x)")+
+  annotate("text", x = 10, y = 0.2, label = "log(y) ~ log(x)")+
   labs(x = 'Shell Length (mm)',
        y = ' Dry Tissue Weight (g)') 
   #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
@@ -2073,6 +2076,7 @@ pred_DTW2_SH_df <- data.frame(tissue_dry_weight_g = predict(Oly_DTW2_lm, newdata
 Oly_SH_DTW2_graph <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
   geom_line(data = pred_DTW2_SH_df, aes(x = length_mm, y = tissue_dry_weight_g)) +
   geom_point(aes(color = species)) +
+  ylim(0,0.3) +
   scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
   scale_x_continuous(breaks = c(0,10,20,30,40,50))+
