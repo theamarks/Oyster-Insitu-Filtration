@@ -261,7 +261,7 @@ See table X for statistical results of each trial.
 
 ### Percent chlorophyll $\alpha$ removal
 
-Percent Chl $\alpha$ removal at the San Rafael *O. lurida* reef from `r nrow(SR_filter_sum)` field days ranged from `r round(min(SR_filter_sum$pcnt_Chl_rmvd),1)`\% to `r round(max(SR_filter_sum$pcnt_Chl_rmvd),1)`\% and recorded `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single negative control over bare mudflat. 
+Percent Chl $\alpha$ removal at the San Rafael *O. lurida* reef from `r nrow(SR_filter_sum)` field days ranged from `r round(min(SR_filter_sum$pcnt_Chl_rmvd),1)`\% to `r round(max(SR_filter_sum$pcnt_Chl_rmvd),1)`\% and recorded `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single negative control over bare mudflat (Figure \ref{FR_ChlRmd_Site_boxplot}). 
 Morro Bay *C. gigas* aquaculture lines from `r nrow(MB_filter_sum)` field days ranged from `r round(min(MB_filter_sum$pcnt_Chl_rmvd),1)`\% to `r round(max(MB_filter_sum$pcnt_Chl_rmvd),1)`\% and over bare mud flat `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\%. 
 At the Newport Bay Deanza *O. lurida* bed, Chl $\alpha$ removal ranged from `r round(min(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% to `r round(max(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% from `r nrow(NPD_filter_sum)` field days and `r format(round(min(NPD_NC_sum$pcnt_Chl_rmvd)), nsmall = 1)`\% to `r format(round(max(NPD_NC_sum$pcnt_Chl_rmvd)),nsmall = 1) `\% over `r nrow(NPD_NC_sum)` negative control trials on a single field day.
 The Newport Bay Shellmaker *O. lurida* bed ranged from `r round(min(NPSM_filter_sum$pcnt_Chl_rmvd),1)`\% to `r round(max(NPSM_filter_sum$pcnt_Chl_rmvd),1)`\% Chl $\alpha$ removal over `r nrow(NPSM_filter_sum)` field days and `r round(NPSM_NC_sum$pcnt_Chl_rmvd,1)`\% Chl $\alpha$ removal in the single negative control. 
