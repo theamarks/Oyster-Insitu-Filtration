@@ -308,7 +308,56 @@ colnames(Final_table) <- c( "Site", "Date", "Experiment", "Temp ($\\textdegree$C
                             "TPM(mg/L)", "OC", "Chl $\\alpha$ up ($\\mu$g/L)", "Chl $\\alpha$ down ($\\mu$g/L)", 
                            "Depth (m)","Distance (m)", "Water veolcity (m/s)", "% Chl $\\alpha$ removal", 
                            "Clearance rate (L/hr/$m^2$)")
+
+test = na.omit(Final_table)
+
+colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity",
+                            "TPM", "OC", "Chl.up", "Chl.dn", 
+                           "Depth","Distance", "Water veolcity", "Chl.removal", 
+                           "Clearance")
+m1 = lm(Chl.up~Chl.dn,data=test)
+summary(m1)
+plot(test$Chl.up,test$Chl.dn)
+abline(m1,col=2,lty=2)
+# Seemed like a dumb idea because we have very different sites.  What we're trying to accomplish
+# is a comparison of chloroform upstream vs. downstream after controlling for other covariates (depth, temp, site, ect)
+# To do this we will model choloroform up and cholorform down as a function of those covarates and then compare 
+# residuals of those models.  
+# The model we're choosing right now is just a linear model, we can substitude something more glamourous later if need be.
+
+test1 = test[test$Experiment=="Filtration",]
+par(mfrow=c(2,1))
+plot(test$Chl.up,test$Chl.dn)
+plot(test1$Chl.up,test1$Chl.dn)
 # create xtable
+
+upstream = test1[,-10]
+downstream = test1[,-9]
+upstream$stream = "upstream"
+downstream$stream  = "downstream"
+colnames(upstream)[9] = "clr"
+colnames(downstream)[9] = "clr"
+test2 = rbind(upstream,downstream)
+colnames(test2)[12] = "Velocity"
+control.model = lm(clr~Site+Temp+Salinity+Turbidity+TPM+OC+Depth+Distance+Velocity+Chl.removal+Clearance,data=test2)
+test2$adjusted.clr = control.model$residuals
+
+up.res = test2$adjusted.clr[test2$stream=="upstream"]
+dn.res = test2$adjusted.clr[test2$stream=="downstream"]
+m2 = lm(up.res~dn.res)
+summary(m2)
+dev.off()
+plot(up.res,dn.res)
+abline(0,1,col=4,lwd=2,lty=2)
+x.seq = seq(min(dn.res),max(dn.res),by = (max(dn.res)-min(dn.res))/1000)
+conf.seq = predict.lm(m2,newdata=data.frame(dn.res=x.seq),interval="confidence")
+lines(x.seq,conf.seq[,1],col=2,lty=2,lwd=2)
+lines(x.seq,conf.seq[,2],col=2,lty=2,lwd=1)
+lines(x.seq,conf.seq[,3],col=2,lty=2,lwd=1)
+
+
+
+
 sumtable_side_LaTex <- xtable(Final_table, caption = c("Summary Table of all field days"), 
                               display= c("s","s","s","s","f","f","f","f","f","f","f","f","f","f","f","f"))
 
@@ -2152,7 +2201,7 @@ Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_wei
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide=FALSE) +
-  stat_function(fun = function(total_wet_weight_g) (0.0044*total_wet_weight_g) - 0.043, colour = "blue", linetype="dashed") +
+  stat_function(fun = Gray17_DTW_TWW_lm(NPD_oly_TWW$total_wet_weight_g), colour = "blue", linetype="dashed") +
   xlim(0, 7) +
   ylim(0,0.3) +
   theme_classic() +
