@@ -1869,6 +1869,8 @@ NPD_ChlRmdPos_Turb_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Turbid
 ols_regress(NPD_ChlRmdPos_Turb_lm)
 ```
 
+### Filter-feeding community
+
 ```{r Bivalve_Density, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The density of bivlaves at Deanza Newport, California surveyed May 2018. \\label{Bivalve_Density}"}
 # read in bivalve density data from cleaned data file
 Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
@@ -2657,7 +2659,7 @@ all_chl_graphs <- grid.arrange(grobs = Chl_graphs,
 ```
 
 ```{r LM_PrctChl_pos_add, eval=FALSE, fig.height=5, fig.width=6,  include=FALSE}
-# Multiple Linear Regression - Chl Rmd Filtration Forward Stepwise Selection
+# Multiple Linear Regression - Chl Rmd Filtration Stepwise Selection
 # Positive Percent Chl removed trials only
 MLR_PrctChl_fwd <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
                          # Field notes Qualitative variables
@@ -2667,6 +2669,28 @@ MLR_PrctChl_fwd <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~
                          avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 
 summary(MLR_PrctChl_fwd)
+
+# stepwise selection that enters and removes variables. 
+step(MLR_PrctChl_fwd, direction = 'both')
+
+```
+
+```{r LM_PrctChl_pos_Oly}
+Pos_Newport_data <- Filtration_pos_data %>% 
+  filter(!Site %in% c("Morro Bay", "San Rafael"))
+
+LM_PrctChl_NP <- lm(data = Pos_Newport_data, pcnt_Chl_rmvd ~ 
+                   Temp_C_Up + 
+                   Sal_ppt_Up + 
+                   Turbidity_NTU_Up + 
+                   #avg_depth_cm + 
+                   #d_bw_sondes_m + 
+                   #avg_m_hr + 
+                   Avg_OC_Ratio +
+                   Avg_TPM)
+
+# stepwise selection that enters and removes variables. 
+step(LM_PrctChl_NP, direction = 'both')
 ```
 
 ```{r eval=FALSE, fig.height=5, fig.width=6,  include=FALSE}
