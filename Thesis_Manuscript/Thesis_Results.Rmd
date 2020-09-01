@@ -2154,6 +2154,7 @@ Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_wei
   scale_color_manual(values = Species_colors, guide=FALSE) +
   stat_function(fun = function(total_wet_weight_g) (0.0044*total_wet_weight_g) - 0.043, colour = "blue", linetype="dashed") +
   xlim(0, 7) +
+  ylim(0,0.3) +
   theme_classic() +
   labs(x = 'Total wet weight (g)',
        y = 'Dry Tissue Weight (g)') +
@@ -2175,6 +2176,7 @@ Oly_logTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_w
   scale_color_manual(values = Species_colors, guide=FALSE) + 
   stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue", linetype="dashed") +
   xlim(0, 7) +
+  ylim(0,0.3) +
   theme_classic() +
   annotate("text", x = 1, y = .25, label = "log(y) ~ x") +
   labs(x ="Total wet weight (g)",
@@ -2191,6 +2193,7 @@ Oly_loglogTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dr
   scale_color_manual(values = Species_colors, guide=FALSE) + 
   stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue", linetype="dashed") +
   xlim(0, 7) +
+  ylim(0,0.3) +
   theme_classic() +
   annotate("text", x = 1, y = .25, label = "log(y) ~ log(x)") +
   labs(x ="Total wet weight (g)",
@@ -2208,6 +2211,7 @@ Oly_TWW2_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_wei
   scale_color_manual(values = Species_colors, guide=FALSE) + 
   stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue", linetype="dashed") +
   xlim(0, 7) +
+  ylim(0,0.3) +
   theme_classic() +
   annotate("text", x = 1, y = .25, label = "y ~ x + x^2") +
   labs(x ="Total wet weight (g)",
