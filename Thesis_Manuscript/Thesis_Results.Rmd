@@ -274,7 +274,7 @@ Habitat clearance rates (HCR) adjust the percent Chl $\alpha$ by the area of hab
 HCR at Ran Rafael ranged from `r format(round(min(SR_filter_sum$L_hr_m2)), nsmall =1)` to `r round(max(SR_filter_sum$L_hr_m2),1)` Lhr^-1^m^2^. 
 Morro Bay *C. gigas* aquaculture ranged from `r format(round(min(MB_filter_sum$L_hr_m2)), nsmall =1)` to `r round(max(MB_filter_sum$L_hr_m2),1)` Lhr^-1^m^2^.
 Newport Shellmaker ranged from `r round(min(NPSM_filter_sum$L_hr_m2),1)` to `r round(max(NPSM_filter_sum$L_hr_m2),1)` Lhr^-1^m^2^.
-Newport Deanza ranged from `r round(min(NPD_filter_sum$L_hr_m2),1)` to `r round(max(NPD_filter_sum$L_hr_m2),1)` Lhr^-1^m^2^ (Figure 1).
+Newport Deanza ranged from `r round(min(NPD_filter_sum$L_hr_m2),1)` to `r round(max(NPD_filter_sum$L_hr_m2),1)` Lhr^-1^m^2^ (Figure \ref{FR_ChlRmd_Site_boxplot}).
 Negative control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, and `r round(NPSM_NC_sum$L_hr_m2,1)` Lhr^-1^m^2^ for San Rafael, Morro Bay, and Newport Shellmaker respectively.
 Newport Deanza's three consecutive negative control trials ranged from `r format(round(min(NPD_NC_sum$L_hr_m2)), nsmall= 1)` to `r format(round(max(NPD_NC_sum$L_hr_m2)), nsmall= 1)` Lhr^-1^m^2^.
 
@@ -1869,6 +1869,53 @@ NPD_ChlRmdPos_Turb_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Turbid
 ols_regress(NPD_ChlRmdPos_Turb_lm)
 ```
 
+```{r Bivalve_Density, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The density of bivlaves at Deanza Newport, California surveyed May 2018. \\label{Bivalve_Density}"}
+# read in bivalve density data from cleaned data file
+Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
+
+# replace NAs with 0s
+Bivalve_Den_data[is.na(Bivalve_Den_data)] <- 0
+
+Bivalve_Den_data <- Bivalve_Den_data %>% 
+  # move species from individual columns to a single column with new density column to contain data
+  pivot_longer(c(Adula_diegensis_m2, Musculista_senhousia_m2, Mytilus_galloprovincialis_m2,
+                 Ostrea_lurida_m2, Crassostrea_gigas_m2, Argopecten_ventricosa_m2, 
+                 Geukensia_demissa_m2, Crassostrea_gigas_m2), 
+               names_to = "Species", 
+               values_to =  "individuals_m2") %>% 
+  # remove "_m2" from species names in Species column
+  mutate(Species = str_replace(Species, "_m2", ""),
+         Species = str_replace(Species, "_", " "))
+
+#Reorder levels of Site factor - display North to South
+order_by_site <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
+Bivalve_Den_data <- arrange(transform(Bivalve_Den_data, Site = factor(Site,levels = order_by_site)), Site)
+
+
+#unique(Bivalve_Den_data$Species) # list each individual bivalve species
+# Assign species to specific color
+Species_colors <- c("Adula diegensis" = "#8D8680",
+                    "Argopecten ventricosa" = "#CCC3C5",
+                    "Crassostrea gigas" = "#6D6340",
+                    "Geukensia demissa" = "#524D4F",
+                    "Musculista senhousia" = "#B0915B",
+                    "Mytilus galloprovincialis" = "#7E4B41",
+                    "Ostrea lurida" = "#9986A5",
+                    "Unknown mussel" = "black")
+
+# Stacked bar graph
+Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) + 
+  geom_col(aes(x = Site, y = individuals_m2, fill = Species)) +
+  geom_text(aes(label = round(Bivalve_den_m2,0), y = Bivalve_den_m2), 
+            vjust = -0.5) +
+  theme_classic() +
+  scale_fill_manual(values = Species_colors) +
+  scale_y_continuous(breaks = seq(0, max(Bivalve_Den_data$Bivalve_den_m2), by = 500)) +
+  labs(y = expression("Individuals per m"^2))
+  
+Bivalve_Den_graph
+```
+
 ```{r Oly_DTW_Shell_length, fig.height=5, fig.width=6,  include=FALSE}
 ############ Olympia DTW and Shell Length #####################
 # Determine what quadrat samples have missing data (NAs)
@@ -2485,52 +2532,6 @@ NPD_bivalve_DTW_predict <- NPD_bivalve_outrmd %>%
 
 ```
 
-```{r Bivalve_Density, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The density of bivlaves at Deanza Newport, California surveyed May 2018. \\label{Bivalve_Density}"}
-# read in bivalve density data from cleaned data file
-Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
-
-# replace NAs with 0s
-Bivalve_Den_data[is.na(Bivalve_Den_data)] <- 0
-
-Bivalve_Den_data <- Bivalve_Den_data %>% 
-  # move species from individual columns to a single column with new density column to contain data
-  pivot_longer(c(Adula_diegensis_m2, Musculista_senhousia_m2, Mytilus_galloprovincialis_m2,
-                 Ostrea_lurida_m2, Crassostrea_gigas_m2, Argopecten_ventricosa_m2, 
-                 Geukensia_demissa_m2, Crassostrea_gigas_m2), 
-               names_to = "Species", 
-               values_to =  "individuals_m2") %>% 
-  # remove "_m2" from species names in Species column
-  mutate(Species = str_replace(Species, "_m2", ""),
-         Species = str_replace(Species, "_", " "))
-
-#Reorder levels of Site factor - display North to South
-order_by_site <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
-Bivalve_Den_data <- arrange(transform(Bivalve_Den_data, Site = factor(Site,levels = order_by_site)), Site)
-
-
-#unique(Bivalve_Den_data$Species) # list each individual bivalve species
-# Assign species to specific color
-Species_colors <- c("Adula diegensis" = "#8D8680",
-                    "Argopecten ventricosa" = "#CCC3C5",
-                    "Crassostrea gigas" = "#6D6340",
-                    "Geukensia demissa" = "#524D4F",
-                    "Musculista senhousia" = "#B0915B",
-                    "Mytilus galloprovincialis" = "#7E4B41",
-                    "Ostrea lurida" = "#9986A5",
-                    "Unknown mussel" = "black")
-
-# Stacked bar graph
-Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) + 
-  geom_col(aes(x = Site, y = individuals_m2, fill = Species)) +
-  geom_text(aes(label = round(Bivalve_den_m2,0), y = Bivalve_den_m2), 
-            vjust = -0.5) +
-  theme_classic() +
-  scale_fill_manual(values = Species_colors) +
-  scale_y_continuous(breaks = seq(0, max(Bivalve_Den_data$Bivalve_den_m2), by = 500)) +
-  labs(y = expression("Individuals per m"^2))
-  
-Bivalve_Den_graph
-```
 
 ```{r Bar_Graphs_up_vs_down,  include=FALSE}
 Bar_up_down_data <- Master_analysis_table %>%
