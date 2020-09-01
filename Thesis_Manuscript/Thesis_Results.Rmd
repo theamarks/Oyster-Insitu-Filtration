@@ -1871,7 +1871,7 @@ ols_regress(NPD_ChlRmdPos_Turb_lm)
 
 ### Filter-feeding community
 
-```{r Bivalve_Density, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The density of bivlaves at Deanza Newport, California surveyed May 2018. \\label{Bivalve_Density}"}
+```{r Bivalve_Density, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The density of bivlaves at Deanza Newport, California surveyed May 2018. \\label{Bivalve_Density}"}
 # read in bivalve density data from cleaned data file
 Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
 
@@ -2010,7 +2010,7 @@ Oly_DTW_SL_model <- function(length_mm) {length_mm*Oly_DTW_SL_coef[[2]] + Oly_DT
 
 ```
 
-```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8, fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{Oly_DTW_SH_out_rmd_Trans}"}
+```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", warning=F, message=F, fig.asp=0.618, fig.width=8, fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{Oly_DTW_SH_out_rmd_Trans}"}
 
 ### y ~ log(x) model ####
 Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
@@ -2140,7 +2140,7 @@ Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
 plot(Oly_TWW_DTW)
 ```
 
-```{r Oly_TWW_DTW_outRmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8, message = F, fig.cap="The relationship between *O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW = 0.0044*TWW - 0.043) \\label{Oly_TWW_DTW_outRmd}"}
+```{r Oly_TWW_DTW_outRmd, echo=FALSE, fig.align="default", fig.asp=0.618, fig.cap="The relationship between *O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW = 0.0044*TWW - 0.043). \\label{Oly_TWW_DTW_outRmd}", fig.keep='all', fig.width=8, message=FALSE, warning=FALSE, dev='pdf'}
 
 # Make sure only using positive TWW values, negative values indicate processing error
 NPD_oly_TWW <- NPD_oly_outRmd %>% filter(total_wet_weight_g > 0)
@@ -2683,7 +2683,7 @@ step(MLR_PrctChl_fwd, direction = 'both')
 
 ```
 
-```{r LM_PrctChl_pos_Oly}
+```{r LM_PrctChl_pos_Oly, eval=FALSE, include=FALSE}
 Pos_Newport_data <- Filtration_pos_data %>% 
   filter(!Site %in% c("Morro Bay", "San Rafael"))
 
