@@ -16,9 +16,10 @@ Filtration estimates of oyster habitat on the west coast need measurements that 
   
 * Filtration services or functions? [Ted made this distinction]
 * Clearance Rate vs. FIltration cpacity vs. Filtration Rate
-  - Need to introduce difference
+  - Clearance Rate (L/hr) - measure of water processing - used by @Grizzle2018 for L/hr/m^2
+  - Filtration Rate (mg/hr) - teh amss of particles cleared per unit time
+  - Filtration Capacity - definition? used by @ZuErmgassen2013
 * First sentence list of fauna using habitat - mobile & sessile invertebrates, juvenille crabs and fishes? use east coast references? Thesis citation ok?
-* Olympia specific citations - invert community (Zacherl?)
 * Could introduce whole-habitat filtration first, then go into Oly/West coast
   
 ## Short Form Introduction
