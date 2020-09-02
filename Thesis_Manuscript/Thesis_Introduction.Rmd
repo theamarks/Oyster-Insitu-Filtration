@@ -10,19 +10,6 @@ indent: true
 
 # Introduction
 
-## Theme - take home sentence
-
-Filtration estimates of oyster habitat on the west coast need measurements that incorporate the entire filter-feeding community of constructed oyster restorations and commercial aquaculture.
-  
-* Filtration services or functions? [Ted made this distinction]
-* Clearance Rate vs. FIltration cpacity vs. Filtration Rate
-  - Clearance Rate (L/hr) - measure of water processing - used by @Grizzle2018 for L/hr/m^2
-  - Filtration Rate (mg/hr) - teh amss of particles cleared per unit time
-  - Filtration Capacity - definition? used by @ZuErmgassen2013
-* First sentence list of fauna using habitat - mobile & sessile invertebrates, juvenille crabs and fishes? use east coast references? 
-  
-## Short Form Introduction
-
 The Olympia oyster (*Ostrea lurida*) is a former foundation species in estuaries along the Pacific North American Coast by autogeneously providing complex three-dimensional habitat [@Dayton1972] used by a variety of invertebrates, juvenile fishes and feeding habitat for birds and larger fishes [@Kimbro2006; @Ramsey2012; @Coen2007; @Peterson2003].
 *O. lurida* and many of the invertebrates that recruit to the oyster habitat (i.e. mussels, tunicates, scallops, and sponges) are suspension feeders that remove organic and inorganic particles from the water column (seston) and deposit unused material in the benthos [@Baird1989; @Dame1999]. This feeding activity increases water clarity [@Newell2004b; @Grizzle2008; @Grizzle2018] and enriches benthic sediments (need citations) useful to benthic primary producers like seagrasses [@Peterson1999].
 Overfishing in concert with destructive fishing practices [@Kirby2004], introduction of non-native species [@Bonnot1935], pollution, and excessive sedimentation [@Gilbert1917; @Lotze2006; @Nelson1909] decimated *O. lurida* populations to less than 10% of historical abundances in parts of the Pacific Northwest, and to less than 1% in the rest of its geographic distribution [@Beck2011; @ZuErmgassen2012].
@@ -30,6 +17,7 @@ The extreme reduction of native *O. lurida* abundances is coupled with the loss 
 Restoring these ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
 
 ### Single-species Reseach
+
 Estimating the filtration capacity of natural and restored *O. lurida* habitat and *C. gigas* aquaculture currently relies on single-species models produced by a handfull of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a]. 
 @Gray2018 determined the clearance rates (Lhr^-1^g^-1^ Dry Tissue Weight) of *O. lurida* and *C. gigas* under a range of  laboratory and seasonal in situ conditions using the biodeposition method [@Hawkins1996].
 During the in situ trials individual oyster were placed in a flow through chamber filled with ambient seawater from Yaquina Bay, Oregon at a rate of 150-200 ml min^-1^, and individuals not filtering (closed valve) were excluded from the analysis [see @Cranford2011].
@@ -48,26 +36,35 @@ Water flow dynamics in the field are highly variable [@Wilson-Ormond1997] due to
 While the direct effects of water velocity on bivalve filter-feeding is unclear (@Grizzle1992; more), water depth and velocity affect water column mixing, thus food availability for benthic filter-feeders (Monismith et al 1990 in Harsh & Luckenbach 1999 BAD) (Holligan et al. 1984 cited in Judge et al. 1993).
 The quantity, particle size, and organic content (OC) of seston avilable to filter-feeders can effect filter-feeders' feeding behavior [@Gray2018; @Gray2019; @Gray2016; Velasco2005; @Cranford1999; Moody2020?].
 Natural seston is composed of phytoplankton [@Navarro1995], zooplankton [@Lehane2006; @Trottet2008], macroalgae detritus [@Page1997; @Kwak1997; @Gilbane2006], bacteria [@Newell1989], and inorganic sediments [@Wilson-Ormond1997; @Gray2018].
-Although @Gray2018 used ambient se water from Yaquina Bay in their in situ experiment across seasons, seston also changes spatially and temporally from tides, wind, bathometry, and proximety to benthic organisms [@Navarro1995; @Muschenheim1987; @Ashley1988; @Moody2020a), limiting their findings to bays with similar seston profiles.  
+Although @Gray2018 used ambient sea water from Yaquina Bay in their in situ experiment across seasons, seston also changes spatially and temporally from tides, wind, bathometry, and proximety to benthic organisms [@Navarro1995; @Muschenheim1987; @Ashley1988; @Moody2020a), limiting their findings to bays with similar seston profiles.  
 @Cranford2011 conducted a metaanalysis of 133 bivalve clearance rate studies, they found highly variable short-term flucuations in clearance rates, as well as intermitant feeding cessation, when bivalves were fed with natural seston.
-This illustrates bivalve's highly variable feeding responses to natural conditions and that ecologically and environmentally realistic  filtration estimates need to whole-habitat in situ measurements.
+This illustrates bivalve's highly variable feeding responses to natural conditions and that ecologically and environmentally realistic  filtration estimates need whole-habitat in situ measurements.
 
 ### Research Questions
 
 The motivation of this study was to determine the first ecologiacally and environmentally realistic clearance rates of restored *O. lurida* habitat and *C. gigas* aquaculture in California.
 Our research objectives were: 
-1) quantify the changes in water quality (temperature, salinity) and seston (chl $\alpha$, turbidity) as water traveled over oyster habitat; 
+1) quantify the changes in water quality (temperature & salinity) and seston (chl $\alpha$, turbidity) as water traveled over oyster habitat; 
 2) characterize the inorganic and organic composition of seston; 
 3) investigate if methods derived from @Grizzle2006 and @Grizzle2008 are appropriate for measuring oyster habitats in California; and
 4) report the bivalve filter-feeder community of restored *O. lurida* shell beds in Upper Newport Bay, California.
 
+-----------------------------------------------------------------------
+## Theme - take home sentence
 
-
-
-
+Filtration estimates of oyster habitat on the west coast need measurements that incorporate the entire filter-feeding community of constructed oyster restorations and commercial aquaculture.
+  
+* Filtration services or functions? [Ted made this distinction]
+* Clearance Rate vs. FIltration cpacity vs. Filtration Rate
+  - Clearance Rate (L/hr) - measure of water processing - used by @Grizzle2018 for L/hr/m^2
+  - Filtration Rate (mg/hr) - teh amss of particles cleared per unit time
+  - Filtration Capacity - definition? used by @ZuErmgassen2013
+* First sentence list of fauna using habitat - mobile & sessile invertebrates, juvenille crabs and fishes? use east coast references? 
 
 ### Incorporate these tidbits?
 Whole -habitat measurements inately measure the habitat-level filtraiton reaction to hydrodynmaics and food availability.
+
+Chl $\alpha$ - proxy for photosynthetic organic matterial 
 
 Residence time, temperature, turbidity, food availability, salinity, emersion time, and water flow speed are all parameters known to affect bivalve filter feeding rates, and will be unique to each California estuary. 
 Thus, previous filtration estimates are not directly applicable to existing restoration and aquaculture operations in California.
