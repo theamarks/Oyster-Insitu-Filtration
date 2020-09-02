@@ -64,7 +64,9 @@ Filtration estimates of oyster habitat on the west coast need measurements that 
 ### Incorporate these tidbits?
 Whole -habitat measurements inately measure the habitat-level filtraiton reaction to hydrodynmaics and food availability.
 
-Chl $\alpha$ - proxy for photosynthetic organic matterial 
+Chl $\alpha$ - proxy for photosynthetic organic matterial - Check @Secor2006 for ideas
+
+Higher organic content means a higher proportion of digestable food, which increases clearance rates (@Gray2017a). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
 
 Residence time, temperature, turbidity, food availability, salinity, emersion time, and water flow speed are all parameters known to affect bivalve filter feeding rates, and will be unique to each California estuary. 
 Thus, previous filtration estimates are not directly applicable to existing restoration and aquaculture operations in California.
