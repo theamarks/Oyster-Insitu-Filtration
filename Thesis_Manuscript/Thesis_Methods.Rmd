@@ -145,26 +145,3 @@ I evaluated if upstream Chl $\alpha$ concentrations were higher than downstream 
 \end{tabular}
 \caption{Summary Table of all field days} 
 \end{sidewaystable}
-
-
-## Extra text
-
-Higher organic content means a higher proportion of digestable food, which increases clearance rates (@Gray2017a). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
-
-The San Diego site is a FLoating UPwelling SYstem (FLUPSY) aquaculture structure operated by the Port of San Diego Blue Economy Incubator Program. 
-A FLUPSY is an upwelling system that pulls water up through baskets submerged at the water surface. 
-The upwelling provides juvenile oysters with a continuous supply of food from the surrounding water. 
-The San Diego site requires modified methods to measure filtration. The upstream sonde is hung off the FLUPSY at the depth of the basket bottom and the downstream sonde is placed at the basket outflow channel. 
-The operation of this FLUPSY has been episodic during my study to date and it is uncertain if operation will continue.  
-####### Other areas to address in Literature Review: Water Quality measurements - labratory methods, insitu methods, possible remote sensing methods. 
-Chlorophyll a - what it is biologically, why its important. Check @Secor2006 for ideas.
-
-###Bivalve Density and Richness
-We will also record positive and negative control measurements in San Diego Bay, and, as needed, at aquaculture operations in Agua Hedionda or Morro Bay. 
-Filter feeder species richness, density, and shell height at each study site will also be measured by using replicate (n=10-15) haphazardly placed 0.25m2 quadrats and calipers.
-
-
-These methods were originally designed for shellfish beds on the East Coast; two features of O. lurida require us to perform a positive control for the proposed methods. 
-O. lurida have a lower filtration rate compared to larger species such as C. gigas and C. virginica (zu Ermgassen, Gray, et al. 2013, Gray & Langdon 2017), and grow in smaller, less dense beds then the reefs formed by Crassostrea species (Beck et al. 2009). 
-
-## References
