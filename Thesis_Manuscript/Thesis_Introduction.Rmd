@@ -53,7 +53,13 @@ Although @Gray2018 used ambient se water from Yaquina Bay in their in situ exper
 @Cranford2011 conducted a metaanalysis of 133 bivalve clearance rate studies, they found highly variable short-term flucuations in clearance rates, as well as intermitant feeding cessation, when bivalves were fed with natural seston.
 This illustrates bivalve's highly variable feeding responses to natural conditions and that filtration estimates need to be made from measurements that incorporate a habitat's unique biological and physical condidtions.
 
+### Incorporate these tidbits?
 Whole -habitat measurements inately measure the habitat-level filtraiton reaction to hydrodynmaics and food availability.
+
+Residence time, temperature, turbidity, food availability, salinity, emersion time, and water flow speed are all parameters known to affect bivalve filter feeding rates, and will be unique to each California estuary. 
+Thus, previous filtration estimates are not directly applicable to existing restoration and aquaculture operations in California.
+
+@Wheat2013 *C. gigas* aquaculture in Willapa Bay, WA showed that seston and phytoplankton were refulated top-down by commercially grown C. gigas, thus C. gigas may play a substantial role in overall water filtration in CA estuaries, particularly when associated wit haquaculture operations in Morro Bay. 
 
 ### Research Questions
 
@@ -159,7 +165,6 @@ In situ studies may not be able to produce the sophisticated models based on man
 
 The objective of this study was to identify...
 
-
 ##Extra Text
 	
 This and many other studies use chlorophyll $\alpha$ as a metric for filtration (Luckenbach and Harsh 1999; Wasson et al. 2015; Grizzle, Greene, and Coen 2008; Grizzle et al. 2006) because chlorophyll $\alpha$ is a plant pigment whose concentration is a proxy for phytoplankton and algae fragments consumed by filter feeders [Is this the right place for this Chl info?]. 
@@ -167,7 +172,6 @@ In summary, filtration models of oyster habitat lack in situ comparisons that in
 My research uses in situ methods based on Grizzle et al. (2006 & 2008) and Milbrandt et al. (2015) to test previous filtration models, using restored and aquaculture oyster habitat.
 
 Oyster habitat provides myriad ecosystem services, such as water filtration, to bays and estuaries worldwide. Laboratory and limited in-situ studies have provided initial estimates of the filtration services provided by the U.S. West Coast’s only native oyster,  Ostrea lurida, but refined field-based estimates that consider multiple biological and physical factors are sorely needed. 
-
 
 Two studies based in Yaquina Bay, Oregon provide a strong foundation for estimating O. lurida filtration rates (zu Ermgassen, Gray, et al. 2013, Gray & Langdon 2017), but several important factors useful for estimating filtration rates remain underexplored.  Previous filtration studies were conducted in the laboratory or were single-species, in-situ studies (zu Ermgassen, Gray, et al. 2013, Gray & Langdon 2017), while O. lurida beds are complex habitat used by other filter feeding organisms (i.e. C. gigas, mussels, tunicates, scallops, and sponges) that may substantially contribute to overall filtration. Further, O. lurida habitat contains differing filter feeder communities across estuaries; San Francisco Bay does not have a feral C. gigas population, while Newport and San Diego Bays contain abundant C. gigas. Next, environmental conditions of estuaries vary greatly in space and time and previous studies have only focused on limited field conditions in Yaquina Bay, Oregon with isolated O. lurida (Gray & Langdon 2017). Residence time, temperature, turbidity, food availability, salinity, emersion time, and water flow speed are all parameters known to affect bivalve filter feeding rates, and will be unique to each California estuary. Thus, previous filtration estimates are not directly applicable to existing restoration and aquaculture operations in California.
 
