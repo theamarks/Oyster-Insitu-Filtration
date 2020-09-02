@@ -19,8 +19,7 @@ Filtration estimates of oyster habitat on the west coast need measurements that 
   - Clearance Rate (L/hr) - measure of water processing - used by @Grizzle2018 for L/hr/m^2
   - Filtration Rate (mg/hr) - teh amss of particles cleared per unit time
   - Filtration Capacity - definition? used by @ZuErmgassen2013
-* First sentence list of fauna using habitat - mobile & sessile invertebrates, juvenille crabs and fishes? use east coast references? Thesis citation ok?
-* Could introduce whole-habitat filtration first, then go into Oly/West coast
+* First sentence list of fauna using habitat - mobile & sessile invertebrates, juvenille crabs and fishes? use east coast references? 
   
 ## Short Form Introduction
 
@@ -51,7 +50,20 @@ The quantity, particle size, and organic content (OC) of seston avilable to filt
 Natural seston is composed of phytoplankton [@Navarro1995], zooplankton [@Lehane2006; @Trottet2008], macroalgae detritus [@Page1997; @Kwak1997; @Gilbane2006], bacteria [@Newell1989], and inorganic sediments [@Wilson-Ormond1997; @Gray2018].
 Although @Gray2018 used ambient se water from Yaquina Bay in their in situ experiment across seasons, seston also changes spatially and temporally from tides, wind, bathometry, and proximety to benthic organisms [@Navarro1995; @Muschenheim1987; @Ashley1988; @Moody2020a), limiting their findings to bays with similar seston profiles.  
 @Cranford2011 conducted a metaanalysis of 133 bivalve clearance rate studies, they found highly variable short-term flucuations in clearance rates, as well as intermitant feeding cessation, when bivalves were fed with natural seston.
-This illustrates bivalve's highly variable feeding responses to natural conditions and that filtration estimates need to be made from measurements that incorporate a habitat's unique biological and physical condidtions.
+This illustrates bivalve's highly variable feeding responses to natural conditions and that ecologically and environmentally realistic  filtration estimates need to whole-habitat in situ measurements.
+
+### Research Questions
+
+The goal of this study is to determine the first ecologiacally and environmentally realistic clearance rates of restored *O. lurida* habitat and *C. gigas* aquaculture in California.
+
+The goal of this study is to provide the first snap shot filtraiton estimates of restored Olympia Oyster habitat. 
+
+My research uses in situ methods based on Grizzle et al (2006 & 2008) and mildbrandt et al 2015 to test previous filtration models, using restored and aquaculture oyster habitat.
+
+
+
+
+
 
 ### Incorporate these tidbits?
 Whole -habitat measurements inately measure the habitat-level filtraiton reaction to hydrodynmaics and food availability.
@@ -60,10 +72,6 @@ Residence time, temperature, turbidity, food availability, salinity, emersion ti
 Thus, previous filtration estimates are not directly applicable to existing restoration and aquaculture operations in California.
 
 @Wheat2013 *C. gigas* aquaculture in Willapa Bay, WA showed that seston and phytoplankton were refulated top-down by commercially grown C. gigas, thus C. gigas may play a substantial role in overall water filtration in CA estuaries, particularly when associated wit haquaculture operations in Morro Bay. 
-
-### Research Questions
-
-The goal of this study is to provide the first snap shot filtraiton estimates of restored Olympia Oyster habitat. 
 
 ### Save for discussion? 
 
