@@ -54,11 +54,12 @@ This illustrates bivalve's highly variable feeding responses to natural conditio
 
 ### Research Questions
 
-The goal of this study is to determine the first ecologiacally and environmentally realistic clearance rates of restored *O. lurida* habitat and *C. gigas* aquaculture in California.
-
-The goal of this study is to provide the first snap shot filtraiton estimates of restored Olympia Oyster habitat. 
-
-My research uses in situ methods based on Grizzle et al (2006 & 2008) and mildbrandt et al 2015 to test previous filtration models, using restored and aquaculture oyster habitat.
+The motivation of this study was to determine the first ecologiacally and environmentally realistic clearance rates of restored *O. lurida* habitat and *C. gigas* aquaculture in California.
+Our research objectives were: 
+1) quantify the changes in water quality (temperature, salinity) and seston (chl $\alpha$, turbidity) as water traveled over oyster habitat; 
+2) characterize the inorganic and organic composition of seston; 
+3) investigate if methods derived from @Grizzle2006 and @Grizzle2008 are appropriate for measuring oyster habitats in California; and
+4) report the bivalve filter-feeder community of restored *O. lurida* shell beds in Upper Newport Bay, California.
 
 
 
