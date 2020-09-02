@@ -42,7 +42,7 @@ The complex biolgical and physical characteristics of *O. lurida* habitat point 
 Whole-habitat in situ filtration measurements have several distinct advantages over single-species models;
 1) As previously mentioned, measurements include the contributions of the entire filter-feeding guild;
 2) Measurements have an automatic averaging/agregate of individual bivalve feeding variation with a higher precision than filtration rates derived from individuals (Cranfor 1998, Inglesias et al 1998).
-Futhermore, studies that exculde individuals that are not filtering artificially inflate filtration models and overestimate filtration when expanded to the population level [@Cranford2011]; 
+Futhermore, studies that exculde individuals that are not filtering artificially inflate filtration models and overestimate filtration when expanded to the population level [@Cranford2011; @Luckenbach1999]; 
 3) The affects of natural water flow dynamics along with spatial and seasonal changes to seston compositio on bivalve feeding behavior are inherently included in whole-habitat in situ measurements. 
 
 Water flow dynamics in the field are highly variable [@Wilson-Ormond1997] due to the interaction of tidal cycles and the physical characteristics of bays and estuaries (citations needed. @Judge1992).
@@ -53,33 +53,26 @@ Although @Gray2018 used ambient se water from Yaquina Bay in their in situ exper
 @Cranford2011 conducted a metaanalysis of 133 bivalve clearance rate studies, they found highly variable short-term flucuations in clearance rates, as well as intermitant feeding cessation, when bivalves were fed with natural seston.
 This illustrates bivalve's highly variable feeding responses to natural conditions and that filtration estimates need to be made from measurements that incorporate a habitat's unique biological and physical condidtions.
 
-leading to specific *O. lurida* beds a wide range of filtration functionality.
+Whole -habitat measurements inately measure the habitat-level filtraiton reaction to hydrodynmaics and food availability.
 
-along with the presence of predators [@Byers2014] <-- save for discussion?
+### Research Questions
+
+The goal of this study is to provide the first snap shot filtraiton estimates of restored Olympia Oyster habitat. 
+
+### Save for discussion? 
+
+along with the presence of predators [@Byers2014] 
+
 Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
-This suggests that filtration rates among *O. lurida* habitats, may have unique filtration rates locally or regionally depending on the composition of filter-feeders, and laboratory methods a likely insufficient at estimating habitat-level filtration funcitons.
+This suggests that filtration rates among *O. lurida* habitats, may have unique filtration rates locally or regionally depending on the composition of filter-feeders, and laboratory methods a likely insufficient at estimating habitat-level filtration funcitons. 
 
-The composition of this filter-feeding guild is likely to vary regionally, affecting the filtration signature of specific *O. lurid* habitat because each species has specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011; Gray2016; @Gedan2014] that can variy with spatial and temporal environmental conditions [@Moody2020a; @Cranford1999].
-
-
-### in situ environmental conditions that affect filtration
-
-A less common way to measure filtration is in situ whole-habitat measurements, only a few studies have used these methods [@Grizzle2006; @Grizzle2008; @Grizzle2018; @Milbrandt2015 (more in Grizzle2018)] compared to the myrid of labroratory studies.
-In situ whole-habitat measurements also encompass many realistic physical and biological conditions known to affect bivalve filtration.
-The bathometry of estuaries along with tidal prisms effect the water velocity over oyster habitats and thus their filtration functions.
 Different species have different ideal water velocities for feeding [@Cranford2011].
 Slow velocity, although possibly ideal for individual filtration [@Grizzle1992], can lead to food depletion for downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
 On the other hand, both higherflows and shallow estuaries can redistribute particles throughout the watercolumn replenishing food for bivalve filterfeeders (Officer 1982 & Fredett 1989 in Harsh & Lauckenbach1999) (Holligan et al. 1984 cited in @Judge1993)
 In addition, deeper water might limit benthic bivalves access to food (citations in Ruesink et al. 2005), while the orientation of oysters relative to the waterflow may effect feeding behavior[@Grizzle1992; @Harsh1999].
-The ratio of organic matterial foodstuffs to inorganic particles in the seston along with teh quantity is documented to affect bivalve filtration, and subject to change seasonaly (Moody and Kreeger, Gray and Langdon 2018).
-The effects of site specific water velocity, water column mixing, individuals differntial feeding responses and seston quality and quantity are all complex environmental conditions hard to replicate in filtraiton studies.
-Filter feeders habe variable filtration rates studies. 
-Studies often report individuals not feeding while others are. Studies often discount/remove non-filtering individuals from their calculations, which presents a problem when scaling to habitat filtraiton estimates [@Luckenbach1999. 
-Whole -habitat measurements inately measure the habitat-level filtraiton reaction to hydrodynmaics and food availability.
-THis points to the need for insituy whole-habitat measurements to estimate individual habitat level filtration funciton.
-Grizzle et al. 2008, Mildbrant et al. 2015, and grizzle eta ll 2018 to date are the only insitu whole habitat filtration studies all are conductedon easter noyster habitat.
-The goal of this study is to provide the first snap shot filtraiton estimates of restored Olympia Oyster habitat. 
 
+
+### Whole-habitat outline
 * Whole-habitat measurements also include realistic environmental conditions known to affect bivalve filtration rates
   + Texture of habitat leads to varied hydrodynamics and mixing (Harsh & Luckenback 1999) that can effect environmental that mediate filtration.
   + Slow flow can lead to food depletion to downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
@@ -90,17 +83,13 @@ The goal of this study is to provide the first snap shot filtraiton estimates of
   + Laboratory studies often don't include oysters not feeding, closed valves, resulting in artificially high filtration rates [@Gray2018; @Harsh1999], and may partly explain why many field studies find lower FR than laboratory studies [@Gray2018 cited Newell 2005; @Grizzle2008; @Cranford2011].
   + In situ studies may not be able to produce the sophisticated models based on manipulated variables, but can record the range of Filtration capacity of a specific restoration or aquaculture operation within its complex environment.
 
-The models used to estimate the filtration capacity of natural and restored *O. lurida* habitat are based on single-species experiments. It is well documented that *O. lurida* habitat recruits a myriad of other filter-feeders that may substantial contribute to the overall filtration capacity of the habitat.
-
-This suggests that applying *O. lurida* specific models to estimate *O. lurida* habitat filtration capacity 
-
-### introduce my study questions
 
 
 
 
 
-## Long Form Introduction  
+
+## Long Form Introduction  --> Save for discussion
 
 ### Natural History 
 
@@ -171,11 +160,8 @@ In situ studies may not be able to produce the sophisticated models based on man
 The objective of this study was to identify...
 
 
-##Extra Text##
-
-### Research Questions
+##Extra Text
 	
-
 This and many other studies use chlorophyll $\alpha$ as a metric for filtration (Luckenbach and Harsh 1999; Wasson et al. 2015; Grizzle, Greene, and Coen 2008; Grizzle et al. 2006) because chlorophyll $\alpha$ is a plant pigment whose concentration is a proxy for phytoplankton and algae fragments consumed by filter feeders [Is this the right place for this Chl info?]. 
 In summary, filtration models of oyster habitat lack in situ comparisons that incorporate complex environmental conditions and other bivalve contributions to overall filtration function of restored *O. lurida* habitat and C. gigas aquaculture. 
 My research uses in situ methods based on Grizzle et al. (2006 & 2008) and Milbrandt et al. (2015) to test previous filtration models, using restored and aquaculture oyster habitat.
