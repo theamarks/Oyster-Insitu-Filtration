@@ -49,9 +49,9 @@ Water flow dynamics in the field are highly variable [@Wilson-Ormond1997] due to
 While the direct effects of water velocity on bivalve filter-feeding is unclear (@Grizzle1992; more), water depth and velocity affect water column mixing, thus food availability for benthic filter-feeders (Monismith et al 1990 in Harsh & Luckenbach 1999 BAD) (Holligan et al. 1984 cited in Judge et al. 1993).
 The quantity, particle size, and organic content (OC) of seston avilable to filter-feeders can effect filter-feeders' feeding behavior [@Gray2018; @Gray2019; @Gray2016; Velasco2005; @Cranford1999; Moody2020?].
 Natural seston is composed of phytoplankton [@Navarro1995], zooplankton [@Lehane2006; @Trottet2008], macroalgae detritus [@Page1997; @Kwak1997; @Gilbane2006], bacteria [@Newell1989], and inorganic sediments [@Wilson-Ormond1997; @Gray2018].
-
+Although @Gray2018 used ambient se water from Yaquina Bay in their in situ experiment across seasons, seston also changes spatially and temporally from tides, wind, bathometry, and proximety to benthic organisms [@Navarro1995; @Muschenheim1987; @Ashley1988; @Moody2020a). 
 @Cranford2011 conducted a metaanalysis of 133 bivalve clearance rate studies, they found highly variable short-term flucuations in clearance rates, as well as intermitant feeding cessation, when bivalves were fed with natural seston.
- which changes spatially and temporally from tides, wind, bathometry, and proximety to benthic organisms [@Navarro1995; @Muschenheim1987; @Ashley1988; @Moody2020a). 
+ 
 
 leading to specific *O. lurida* beds a wide range of filtration functionality.
 
