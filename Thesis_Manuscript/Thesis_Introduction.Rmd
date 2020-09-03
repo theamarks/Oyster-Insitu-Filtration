@@ -49,7 +49,8 @@ Our research objectives were:
 3) investigate if methods derived from @Grizzle2006 and @Grizzle2008 are appropriate for measuring oyster habitats in California; and
 4) report the bivalve filter-feeder community of restored *O. lurida* shell beds in Upper Newport Bay, California.
 
------------------------------------------------------------------------
+\newpage
+
 ## Theme - take home sentence
 
 Filtration estimates of oyster habitat on the west coast need measurements that incorporate the entire filter-feeding community of constructed oyster restorations and commercial aquaculture.
