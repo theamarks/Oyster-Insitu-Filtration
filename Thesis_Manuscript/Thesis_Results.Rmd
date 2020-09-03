@@ -316,7 +316,8 @@ colnames(Final_table) <- c( "Site", "Date", "Experiment", "Temp ($\\textdegree$C
 # create xtable
 sumtable_latex <- xtable(Final_table, 
                          caption = "Summary Table of all field days",
-                         label="tb:summary")
+                         label = "tb:summary",
+                         type = "latex")
                         #display= c("s","s","s","s","f","f","f","f","f","f","f","f","f","f","f","f"))
 
 print(sumtable_latex, booktabs=TRUE, caption.placement="top")
