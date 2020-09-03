@@ -47,7 +47,7 @@ Our research objectives were:
 1) quantify the changes in water quality (temperature & salinity) and seston (chl $\alpha$, turbidity) as water traveled over oyster habitat; 
 2) characterize the inorganic and organic composition of seston; 
 3) investigate if methods derived from @Grizzle2006-@Grizzle2008 are appropriate for measuring oyster habitats in California; and
-4) report the bivalve filter-feeder community of restored *O. lurida* shell beds in Upper Newport Bay, California.
+4) characterize the bivalve filter-feeder community of restored *O. lurida* shell beds in Upper Newport Bay, California.
 
 \newpage
 
