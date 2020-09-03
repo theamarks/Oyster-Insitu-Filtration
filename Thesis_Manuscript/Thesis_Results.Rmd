@@ -39,6 +39,7 @@ library(xtable) # creates tables in LaTex
 library(MASS) # collection of datasets and functions
 library(ISLR) # Dataset in Intro to statistical learning
 library(knitr)
+library(tinytex)
 
 # source functions 
 source("./functions.R")
@@ -280,7 +281,7 @@ Newport Deanza ranged from `r round(min(NPD_filter_sum$L_hr_m2),1)` to `r round(
 Negative control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, and `r round(NPSM_NC_sum$L_hr_m2,1)` Lhr^-1^m^2^ for San Rafael, Morro Bay, and Newport Shellmaker respectively.
 Newport Deanza's three consecutive negative control trials ranged from `r format(round(min(NPD_NC_sum$L_hr_m2)), nsmall= 1)` to `r format(round(max(NPD_NC_sum$L_hr_m2)), nsmall= 1)` Lhr^-1^m^2^.
 
-```{r Final_Summary_table, results= 'asis', echo=F}
+```{r Final_Summary_table, echo=FALSE, results='asis'}
 
 #fig.cap="A summary table reporting every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively. \\label{Final_Summary_table}",
 
@@ -358,8 +359,8 @@ plot(test$Chl.up,test$Chl.dn)
 plot(test1$Chl.up,test1$Chl.dn)
 
 
-upstream = test1[,-10]
-downstream = test1[,-9]
+upstream = test1[,-10] 
+downstream = test1[,-9] 
 upstream$stream = "upstream"
 downstream$stream  = "downstream"
 colnames(upstream)[9] = "clr"
@@ -367,22 +368,32 @@ colnames(downstream)[9] = "clr"
 test2 = rbind(upstream,downstream)
 colnames(test2)[12] = "Velocity"
 control.model = lm(clr~Site+Temp+Salinity+Turbidity+TPM+OC+Depth+Distance+Velocity+Chl.removal+Clearance,data=test2)
-test2$adjusted.clr = control.model$residuals
+test2$adjusted.clr = control.model$residuals + mean(test2$clr)
 
-up.res = test2$adjusted.clr[test2$stream=="upstream"]
-dn.res = test2$adjusted.clr[test2$stream=="downstream"]
-m2 = lm(up.res~dn.res)
+up.adj = test2$adjusted.clr[test2$stream=="upstream"]
+dn.adj = test2$adjusted.clr[test2$stream=="downstream"]
+up.adj = up.adj[-c(10,14)]
+dn.adj = dn.adj[-c(10,14)]
+#Assuming we have a good reason for dropping data point 10.
+
+m2 = lm(up.adj~dn.adj+0)
 summary(m2)
 dev.off()
-plot(up.res,dn.res)
+plot(up.adj,dn.adj)
 abline(0,1,col=4,lwd=2,lty=2)
-x.seq = seq(min(dn.res),max(dn.res),by = (max(dn.res)-min(dn.res))/1000)
-conf.seq = predict.lm(m2,newdata=data.frame(dn.res=x.seq),interval="confidence")
+x.seq = seq(min(dn.adj),max(dn.adj),by = (max(dn.adj)-min(dn.adj))/1000)
+conf.seq = predict.lm(m2,newdata=data.frame(dn.adj=x.seq),interval="confidence")
 lines(x.seq,conf.seq[,1],col=2,lty=2,lwd=2)
 lines(x.seq,conf.seq[,2],col=2,lty=2,lwd=1)
 lines(x.seq,conf.seq[,3],col=2,lty=2,lwd=1)
+text(up.adj+.08,dn.adj,(1:length(up.adj)))
+slope = summary(m2)[[4]][1]
+se = summary(m2)[[4]][2]
+df = summary(m2)[[7]][2]
 
-
+t = (slope-1)/se
+p.val = 1-pt(t,df)
+p.val
 ```
 
 ```{R Summary_Table, eval=FALSE, include=FALSE}
