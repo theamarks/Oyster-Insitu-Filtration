@@ -279,8 +279,10 @@ Newport Deanza ranged from `r round(min(NPD_filter_sum$L_hr_m2),1)` to `r round(
 Negative control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, and `r round(NPSM_NC_sum$L_hr_m2,1)` Lhr^-1^m^2^ for San Rafael, Morro Bay, and Newport Shellmaker respectively.
 Newport Deanza's three consecutive negative control trials ranged from `r format(round(min(NPD_NC_sum$L_hr_m2)), nsmall= 1)` to `r format(round(max(NPD_NC_sum$L_hr_m2)), nsmall= 1)` Lhr^-1^m^2^.
 
-```{r Final_Summary_table, fig.cap="A summary table reporting every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively. \\label{Final_Summary_table}", eval=FALSE, include=FALSE}
-#results= 'asis'
+```{r Final_Summary_table, results= 'asis', echo=F}
+
+#fig.cap="A summary table reporting every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively. \\label{Final_Summary_table}",
+
 library(xtable) # load xtable package 
 #options(xtable.floating = FALSE)
 options(xtable.timestamp = FALSE)
@@ -310,11 +312,14 @@ colnames(Final_table) <- c( "Site", "Date", "Experiment", "Temp ($\\textdegree$C
                            "Depth (m)","Distance (m)", "Water veolcity (m/s)", "% Chl $\\alpha$ removal", 
                            "Clearance rate (L/hr/$m^2$)")
 # create xtable
-sumtable_side_LaTex <- xtable(Final_table, caption = "Summary Table of all field days")
-                              #display= c("s","s","s","s","f","f","f","f","f","f","f","f","f","f","f","f"))
+sumtable_latex <- xtable(Final_table, 
+                         caption = "Summary Table of all field days",
+                         label="tb:summary")
+                        #display= c("s","s","s","s","f","f","f","f","f","f","f","f","f","f","f","f"))
 
-# print LaTex code for sideways table
-print(sumtable_side_LaTex, include.rownames = FALSE)
+print(sumtable_latex, booktabs=TRUE, caption.placement="top")
+
+#print(sumtable_latex, include.rownames = FALSE)
 #type = "latex",
 #sanitize.colnames.function=function(x){x} 
 # sanitize.text.function=function(x){x}
@@ -324,6 +329,8 @@ print(sumtable_side_LaTex, include.rownames = FALSE)
   # caption.placement = "top"
   # floating.environment = "sidewaystable"
 ```
+
+
 
 ```{r Dr Nichols code, eval=FALSE, include=FALSE}
 test = na.omit(Final_table)
