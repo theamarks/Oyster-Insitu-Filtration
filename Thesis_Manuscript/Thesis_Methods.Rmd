@@ -10,7 +10,7 @@ indent: true
 
 # Methods
 
-## Study Sites
+### Study Sites
 I selected four sites along the California coast to measure in situ filtration.
 The sites represent a range of constructed oyster habitats including shell reef, shell bed, and floating aquaculture lines.
 The San Francisco Living Shorelines Project, San Francisco Bay, California was constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015]. 
@@ -31,7 +31,7 @@ The Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Mor
 MBOC grows *C. gigas* in plastic mesh bags measuring about (insert dimensions) attached to floating lines that stretch across an area about 75 m x 75 m. 
 The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
 
-## Exerpimental Setup
+### Exerpimental Setup
 Methods were adapted from @Grizzle2006 and @Grizzle2008's in situ filtration measurements of bivalve beds on the Atlantic coast.
 Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (hensforth Chl $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
 The sondes hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and hung at hiehgt to align the sesnsors with the approximate height of the oyster habitat. 
@@ -44,7 +44,7 @@ Depth measurements were recorded at each sonde housing at the begining and end o
 The sondes recorded measurements every 1 second, and filtration trials lasted as long as field conditions were appropriate; anywhere from 5 and 30 minutes. 
 Detailed notes of all field events and disturbances were recorded with a watch synced to the sondes' internal clocks.
 
-## Chlorphyll $\alpha$ Corrections
+### Chlorphyll $\alpha$ Corrections
 In addition to the filtration trial, two side-by-side trials were conducted before and after the filtration tial to record and correct any chlorophyll $\alpha$ sensor differences.
 In the side-by-side trials, I placed the instruments adjacent to compare the sensors' chlorophyll $\alpha$ measurements in the same mass of water for about 10 minuets.  
 The time series data was reviewed for extreme Chl $\alpha$ spikes that would skew the average Chl $\alpha$.
@@ -64,8 +64,8 @@ I determined seston Total Particulate Content (TPM), Particulate Inorganic Matte
 The water samples were filtered through Whatman GF/F pre-wash and weighed filters in the field, and filters were stored on ice until they could be stored in a freezer. 
 Thawed filters were rinsed with a 0.5 M ammonium formate solution to remove salt. 
 Typically this step follows immediately after filtering [@Gray2018], but this was not possible to do in the field. 
-Filters were then dried in an 60&deg;C oven for 48 hours, and weighed to determine TPM (\ref{Eq:TPM}). 
-Next, the dried filters were ashed at 450&deg;C for \( \leq 4 \) hours and weighed to determine PIM (\ref{Eq:PIM}) and POM (\ref{Eq:POM}). Seston OC is simply the ratio of POM to TPM.
+Filters were then dried in an 60&deg;C oven for 48 hours, and weighed to determine TPM (equation \ref{Eq:TPM}). 
+Next, the dried filters were ashed at 450&deg;C for \( \leq 4 \) hours and weighed to determine PIM (equation \ref{Eq:PIM}) and POM (equation \ref{Eq:POM}). Seston OC is simply the ratio of POM to TPM.
 ***Need to address my filter weight mistakes?***
 
 \begin{equation}
@@ -105,7 +105,7 @@ $A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$
 Data cleaning, corrections, and calculations were made in R (1.2.5) and the code is available at github/InsituFiltration Repo.
 I evaluated if upstream Chl $\alpha$ concentrations were higher than downstream concentrations using a single tail t-test. Further analysis looking at the affect of bivalve community composition or biomass on filtration was not possible with exsisting data.
 
-## Test Table
+### Test Table
 
 \begin{sidewaystable}
 \centering
