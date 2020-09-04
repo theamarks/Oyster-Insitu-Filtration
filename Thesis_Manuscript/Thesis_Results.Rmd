@@ -2207,17 +2207,6 @@ NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>%
   group_by(species) %>% # new grouping by species to determine the average DTW by species across all quads
   summarize(mean_DTW_m2 = mean(mean_DTW/NP_excavation_quad_area)) %>% 
   mutate(Site = "Deanza") # add new column with site info for bar graph
-  
-## Bar graph NPD Biomass / DTW by species
-Bivalve_Biomass_graph <- ggplot(NPD_biv_DTW_m2, aes(Site)) + 
-  geom_col(aes(x = Site, y = mean_DTW_m2, fill = species)) +
-  theme_classic() +
-  scale_fill_manual(values = Species_colors) +
-  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
-  labs(y = "Dry Tissue Weight (g)")
-
-Bivalve_Biomass_graph
-# Order species by DTW not alphabetical order
 
 ################### Biomass by species San Rafael ####################
 # double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
@@ -2226,15 +2215,27 @@ SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_S
 
 ######## Predict SR DTW with shell length #########
 
-SR_Oly_Shelllength_data <- SR_Oly_Shelllength_data %>% 
+SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
   mutate(length_mm = length_cm*10, # convert cm length to mm
-         DTW_g = Oly_DTW_SL_model(length_mm)) # predict Oly Dry tissue weight with length_mm
+         DTW_g = Oly_DTW_SL_model(length_mm)) %>%  # predict Oly Dry tissue weight with length_mm
+  group_by(Site, bag_number) %>% 
+  summarize(DTW_bag = mean(DTW_g)) %>% # average DTW per sample bag
+  ungroup() %>% 
+  group_by(Site) %>% # regroup by site
+  summarize(DTW_bag_avg = mean(DTW_bag)) %>% # average DTW across sample bags
+  mutate(mean_DTW_m2 = DTW_bag_avg * 18) # sample bag is 1/3 the size of regular shell bag. There are 6 full size bags on the 
+# top of the reef unit at San Rafael. The units are 1 x 1 x 1m, so the top area of the reef is 1m^2. (3 * 6 = the amount in 1m^2)
 
-NPD_bivalve_DTW_predict <- NPD_bivalve_outrmd %>% 
-  mutate(DTW)
+## Bar graph NPD Biomass / DTW by species
+Bivalve_Biomass_graph <- ggplot(NPD_biv_DTW_m2, aes(Site)) + 
+  geom_col(aes(x = Site, y = mean_DTW_m2, fill = species)) +
+  theme_classic() +
+  scale_fill_manual(values = Species_colors) +
+  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
+  labs(y = expression("Dry Tissue Weight (g/m" ^2* ")"))
 
+Bivalve_Biomass_graph
 
-Oly_DTW_SL_model
 ```
 
 
@@ -2373,7 +2374,7 @@ ols_regress(Oly_TWW2_DTW_LM)
 ```
 
 ```{r NPD_Bivalve_SH_DTW, echo=FALSE, fig.align="center", fig.asp=0.618, fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%", fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay \\label{NPD_Bivalve_SH_DTW}"}
-##### Estimate Biomass per site here with equations
+## Graph Newport Deanza biomass by shell length
 NPD_bivalve_biomass_graph <-  NPD_bivalve_data_clean %>% 
   ggplot(aes(x = length_mm, y = tissue_dry_weight_g, color = species)) +
   geom_point() +
