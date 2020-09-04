@@ -2083,6 +2083,7 @@ Oly_DTW_SL_model <- function(length_mm) {length_mm*Oly_DTW_SL_coef[[2]] + Oly_DT
 
 ```
 
+
 ```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", warning=F, message=F, fig.asp=0.618, fig.width=8, fig.cap="The relationship between *O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{Oly_DTW_SH_out_rmd_Trans}"}
 
 ### y ~ log(x) model ####
@@ -2194,6 +2195,48 @@ plot(Oly_LogDTW_logSH_lm)
 Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
 ols_regress(Oly_DTW2_lm)
 ```
+
+```{r eval=FALSE, include=FALSE}
+# excavation quadrat area m^2 (0.25 x 0.25m)
+NP_excavation_quad_area = 0.0625
+# calculate DTW / m^2 / species 
+NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>% 
+  group_by(excavation_sample, species) %>% 
+  summarize(mean_DTW = mean(tissue_dry_weight_g)) %>% # show the average DTW for each species within each excav sample
+  ungroup() %>% # undo previous grouping by excavation_sample and species
+  group_by(species) %>% # new grouping by species to determine the average DTW by species across all quads
+  summarize(mean_DTW_m2 = mean(mean_DTW/NP_excavation_quad_area)) %>% 
+  mutate(Site = "Deanza") # add new column with site info for bar graph
+  
+## Bar graph NPD Biomass / DTW by species
+Bivalve_Biomass_graph <- ggplot(NPD_biv_DTW_m2, aes(Site)) + 
+  geom_col(aes(x = Site, y = mean_DTW_m2, fill = species)) +
+  theme_classic() +
+  scale_fill_manual(values = Species_colors) +
+  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
+  labs(y = "Dry Tissue Weight (g)")
+
+Bivalve_Biomass_graph
+# Order species by DTW not alphabetical order
+
+################### Biomass by species San Rafael ####################
+# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
+SR_Density_directory = "./Data/bivalve_density_community"
+SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
+
+######## Predict SR DTW with shell length #########
+
+SR_Oly_Shelllength_data <- SR_Oly_Shelllength_data %>% 
+  mutate(length_mm = length_cm*10, # convert cm length to mm
+         DTW_g = Oly_DTW_SL_model(length_mm)) # predict Oly Dry tissue weight with length_mm
+
+NPD_bivalve_DTW_predict <- NPD_bivalve_outrmd %>% 
+  mutate(DTW)
+
+
+Oly_DTW_SL_model
+```
+
 
 ```{r Oly_TWW_DTW, eval=FALSE, fig.height=5, fig.width=6,  include=FALSE}
 Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
@@ -2402,7 +2445,6 @@ NPD_Adula_Posbiomass_loggraph <- NPD_Adula %>%
 grid.arrange(NPD_Adula_Posbiomass_graph, NPD_Adula_Posbiomass_loggraph, nrow = 1)
 ```
 
-
 ```{r fig.height=5, fig.width=12,  include=FALSE}
 NPD_Musculista <- NPD_bivalve_outrmd %>% 
   filter(species %in% c("Musculista senhousia"))
@@ -2506,35 +2548,6 @@ NPD_Unknown_Posbiomass_loggraph <- NPD_Unknown %>%
 grid.arrange(NPD_Unknown_Posbiomass_graph, NPD_Unknown_Posbiomass_loggraph, nrow =1)
 
 ```
-
-```{r eval=FALSE, include=FALSE}
-## Bar graph NPD Biomass / DTW by species
-Bivalve_Biomass_graph <- ggplot(NPD_bivalve_outrmd, aes(Site)) + 
-  geom_col(aes(x = Site, y = tissue_dry_weight_g, fill = species)) +
-  theme_classic() +
-  scale_fill_manual(values = Species_colors) +
-  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
-  labs(y = "Dry Tissue Weight (g)")
-
-Bivalve_Biomass_graph
-# Order species by DTW not alphabetical order
-
-################### Biomass by species San Rafael ####################
-# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
-SR_Density_directory = "./Data/bivalve_density_community"
-SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
-
-######## Predict SR DTW with shell length #########
-
-SR_Oly_Shelllength_data <- SR_Oly_Shelllength_data %>% 
-  mutate(length_mm = length_cm*10, # convert cm length to mm
-         DTW_g = Oly_DTW_SL_model(length_mm)) # predict Oly Dry tissue weight with length_mm
-
-NPD_bivalve_DTW_predict <- NPD_bivalve_outrmd %>% 
-  mutate(DTW)
-
-```
-
 
 ```{r Bar_Graphs_up_vs_down,  include=FALSE}
 Bar_up_down_data <- Master_analysis_table %>%
