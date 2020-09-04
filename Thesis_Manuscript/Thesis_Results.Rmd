@@ -2402,35 +2402,6 @@ NPD_Adula_Posbiomass_loggraph <- NPD_Adula %>%
 grid.arrange(NPD_Adula_Posbiomass_graph, NPD_Adula_Posbiomass_loggraph, nrow = 1)
 ```
 
-```{r eval=FALSE, include=FALSE}
-NPD_Adula_lm <- lm(data = NPD_Adula, tissue_dry_weight_g ~ length_mm)
-ols_regress(NPD_Adula_lm)
-
-########## Model to predict Adual DTW ##############
-Adula_coef <- coef(NPD_Adula_lm)
-Adula_DTW_SL_model <- function(length_mm) {length_mm*Adula_coef[[2]] + Adula_coef[[1]]}
-
-```
-
-```{r eval=FALSE, include=FALSE}
-NPD_Adula_logDTW_lm <- lm(data = NPD_Adula, log(tissue_dry_weight_g) ~ length_mm)
-ols_regress(NPD_Adula_logDTW_lm)
-```
-
-```{r eval=FALSE, include=FALSE}
-NPD_Adula_logDTW_logSH_lm <- lm(data = NPD_Adula, log(tissue_dry_weight_g) ~ log(length_mm))
-ols_regress(NPD_Adula_logDTW_logSH_lm)
-```
-
-```{r eval=FALSE, include=FALSE}
-NPD_Adula_DTW_SH2_lm <- lm(data = NPD_Adula, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
-ols_regress(NPD_Adula_DTW_SH2_lm)
-```
-
-```{r NPD_Adula_ANOVA, eval=FALSE, include=FALSE}
-##### Use ANOVA to compare models?? 
-```
-
 
 ```{r fig.height=5, fig.width=12,  include=FALSE}
 NPD_Musculista <- NPD_bivalve_outrmd %>% 
@@ -2466,24 +2437,6 @@ NPD_Musculista_Posbiomass_loggraph <- NPD_Musculista %>%
 grid.arrange(NPD_Musculista_Posbiomass_graph, NPD_Musculista_Posbiomass_loggraph, nrow=1)
 ```
 
-```{r eval=FALSE, include=FALSE}
-NPD_Musculista_lm <- lm(data = NPD_Musculista, tissue_dry_weight_g ~ length_mm)
-ols_regress(NPD_Musculista_lm)
-
-Musculista_coef <- coef(NPD_Musculista_lm)
-Musculista_DTW_SL_model <- function(length_mm) {length_mm*Musculista_coef[[2]] + Musculista_coef[[1]]}
-```
-
-```{r eval=FALSE, include=FALSE}
-NPD_Musculista_logDTW_lm <- lm(data = NPD_Musculista, log(tissue_dry_weight_g) ~ length_mm)
-ols_regress(NPD_Musculista_logDTW_lm)
-```
-
-```{r eval=FALSE, include=FALSE}
-NPD_Musculista_logDTW_logSH_lm <- lm(data = NPD_Musculista, log(tissue_dry_weight_g) ~ log(length_mm))
-ols_regress(NPD_Musculista_logDTW_logSH_lm)
-```
-
 ```{r fig.height=5, fig.width=12,  include=FALSE}
 
 NPD_Mytilus <- NPD_bivalve_outrmd %>% 
@@ -2517,24 +2470,6 @@ NPD_Mytilus_Posbiomass_loggraph <- NPD_Mytilus %>%
                parse = TRUE)
 
 grid.arrange(NPD_Mytilus_Posbiomass_graph, NPD_Mytilus_Posbiomass_loggraph, nrow = 1)
-```
-
-```{r eval=FALSE, include=FALSE}
-NPD_Mytilus_lm <- lm(data = NPD_Mytilus, tissue_dry_weight_g ~ length_mm)
-ols_regress(NPD_Mytilus_lm)
-
-Mytilus_coef <- coef(NPD_Mytilus_lm)
-Mytilus_DTW_SL_model <- function(length_mm) {length_mm*Mytilus_coef[[2]] + Mytilus_coef[[1]]}
-```
-
-```{r eval=FALSE, include=FALSE}
-NPD_Mytilus_logDTW_lm <- lm(data = NPD_Mytilus, log(tissue_dry_weight_g) ~ length_mm)
-ols_regress(NPD_Mytilus_logDTW_lm)
-```
-
-```{r eval=FALSE, include=FALSE}
-NPD_Mytilus_logDTW_logSH_lm <- lm(data = NPD_Mytilus, log(tissue_dry_weight_g) ~ log(length_mm))
-ols_regress(NPD_Mytilus_logDTW_logSH_lm)
 ```
 
 ```{r eval=FALSE, fig.height=5, fig.width=12,  include=FALSE}
@@ -2573,21 +2508,6 @@ grid.arrange(NPD_Unknown_Posbiomass_graph, NPD_Unknown_Posbiomass_loggraph, nrow
 ```
 
 ```{r eval=FALSE, include=FALSE}
-NPD_Unknown_lm <- lm(data = NPD_Unknown, tissue_dry_weight_g ~ length_mm)
-ols_regress(NPD_Unknown_lm)
-```
-
-```{r eval=FALSE, include=FALSE}
-NPD_Unknown_logDTW_lm <- lm(data = NPD_Unknown, log(tissue_dry_weight_g) ~ length_mm)
-ols_regress(NPD_Unknown_logDTW_lm)
-```
-
-```{r eval=FALSE, include=FALSE}
-NPD_Unknown_logDTW_logSH_lm <- lm(data = NPD_Unknown, log(tissue_dry_weight_g) ~ log(length_mm))
-ols_regress(NPD_Unknown_logDTW_logSH_lm)
-```
-
-```{r eval=FALSE, include=FALSE}
 ## Bar graph NPD Biomass / DTW by species
 Bivalve_Biomass_graph <- ggplot(NPD_bivalve_outrmd, aes(Site)) + 
   geom_col(aes(x = Site, y = tissue_dry_weight_g, fill = species)) +
@@ -2599,7 +2519,7 @@ Bivalve_Biomass_graph <- ggplot(NPD_bivalve_outrmd, aes(Site)) +
 Bivalve_Biomass_graph
 # Order species by DTW not alphabetical order
 
-################### Biomass by species across sites ####################
+################### Biomass by species San Rafael ####################
 # double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
 SR_Density_directory = "./Data/bivalve_density_community"
 SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
