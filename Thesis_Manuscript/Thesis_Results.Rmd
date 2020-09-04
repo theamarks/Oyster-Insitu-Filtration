@@ -2071,6 +2071,7 @@ plot(Oly_shell_DTW_rm_out)
 
 ```{r Linear_model_DTW_length, fig.height=6, fig.width=6,  include=FALSE}
 # Linear model to predict Dry Tissue weight (g) with Oly shell length (mm)
+## This model doesn't not makes sense. DTW will never be negative. DTW will approach zero as length decreases. 
 Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
 ols_regress(Oly_DTW_lm)
 
@@ -2126,6 +2127,7 @@ Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight
 
 ### log(y) ~ log(x) model ###
 Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
+# predict values for model based on model and new range of data. exp() converts log() values to regular values
 pred_loglogDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_logSH_lm, newdata = SH_newrange)), 
                                 length_mm = SH_newrange)
 
@@ -2173,13 +2175,36 @@ ols_regress(Oly_LogxDTW_lm)
 ```
 
 ```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+# This model makes a lot of sense. DTW will never be negative whill length is positive 
 Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
-ols_regress(Oly_LogDTW_lm)
+#ols_regress(Oly_LogDTW_lm)
+summary(Oly_LogDTW_lm)
+
 ```
 
 ```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+## This model has a better fit than log(y) ~ x
 Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
-ols_regress(Oly_LogDTW_logSH_lm)
+#ols_regress(Oly_LogDTW_logSH_lm)
+summary(Oly_LogDTW_logSH_lm)
+coef(Oly_LogDTW_logSH_lm)
+
+# copied code from Dr. Nichols to extract model attributes. Do I need to exp() all of these?
+DTW_slope = exp(summary(Oly_LogDTW_logSH_lm)[[4]][1])
+DTW_se = summary(Oly_LogDTW_logSH_lm)[[4]][2]
+DTW_df = summary(Oly_LogDTW_logSH_lm)[[7]][2]
+
+DTW_t = (DTW_slope-1)/DTW_se
+DTW_p.val = 1-pt(DTW_t,DTW_df)
+DTW_p.val
+
+# create function to predict DTW values from Shell length - Need error term in equation?? 
+Oly_loglogDTWSH_model <- function(x){DTW_slope*x + exp(coef(Oly_LogDTW_logSH_lm)[[1]])}
+
+# show the available object attributes
+str(Oly_LogDTW_logSH_lm)
+
+
 ```
 
 ```{r eval=FALSE, fig.height=6, fig.width=8,  include=FALSE}
