@@ -109,6 +109,28 @@ I evaluated if upstream Chl $\alpha$ concentrations were higher than downstream 
 study_sites <- data.frame(Site = c("San Rafael", "Morro Bay", "Deanza", "Shellmaker"),
                           Lat = c(37.964179, 35.334707, 33.620362, 33.622098),
                           Long = c(-122.487217, -120.844000, -117.898110, -117.892408))
+
+### Download spatialpolygondataframe from rnatural earth
+country <- ne_download(scale = 10, type = 'countries', category = 'cultural', returnclass = 'sf')
+
+############ Entire Coast #######################
+(NOOC_coast <- ggplot(data = country) +
+    geom_sf() +
+    labs(x = 'Longitude', y = 'Latitude') +
+    annotate(geom = "text", x = -118, y = 41, label = "United States", 
+           fontface = "italic", color = "grey22", size = 4, angle = 0) +
+    annotate(geom = "text", x = -119, y = 51, label = "Canada", 
+          fontface = "italic", color = "grey22", size = 4, angle = 0) +
+    annotate(geom = "text", x = -118.5, y = 31, label = "Mexico", 
+             fontface = "italic", color = "grey22", size = 4, angle = 0) +
+    annotation_north_arrow(location = "bl", which_north = "true", 
+                         pad_x = unit(0.25, "in"), pad_y = unit(0.5, "in"),
+                         style = north_arrow_fancy_orienteering) +
+    coord_sf(xlim = c(coast_xmin, coast_xmax), ylim = c(coast_ymin, coast_ymax), expand = FALSE) +
+    theme(panel.grid.major = element_line(color = gray(.5), linetype = 'solid', size = 0.25), 
+        panel.background = element_rect(fill = 'aliceblue'),
+        axis.text.y = element_text(color = "black"),
+        axis.text.x = element_text(color = "black")))
 ```
 
 
