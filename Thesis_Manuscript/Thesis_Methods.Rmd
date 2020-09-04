@@ -105,6 +105,13 @@ $A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$
 Data cleaning, corrections, and calculations were made in R (1.2.5) and the code is available at github/InsituFiltration Repo.
 I evaluated if upstream Chl $\alpha$ concentrations were higher than downstream concentrations using a single tail t-test. Further analysis looking at the affect of bivalve community composition or biomass on filtration was not possible with exsisting data.
 
+```{r Study_site_map}
+study_sites <- data.frame(Site = c("San Rafael", "Morro Bay", "Deanza", "Shellmaker"),
+                          Lat = c(37.964179, 35.334707, 33.620362, 33.622098),
+                          Long = c(-122.487217, -120.844000, -117.898110, -117.892408))
+```
+
+
 ### Test Table
 
 \begin{sidewaystable}
