@@ -2179,6 +2179,10 @@ ols_regress(Oly_LogxDTW_lm)
 Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
 #ols_regress(Oly_LogDTW_lm)
 summary(Oly_LogDTW_lm)
+coef(Oly_LogDTW_lm)
+
+Oly_LogDTW_model <- function(x) {coef(Oly_LogDTW_lm)[[2]]*x + exp(coef(Oly_LogDTW_lm)[[1]])}
+# use predict() instead of creating a function?
 
 ```
 
@@ -2189,8 +2193,8 @@ Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(
 summary(Oly_LogDTW_logSH_lm)
 coef(Oly_LogDTW_logSH_lm)
 
-# copied code from Dr. Nichols to extract model attributes. Do I need to exp() all of these?
-DTW_slope = exp(summary(Oly_LogDTW_logSH_lm)[[4]][1])
+# copied code from Dr. Nichols to extract model attributes. Do I need to exp() on any of these?
+DTW_slope = summary(Oly_LogDTW_logSH_lm)[[4]][1] # is this really the slope? Matches the intercept
 DTW_se = summary(Oly_LogDTW_logSH_lm)[[4]][2]
 DTW_df = summary(Oly_LogDTW_logSH_lm)[[7]][2]
 
@@ -2199,7 +2203,9 @@ DTW_p.val = 1-pt(DTW_t,DTW_df)
 DTW_p.val
 
 # create function to predict DTW values from Shell length - Need error term in equation?? 
-Oly_loglogDTWSH_model <- function(x){DTW_slope*x + exp(coef(Oly_LogDTW_logSH_lm)[[1]])}
+Oly_loglogDTWSH_model <- function(x){coef(Oly_LogDTW_logSH_lm)[[2]]*log(x) + exp(coef(Oly_LogDTW_logSH_lm)[[1]])}
+
+# Maybe use predict() instead of function?? 
 
 # show the available object attributes
 str(Oly_LogDTW_logSH_lm)
