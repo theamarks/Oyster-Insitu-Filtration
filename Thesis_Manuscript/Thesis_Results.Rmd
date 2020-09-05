@@ -281,7 +281,7 @@ Newport Deanza ranged from `r round(min(NPD_filter_sum$L_hr_m2),1)` to `r round(
 Negative control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, and `r round(NPSM_NC_sum$L_hr_m2,1)` Lhr^-1^m^2^ for San Rafael, Morro Bay, and Newport Shellmaker respectively.
 Newport Deanza's three consecutive negative control trials ranged from `r format(round(min(NPD_NC_sum$L_hr_m2)), nsmall= 1)` to `r format(round(max(NPD_NC_sum$L_hr_m2)), nsmall= 1)` Lhr^-1^m^2^.
 
-```{r Final_Summary_table, echo=FALSE, results='asis'}
+```{r Final_Summary_table, eval=FALSE, include=FALSE, results='asis'}
 
 #fig.cap="A summary table reporting every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively. \\label{Final_Summary_table}",
 
@@ -1944,53 +1944,6 @@ ols_regress(NPD_ChlRmdPos_Turb_lm)
 
 ### Filter-feeding community
 
-```{r Bivalve_Density, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The density of bivlaves at Deanza Newport, California surveyed May 2018. \\label{Bivalve_Density}"}
-# read in bivalve density data from cleaned data file
-Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
-
-# replace NAs with 0s
-Bivalve_Den_data[is.na(Bivalve_Den_data)] <- 0
-
-Bivalve_Den_data <- Bivalve_Den_data %>% 
-  # move species from individual columns to a single column with new density column to contain data
-  pivot_longer(c(Adula_diegensis_m2, Musculista_senhousia_m2, Mytilus_galloprovincialis_m2,
-                 Ostrea_lurida_m2, Crassostrea_gigas_m2, Argopecten_ventricosa_m2, 
-                 Geukensia_demissa_m2, Crassostrea_gigas_m2), 
-               names_to = "Species", 
-               values_to =  "individuals_m2") %>% 
-  # remove "_m2" from species names in Species column
-  mutate(Species = str_replace(Species, "_m2", ""),
-         Species = str_replace(Species, "_", " "))
-
-#Reorder levels of Site factor - display North to South
-order_by_site <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
-Bivalve_Den_data <- arrange(transform(Bivalve_Den_data, Site = factor(Site,levels = order_by_site)), Site)
-
-
-#unique(Bivalve_Den_data$Species) # list each individual bivalve species
-# Assign species to specific color
-Species_colors <- c("Adula diegensis" = "#8D8680",
-                    "Argopecten ventricosa" = "#CCC3C5",
-                    "Crassostrea gigas" = "#6D6340",
-                    "Geukensia demissa" = "#524D4F",
-                    "Musculista senhousia" = "#B0915B",
-                    "Mytilus galloprovincialis" = "#7E4B41",
-                    "Ostrea lurida" = "#9986A5",
-                    "Unknown mussel" = "black")
-
-# Stacked bar graph
-Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) + 
-  geom_col(aes(x = Site, y = individuals_m2, fill = Species)) +
-  geom_text(aes(label = round(Bivalve_den_m2,0), y = Bivalve_den_m2), 
-            vjust = -0.5) +
-  theme_classic() +
-  scale_fill_manual(values = Species_colors) +
-  scale_y_continuous(breaks = seq(0, max(Bivalve_Den_data$Bivalve_den_m2), by = 500)) +
-  labs(y = expression("Individuals per m"^2))
-  
-Bivalve_Den_graph
-```
-
 ```{r Oly_DTW_Shell_length, fig.height=5, fig.width=6,  include=FALSE}
 ############ Olympia DTW and Shell Length #####################
 # Determine what quadrat samples have missing data (NAs)
@@ -2227,81 +2180,6 @@ Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, d
 ols_regress(Oly_DTW2_lm)
 ```
 
-```{r eval=FALSE, include=FALSE}
-# excavation quadrat area m^2 (0.25 x 0.25m)
-NP_excavation_quad_area = 0.0625
-# calculate DTW / m^2 / species 
-NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>% 
-  group_by(excavation_sample, species) %>% 
-  summarize(mean_DTW = mean(tissue_dry_weight_g)) %>% # show the average DTW for each species within each excav sample
-  ungroup() %>% # undo previous grouping by excavation_sample and species
-  group_by(species) %>% # new grouping by species to determine the average DTW by species across all quads
-  summarize(mean_DTW_m2 = mean(mean_DTW/NP_excavation_quad_area)) %>% 
-  mutate(Site = "Deanza") # add new column with site info for bar graph
-
-################### Biomass by species San Rafael ####################
-# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
-SR_Density_directory = "./Data/bivalve_density_community"
-SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
-
-######## Predict SR DTW with shell length #########
-predict_DTW_logy <- function(data){
-  exp(predict(Oly_LogDTW_lm, newdata = data.frame(length_mm = data$length_mm))) # exp() converts log value, predict needs data.frame input
-}
-
-SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
-  mutate(DTW_g = predict_DTW_logy(SR_Oly_Shelllength_data)) %>%  # predict Oly Dry tissue weight with length_mm
-  group_by(Site, bag_number) %>% 
-  summarize(DTW_bag = mean(DTW_g)) # average DTW per sample bag
-
-Oly_italic <- expression(italic("Ostrea lurida"))
-
-SR_Oly_DTW_data2 <- SR_Oly_DTW_data %>% 
-  ungroup() %>% 
-  group_by(Site) %>% # regroup by site
-  summarize(DTW_bag_avg = mean(DTW_bag)) %>% # average DTW across sample bags
-  mutate(mean_DTW_m2 = DTW_bag_avg * 18,
-         species = "Ostrea lurida") # sample bag is 1/3 the size of regular shell bag. There are 6 full size bags on the 
-# top of the reef unit at San Rafael. The units are 1 x 1 x 1m, so the top area of the reef is 1m^2. (3 * 6 = the amount in 1m^2)
-
-SR_Oly_DTW_data3 <- SR_Oly_DTW_data2 %>% 
-  dplyr::select(-(DTW_bag_avg)) # remove DTW_bag_avg 
-SR_Oly_DTW_data4 <- data.frame(SR_Oly_DTW_data3) # convert wierd mess of types into a data.frame
-
-SR_NPD_biv_DTWm2 <- rbind(SR_Oly_DTW_data4, NPD_biv_DTW_m2)
-
-## Bar graph NPD Biomass / DTW by species
-Bivalve_Biomass_graph <- ggplot(SR_NPD_biv_DTWm2, aes(Site)) + 
-  geom_col(aes(x = Site, y = mean_DTW_m2, fill = species)) +
-  theme_classic() +
-  scale_fill_manual(values = Species_colors) +
-  theme(legend.text = element_text(face = "italic")) +
-  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
-  labs(y = expression("Dry Tissue Weight (g/m" ^2* ")"))
-
-Bivalve_Biomass_graph
-
-```
-
-
-```{r Oly_TWW_DTW, eval=FALSE, fig.height=5, fig.width=6,  include=FALSE}
-Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
-  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = species)) +
-  scale_color_manual(values = Species_colors, guide=FALSE) + 
-  theme_classic() +
-  labs(x = 'Total Wet Weight (g)',
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW x TWW - Newport, CA') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "top")
-
-plot(Oly_TWW_DTW)
-```
-
 ```{r Oly_TWW_DTW_outRmd, echo=FALSE, fig.align="default", fig.asp=0.618, fig.cap="The relationship between *O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW = 0.0044*TWW - 0.043). \\label{Oly_TWW_DTW_outRmd}", fig.keep='all', fig.width=8, message=FALSE, warning=FALSE, dev='pdf'}
 
 # Make sure only using positive TWW values, negative values indicate processing error
@@ -2434,6 +2312,24 @@ NPD_bivalve_biomass_graph <-  NPD_bivalve_data_clean %>%
 plot(NPD_bivalve_biomass_graph)
 ```
 
+```{r Oly_TWW_DTW, eval=FALSE, fig.height=5, fig.width=6,  include=FALSE}
+Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide=FALSE) + 
+  theme_classic() +
+  labs(x = 'Total Wet Weight (g)',
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW x TWW - Newport, CA') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "top")
+
+plot(Oly_TWW_DTW)
+```
+
 ```{r NPD_Bivalve_SH_DTW_outrmd, echo=FALSE, fig.align="center", fig.asp=0.618, fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay \\label{NPD_Bivalve_SH_DTW_outrmd}", fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%"}
 # Remove outlier and negative DTW value
 NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
@@ -2454,6 +2350,121 @@ NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>%
 # NPD_bi_Biomass_graphs <- grid.arrange(NPD_bivalve_biomass_graph, NPD_bivalve_outrmd_graph, nrow = 1)
 plot(NPD_bivalve_outrmd_graph)
 ```
+
+```{r Bivalve_Den_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="100%", fig.cap="The density of bivlaves at Deanza Newport, California surveyed May 2018. \\label{Bivalve_Den_Biomass}"}
+################### Bivalve Density by Site #########################
+# read in bivalve density data from cleaned data file
+Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
+
+# replace NAs with 0s
+Bivalve_Den_data[is.na(Bivalve_Den_data)] <- 0
+
+Bivalve_Den_data <- Bivalve_Den_data %>% 
+  # move species from individual columns to a single column with new density column to contain data
+  pivot_longer(c(Adula_diegensis_m2, Musculista_senhousia_m2, Mytilus_galloprovincialis_m2,
+                 Ostrea_lurida_m2, Crassostrea_gigas_m2, Argopecten_ventricosa_m2, 
+                 Geukensia_demissa_m2, Crassostrea_gigas_m2), 
+               names_to = "Species", 
+               values_to =  "individuals_m2") %>% 
+  # remove "_m2" from species names in Species column
+  mutate(Species = str_replace(Species, "_m2", ""),
+         Species = str_replace(Species, "_", " "))
+
+#Reorder levels of Site factor - display North to South
+order_by_site <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
+Bivalve_Den_data <- arrange(transform(Bivalve_Den_data, Site = factor(Site,levels = order_by_site)), Site)
+
+
+#unique(Bivalve_Den_data$Species) # list each individual bivalve species
+# Assign species to specific color
+Species_colors <- c("Adula diegensis" = "#8D8680",
+                    "Argopecten ventricosa" = "#CCC3C5",
+                    "Crassostrea gigas" = "#6D6340",
+                    "Geukensia demissa" = "#524D4F",
+                    "Musculista senhousia" = "#B0915B",
+                    "Mytilus galloprovincialis" = "#7E4B41",
+                    "Ostrea lurida" = "#9986A5",
+                    "Unknown mussel" = "black")
+
+# Stacked bar graph
+Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) + 
+  geom_col(aes(x = Site, y = individuals_m2, fill = Species)) +
+  geom_text(aes(label = round(Bivalve_den_m2,0), y = Bivalve_den_m2), 
+            vjust = -0.5) +
+  theme_classic() +
+  theme(legend.text = element_text(face = "italic")) +
+  scale_fill_manual(values = Species_colors) +
+  scale_y_continuous(breaks = seq(0, max(Bivalve_Den_data$Bivalve_den_m2), by = 500)) +
+  labs(y = expression("Individuals per m"^2))
+  
+Bivalve_Den_graph
+
+######### Biomass by Site ############################
+# excavation quadrat area m^2 (0.25 x 0.25m)
+NP_excavation_quad_area = 0.0625
+# calculate DTW / m^2 / species 
+NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>% 
+  group_by(excavation_sample, species) %>% 
+  summarize(mean_DTW = mean(tissue_dry_weight_g)) %>% # show the average DTW for each species within each excav sample
+  ungroup() %>% # undo previous grouping by excavation_sample and species
+  group_by(species) %>% # new grouping by species to determine the average DTW by species across all quads
+  summarize(mean_DTW_m2 = mean(mean_DTW/NP_excavation_quad_area)) %>% 
+  mutate(Site = "Deanza") # add new column with site info for bar graph
+
+################### Biomass by species San Rafael ####################
+# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
+SR_Density_directory = "./Data/bivalve_density_community"
+SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
+
+######## Predict SR DTW with shell length #########
+predict_DTW_logy <- function(data){
+  exp(predict(Oly_LogDTW_lm, newdata = data.frame(length_mm = data$length_mm))) 
+  # exp() converts log value, predict needs data.frame input
+}
+
+SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
+  mutate(DTW_g = predict_DTW_logy(SR_Oly_Shelllength_data)) %>%  # predict Oly Dry tissue weight with length_mm
+  group_by(Site, bag_number) %>% 
+  summarize(DTW_bag = mean(DTW_g)) # average DTW per sample bag
+
+Oly_italic <- expression(italic("Ostrea lurida"))
+
+SR_Oly_DTW_data2 <- SR_Oly_DTW_data %>% 
+  ungroup() %>% 
+  group_by(Site) %>% # regroup by site
+  summarize(DTW_bag_avg = mean(DTW_bag)) %>% # average DTW across sample bags
+  mutate(mean_DTW_m2 = DTW_bag_avg * 18,
+         species = "Ostrea lurida") # sample bag is 1/3 the size of regular shell bag. There are 6 full size bags on the 
+# top of the reef unit at San Rafael. The units are 1 x 1 x 1m, so the top area of the reef is 1m^2. (3 * 6 = the amount in 1m^2)
+
+SR_Oly_DTW_data3 <- SR_Oly_DTW_data2 %>% 
+  dplyr::select(-(DTW_bag_avg)) # remove DTW_bag_avg 
+SR_Oly_DTW_data4 <- data.frame(SR_Oly_DTW_data3) # convert wierd mess of types into a data.frame
+
+SR_NPD_biv_DTWm2 <- rbind(SR_Oly_DTW_data4, NPD_biv_DTW_m2)
+
+####### Bar graph NPD Biomass / DTW by species
+Bivalve_Biomass_graph <- ggplot(SR_NPD_biv_DTWm2, aes(Site)) + 
+  geom_col(aes(x = Site, y = mean_DTW_m2, fill = species)) +
+  theme_classic() +
+  scale_fill_manual(values = Species_colors) +
+  theme(legend.text = element_text(face = "italic")) +
+  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
+  labs(y = expression("Dry Tissue Weight (g/m" ^2* ")"))
+## Add total Biomass on top of bars
+
+bar_graphs <- plot_grid(Bivalve_Den_graph + theme(legend.position="none"),
+                        Bivalve_Biomass_graph + theme(legend.position="none"),
+                        align = 'vh',
+                        labels = c("A", "B"),
+                        hjust = -1,
+                        nrow = 1)
+legend_b <- get_legend(Bivalve_Den_graph + theme(legend.box.margin = margin(0, 0, 0, 12)))
+bar_graph_1legend <- plot_grid(bar_graphs, legend_b, rel_widths = c(3, .4))
+# How do I move legend inside of plot area? This method uses cowplot
+bar_graph_1legend
+```
+
 
 ```{r fig.height=5, fig.width=12,  include=FALSE}
 NPD_Adula <- NPD_bivalve_outrmd %>% 
