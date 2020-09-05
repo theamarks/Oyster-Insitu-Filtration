@@ -2396,8 +2396,6 @@ Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) +
   scale_fill_manual(values = Species_colors) +
   scale_y_continuous(breaks = seq(0, max(Bivalve_Den_data$Bivalve_den_m2), by = 500)) +
   labs(y = expression("Individuals per m"^2))
-  
-Bivalve_Den_graph
 
 ######### Biomass by Site ############################
 # excavation quadrat area m^2 (0.25 x 0.25m)
@@ -2463,6 +2461,8 @@ legend_b <- get_legend(Bivalve_Den_graph + theme(legend.box.margin = margin(0, 0
 bar_graph_1legend <- plot_grid(bar_graphs, legend_b, rel_widths = c(3, .4))
 # How do I move legend inside of plot area? This method uses cowplot
 bar_graph_1legend
+
+### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
 ```
 
 
