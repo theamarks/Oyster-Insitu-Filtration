@@ -2186,11 +2186,6 @@ predict_DTW_loglog <- function(data){
 # show the available object attributes
 str(Oly_LogDTW_logSH_lm)
 
-
-```
-
-```{r eval=FALSE, fig.height=6, fig.width=8,  include=FALSE}
-
 ```
 
 ```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
@@ -2201,18 +2196,20 @@ ols_regress(Oly_DTW2_lm)
 ```{r Oly_TWW_DTW_outRmd, echo=FALSE, fig.align="default", fig.asp=0.618, fig.cap="The relationship between *O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW = 0.0044*TWW - 0.043). \\label{Oly_TWW_DTW_outRmd}", fig.keep='all', fig.width=8, message=FALSE, warning=FALSE, dev='pdf'}
 
 # Make sure only using positive TWW values, negative values indicate processing error
-NPD_oly_TWW <- NPD_oly_outRmd %>% filter(total_wet_weight_g > 0)
+NPD_oly_TWW <- NPD_oly_outRmd %>% 
+  filter(total_wet_weight_g > 0)
 # Gray & Langdon 2017 TWW ~ DTW Olympia model to add to graph
-Gray17_DTW_TWW_lm <- function(x) {0.0044*x - 0.043}
+Gray17_DTW_TWW_lm <- function(x) 0.0044*x - 0.043
+# Are units that same?? data range similar??
 
 # use DTW outlier data to plot graph
 Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = species)) +
-  scale_color_manual(values = Species_colors, guide=FALSE) +
-  stat_function(fun = Gray17_DTW_TWW_lm(NPD_oly_TWW$total_wet_weight_g), colour = "blue", linetype="dashed") +
   xlim(0, 7) +
-  ylim(0,0.3) +
+  scale_color_manual(values = Species_colors, guide=FALSE) +
+  geom_function(fun = Gray17_DTW_TWW_lm, 
+                colour = "blue", linetype = "dashed") + # plots function without data
   theme_classic() +
   labs(x = 'Total wet weight (g)',
        y = 'Dry Tissue Weight (g)') +
