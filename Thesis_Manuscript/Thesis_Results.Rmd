@@ -334,8 +334,6 @@ print(sumtable_latex, booktabs=TRUE, caption.placement="top")
   # floating.environment = "sidewaystable"
 ```
 
-
-
 ```{r Dr Nichols code, eval=FALSE, include=FALSE}
 test = na.omit(Final_table)
 
@@ -2127,24 +2125,47 @@ Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm)
 ols_regress(Oly_LogxDTW_lm)
 ```
 
-```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-# This model makes a lot of sense. DTW will never be negative whill length is positive 
+```{r NPD_Oly_DTW_length_LM_logy, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+# This model makes more sense. DTW will never be negative whill length is positive 
 Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
 #ols_regress(Oly_LogDTW_lm)
-summary(Oly_LogDTW_lm)
-coef(Oly_LogDTW_lm)
+summary(Oly_LogDTW_lm) # residuals median should be close to 0? #https://boostedml.com/2019/06/linear-regression-in-r-interpreting-summarylm.html
+# Q1 and Q3 should have similar magnitude
+#### Boxplot of residuals
+boxplot(Oly_LogDTW_lm[['residuals']],main='Boxplot: Residuals',ylab='residual value')
+
+coef(Oly_LogDTW_lm) # The intercept tells us that when all the features are at 0
+confint(Oly_LogDTW_lm) # confidence interval
+residuals(Oly_LogDTW_lm) # residuals of each data point entered into model
 
 Oly_LogDTW_model <- function(x) {coef(Oly_LogDTW_lm)[[2]]*x + exp(coef(Oly_LogDTW_lm)[[1]])}
-# use predict() instead of creating a function?
+
+########## OR this ##################
+# use predict() instead of creating a function? Use function inside of predict.
+# Does predict() include error term inherint in lm()?
+
+predict_DTW_logy <- function(data){
+  exp(predict(Oly_LogDTW_lm, newdata = data.frame(length_mm = data$length_mm))) 
+  # exp() converts log value, predict needs data.frame input
+  # does predict() include error term inherently in lm()
+}
+
 
 ```
 
-```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+```{r NPD_Oly_DTW_length_LM_loglog, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
 ## This model has a better fit than log(y) ~ x
 Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
 #ols_regress(Oly_LogDTW_logSH_lm)
 summary(Oly_LogDTW_logSH_lm)
 coef(Oly_LogDTW_logSH_lm)
+
+par(mfrow=c(2,2))
+plot(Oly_LogDTW_logSH_lm)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(Oly_LogDTW_logSH_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(Oly_LogDTW_logSH_lm))
 
 # copied code from Dr. Nichols to extract model attributes. Do I need to exp() on any of these?
 DTW_slope = summary(Oly_LogDTW_logSH_lm)[[4]][1] # is this really the slope? Matches the intercept
@@ -2156,10 +2177,12 @@ DTW_p.val = 1-pt(DTW_t,DTW_df)
 DTW_p.val
 
 # create function to predict DTW values from Shell length - Need error term in equation?? 
-Oly_loglogDTWSH_model <- function(x){coef(Oly_LogDTW_logSH_lm)[[2]]*log(x) + exp(coef(Oly_LogDTW_logSH_lm)[[1]])}
+#Oly_loglogDTWSH_model <- function(x){coef(Oly_LogDTW_logSH_lm)[[2]]*log(x) + exp(coef(Oly_LogDTW_logSH_lm)[[1]])}
 
 # Maybe use predict() instead of function?? 
-
+predict_DTW_loglog <- function(data){
+  exp(predict(Oly_LogDTW_logSH_lm, newata = data.frame(length_mm = data$length_mm)))
+}
 # show the available object attributes
 str(Oly_LogDTW_logSH_lm)
 
@@ -2167,12 +2190,7 @@ str(Oly_LogDTW_logSH_lm)
 ```
 
 ```{r eval=FALSE, fig.height=6, fig.width=8,  include=FALSE}
-par(mfrow=c(2,2))
-plot(Oly_LogDTW_logSH_lm)
-# Leverage Statistics - plots index of parameter elements against their leverage on the model
-# plot(hatvalues(Oly_LogDTW_logSH_lm)) 
-# identifies the index of the largest element of a vector
-# which.max(hatvalues(Oly_LogDTW_logSH_lm))
+
 ```
 
 ```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
@@ -2418,6 +2436,7 @@ SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_S
 predict_DTW_logy <- function(data){
   exp(predict(Oly_LogDTW_lm, newdata = data.frame(length_mm = data$length_mm))) 
   # exp() converts log value, predict needs data.frame input
+  # does predict() include error term inherently in lm()
 }
 
 SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
