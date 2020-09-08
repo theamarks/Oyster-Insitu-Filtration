@@ -448,6 +448,7 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
     ## determine if the correction is be applied to sbs before or sbs after
     instrument_check = aTimeSeriesFile %>%
       dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>%
+      filter(!is.na(Up) & !is.na(Down)) %>% # select rows with data in Up and Down
       dplyr::group_by(Sonde) %>%
       dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
     
@@ -458,8 +459,8 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
     sonde_lower_avg = ifelse(G_avg_chl < H_avg_chl, "G", "H")
     
     correction_summary = data.frame(File_Name = aFileName,
-                                    Down_Chl_Avg = down_chl,
-                                    Up_Chl_Avg = up_chl,
+                                    Down_Chl_Avg = down_chl, # Avg Chl at the downstream sonde
+                                    Up_Chl_Avg = up_chl, # Avg Chl at upstream sonde
                                     Abs_Avg_Diff = abs_difference,
                                     Correction_Req = TRUE,
                                     Correction_Factor = correction_factor,
