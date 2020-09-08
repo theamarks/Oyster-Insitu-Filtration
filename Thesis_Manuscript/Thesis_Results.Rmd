@@ -335,6 +335,16 @@ print(sumtable_latex, booktabs=TRUE, caption.placement="top")
 ```
 
 ```{r Dr Nichols code, eval=FALSE, include=FALSE}
+#In our data we are missing 4 out of 400ish values.  
+#Because we have limited observations but a high number of variables simply
+#removing incomplete observations is too costly
+
+
+
+#Filtration (unadjusted) mud vs oyster
+#Filtration (adjusted) mud vs oyster
+#Descriptive Filtration (as a function of turbitidty, salinity ect, oyster only)
+
 test = na.omit(Final_table)
 
 colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity",
@@ -2199,8 +2209,10 @@ ols_regress(Oly_DTW2_lm)
 NPD_oly_TWW <- NPD_oly_outRmd %>% 
   filter(total_wet_weight_g > 0)
 # Gray & Langdon 2017 TWW ~ DTW Olympia model to add to graph
-Gray17_DTW_TWW_lm <- function(x) 0.0044*x - 0.043
-# Are units that same?? data range similar??
+Gray18_DTW_TWW_lm <- function(x) 0.0044*x - 0.043 
+# Gray disertation 2016 - exponential 
+Gray18_DTW_TWW_lm_loglog <- function(TWW) ((0.0044^(-0.043))*(TWW^(-0.043)))
+
 
 # use DTW outlier data to plot graph
 Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
@@ -2208,8 +2220,10 @@ Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_wei
   geom_point(aes(color = species)) +
   xlim(0, 7) +
   scale_color_manual(values = Species_colors, guide=FALSE) +
-  geom_function(fun = Gray17_DTW_TWW_lm, 
+  geom_function(fun = Gray18_DTW_TWW_lm, 
                 colour = "blue", linetype = "dashed") + # plots function without data
+  geom_function(fun = Gray18_DTW_TWW_lm_loglog, 
+                colour = "red", linetype = "dashed") + # plots function without data
   theme_classic() +
   labs(x = 'Total wet weight (g)',
        y = 'Dry Tissue Weight (g)') +
