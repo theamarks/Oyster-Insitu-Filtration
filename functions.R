@@ -242,7 +242,7 @@ applyManualCorrections =  function(aTimeSeriesFile, aFileName, aManualCorrection
 createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
 {  
   aFile_Mod = aTimeSeriesFile %<>%
-    select(Time, Date, Site, Experiment, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
+    dplyr::select(Time, Date, Site, Experiment, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
     mutate(Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
            Time = as_hms(Time))
   
@@ -270,7 +270,7 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
 {
   afileSbsStats = aTimeSeriesFile %>% 
      dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-     select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs 
+      dplyr::select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs 
      tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # create two new columns Up & Down fill with Chl values, paired by time
      filter(!is.na(Up) & !is.na(Down)) %>%  # select rows with data in Up and Down
      mutate(sbs_Chl_diff = Up - Down) %>% 
@@ -284,7 +284,7 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
   # dataframe for graphing & individual sonde stats
   adistrubution = aTimeSeriesFile %>% 
       dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-      select(Time, Chl_ug_L, Position, Experiment) %>% 
+      dplyr::select(Time, Chl_ug_L, Position, Experiment) %>% 
       tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
       filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
       pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
@@ -333,7 +333,7 @@ calculateSbsGraphData = function(aTimeSeriesFile)
    # dataframe for graphing & individual sonde stats
   adistrubution = aTimeSeriesFile %>% 
     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-    select(Time, Chl_ug_L, Position, Experiment) %>% 
+    dplyr::select(Time, Chl_ug_L, Position, Experiment) %>% 
     tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
     filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
     pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
@@ -351,9 +351,9 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
   # dataframe for graphing & individual sonde stats
   distrubution = adistrubution %>% 
     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-    select(Time, Chl_ug_L, Position, Experiment) %>% 
+    dplyr::select(Time, Chl_ug_L, Position, Experiment) %>% 
     tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
-    filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
+    dplyr::filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
     pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
   
   # downstream summary stats - to populate graphs
@@ -366,14 +366,14 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
   
   # upstream summary stats - to populate graphs
   distrubution_up <- distrubution %>%
-    filter(Position %in% "Up") %>% 
+    dplyr::filter(Position %in% "Up") %>% 
     summarise(mean_chl_up = mean(Chl_ug_L),
               median_chl_up = median(Chl_ug_L),
               sd_chl_up = sd(Chl_ug_L),
               se_chl_up = sd_chl_up/sqrt(length(Chl_ug_L)))
   
   Sbs_stats_plot = aSbs_stat_summary %>% 
-   select(Sample_count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
+   dplyr::select(Sample_count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
    mutate_if(is.numeric, round, 3) %>% 
    rename("n" = Sample_Count,  
          "Mean Chl Diff" = Mean_sbs_Chl_diff,  
@@ -424,9 +424,9 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
 {
   # check if the correction need to be applied
   correction_check = aTimeSeriesFile %>%
-    plyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
+    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
     dplyr::select(Time, Chl_ug_L, Position, Sonde) %>% # select data relevent to sbs correction
-    filter(!is.na(Chl_ug_L)) %>% # select rows with data in Up and Down / remove NA rows
+    dplyr::filter(!is.na(Chl_ug_L)) %>% # select rows with data in Up and Down / remove NA rows
     group_by(Position, Sonde) %>% 
     dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
   
@@ -635,7 +635,7 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
   # Add in simple logic variables from field notes
   filter_df_Ttest_logicVar = filter_df_Ttest %>% 
     inner_join(one_water_vel_summary %>% 
-                 select(Date, Site, Experiment, Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae), 
+                 dplyr::select(Date, Site, Experiment, Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae), 
                by = c("Date", "Site", "Experiment")
     )
   
