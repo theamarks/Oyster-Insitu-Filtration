@@ -384,6 +384,8 @@ colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity
 
 #Shellmaker 06-09 Neg Control, Shellmaker 05-22 Filtration and Deanze 4-17 Filtration just have astronomical outlier values for clearance.
 #Lets ignore them for now as they complete dominate any model useful for comparison.
+## Thea Notes ###
+## Shellmaker 06-09 Neg Control - floating algae mats caused me to reposition instruments after ~10 mins into Neg Control trial. Looks like sediments never settled afterward. Huge spikes in Chl afterwards that even cutting out is suspect. Avg depth and distance b/w sondes are wrong If I just use the first part of the neg control. Going to change values in Insitu_Filter_Veolcity_All_Data.csv - will reduce clearance rate b/c reduced water volume. 
 
 #Filtration (unadjusted) mud vs oyster
 
