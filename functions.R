@@ -426,7 +426,7 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
   correction_check = aTimeSeriesFile %>%
     plyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
     dplyr::select(Time, Chl_ug_L, Position, Sonde) %>% # select data relevent to sbs correction
-    filter(!is.na(Chl_ug_L)) %>% # select rows with data in Up and Down
+    filter(!is.na(Chl_ug_L)) %>% # select rows with data in Up and Down / remove NA rows
     group_by(Position, Sonde) %>% 
     dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
   
@@ -444,14 +444,14 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
     ## determine if the correction is be applied to sbs before or sbs after
   
   # Select Avg_Chl value by sonde
-  G_avg_chl = correction_check_test[which(correction_check_test$Sonde == "G"), "Avg_Chl"]$Avg_Chl
-  H_avg_chl = correction_check_test[which(correction_check_test$Sonde == "H"), "Avg_Chl"]$Avg_Chl
+  G_avg_chl = correction_check[which(correction_check$Sonde == "G"), "Avg_Chl"]$Avg_Chl
+  H_avg_chl = correction_check[which(correction_check$Sonde == "H"), "Avg_Chl"]$Avg_Chl
   # Which sonde is reading higher
   sonde_higher_avg = ifelse(G_avg_chl > H_avg_chl, "G", "H")
   sonde_lower_avg = ifelse(G_avg_chl < H_avg_chl, "G", "H")
   # Which sonde is in the upstream and downstream position
-  Sonde_Up = correction_check_test[which(correction_check_test$Position == "Up"), "Sonde"]$Sonde
-  Sonde_Down = correction_check_test[which(correction_check_test$Position == "Down"), "Sonde"]$Sonde
+  Sonde_Up = correction_check[which(correction_check$Position == "Up"), "Sonde"]$Sonde
+  Sonde_Down = correction_check[which(correction_check$Position == "Down"), "Sonde"]$Sonde
   # All new correction variables in single 1x 10 dataframe that will compile with every field day
   correction_summary = data.frame(File_Name = aFileName,
                                     Sonde_Up = Sonde_Up,
