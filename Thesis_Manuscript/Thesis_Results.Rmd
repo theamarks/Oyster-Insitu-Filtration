@@ -53,6 +53,8 @@ Master_analysis_table <- fread(file.path('./output/4_Filtration_Calculations/Fil
 Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
 Density_directory = "./Data/bivalve_density_community"
 NPD_bivalves = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
+Sbs_correction_data = fread(file.path('./output/6_Sbs_Corrections_Summary', "sbs_correction_summary.csv"))
+
 
 ##################### Data #########################################
 # Remove San Diego filtration trial - not applicable to this analysis - different experimental set up
@@ -339,18 +341,67 @@ print(sumtable_latex, booktabs=TRUE, caption.placement="top")
 #Because we have limited observations but a high number of variables simply
 #removing incomplete observations is too costly
 
+##### Althea's Chl correction x Filtration diff Graph ###########
+## Correction data & OG Chl values
+Sbs_correction_data 
+sbs_filter_data <- Sbs_correction_data %>% 
+  mutate()
 
 
-#Filtration (unadjusted) mud vs oyster
+
+
+
+#For imputation we are doing a non parametric random forest imputation.  See missForest documentation for details/references.  
+#Stekhoven, D.J. and Buehlmann, P. (2012), "missForest - nonparametric missing value imputation for mixed-type data', Bioinformatics, 28(1) 2012, 112-118, doi: 10.1093/bioinformatics/btr597
+
+
+install.packages('missForest')
+install.packages('rpart')
+install.packages('randomForest')
+install.packages('adabag')
+
+library(missForest)
+library(rpart)
+library(randomForest)
+library(adabag)
+
+
+
+temp1 = Final_table[,c(1,2,3)]
+temp2 = missForest(Final_table[,-c(1,2,3)])$ximp
+test = cbind(temp1,temp2)
+
 #Filtration (adjusted) mud vs oyster
-#Descriptive Filtration (as a function of turbitidty, salinity ect, oyster only)
 
-test = na.omit(Final_table)
+
 
 colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity",
                             "TPM", "OC", "Chl.up", "Chl.dn", 
                            "Depth","Distance", "Water veolcity", "Chl.removal", 
                            "Clearance")
+
+#Descriptive Filtration (as a function of turbitidty, salinity ect, oyster only)
+
+#Shellmaker 06-09 Neg Control, Shellmaker 05-22 Filtration and Deanze 4-17 Filtration just have astronomical outlier values for clearance.
+#Lets ignore them for now as they complete dominate any model useful for comparison.
+
+#Filtration (unadjusted) mud vs oyster
+
+test1 = test[abs(test$Chl.removal) < 50,]
+exp = test1[test1$Experiment=="Filtration",]
+control = test1[test1$Experiment!="Filtration",]
+t.test(exp$Clearance,control$Clearance,alternative="greater")
+
+#Descriptive Filtration (as a function of turbitidy, salinity ect ect)
+
+
+model.rf = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC,data=test1,ntree=100,mtry=2,control=rpart.control(cp=.05))
+y.hat = model.rf$predicted
+res = test1$Clearance - y.hat
+r.sq = (var(test1$Clearance) - var(res))/var(test1$Clearance)
+r.sq
+
+
 m1 = lm(Chl.up~Chl.dn,data=test)
 summary(m1)
 plot(test$Chl.up,test$Chl.dn)
