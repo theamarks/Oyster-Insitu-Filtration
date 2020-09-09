@@ -206,13 +206,13 @@ applyManualCorrections =  function(aTimeSeriesFile, aFileName, aManualCorrection
       # get the list of experiments 
       all_exp = unique(aTimeSeriesFile$Experiment)
       
-      if(one_correction$Experiment == ""|is.na(one_correction$Experiment))
+      if(one_correction$Experiment == ""|is.na(one_correction$Experiment)) # if Experiment is left blank or contains NA
       {
-        experiment_to_correct = all_exp[!(all_exp %in% c("sbs_before", "sbs_after"))]
+        experiment_to_correct = all_exp[!(all_exp %in% c("sbs_before", "sbs_after"))] # Then experiments besides sbs are corrected (i.e. Neg Control 1, 2 ,3)
         
       } else {
         
-        experiment_to_correct = one_correction$Experiment
+        experiment_to_correct = one_correction$Experiment # otherwise experiment entered is selected for correction
       }
       
       aTimeSeriesFile %<>%
@@ -519,8 +519,8 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
 adjustDownSondeTimeStamp = function(aWaterVelSummaryFile, aTimeSeriesFile)
 {
   one_correction = aWaterVelSummaryFile %>%
-    dplyr::filter(Date %in% unique(aTimeSeriesFile$Date) )#& # select water row with same date as time series file going through --> Problem, originally
-                   # Site %in% unique(aTimeSeriesFile$Site)) # only selected Date, but multiple trials with same date, added Site to select one row (2020/9/9)
+    dplyr::filter(Date %in% unique(aTimeSeriesFile$Date) & # select water row with same date as time series file going through --> Problem, originally
+                  Site %in% unique(aTimeSeriesFile$Site)) # only selected Date, but multiple trials with same date, added Site to select one row (2020/9/9)
   
   for(i in 1 : nrow(one_correction))
   {  
