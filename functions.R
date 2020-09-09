@@ -425,7 +425,7 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
   # check if the correction need to be applied
   correction_check = aTimeSeriesFile %>%
     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-    select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs correction
+    dplyr::select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs correction
     tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # create two new columns Up & Down fill with Chl values, paired by time
     filter(!is.na(Up) & !is.na(Down)) %>% # select rows with data in Up and Down
     dplyr::summarise(Avg_Chl_Up = mean(Up),
@@ -448,7 +448,7 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
     ## determine if the correction is be applied to sbs before or sbs after
     instrument_check = aTimeSeriesFile %>%
       dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>%
-      filter(!is.na(Up) & !is.na(Down)) %>% # select rows with data in Up and Down
+      filter(!is.na(Sonde)) %>% # select rows with data in Up and Down
       dplyr::group_by(Sonde) %>%
       dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
     
