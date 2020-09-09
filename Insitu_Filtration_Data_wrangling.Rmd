@@ -432,7 +432,7 @@ Master_analysis_table <- filtration_summary_table %>%
          MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F),
          Filter_trial = ifelse(grepl("Filtration", filtration_summary_table$Experiment), T, F)) %>% 
   left_join(Species_density_summary, by = c("Site")) %>% 
-  select(-c("Date.y")) %>% 
+  dplyr::select(-c("Date.y")) %>% 
   rename(Date = Date.x)
   
 
