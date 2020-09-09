@@ -424,65 +424,46 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
 {
   # check if the correction need to be applied
   correction_check = aTimeSeriesFile %>%
-    dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-    dplyr::select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs correction
-    tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # create two new columns Up & Down fill with Chl values, paired by time
-    filter(!is.na(Up) & !is.na(Down)) %>% # select rows with data in Up and Down
-    dplyr::summarise(Avg_Chl_Up = mean(Up),
-                     Avg_Chl_Down = mean(Down))
-     #  dplyr::group_by(Position) %>%
-  #  dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
+    plyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
+    dplyr::select(Time, Chl_ug_L, Position, Sonde) %>% # select data relevent to sbs correction
+    filter(!is.na(Chl_ug_L)) %>% # select rows with data in Up and Down
+    group_by(Position, Sonde) %>% 
+    dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
   
-  # extacts value from dataframe. without $Avg_Chl at the end, object would remain data.frame -AM
- # down_chl = correction_check[which(correction_check$Position == "Down"), "Avg_Chl"]$Avg_Chl
-  down_chl = correction_check$Avg_Chl_Down
-  #up_chl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl 
-  up_chl = correction_check$Avg_Chl_Up
-  abs_difference = abs(up_chl - down_chl) # get rid of absolute value
+  # Calculate the difference in Chl from Upstream - downstream
+  down_chl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl 
+  up_chl = correction_check[which(correction_check$Position == "Down"), "Avg_Chl"]$Avg_Chl 
+  
+  abs_difference = abs(up_chl - down_chl) # get rid of absolute value? Decided not to, looking at overall difference
+  
+  correction_factor = abs_difference/2
   
   # Chl sensor error +- 0.1 ug/L, 2 sensors, need correction if chl difference > 0.2 ug/L
  # if(abs_difference > 0.2) # Remove conditional - DZ & AM decided to correct all measurements
- # {
-    correction_factor = abs_difference/2
     
     ## determine if the correction is be applied to sbs before or sbs after
-    instrument_check = aTimeSeriesFile %>%
-      dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>%
-      filter(!is.na(Sonde)) %>% # select rows with data in Up and Down
-      dplyr::group_by(Sonde) %>%
-      dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
-    
-    G_avg_chl = instrument_check[which(instrument_check$Sonde == "G"), "Avg_Chl"]$Avg_Chl
-    H_avg_chl = instrument_check[which(instrument_check$Sonde == "H"), "Avg_Chl"]$Avg_Chl
-    
-    sonde_higher_avg = ifelse(G_avg_chl > H_avg_chl, "G", "H")
-    sonde_lower_avg = ifelse(G_avg_chl < H_avg_chl, "G", "H")
-    
-    correction_summary = data.frame(File_Name = aFileName,
-                                    Down_Chl_Avg = down_chl, # Avg Chl at the downstream sonde
-                                    Up_Chl_Avg = up_chl, # Avg Chl at upstream sonde
-                                    Abs_Avg_Diff = abs_difference,
-                                    Correction_Req = TRUE,
-                                    Correction_Factor = correction_factor,
+  
+  # Select Avg_Chl value by sonde
+  G_avg_chl = correction_check_test[which(correction_check_test$Sonde == "G"), "Avg_Chl"]$Avg_Chl
+  H_avg_chl = correction_check_test[which(correction_check_test$Sonde == "H"), "Avg_Chl"]$Avg_Chl
+  # Which sonde is reading higher
+  sonde_higher_avg = ifelse(G_avg_chl > H_avg_chl, "G", "H")
+  sonde_lower_avg = ifelse(G_avg_chl < H_avg_chl, "G", "H")
+  # Which sonde is in the upstream and downstream position
+  Sonde_Up = correction_check_test[which(correction_check_test$Position == "Up"), "Sonde"]$Sonde
+  Sonde_Down = correction_check_test[which(correction_check_test$Position == "Down"), "Sonde"]$Sonde
+  # All new correction variables in single 1x 10 dataframe that will compile with every field day
+  correction_summary = data.frame(File_Name = aFileName,
+                                    Sonde_Up = Sonde_Up,
+                                    Sonde_Down = Sonde_Down,
                                     G_Avg_Chl = G_avg_chl,
                                     H_Avg_Chl = H_avg_chl,
+                                    Abs_Avg_Diff = abs_difference,
+                                    Correction_Factor = correction_factor,
+                                    Correction_Req = TRUE,
                                     Sonde_Read_Higher_Avg = sonde_higher_avg,
                                     Sonde_Read_Lower_Avg = sonde_lower_avg,
                                     stringsAsFactors = FALSE)
- # } else {
-    
-#    correction_summary = data.frame(File_Name = aFileName,
- #                                   Down_Chl_Avg = down_chl,
-  #                                  Up_Chl_Avg = up_chl,
-   #                                 Abs_Diff = abs_difference,
-    #                                Correction_Req = FALSE,
-     #                               Correction_Factor = NA,
-      #                              G_Avg_Chl = NA,
-       #                             H_Avg_Chl = NA,
-        #                            Sonde_Higher_Avg = NA,
-         #                           Sonde_Lower_Avg = NA,
-          #                          stringsAsFactors = FALSE)
-#  }
   
   return(correction_summary)
 
