@@ -204,43 +204,6 @@ find_outlier <- function(data){
 }
 ```
 
-```{r T_test_table, fig.height=5, fig.width=6, include=FALSE}
-
-T_test_Table <- Master_analysis_table %>%
-  mutate(Date = mdy(Date),
-         pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1), # Do I need Percent Chl removed here? Presented in other table
-         Mean_Chl_diff = round(Mean_Chl_diff, digits = 2),
-         StDev_Chl_diff = round(StDev_Chl_diff, digits = 2),
-         StEr_Chl_diff = round(StEr_Chl_diff, digits = 2),
-         statistic = round(statistic, digits = 2), # t-statistic 
-         p.value = round(p.value, digits = 2),
-         parameter = round(parameter, digits = 2),
-         conf.low = round(conf.low, digits = 2)) %>% 
-  dplyr::select(Site, Date, Experiment, pcnt_Chl_rmvd, Mean_Chl_diff, StDev_Chl_diff, StEr_Chl_diff,
-                statistic, p.value, parameter, conf.low) %>% 
-  group_by(Site) %>% 
-  arrange(Date, .by_group = T)
-# Make date formated as character to display properly
-T_test_Table$Date <- as.character(T_test_Table$Date)
-# Make xtable to render LaTex table in pdf
-Ttest_table_LaTeX <- xtable(T_test_Table, caption = "T-test results", label="tb:iris")
-
-
-############ Chl diff single tailed t-test Values ################
-SR_T_Table <- T_test_Table %>% 
-  filter(Site %in% c("San Rafael"))
-
-MB_T_Table <- T_test_Table %>% 
-  filter(Site %in% c("Morro Bay"))
-
-NPSM_T_Table <- T_test_Table %>% 
-  filter(Site %in% c("Shellmaker"))
-
-NPD_T_Table <- T_test_Table %>% 
-  filter(Site %in% c("Deanza"))
-
-
-```
 
 # Results
 
@@ -2955,4 +2918,42 @@ LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
                          avg_depth_cm + d_bw_sondes_m + avg_m_hr + Avg_OC_Ratio)
 # not enough degrees of freedom for full model
 ols_step_both_p(LM_FR_NPD_Posfilter)
+```
+
+```{r T_test_table, fig.height=5, fig.width=6, include=FALSE}
+#### T-test is not an appropriate analysis for my data (per Dr. Kevin Nichols CSUF) The groups are not independent, violating the assumptions. 
+T_test_Table <- Master_analysis_table %>%
+  mutate(Date = mdy(Date),
+         pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1), # Do I need Percent Chl removed here? Presented in other table
+         Mean_Chl_diff = round(Mean_Chl_diff, digits = 2),
+         StDev_Chl_diff = round(StDev_Chl_diff, digits = 2),
+         StEr_Chl_diff = round(StEr_Chl_diff, digits = 2),
+         statistic = round(statistic, digits = 2), # t-statistic 
+         p.value = round(p.value, digits = 2),
+         parameter = round(parameter, digits = 2),
+         conf.low = round(conf.low, digits = 2)) %>% 
+  dplyr::select(Site, Date, Experiment, pcnt_Chl_rmvd, Mean_Chl_diff, StDev_Chl_diff, StEr_Chl_diff,
+                statistic, p.value, parameter, conf.low) %>% 
+  group_by(Site) %>% 
+  arrange(Date, .by_group = T)
+# Make date formated as character to display properly
+T_test_Table$Date <- as.character(T_test_Table$Date)
+# Make xtable to render LaTex table in pdf
+Ttest_table_LaTeX <- xtable(T_test_Table, caption = "T-test results", label="tb:iris")
+
+
+############ Chl diff single tailed t-test Values ################
+SR_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("San Rafael"))
+
+MB_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("Morro Bay"))
+
+NPSM_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("Shellmaker"))
+
+NPD_T_Table <- T_test_Table %>% 
+  filter(Site %in% c("Deanza"))
+
+
 ```
