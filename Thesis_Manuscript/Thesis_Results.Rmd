@@ -343,7 +343,7 @@ print(sumtable_latex, booktabs=TRUE, caption.placement="top")
 
 ##### Althea's Chl correction x Filtration diff Graph ###########
 ## Correction data & OG Chl values
-Sbs_correction_data 
+#Sbs_correction_data 
 sbs_corr_NoAbs <- Sbs_correction_data %>% 
   dplyr::select(File_Name, Sonde_Up, Sonde_Down, G_Avg_Chl, H_Avg_Chl, Correction_Factor) %>% 
   mutate(correction_noabs = ifelse(Sonde_Up == "G", G_Avg_Chl - H_Avg_Chl, H_Avg_Chl - G_Avg_Chl),
@@ -370,16 +370,20 @@ Corr_chl_diff_data %<>%
                                          filter_chl_down - Correction_Factor),
          filter_chl_diff = chl_filter_up_uncorr - chl_filter_down_uncorr)
 
+Corr_chl_diff_data$dummie = 1:32
 Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_chl_diff)) +
   geom_point() +
-  geom_smooth(method = lm) +
+  #geom_smooth(method = lm) + # fitted linear model
   theme_classic() + 
-  xlim(-3,3) +
+  xlim(-3,3) + # even axes
   ylim(-3,3) +
   xlab("SBS Correction Value (Not 1/2 or Abs)") +
   ylab("Chl Diff Filtration Trial (velocity paired)") +
-  geom_abline(slope = 1, linetype = "dashed")
-Corr_Chl_diff_graph                         
+  geom_abline(slope = 1, linetype = "dashed") +
+  geom_text(aes(x=correction_noabs + .12,label=dummie)) # 1-1 reference line
+Corr_Chl_diff_graph     
+
+Corr_chl_diff_data[c(9,21,23),]
 ## Value used to correct Filtration values = abs(correction_noabs/2)
 sbs_filterdiff_lm <- lm(data = Corr_chl_diff_data, filter_chl_diff~correction_noabs)
 summary(sbs_filterdiff_lm)
@@ -431,11 +435,23 @@ t.test(exp$Clearance,control$Clearance,alternative="greater")
 #Descriptive Filtration (as a function of turbitidy, salinity ect ect)
 
 
-model.rf = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC,data=test1,ntree=100,mtry=2,control=rpart.control(cp=.05))
-y.hat = model.rf$predicted
+model.rf = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,data=test1,ntree=100,mtry=3,control=rpart.control(minsplit=2,cp=.05))
+y.hat = predict(model.rf,newdata=test1)
 res = test1$Clearance - y.hat
 r.sq = (var(test1$Clearance) - var(res))/var(test1$Clearance)
 r.sq
+model.rf$importance[order(model.rf$importance)]
+
+y.adj = res + mean(test1$Clearance)
+y.adj.experiment = y.adj[test1$Experiment=="Filtration"]
+y.adj.control = y.adj[test1$Experiment!="Filtration"]
+t.test(y.adj.experiment,y.adj.control,alternative="greater")
+
+
+#r.sq  is about 66.3% (yay)
+#model.tree = rpart(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,method="anova",control=rpart.control(minsplit=2,cp=0.05),data=test1)
+#plot(model.tree)
+#text(model.tree,cex=.65)
 
 
 m1 = lm(Chl.up~Chl.dn,data=test)
