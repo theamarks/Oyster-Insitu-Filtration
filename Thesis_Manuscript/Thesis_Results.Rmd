@@ -2,6 +2,7 @@
 output: 
   pdf_document:
     fig_caption: yes
+    extra_dependencies: ["flafter"]
 indent: true
 ---
 possibly use template: quarterly-report.tex in YAML header. Use Fullerton_thesis.tex as template?
@@ -214,19 +215,6 @@ We recorded 4 filtration trials and 1 negative control at Morro Bay, all conduct
 At Newport Shellmaker we recorded 4 filtration and 1 negative control trial on flood tides.
 Newport Deanza had the most field days with 10 filtration and 3 negative controls all conducted on ebb tides. 
 
-### Chlorophyll drawdown
-
-The mean difference between upstream and downstream Chl $\alpha$ (paired by water travel time) was compared using a single sided t-test. 
-Three filtraiton trials at San Rafael recorded significantly lower (p < 0.05) Chl $\alpha$ downstream of the *O. lurida* shell bags than Chl $\alpha$ upstream ( Table X).
-One filtration trial (2018/7/17) and the negative control did not show a significant difference (p > 0.05) reduction of Chl $\alpha$ over the habitat from the upstream to downstream positions. 
-At Morro Bay two of the four filtration trials showed a significant reduction in Chl $\alpha$ across the *C. gigas* aquaculture lines. 
-Two filtration trials and the single negative control trial did not show Chl $\alpha$ removal.
-Newport Shellmaker had significant Chl $\alpha$ reduction across the *O. lurida* shellbed at one of the four filtration trials.
-The remaining two filtration trials and the negative control trial did not have significant Chl $\alpha$ reduction.
-Five of the ten filtration trials at Newport Deanza recorded significant reduction of Chl $\alpha$ from the upstream to downstream measurements. 
-Five filtraiton trials and the three negative trials did not have significant removal of Chl $\alpha$. 
-See table X for statistical results of each trial. 
-
 ### Percent chlorophyll $\alpha$ removal
 
 Percent Chl $\alpha$ removal at the San Rafael *O. lurida* reef from `r nrow(SR_filter_sum)` field days ranged from `r round(min(SR_filter_sum$pcnt_Chl_rmvd),1)`\% to `r round(max(SR_filter_sum$pcnt_Chl_rmvd),1)`\% and recorded `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single negative control over bare mudflat (Figure \ref{FR_ChlRmd_Site_boxplot}). 
@@ -297,6 +285,21 @@ print(sumtable_latex, booktabs=TRUE, caption.placement="top")
   #  floating = TRUE,
   # caption.placement = "top"
   # floating.environment = "sidewaystable"
+```
+
+```{R Summary_Table, eval=FALSE, include=FALSE}
+
+### simply example to figure out xtable error
+df <- data.frame(A = c(1:10),
+                 B = c(11:20),
+                 C = c(21:30))
+
+xtable(df)
+df
+# print LaTex code for sideways table
+print.xtable(xtable(df))
+sum_table2 <- xtable(df, display = c("s","f","f","f"))
+sum_table2
 ```
 
 ```{r Dr Nichols code, eval=FALSE, include=FALSE}
@@ -470,19 +473,6 @@ p.val = 1-pt(t,df)
 p.val
 ```
 
-```{R Summary_Table, eval=FALSE, include=FALSE}
-df <- data.frame(A = c(1:10),
-                 B = c(11:20),
-                 C = c(21:30))
-
-xtable(df)
-df
-# print LaTex code for sideways table
-print.xtable(xtable(df))
-sum_table2 <- xtable(df, display = c("s","f","f","f"))
-sum_table2
-```
-
 ```{r FR_ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.asp=0.618, fig.width=4.3, out.width="50%", message= F, fig.cap="The habitat level filtration rates and percent chlorophyll removed of all filtration trials across sites. \\label{FR_ChlRmd_Site_boxplot}"}
 ### Filtration by site (Filtration Trials only)
 
@@ -592,6 +582,7 @@ plot(Chl_RmdPos_TPM_graph)
 
 #grid.arrange(FRPos_TPM_graph, Chl_RmdPos_TPM_graph, nrow = 1)
 ```
+
 
 ```{r FRpos_TPM_LM, eval=FALSE,  include=FALSE}
 FRPos_TPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_TPM)
@@ -2309,7 +2300,7 @@ Oly_logTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_w
   geom_line(data = pred_DTW_TWW_log_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide=FALSE) + 
-  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue", linetype="dashed") +
+ # stat_function(fun = Gray18_DTW_TWW_lm, colour = "blue", linetype="dashed") +
   xlim(0, 7) +
   ylim(0,0.3) +
   theme_classic() +
@@ -2326,7 +2317,7 @@ Oly_loglogTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dr
   geom_line(data = pred_DTW_TWW_loglog_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide=FALSE) + 
-  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue", linetype="dashed") +
+  #stat_function(fun = Gray18_DTW_TWW_lm, colour = "blue", linetype="dashed") +
   xlim(0, 7) +
   ylim(0,0.3) +
   theme_classic() +
@@ -2344,7 +2335,7 @@ Oly_TWW2_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_wei
   geom_line(data = pred_DTW2_TWW_log_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
   geom_point(aes(color = species)) +
   scale_color_manual(values = Species_colors, guide=FALSE) + 
-  stat_function(fun = Gray17_DTW_TWW_lm, colour = "blue", linetype="dashed") +
+ # stat_function(fun = Gray18_DTW_TWW_lm, colour = "blue", linetype="dashed") +
   xlim(0, 7) +
   ylim(0,0.3) +
   theme_classic() +
