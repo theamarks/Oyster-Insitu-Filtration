@@ -363,11 +363,11 @@ Corr_chl_diff_data <- full_join(filter_diff_tpaired, sbs_corr_NoAbs, by = "File_
 # Missing data from MB_2019_6_5 and MB_2019_6_4 - filtration trial not long enough for water to travel from upstream to downstream - not included in other analyses either
 Corr_chl_diff_data %<>%
   mutate(chl_filter_up_uncorr = ifelse(sbs_chl_up > sbs_chl_down, 
-                                       filter_chl_up - Correction_Factor, 
-                                       filter_chl_up + Correction_Factor),
+                                       filter_chl_up + Correction_Factor, # reverse sbs correction 
+                                       filter_chl_up - Correction_Factor),
          chl_filter_down_uncorr = ifelse(sbs_chl_down > sbs_chl_up, 
-                                         filter_chl_down - Correction_Factor, 
-                                         filter_chl_down + Correction_Factor),
+                                         filter_chl_down + Correction_Factor, 
+                                         filter_chl_down - Correction_Factor),
          filter_chl_diff = chl_filter_up_uncorr - chl_filter_down_uncorr)
 
 Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_chl_diff)) +
@@ -377,9 +377,12 @@ Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_c
   xlim(-3,3) +
   ylim(-3,3) +
   xlab("SBS Correction Value (Not 1/2 or Abs)") +
-  ylab("Chl Diff Filtration Trial (velocity paired)")
-Corr_Chl_diff_graph                               
+  ylab("Chl Diff Filtration Trial (velocity paired)") +
+  geom_abline(slope = 1, linetype = "dashed")
+Corr_Chl_diff_graph                         
 ## Value used to correct Filtration values = abs(correction_noabs/2)
+sbs_filterdiff_lm <- lm(data = Corr_chl_diff_data, filter_chl_diff~correction_noabs)
+summary(sbs_filterdiff_lm)
 
 
 #For imputation we are doing a non parametric random forest imputation.  See missForest documentation for details/references.  
