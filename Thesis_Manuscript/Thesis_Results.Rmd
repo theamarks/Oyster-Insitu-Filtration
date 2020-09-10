@@ -18,9 +18,9 @@ knitr::opts_knit$set(root.dir = normalizePath('../'), # set working directory to
 ################### Packages ###########################
 library(dplyr)
 library(tidyr)
+library(readr)
 library(magrittr)
 library(data.table)
-library(magrittr)
 library(lubridate) # dealing with time and dates
 library(ggplot2)
 library(ggthemes) # theme_classic() for graphs
@@ -346,19 +346,41 @@ print(sumtable_latex, booktabs=TRUE, caption.placement="top")
 Sbs_correction_data 
 sbs_corr_NoAbs <- Sbs_correction_data %>% 
   dplyr::select(File_Name, Sonde_Up, Sonde_Down, G_Avg_Chl, H_Avg_Chl, Correction_Factor) %>% 
-  mutate(correction_noAbs = ifelse(Sonde_Up == "G", G_Avg_Chl - H_Avg_Chl, H_Avg_Chl - G_Avg_Chl),
+  mutate(correction_noabs = ifelse(Sonde_Up == "G", G_Avg_Chl - H_Avg_Chl, H_Avg_Chl - G_Avg_Chl),
          sbs_chl_up = ifelse(Sonde_Up == "G", G_Avg_Chl, H_Avg_Chl),
-         sbs_chl_down = ifelse(Sonde_Down == "G", G_Avg_Chl, H_Avg_Chl))
+         sbs_chl_down = ifelse(Sonde_Down == "G", G_Avg_Chl, H_Avg_Chl)) %>% 
+  dplyr::select(-c(Sonde_Up, Sonde_Down))
 
 sbs_correction_summary <- read_csv("output/6_Sbs_Corrections_Summary/sbs_correction_summary.csv")
 filtration_summary <- read_csv("output/4_Filtration_Calculations/Filtration_Summary/filtration_summary.csv")
 
 filter_diff_tpaired <- filtration_summary %>% 
-  dplyr::select(File_Name, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
+  dplyr::select(File_Name, Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
   rename(filter_chl_up = Chl_ug_L_Up,
          filter_chl_down = Chl_ug_L_Down)
 
-Corr_chl_diff_data <- full_join(sbs_corr_NoAbs, filter_diff_tpaired, by = "File_Name")
+Corr_chl_diff_data <- full_join(filter_diff_tpaired, sbs_corr_NoAbs, by = "File_Name")
+# Missing data from MB_2019_6_5 and MB_2019_6_4 - filtration trial not long enough for water to travel from upstream to downstream - not included in other analyses either
+Corr_chl_diff_data %<>%
+  mutate(chl_filter_up_uncorr = ifelse(sbs_chl_up > sbs_chl_down, 
+                                       filter_chl_up - Correction_Factor, 
+                                       filter_chl_up + Correction_Factor),
+         chl_filter_down_uncorr = ifelse(sbs_chl_down > sbs_chl_up, 
+                                         filter_chl_down - Correction_Factor, 
+                                         filter_chl_down + Correction_Factor),
+         filter_chl_diff = chl_filter_up_uncorr - chl_filter_down_uncorr)
+
+Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_chl_diff)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  theme_classic() + 
+  xlim(-3,3) +
+  ylim(-3,3) +
+  xlab("SBS Correction Value (Not 1/2 or Abs)") +
+  ylab("Chl Diff Filtration Trial (velocity paired)")
+Corr_Chl_diff_graph                               
+## Value used to correct Filtration values = abs(correction_noabs/2)
+
 
 #For imputation we are doing a non parametric random forest imputation.  See missForest documentation for details/references.  
 #Stekhoven, D.J. and Buehlmann, P. (2012), "missForest - nonparametric missing value imputation for mixed-type data', Bioinformatics, 28(1) 2012, 112-118, doi: 10.1093/bioinformatics/btr597
