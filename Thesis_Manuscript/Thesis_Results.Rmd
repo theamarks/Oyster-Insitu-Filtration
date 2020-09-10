@@ -344,12 +344,21 @@ print(sumtable_latex, booktabs=TRUE, caption.placement="top")
 ##### Althea's Chl correction x Filtration diff Graph ###########
 ## Correction data & OG Chl values
 Sbs_correction_data 
-sbs_filter_data <- Sbs_correction_data %>% 
-  mutate()
+sbs_corr_NoAbs <- Sbs_correction_data %>% 
+  dplyr::select(File_Name, Sonde_Up, Sonde_Down, G_Avg_Chl, H_Avg_Chl, Correction_Factor) %>% 
+  mutate(correction_noAbs = ifelse(Sonde_Up == "G", G_Avg_Chl - H_Avg_Chl, H_Avg_Chl - G_Avg_Chl),
+         sbs_chl_up = ifelse(Sonde_Up == "G", G_Avg_Chl, H_Avg_Chl),
+         sbs_chl_down = ifelse(Sonde_Down == "G", G_Avg_Chl, H_Avg_Chl))
 
+sbs_correction_summary <- read_csv("output/6_Sbs_Corrections_Summary/sbs_correction_summary.csv")
+filtration_summary <- read_csv("output/4_Filtration_Calculations/Filtration_Summary/filtration_summary.csv")
 
+filter_diff_tpaired <- filtration_summary %>% 
+  dplyr::select(File_Name, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
+  rename(filter_chl_up = Chl_ug_L_Up,
+         filter_chl_down = Chl_ug_L_Down)
 
-
+Corr_chl_diff_data <- full_join(sbs_corr_NoAbs, filter_diff_tpaired, by = "File_Name")
 
 #For imputation we are doing a non parametric random forest imputation.  See missForest documentation for details/references.  
 #Stekhoven, D.J. and Buehlmann, P. (2012), "missForest - nonparametric missing value imputation for mixed-type data', Bioinformatics, 28(1) 2012, 112-118, doi: 10.1093/bioinformatics/btr597
