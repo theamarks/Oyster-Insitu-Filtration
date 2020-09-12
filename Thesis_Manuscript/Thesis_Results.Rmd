@@ -67,12 +67,6 @@ site_by_lat <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza")
 
 # transform Site variable to factor and arange by Latitude
 Master_analysis_table <- arrange(transform(Master_analysis_table, Site = factor(Site,levels = site_by_lat)), Site)
-# convert TPM, PIM, POM from g/L to mg/L
-Master_analysis_table  <- Master_analysis_table %>% 
-  mutate(Avg_TPM = Avg_TPM*1000,
-         Avg_PIM = Avg_PIM*1000,
-         Avg_POM = Avg_POM*1000,
-         Avg_OC_Ratio = round(Avg_OC_Ratio,2))
 
  # Filtration trials only - exclude Negative controls
 Filtration_only_data <- Master_analysis_table %>% 
@@ -131,12 +125,6 @@ Deanza_PosFilter_data <- Deanza_Filter_data %>%
 
 ### Average TPM Data ######################
 Avg_TPM_summary_table <- arrange(transform(Avg_TPM_summary_table, Site = factor(Site, levels = site_by_lat)), Site)
-Avg_TPM_summary_table <- Avg_TPM_summary_table %>% 
-  # convert g/L to mg/L like Gray and Langdon 2018
-  mutate(Avg_TPM = Avg_TPM*1000,
-         Avg_PIM = Avg_PIM*1000,
-         Avg_POM = Avg_POM*1000,
-         Avg_OC_Ratio = round(Avg_OC_Ratio, 2))
 
 ############### model formulas ###############
 # linear model formula
@@ -286,7 +274,7 @@ Final_table <- Master_analysis_table %>%
          Temp_C_Up = round(Temp_C_Up, digits = 2),
          Sal_ppt_Up = round(Sal_ppt_Up, digits = 1),
          Turbidity_NTU_Up = round(Turbidity_NTU_Up, digits = 1),
-         Avg_TPM_mg_L = round(Avg_TPM_mg_L),
+         Avg_TPM_mg_L = round(Avg_TPM_mg_L, digits = 4),
          Avg_OC_Ratio = round(Avg_OC_Ratio, digits = 2),
          Chl_ug_L_Up = round(Chl_ug_L_Up, digits = 1),
          Chl_ug_L_Down = round(Chl_ug_L_Down, digits = 1),
@@ -412,12 +400,7 @@ Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_c
   
 Corr_Chl_diff_graph
      
-
 Corr_chl_diff_data[c(9,21,23),] # Look at problem data points
-## Value used to correct Filtration values = abs(correction_noabs/2)
-sbs_filterdiff_lm <- lm(data = Corr_chl_diff_data, filter_chl_diff~correction_noabs)
-summary(sbs_filterdiff_lm)
-
 
 #For imputation we are doing a non parametric random forest imputation.  See missForest documentation for details/references.  
 #Stekhoven, D.J. and Buehlmann, P. (2012), "missForest - nonparametric missing value imputation for mixed-type data', Bioinformatics, 28(1) 2012, 112-118, doi: 10.1093/bioinformatics/btr597
