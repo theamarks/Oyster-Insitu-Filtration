@@ -75,7 +75,7 @@ TPM (mg/L)= \frac{Filter Dry Weight (mg) - Filter Pre Weight (mg)}{Water sample 
 
 \begin{equation}
 \label{Eq:PIM}
-PIM (mg/L)= TPM (mg/L) - \frac{Filter Ash Weight (mg) - Filter Pre Weight (mg)}{Water sample volume (ml)} \times 1000
+PIM (mg/L)= \frac{Filter Ash Weight (mg) - Filter Pre Weight (mg)}{Water sample volume (ml)} \times 1000
 \end{equation}
 
 \begin{equation}
