@@ -274,9 +274,9 @@ TPM_summary_table <- TPM_data %>%
 
 Avg_TPM_summary_table <- TPM_summary_table %>% 
   group_by(Date, Site, sample_type) %>% 
-  summarize(Avg_TPM = round(mean(TPM_mg_L), 4),
-            Avg_PIM = round(mean(PIM_mg_L), 4),
-            Avg_POM = round(mean(POM_mg_L), 4),
+  summarize(Avg_TPM_mg_L = round(mean(TPM_mg_L), 4),
+            Avg_PIM_mg_L = round(mean(PIM_mg_L), 4),
+            Avg_POM_mg_L = round(mean(POM_mg_L), 4),
             Avg_OC_Ratio = round(mean(Organic_Content_Ratio), 4)) 
 
 #####################################################################
