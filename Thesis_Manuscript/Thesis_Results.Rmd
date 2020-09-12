@@ -286,7 +286,7 @@ Final_table <- Master_analysis_table %>%
          Temp_C_Up = round(Temp_C_Up, digits = 2),
          Sal_ppt_Up = round(Sal_ppt_Up, digits = 1),
          Turbidity_NTU_Up = round(Turbidity_NTU_Up, digits = 1),
-         Avg_TPM = round(Avg_TPM*1000, digits = 4), # convert g to mg
+         Avg_TPM_mg_L = round(Avg_TPM_mg_L),
          Avg_OC_Ratio = round(Avg_OC_Ratio, digits = 2),
          Chl_ug_L_Up = round(Chl_ug_L_Up, digits = 1),
          Chl_ug_L_Down = round(Chl_ug_L_Down, digits = 1),
@@ -294,7 +294,7 @@ Final_table <- Master_analysis_table %>%
          avg_m_sec = round(avg_m_hr/3600, 2),
          pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1),
          L_hr_m2 = round(L_hr_m2, digits = 0)) %>%
-  dplyr::select(Site, Date, Experiment, Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM, 
+  dplyr::select(Site, Date, Experiment, Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, 
           Avg_OC_Ratio, Chl_ug_L_Up, Chl_ug_L_Down, avg_depth_m, d_bw_sondes_m, avg_m_sec, 
           pcnt_Chl_rmvd, L_hr_m2) %>% 
  dplyr::arrange(Site, Date)
@@ -326,6 +326,12 @@ print(sumtable_latex, booktabs=TRUE, caption.placement="top")
 ```
 
 ```{R Summary_Table, eval=FALSE, include=FALSE}
+
+## Stack Exchange -TEX help suggestion
+rm(list=ls()) 
+library(xtable) 
+data(tli) 
+xtable(tli[1:10, ])
 
 ### simply example to figure out xtable error
 
@@ -375,6 +381,7 @@ filter_diff_tpaired <- filtration_summary %>%
 
 Corr_chl_diff_data <- full_join(filter_diff_tpaired, sbs_corr_NoAbs, by = "File_Name")
 # Missing data from MB_2019_6_5 and MB_2019_6_4 - filtration trial not long enough for water to travel from upstream to downstream - not included in other analyses either
+
 Corr_chl_diff_data %<>%
   mutate(chl_filter_up_uncorr = ifelse(sbs_chl_up > sbs_chl_down, 
                                        filter_chl_up + Correction_Factor, # reverse sbs correction 
@@ -382,9 +389,12 @@ Corr_chl_diff_data %<>%
          chl_filter_down_uncorr = ifelse(sbs_chl_down > sbs_chl_up, 
                                          filter_chl_down + Correction_Factor, 
                                          filter_chl_down - Correction_Factor),
-         filter_chl_diff = chl_filter_up_uncorr - chl_filter_down_uncorr)
+         filter_chl_diff = chl_filter_up_uncorr - chl_filter_down_uncorr,
+         graph_labels = ifelse(File_Name == "Insitu_Filter_NPD_2019_4_17.csv" | File_Name == "Insitu_Filter_NPSM_2019_5_22.csv" |File_Name == "Insitu_Filter_NPSM_2019_6_9.csv", 
+                               paste(Site, "\n", Date, "\n", Experiment), NA))
 
 Corr_chl_diff_data$dummie = 1:32
+
 Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_chl_diff)) +
   geom_point() +
   theme_classic() + 
@@ -392,9 +402,16 @@ Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_c
   ylim(-3,3) +
   xlab("SBS Correction Value (Not 1/2 or Abs)") +
   ylab("Chl Diff Filtration Trial (velocity paired)") +
-  geom_abline(slope = 1, linetype = "dashed") +
-  geom_text(aes(x=correction_noabs + .12,label=dummie)) # 1-1 reference line
-Corr_Chl_diff_graph     
+  geom_abline(slope = 1, linetype = "dashed") + # 1-1 reference line
+  #geom_text(aes(x=correction_noabs + .12,label=dummie)) 
+  #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
+  #geom_label(aes(label = graph_labels))
+  ggrepel::geom_label_repel(aes(label = graph_labels), point.padding = 0.75, na.rm = T,
+                            nudge_y = c(-0.5,0,0),
+                            nudge_x = c(0.25,0.1,0.1))
+  
+Corr_Chl_diff_graph
+     
 
 Corr_chl_diff_data[c(9,21,23),] # Look at problem data points
 ## Value used to correct Filtration values = abs(correction_noabs/2)
@@ -404,7 +421,6 @@ summary(sbs_filterdiff_lm)
 
 #For imputation we are doing a non parametric random forest imputation.  See missForest documentation for details/references.  
 #Stekhoven, D.J. and Buehlmann, P. (2012), "missForest - nonparametric missing value imputation for mixed-type data', Bioinformatics, 28(1) 2012, 112-118, doi: 10.1093/bioinformatics/btr597
-
 
 #install.packages('missForest')
 #install.packages('rpart')
@@ -416,14 +432,11 @@ library(rpart)
 library(randomForest)
 library(adabag)
 
-
-
 temp1 = Final_table[,c(1,2,3)]
 temp2 = missForest(Final_table[,-c(1,2,3)])$ximp
 test = cbind(temp1,temp2)
 
 #Filtration (adjusted) mud vs oyster
-
 
 
 colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity",
