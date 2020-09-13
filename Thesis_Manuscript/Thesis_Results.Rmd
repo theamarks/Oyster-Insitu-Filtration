@@ -261,13 +261,13 @@ FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
 plot(FR_box) 
 ```
 
-```{r Final_Summary_table, eval=FALSE, include=FALSE, results='asis'}
+```{r Final_Summary_table, include=FALSE, results='asis'}
 
 #fig.cap="A summary table reporting every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively. \\label{Final_Summary_table}",
 
-library(xtable) # load xtable package 
+#library(xtable) # load xtable package 
 #options(xtable.floating = FALSE)
-options(xtable.timestamp = FALSE)
+#options(xtable.timestamp = FALSE)
 
 # Organize & clean summary table data
 Final_table <- Master_analysis_table %>%
@@ -295,13 +295,13 @@ colnames(Final_table) <- c( "Site", "Date", "Experiment", "Temp ($\\textdegree$C
                            "Depth (m)","Distance (m)", "Water veolcity (m/s)", 
                            "% Chl $\\alpha$ removal", "Clearance rate (L/hr/$m^2$)")
 # create xtable
-sumtable_latex <- xtable(Final_table, 
-                         caption = "Summary Table of all field days",
-                         label = "tb:summary",
-                         type = "latex")
+#sumtable_latex <- xtable(Final_table, 
+ #                        caption = "Summary Table of all field days",
+  #                       label = "tb:summary",
+   #                      type = "latex")
                         #display= c("s","s","s","s","f","f","f","f","f","f","f","f","f","f","f","f"))
 
-print(sumtable_latex, booktabs=TRUE, caption.placement="top")
+#print(sumtable_latex, booktabs=TRUE, caption.placement="top")
 
 #print(sumtable_latex, include.rownames = FALSE)
 #type = "latex",
@@ -345,7 +345,7 @@ sum_table2 <- xtable(df, display = c("s","f","f","f"))
 sum_table2
 ```
 
-```{r Dr Nichols code, eval=FALSE, include=FALSE}
+```{r Dr Nichols code, include=FALSE}
 #In our data we are missing 4 out of 400ish values.  
 #Because we have limited observations but a high number of variables simply
 #removing incomplete observations is too costly
@@ -446,12 +446,16 @@ filter_control_ttest
 # Degrees of freedom two-sample t-test
 t_test_df <- (nrow(exp) - nrow(control)) - 2 
 ### t-test results #####
-# Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`t_test_df`) = t-value = `filter_control_ttest$statistic`, p < filter_control_ttest$p.value)
+# Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`t_test_df`) = t-value = `filter_control_ttest$statistic`, p < `filter_control_ttest$p.value`).
 
 #Descriptive Filtration (as a function of turbitidy, salinity ect ect)
 
 
-model.rf = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,data=test1,ntree=100,mtry=3,control=rpart.control(minsplit=2,cp=.05))
+model.rf = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,
+                        data=test1,
+                        ntree=100,
+                        mtry=3,
+                        control=rpart.control(minsplit=2,cp=.05))
 y.hat = predict(model.rf,newdata=test1)
 res = test1$Clearance - y.hat
 r.sq = (var(test1$Clearance) - var(res))/var(test1$Clearance)
@@ -523,6 +527,7 @@ p.val = 1-pt(t,df)
 p.val
 ```
 
+Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
 
 ```{r FR_ChlRmd_Site_posFilter_boxplot, echo=FALSE, include=F, fig.keep = 'all', dev = 'pdf',fig.show="hold", fig.align="default", fig.asp=0.618, fig.width=4.3, out.width="50%", message= F, fig.cap="The habitat level filtration rates and percent chlorophyll removed of filtration trials (positive values only) across sites. \\label{FR_ChlRmd_Site_posFilter_boxplot}"}
 # Filtration_pos_data defined in setup
@@ -556,7 +561,7 @@ plot(ChlRmd_pos_box)
 ```
 
 ```{r FR_ChlRmd_TPM_point, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.show = "hold", fig.align="default", fig.asp=0.618, fig.width=4.3, out.width="50%", warning = F, fig.cap="The habitat level filtration rates and percent chlorophyll removed of positive filtration trials in response to seston total particulate matter (TPM) . \\label{FR_ChlRmd_TPM_point}"}
-FRPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, L_hr_m2 )) +
+FRPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM_mg_L, L_hr_m2 )) +
   #geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
@@ -574,7 +579,7 @@ FRPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, L_hr_m2 )) +
 
 plot(FRPos_TPM_graph)
 
-Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
+Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM_mg_L, pcnt_Chl_rmvd)) +
   #geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
@@ -601,14 +606,14 @@ plot(Chl_RmdPos_TPM_graph)
 
 
 ```{r FRpos_TPM_LM, eval=FALSE,  include=FALSE}
-FRPos_TPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_TPM)
+FRPos_TPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_TPM_mg_L)
 #summary(FR_TPM_lm)
 ols_regress(FRPos_TPM_lm)
 # Not significant
 ```
 
 ```{r ChlRmdpos_TPM_LM, eval=FALSE,  include=FALSE}
-ChlRmdPos_TPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_TPM)
+ChlRmdPos_TPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ Avg_TPM_mg_L)
 #summary(ChlRmdPos_TPM_lm)
 ols_regress(ChlRmdPos_TPM_lm)
 # Not significant
@@ -625,7 +630,7 @@ plot(ChlRmdPos_TPM_lm)
 ```
 
 ```{r ChlRmd_TPM_Transform, eval=FALSE, fig.width=12, include=FALSE}
-Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
+Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM_mg_L, pcnt_Chl_rmvd)) +
   geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
@@ -643,16 +648,16 @@ Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd
                label.y = "bottom")
 
 # log-log model predicitons
-logChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_TPM))
+logChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_TPM_mg_L))
 # create range of Salinity values to predict with model
-TPM_newrange <- data.frame(Avg_TPM = seq(from = 0, to = 0.04, by = 0.001))
+TPM_newrange <- data.frame(Avg_TPM_mg_L = seq(from = 0, to = 0.04, by = 0.001))
 # predict alone gives log(y) values, exponentiate y to get regular values with exp()
 loglogTPM_Pred <- data.frame(pred_ChlRmd = exp(predict(logChlRmdPos_logTPM_lm, newdata = TPM_newrange)))
 pred_loglog_TPM_df <- data.frame(TPM_newrange, loglogTPM_Pred)
   
 
-logChlRmdPos_logTPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
-  geom_line(data = pred_loglog_TPM_df, aes(x = Avg_TPM, y = pred_ChlRmd)) +
+logChlRmdPos_logTPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM_mg_L, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_loglog_TPM_df, aes(x = Avg_TPM_mg_L, y = pred_ChlRmd)) +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
   scale_color_manual(values = Site_colors) +
@@ -664,13 +669,13 @@ logChlRmdPos_logTPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl
   guides(fill = FALSE)
 
 # Y-log model predicitons
-ChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Avg_TPM))
+ChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Avg_TPM_mg_L))
 # predict alone gives log(y) values, exponentiate y to get regular values with exp()
 logTPM_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_logTPM_lm, newdata = TPM_newrange))
 pred_logTPM_df <- data.frame(TPM_newrange, logTPM_Pred)
 
-ChlRmdPos_logTPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
-  geom_line(data = pred_logTPM_df, aes(x = Avg_TPM, y = pred_ChlRmd)) +
+ChlRmdPos_logTPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM_mg_L, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_logTPM_df, aes(x = Avg_TPM_mg_L, y = pred_ChlRmd)) +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
   scale_color_manual(values = Site_colors) +
@@ -682,13 +687,13 @@ ChlRmdPos_logTPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rm
   guides(fill = FALSE)
 
 # Y~x + x^2 model predicitons
-ChlRmdPos_TPM2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Avg_TPM, degree = 2, raw = T))
+ChlRmdPos_TPM2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Avg_TPM_mg_L, degree = 2, raw = T))
 # predict alone gives log(y) values, exponentiate y to get regular values with exp()
 TPM2_Pred <- data.frame(pred_ChlRmd = predict(ChlRmdPos_TPM2_lm, newdata = TPM_newrange))
 pred_TPM2_df <- data.frame(TPM_newrange, TPM2_Pred)
 
-ChlRmdPos_TPM2_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
-  geom_line(data = pred_TPM2_df, aes(x = Avg_TPM, y = pred_ChlRmd)) +
+ChlRmdPos_TPM2_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM_mg_L, pcnt_Chl_rmvd)) +
+  geom_line(data = pred_TPM2_df, aes(x = Avg_TPM_mg_L, y = pred_ChlRmd)) +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
   scale_color_manual(values = Site_colors) +
@@ -709,7 +714,7 @@ grid.arrange(Chl_RmdPos_TPM_graph, logChlRmdPos_logTPM_graph,
 ```
 
 ```{r logChlRmdPos_logTPM_lm, eval=FALSE,  include=FALSE}
-logChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_TPM))
+logChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, log(pcnt_Chl_rmvd) ~ log(Avg_TPM_mg_L))
 #summary(ChlRmdPos_TPM_lm)
 ols_regress(logChlRmdPos_logTPM_lm)
 ```
@@ -725,13 +730,13 @@ plot(logChlRmdPos_logTPM_lm)
 ```
 
 ```{r ChlRmdPos_logTPM_lm, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-ChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Avg_TPM))
+ChlRmdPos_logTPM_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ log(Avg_TPM_mg_L))
 #summary(ChlRmdPos_logTPM_lm)
 ols_regress(ChlRmdPos_logTPM_lm)
 ```
 
 ```{r ChlRmdPos_TPM2_lm, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-ChlRmdPos_TPM2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Avg_TPM, degree = 2, raw = T))
+ChlRmdPos_TPM2_lm <- lm(data = Filtration_pos_data, pcnt_Chl_rmvd ~ poly(Avg_TPM_mg_L, degree = 2, raw = T))
 #summary(ChlRmdPos_TPM_lm)
 ols_regress(ChlRmdPos_TPM2_lm)
 ```
@@ -745,8 +750,8 @@ plot(ChlRmdPos_TPM2_lm)
 # which.max(hatvalues(logChlRmdPos_logTPM_lm)
 ```
 
-```{r NPD_FRPos_TPM_graph, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.show = "hold", fig.align="default", fig.asp=0.618, fig.width=4.3, out.width="50%", message= F, fig.cap="The positive habitat level filtration rates in response to seston total particulate matter (TPM) at the Deanza site in Newport Bay, California. \\label{NPD_FRPos_TPM_graph}"}
-NPD_FRPos_TPM_graph <- ggplot((Deanza_PosFilter_data), aes(Avg_TPM, L_hr_m2 )) +
+```{r NPD_FRPos_TPM_graph, echo=FALSE, eval=F, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.show = "hold", fig.align="default", fig.asp=0.618, fig.width=4.3, out.width="50%", message= F, fig.cap="The positive habitat level filtration rates in response to seston total particulate matter (TPM) at the Deanza site in Newport Bay, California. \\label{NPD_FRPos_TPM_graph}"}
+NPD_FRPos_TPM_graph <- ggplot((Deanza_PosFilter_data), aes(Avg_TPM_mg_L, L_hr_m2 )) +
   geom_smooth(method = lm, se = F, color = 'grey50') + #se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
@@ -763,7 +768,7 @@ NPD_FRPos_TPM_graph <- ggplot((Deanza_PosFilter_data), aes(Avg_TPM, L_hr_m2 )) +
                label.y = "bottom")
 plot(NPD_FRPos_TPM_graph)
 
-NPD_ChlRmdPos_TPM_graph <- ggplot((Deanza_PosFilter_data), aes(Avg_TPM, pcnt_Chl_rmvd)) +
+NPD_ChlRmdPos_TPM_graph <- ggplot((Deanza_PosFilter_data), aes(Avg_TPM_mg_L, pcnt_Chl_rmvd)) +
   geom_smooth(method = lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
@@ -783,12 +788,12 @@ plot(NPD_ChlRmdPos_TPM_graph)
 ```
 
 ```{r NPD_FRpos_TPM_LM, eval=FALSE, cache=T, include=FALSE}
-NPD_PosFR_TPM_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Avg_TPM)
+NPD_PosFR_TPM_lm <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~ Avg_TPM_mg_L)
 ols_regress(NPD_PosFR_TPM_lm)
 ```
 
 ```{r NPD_ChlRmdPos_TPM_LM, eval=FALSE, cache=T, include=FALSE}
-NPD_PosChlRmd_TPM_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Avg_TPM)
+NPD_PosChlRmd_TPM_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Avg_TPM_mg_L)
 ols_regress(NPD_PosChlRmd_TPM_lm)
 ```
 
@@ -1127,7 +1132,7 @@ More reportin ranges here?
 
 ```{r TPM_OC_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.show = "hold", fig.asp=0.618, fig.width=6, out.width = "70%", message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all filtration and negative control trials. \\label{TPM_OC_graphs}"}
 
-TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
+TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio)) +
   #geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) + 
@@ -1138,17 +1143,13 @@ TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM, y = Avg_OC_Ratio
   theme(legend.title = element_blank(),
         legend.background = element_blank(),
         legend.box.background = element_rect(colour = "black"),
-        legend.position = c(.9,.25)) 
+        legend.justification = c(1,1),
+        legend.position = c(1,1)) 
   #geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
-  #ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-   #            formula = x_y_formula,
-    #           parse = TRUE,
-     #          label.x = "center",
-      #         label.y = "bottom")
 plot(TPM_OC)
 
 # I don't think a box plot is valuable to show the relationship (AM- 2020_8_24)
-TPM_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_TPM)) +
+TPM_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_TPM_mg_L)) +
   geom_boxplot(color = Site_colors) +
   theme_classic() +
   stat_summary(fun.data = n_mean_stats3, geom = "text") + # mean isn't working 
@@ -1166,13 +1167,13 @@ OC_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_OC_Ratio)) +
 
 # Y-log model
 # I don't think a log transformation is valuable to show the relationship (AM- 2020_8_24)
-OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
-TPM_newrange <- data.frame(Avg_TPM = seq(from = 0, to = 0.075, by = 0.005))
+OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM_mg_L))
+TPM_newrange <- data.frame(Avg_TPM_mg_L = seq(from = 0, to = 0.075, by = 0.005))
 TPMlog_Pred <- data.frame(Avg_OC_Ratio = predict(OC_logTPM_all_LM, newdata = TPM_newrange))
 pred_TPMlog_df <- data.frame(TPM_newrange, TPMlog_Pred)
 
-OC_logTPM_graph <- ggplot(Avg_TPM_summary_table, aes(Avg_TPM, Avg_OC_Ratio)) +
-  geom_line(data = pred_TPMlog_df, aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
+OC_logTPM_graph <- ggplot(Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ratio)) +
+  geom_line(data = pred_TPMlog_df, aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio)) +
   geom_point(aes(color = Site)) +
   scale_color_manual(values = Site_colors) + 
   theme_classic() +
@@ -1185,12 +1186,12 @@ OC_logTPM_graph <- ggplot(Avg_TPM_summary_table, aes(Avg_TPM, Avg_OC_Ratio)) +
 ```
 
 ```{r TPM_OC_LM, eval=FALSE,  include=FALSE}
-OC_TPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM)
+OC_TPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM_mg_L)
 ols_regress(OC_TPM_all_LM)
 ```
 
 ```{r OC_logTPM_all_LM, eval=FALSE,  include=FALSE}
-OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM))
+OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM_mg_L))
 ols_regress(OC_logTPM_all_LM)
 ```
 
@@ -1204,14 +1205,14 @@ plot(OC_logTPM_all_LM)
 ```
 
 ```{r logOC_logTPM_all_LM, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-logOC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM))
+logOC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM_mg_L))
 ols_regress(logOC_logTPM_all_LM)
 ```
 
 ```{r TPM_OC_Sites_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. \\label{TPM_OC_Sites_graphs}"}
 
 TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")),
-                        aes(x = Avg_TPM, y = Avg_OC_Ratio)) +
+                        aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio)) +
   geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) + 
   ylim(0,1) +
@@ -1227,7 +1228,7 @@ TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza
                label.y = "bottom")
 
 TPM_OC_NPSM <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Shellmaker")), 
-                     aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
+                     aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio, label = Date)) +
   geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) + 
   ylim(0,1) +
@@ -1243,7 +1244,7 @@ TPM_OC_NPSM <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Shellmak
                label.y = "bottom")
 
 TPM_OC_SR <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "San Rafael")),
-                   aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
+                   aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio, label = Date)) +
   geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) + 
   ylim(0,1) +
@@ -1259,7 +1260,7 @@ TPM_OC_SR <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "San Rafael
                label.y = "bottom")
 
 TPM_OC_MB <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay")), 
-                   aes(x = Avg_TPM, y = Avg_OC_Ratio, label = Date)) +
+                   aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio, label = Date)) +
   geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) + 
   ylim(0,1) +
@@ -1282,42 +1283,42 @@ TPM_OC_bysite_graph <- grid.arrange(TPM_OC_SR, TPM_OC_MB, TPM_OC_NPSM, TPM_OC_De
 ```{r SR_TPM_OC_LM, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
 TPM_SR <- Avg_TPM_summary_table %>% filter(Site == "San Rafael")
 
-OC_TPM_SR_LM <- lm(data = TPM_SR, Avg_OC_Ratio ~ Avg_TPM)
+OC_TPM_SR_LM <- lm(data = TPM_SR, Avg_OC_Ratio ~ Avg_TPM_mg_L)
 ols_regress(OC_TPM_SR_LM)
 ```
 
 ```{r MB_TPM_OC_LM, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
 TPM_MB <- Avg_TPM_summary_table %>% filter(Site == "Morro Bay")
 
-OC_TPM_MB_LM <- lm(data = TPM_MB, Avg_OC_Ratio ~ Avg_TPM)
+OC_TPM_MB_LM <- lm(data = TPM_MB, Avg_OC_Ratio ~ Avg_TPM_mg_L)
 ols_regress(OC_TPM_MB_LM)
 ```
 
 ```{r NPSM_TPM_OC_LM, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
 TPM_NPSM <- Avg_TPM_summary_table %>% filter(Site == "Shellmaker")
 
-OC_TPM_NPSM_LM <- lm(data = TPM_NPSM, Avg_OC_Ratio ~ Avg_TPM)
+OC_TPM_NPSM_LM <- lm(data = TPM_NPSM, Avg_OC_Ratio ~ Avg_TPM_mg_L)
 ols_regress(OC_TPM_NPSM_LM)
 ```
 
 ```{r NPD_TPM_OC_LM, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
 TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
 
-OC_TPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ Avg_TPM)
+OC_TPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ Avg_TPM_mg_L)
 ols_regress(OC_TPM_NPD_LM)
 ```
 
 ```{r NPD_TPM_OC_LMlog, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
 TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
 
-OC_logTPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ log(Avg_TPM))
+OC_logTPM_NPD_LM <- lm(data = TPM_NPD, Avg_OC_Ratio ~ log(Avg_TPM_mg_L))
 ols_regress(OC_logTPM_NPD_LM)
 ```
 
 ```{r NPD_TPM_OC_LMloglog, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
 TPM_NPD <- Avg_TPM_summary_table %>% filter(Site == "Deanza")
 
-logOC_logTPM_NPD_LM <- lm(data = TPM_NPD, log(Avg_OC_Ratio) ~ log(Avg_TPM))
+logOC_logTPM_NPD_LM <- lm(data = TPM_NPD, log(Avg_OC_Ratio) ~ log(Avg_TPM_mg_L))
 ols_regress(logOC_logTPM_NPD_LM)
 ```
 
@@ -2865,7 +2866,7 @@ LM_PrctChl_NP <- lm(data = Pos_Newport_data, pcnt_Chl_rmvd ~
                    #d_bw_sondes_m + 
                    #avg_m_hr + 
                    Avg_OC_Ratio +
-                   Avg_TPM)
+                   Avg_TPM_mg_L)
 
 # stepwise selection that enters and removes variables. 
 step(LM_PrctChl_NP, direction = 'both')
