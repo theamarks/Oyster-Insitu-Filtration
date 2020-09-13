@@ -598,8 +598,8 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
   
   filtration_sub_df =  aFiltrationFile %>% 
     dplyr::select(c(names(data_only_numeric), "Experiment", "Date", "Site"))
-  # single tail t-test on Chl_diff
-  up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_diff, alternative = "greater"))
+  # single tail t-test on Chl_diff --> Dr. Nichols said this violated independence assumption. Can't use t-test this way
+  #up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_diff, alternative = "greater"))
   
   filtration_sub_df_sum = filtration_sub_df %>%
     dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
@@ -621,26 +621,26 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
                      avg_depth_cm = mean(avg_depth_cm),
                      d_bw_sondes_m = mean(d_bw_sondes_m),
                      avg_m_hr = mean(avg_m_hr),
-                     Mean_Chl_diff = mean(Chl_diff),
-                     StDev_Chl_diff = sd(Chl_diff),
-                     StEr_Chl_diff = sd(Chl_diff)/sqrt(length(Chl_diff)),
+                     #Mean_Chl_diff = mean(Chl_diff),
+                     #StDev_Chl_diff = sd(Chl_diff),
+                     #StEr_Chl_diff = sd(Chl_diff)/sqrt(length(Chl_diff)),
                      L_hr_m2 = mean(L_hr_m2),
                      pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd)) %>% 
                      
     data.frame() %>%
     dplyr::mutate(File_Name = aFileName) %>%
-    dplyr::select(File_Name, Experiment, everything())
+    dplyr::select(File_Name, Experiment, everything()) # reorder columns, select all other variable afterwards
   
-  filter_df_Ttest = cbind(filtration_sub_df_sum, up_down_PairedTtest)
+  # filter_df_Ttest = cbind(filtration_sub_df_sum, up_down_PairedTtest) # don't need if removing t-test
   
   # Add in simple logic variables from field notes
-  filter_df_Ttest_logicVar = filter_df_Ttest %>% 
+  filter_df_logicVar = filtration_sub_df_sum %>% 
     inner_join(one_water_vel_summary %>% 
                  dplyr::select(Date, Site, Experiment, Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae), 
                by = c("Date", "Site", "Experiment")
     )
   
-  return(filter_df_Ttest_logicVar)
+  return(filter_df_logicVar)
 }
 
 ######################################################################################
