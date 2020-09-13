@@ -529,7 +529,7 @@ p.val
 
 Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
 
-```{r FR_ChlRmd_Site_posFilter_boxplot, echo=FALSE, include=F, fig.keep = 'all', dev = 'pdf',fig.show="hold", fig.align="default", fig.asp=0.618, fig.width=4.3, out.width="50%", message= F, fig.cap="The habitat level filtration rates and percent chlorophyll removed of filtration trials (positive values only) across sites. \\label{FR_ChlRmd_Site_posFilter_boxplot}"}
+```{r FR_ChlRmd_Site_posFilter_boxplot, echo=FALSE, include=F}
 # Filtration_pos_data defined in setup
 
 #### Doesn't make sense to exclue negative values if everything is going into model.
@@ -561,6 +561,8 @@ plot(ChlRmd_pos_box)
 ```
 
 ```{r FR_ChlRmd_TPM_point, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.show = "hold", fig.align="default", fig.asp=0.618, fig.width=4.3, out.width="50%", warning = F, fig.cap="The habitat level filtration rates and percent chlorophyll removed of positive filtration trials in response to seston total particulate matter (TPM) . \\label{FR_ChlRmd_TPM_point}"}
+
+
 FRPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM_mg_L, L_hr_m2 )) +
   #geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -604,6 +606,718 @@ plot(Chl_RmdPos_TPM_graph)
 #grid.arrange(FRPos_TPM_graph, Chl_RmdPos_TPM_graph, nrow = 1)
 ```
 
+```{r TPM_OC_Sites_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. \\label{TPM_OC_Sites_graphs}"}
+
+TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")),
+                        aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio)) +
+  geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) + 
+  ylim(0,1) +
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = TPM_Label, 
+       y = "Average Organic Content Ratio", 
+       title = "Newport Deanza") + 
+  theme_classic() +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+TPM_OC_NPSM <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Shellmaker")), 
+                     aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio, label = Date)) +
+  geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) + 
+  ylim(0,1) +
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = TPM_Label, 
+       y = "Average Organic Content Ratio", 
+       title = "Newport Shellmaker") + 
+  theme_classic() +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+TPM_OC_SR <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "San Rafael")),
+                   aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio, label = Date)) +
+  geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) + 
+  ylim(0,1) +
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = TPM_Label, 
+       y = "Average Organic Content Ratio", 
+       title = "San Rafael") + 
+  theme_classic() +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+TPM_OC_MB <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay")), 
+                   aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio, label = Date)) +
+  geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
+  geom_point(aes(color = Site)) + 
+  ylim(0,1) +
+  scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = TPM_Label, 
+       y = "Average Organic Content Ratio", 
+       title = "Morro Bay") + 
+  theme_classic() +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+TPM_OC_bysite_graph <- grid.arrange(TPM_OC_SR, TPM_OC_MB, TPM_OC_NPSM, TPM_OC_Deanza, nrow = 2)
+# using plot() renders plot twice. Grid.arrange must render on its own
+# plot(TPM_OC_bysite_graph)
+```
+
+### Filter-feeding community
+
+```{r Oly_DTW_Shell_length, include=FALSE}
+############ Olympia DTW and Shell Length #####################
+# Determine what quadrat samples have missing data (NAs)
+NPD_biv_bio_summary <- NPD_bivalves %>% 
+  group_by(excavation_sample) %>% 
+  summarize(avg_DTW = mean(tissue_dry_weight_g))
+
+# what are the unique species in dataset
+#unique(NPD_bivalves$species)
+
+# Still contains missing data --> which quadrats to use for analyses
+NPD_bivalve_data_clean <- NPD_bivalves %>% 
+  filter(!excavation_sample %in% c("Q10", "Q4", "Q8")) %>% 
+  mutate(species = ifelse(grepl("adula", ignore.case = T, species), "Adula diegensis",
+                          ifelse(grepl("muscul.", ignore.case = T, species), "Musculista senhousia",
+                                 ifelse(grepl("myt", ignore.case = T, species), "Mytilus galloprovincialis",
+                                        ifelse(grepl(".lurida", ignore.case = T, species), "Ostrea lurida",
+                                               ifelse(grepl("mussel", ignore.case = T, species), "Unknown mussel",
+                                                      ifelse(grepl(".spinosum", ignore.case = T, species), "Crucibulum spinosum",
+                                                       "Pattern Not Found"))))))) %>% 
+  # Filter out unclassified/ empty species & samples less than 0g (processing error, doesn't make sense)
+  filter(!species %in% c("Pattern Not Found", "Crucibulum spinosum"))
+
+
+#Olympia DTW predicted by Shell Length - Newport, CA
+# All excavation quadrat samples processed to date aggregated (summer 2020)
+NPD_oly <- NPD_bivalve_data_clean %>% 
+  filter(species == "Ostrea lurida") %>% 
+  drop_na() %>% 
+  as_tibble() 
+
+Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
+  geom_smooth(method = lm, se=TRUE, level=0.95, color = 'grey50') +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide = F) +
+  theme_classic() +
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
+       subtitle = 'With outlier (bad data)') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "top") +
+  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+                       aes(label = sprintf("%i observations", stat(count))))
+
+plot(Oly_shell_DTW)
+```
+
+```{r Oly_DTW_SH_outlier_rmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\*O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
+# Remove outlier and negative DTW value
+NPD_oly_outRmd <- NPD_oly %>%
+  mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
+  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
+
+# Graph with outliers removed
+Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
+  geom_smooth(method=lm, formula = x_y_formula, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide = F) +
+  theme_classic() +
+ # scale_color_manual(values = Site_colors, guide=FALSE) + 
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)',
+       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom") 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
+
+plot(Oly_shell_DTW_rm_out)
+```
+
+```{r Linear_model_DTW_length, fig.height=6, fig.width=6,  include=FALSE}
+# Linear model to predict Dry Tissue weight (g) with Oly shell length (mm)
+## This model doesn't not makes sense. DTW will never be negative. DTW will approach zero as length decreases. 
+Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
+ols_regress(Oly_DTW_lm)
+
+# coeficent results from linear model
+Oly_DTW_SL_coef <- coef(Oly_DTW_lm)
+# y-intercept in [[1]] position
+Oly_DTW_SL_coef[[1]]
+# creat function from model results
+Oly_DTW_SL_model <- function(length_mm) {length_mm*Oly_DTW_SL_coef[[2]] + Oly_DTW_SL_coef[[1]]}
+
+```
+
+
+```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", warning=F, message=F, fig.asp=0.618, fig.width=8, fig.cap="The relationship between \\*O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{Oly_DTW_SH_out_rmd_Trans}"}
+
+### y ~ log(x) model ####
+Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
+# range of Shell length values
+SH_newrange <- data.frame(length_mm = seq(from = 0, to = 53, by = 1))
+# create new dataframe with model predicted values from new data range above
+pred_logxDTW_SH <- data.frame(DTW_pred = predict(Oly_LogxDTW_lm, newdata = SH_newrange), length_mm = SH_newrange)
+
+# graph with model predicted values to draw line
+Oly_SH_logxDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
+  geom_line(data = pred_logxDTW_SH, aes(x = length_mm, y = DTW_pred)) +
+  geom_point(aes(color = species)) +
+  ylim(0,0.3) +
+  scale_color_manual(values = Species_colors, guide = F) +
+  theme_classic() +
+  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
+  annotate("text", x = 10, y = 0.2, label = "y ~ log(x)") +
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)') 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
+
+### log(y) ~ x model ####
+Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
+pred_logDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_lm, newdata = SH_newrange)), length_mm = SH_newrange)
+
+Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
+  geom_line(data = pred_logDTW_SH, aes(x = length_mm, y = DTW_pred)) +
+  geom_point(aes(color = species)) +
+  ylim(0,0.3) +
+  scale_color_manual(values = Species_colors, guide = F) +
+  theme_classic() +
+  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
+  annotate("text", x = 10, y = 0.2, label = "log(y) ~ x")+
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)') 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
+
+### log(y) ~ log(x) model ###
+Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
+# predict values for model based on model and new range of data. exp() converts log() values to regular values
+pred_loglogDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_logSH_lm, newdata = SH_newrange)), 
+                                length_mm = SH_newrange)
+
+Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
+  geom_line(data = pred_loglogDTW_SH, aes(x = length_mm, y = DTW_pred)) +
+  geom_point(aes(color = species)) +
+  ylim(0,0.3) +
+  scale_color_manual(values = Species_colors, guide = F) +
+  theme_classic() +
+  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
+  annotate("text", x = 10, y = 0.2, label = "log(y) ~ log(x)")+
+  labs(x = 'Shell Length (mm)',
+       y = ' Dry Tissue Weight (g)') 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
+
+### Y ~ x + x^2
+Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
+SH_newrange <- data.frame(length_mm = seq(from = 2, to = 52, by = 1))
+pred_DTW2_SH_df <- data.frame(tissue_dry_weight_g = predict(Oly_DTW2_lm, newdata = SH_newrange), SH_newrange)
+
+Oly_SH_DTW2_graph <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
+  geom_line(data = pred_DTW2_SH_df, aes(x = length_mm, y = tissue_dry_weight_g)) +
+  geom_point(aes(color = species)) +
+  ylim(0,0.3) +
+  scale_color_manual(values = Species_colors, guide = F) +
+  theme_classic() +
+  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
+  annotate("text", x = 10, y = 0.2, label = "Y ~ x + x^2")+
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)') 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
+
+OlySH_DTW_Trans_graphs <- grid.arrange(Oly_SH_logxDTW, Oly_shell_DTW_logline, 
+                                        Oly_shell_logDTW, Oly_SH_DTW2_graph, nrow = 2)
+
+#plot(OlySH_DTW_Trans_graphs)
+
+```
+
+```{r eval=FALSE, include=FALSE}
+Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
+ols_regress(Oly_LogxDTW_lm)
+```
+
+```{r NPD_Oly_DTW_length_LM_logy, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+# This model makes more sense. DTW will never be negative whill length is positive 
+Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
+#ols_regress(Oly_LogDTW_lm)
+summary(Oly_LogDTW_lm) # residuals median should be close to 0? #https://boostedml.com/2019/06/linear-regression-in-r-interpreting-summarylm.html
+# Q1 and Q3 should have similar magnitude
+#### Boxplot of residuals
+boxplot(Oly_LogDTW_lm[['residuals']],main='Boxplot: Residuals',ylab='residual value')
+
+coef(Oly_LogDTW_lm) # The intercept tells us that when all the features are at 0
+confint(Oly_LogDTW_lm) # confidence interval
+residuals(Oly_LogDTW_lm) # residuals of each data point entered into model
+
+Oly_LogDTW_model <- function(x) {coef(Oly_LogDTW_lm)[[2]]*x + exp(coef(Oly_LogDTW_lm)[[1]])}
+
+########## OR this ##################
+# use predict() instead of creating a function? Use function inside of predict.
+# Does predict() include error term inherint in lm()?
+
+predict_DTW_logy <- function(data){
+  exp(predict(Oly_LogDTW_lm, newdata = data.frame(length_mm = data$length_mm))) 
+  # exp() converts log value, predict needs data.frame input
+  # does predict() include error term inherently in lm()
+}
+
+
+```
+
+```{r NPD_Oly_DTW_length_LM_loglog, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+## This model has a better fit than log(y) ~ x
+Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
+#ols_regress(Oly_LogDTW_logSH_lm)
+summary(Oly_LogDTW_logSH_lm)
+coef(Oly_LogDTW_logSH_lm)
+
+par(mfrow=c(2,2))
+plot(Oly_LogDTW_logSH_lm)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(Oly_LogDTW_logSH_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(Oly_LogDTW_logSH_lm))
+
+# copied code from Dr. Nichols to extract model attributes. Do I need to exp() on any of these?
+DTW_slope = summary(Oly_LogDTW_logSH_lm)[[4]][1] # is this really the slope? Matches the intercept
+DTW_se = summary(Oly_LogDTW_logSH_lm)[[4]][2]
+DTW_df = summary(Oly_LogDTW_logSH_lm)[[7]][2]
+
+DTW_t = (DTW_slope-1)/DTW_se
+DTW_p.val = 1-pt(DTW_t,DTW_df)
+DTW_p.val
+
+# create function to predict DTW values from Shell length - Need error term in equation?? 
+#Oly_loglogDTWSH_model <- function(x){coef(Oly_LogDTW_logSH_lm)[[2]]*log(x) + exp(coef(Oly_LogDTW_logSH_lm)[[1]])}
+
+# Maybe use predict() instead of function?? 
+predict_DTW_loglog <- function(data){
+  exp(predict(Oly_LogDTW_logSH_lm, newata = data.frame(length_mm = data$length_mm)))
+}
+# show the available object attributes
+str(Oly_LogDTW_logSH_lm)
+
+```
+
+```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
+ols_regress(Oly_DTW2_lm)
+```
+
+```{r Oly_TWW_DTW_outRmd, echo=FALSE, fig.align="default", fig.asp=0.618, fig.cap="The relationship between \\*O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW = 0.0044*TWW - 0.043). \\label{Oly_TWW_DTW_outRmd}", fig.keep='all', fig.width=8, message=FALSE, warning=FALSE, dev='pdf'}
+
+# Make sure only using positive TWW values, negative values indicate processing error
+NPD_oly_TWW <- NPD_oly_outRmd %>% 
+  filter(total_wet_weight_g > 0)
+# Gray & Langdon 2017 TWW ~ DTW Olympia model to add to graph
+Gray18_DTW_TWW_lm <- function(x) 0.0044*x - 0.043 
+# Gray disertation 2016 - exponential 
+Gray18_DTW_TWW_lm_loglog <- function(TWW) ((0.0044^(-0.043))*(TWW^(-0.043)))
+
+
+# use DTW outlier data to plot graph
+Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
+  geom_point(aes(color = species)) +
+  xlim(0, 7) +
+  scale_color_manual(values = Species_colors, guide=FALSE) +
+  geom_function(fun = Gray18_DTW_TWW_lm, 
+                colour = "blue", linetype = "dashed") + # plots function without data
+  geom_function(fun = Gray18_DTW_TWW_lm_loglog, 
+                colour = "red", linetype = "dashed") + # plots function without data
+  theme_classic() +
+  labs(x = 'Total wet weight (g)',
+       y = 'Dry Tissue Weight (g)') +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "left",
+               label.y = "top")
+
+### log(y) ~ x
+Oly_TWW_DTW_log_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ total_wet_weight_g)
+TWW_newrange <- data.frame(total_wet_weight_g = seq(from = 0, to = 7, by = 0.01))
+pred_DTW_TWW_log_df <- data.frame(tissue_dry_weight_g = exp(predict(Oly_TWW_DTW_log_LM, newdata = TWW_newrange)),
+                              TWW_newrange)
+
+Oly_logTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_line(data = pred_DTW_TWW_log_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide=FALSE) + 
+ # stat_function(fun = Gray18_DTW_TWW_lm, colour = "blue", linetype="dashed") +
+  xlim(0, 7) +
+  ylim(0,0.3) +
+  theme_classic() +
+  annotate("text", x = 1, y = .25, label = "log(y) ~ x") +
+  labs(x ="Total wet weight (g)",
+       y = 'Dry Tissue Weight (g)')
+
+### log(y) ~ log(x)
+Oly_TWW_DTW_loglog_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ log(total_wet_weight_g))
+pred_DTW_TWW_loglog_df <- data.frame(tissue_dry_weight_g = exp(predict(Oly_TWW_DTW_loglog_LM, newdata = TWW_newrange)),
+                              TWW_newrange)
+
+Oly_loglogTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_line(data = pred_DTW_TWW_loglog_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide=FALSE) + 
+  #stat_function(fun = Gray18_DTW_TWW_lm, colour = "blue", linetype="dashed") +
+  xlim(0, 7) +
+  ylim(0,0.3) +
+  theme_classic() +
+  annotate("text", x = 1, y = .25, label = "log(y) ~ log(x)") +
+  labs(x ="Total wet weight (g)",
+       y = 'Dry Tissue Weight (g)')
+
+### y ~ x + x^2
+Oly_TWW2_DTW_LM <- lm(data = NPD_oly_TWW, 
+                        tissue_dry_weight_g ~ poly(total_wet_weight_g, degree = 2, raw = T))
+pred_DTW2_TWW_log_df <- data.frame(tissue_dry_weight_g = predict(Oly_TWW2_DTW_LM, newdata = TWW_newrange),
+                              TWW_newrange)
+
+Oly_TWW2_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_line(data = pred_DTW2_TWW_log_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
+  geom_point(aes(color = species)) +
+  scale_color_manual(values = Species_colors, guide=FALSE) + 
+ # stat_function(fun = Gray18_DTW_TWW_lm, colour = "blue", linetype="dashed") +
+  xlim(0, 7) +
+  ylim(0,0.3) +
+  theme_classic() +
+  annotate("text", x = 1, y = .25, label = "y ~ x + x^2") +
+  labs(x ="Total wet weight (g)",
+       y = 'Dry Tissue Weight (g)')
+       
+Oly_TWW_DTW_outRmd_graph <- grid.arrange(Oly_TWW_DTW_rm_out, Oly_logTWW_DTW_graph,
+                                          Oly_loglogTWW_DTW_graph, Oly_TWW2_DTW_graph, nrow = 2)
+
+#plot(Oly_TWW_DTW_outRmd_graph)
+```
+
+```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+Oly_TWW_DTW_lm_rm_out <- lm(data = NPD_oly_outRmd,
+                         tissue_dry_weight_g ~ total_wet_weight_g)
+
+ols_regress(Oly_TWW_DTW_lm_rm_out)
+```
+
+```{r eval=FALSE, fig.height=6, fig.width=8,  include=FALSE}
+par(mfrow=c(2,2))
+plot(Oly_TWW_DTW_lm_rm_out)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(Oly_TWW_DTW_lm_rm_out)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(Oly_TWW_DTW_lm_rm_out))
+```
+
+```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+Oly_TWW_DTW_log_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ total_wet_weight_g)
+ols_regress(Oly_TWW_DTW_log_LM )
+```
+
+```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+Oly_TWW_DTW_loglog_LM <- lm(data = NPD_oly_TWW, 
+                         log(tissue_dry_weight_g) ~ log(total_wet_weight_g))
+ols_regress(Oly_TWW_DTW_loglog_LM)
+```
+
+```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+Oly_TWW2_DTW_LM <- lm(data = NPD_oly_TWW, 
+                        tissue_dry_weight_g ~ poly(total_wet_weight_g, degree = 2, raw = T))
+ols_regress(Oly_TWW2_DTW_LM)
+```
+
+```{r NPD_Bivalve_SH_DTW_outrmd, echo=FALSE, fig.align="center", fig.asp=0.618, fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay \\label{NPD_Bivalve_SH_DTW_outrmd}", fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%"}
+# Remove outlier and negative DTW value
+NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
+  mutate(DTW_outlier = find_outlier(NPD_bivalve_data_clean$tissue_dry_weight_g)) %>% 
+  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
+
+NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>% 
+  ggplot(aes(x = length_mm, y = tissue_dry_weight_g, group = species, color = species)) +
+  geom_point() +
+  scale_color_manual(values = Species_colors, guide = FALSE) +
+  facet_wrap(~species) +
+  labs(x = "Shell length (mm)",
+       y = "Dry Tissue Weight (g)",
+       title = "NPD Bivalve Biomass - Pos DTW Outlier Rmd") +
+  theme_classic() +
+  theme(strip.text = element_text(face = "italic"))
+
+# NPD_bi_Biomass_graphs <- grid.arrange(NPD_bivalve_biomass_graph, NPD_bivalve_outrmd_graph, nrow = 1)
+plot(NPD_bivalve_outrmd_graph)
+```
+
+```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The bivlaves community density for each study site. San Rafel data was collected November 2017 by the Zabin lab, Morro Bay was estimated by Morro Bay Oyster Company, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab.  \\label{Bivalve_Den_Biomass}"}
+################### Bivalve Density by Site #########################
+# read in bivalve density data from cleaned data file
+Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
+
+# replace NAs with 0s
+Bivalve_Den_data[is.na(Bivalve_Den_data)] <- 0
+
+Bivalve_Den_data <- Bivalve_Den_data %>% 
+  # move species from individual columns to a single column with new density column to contain data
+  pivot_longer(c(Adula_diegensis_m2, Musculista_senhousia_m2, Mytilus_galloprovincialis_m2,
+                 Ostrea_lurida_m2, Crassostrea_gigas_m2, Argopecten_ventricosa_m2, 
+                 Geukensia_demissa_m2, Crassostrea_gigas_m2), 
+               names_to = "Species", 
+               values_to =  "individuals_m2") %>% 
+  # remove "_m2" from species names in Species column
+  mutate(Species = str_replace(Species, "_m2", ""),
+         Species = str_replace(Species, "_", " "))
+
+#Reorder levels of Site factor - display North to South
+order_by_site <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
+Bivalve_Den_data <- arrange(transform(Bivalve_Den_data, Site = factor(Site,levels = order_by_site)), Site)
+
+
+#unique(Bivalve_Den_data$Species) # list each individual bivalve species
+# Assign species to specific color
+Species_colors <- c("Adula diegensis" = "#8D8680",
+                    "Argopecten ventricosa" = "#CCC3C5",
+                    "Crassostrea gigas" = "#6D6340",
+                    "Geukensia demissa" = "#524D4F",
+                    "Musculista senhousia" = "#B0915B",
+                    "Mytilus galloprovincialis" = "#7E4B41",
+                    "Ostrea lurida" = "#9986A5",
+                    "Unknown mussel" = "black")
+
+# Stacked bar graph
+Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) + 
+  geom_col(aes(x = Site, y = individuals_m2, fill = Species)) +
+ # geom_text(aes(label = round(Bivalve_den_m2,0), y = Bivalve_den_m2), 
+          #  vjust = -0.5) +
+  theme_classic() +
+  theme(legend.text = element_text(face = "italic")) +
+  scale_fill_manual(values = Species_colors) +
+  scale_y_continuous(breaks = seq(0, max(Bivalve_Den_data$Bivalve_den_m2), by = 500)) +
+  labs(y = expression("Individuals per m"^2))
+Bivalve_Den_graph
+```
+
+```{r Bivalve_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Estimated biomass of \\textit{O. lurida} habitat at Newport Deanza and San Rafael sites. Data for Deanza was collected by the Zacherl lab in May 2018, the relationship between \\*O. lurida* shell length and dry tissue weight (DTW) from the Deanza 2018 survey was used to estimate DTW at San Rafael with shell length data collected by the Zabin lab in November 2017. \\label{Bivalve_Den_Biomass}"}
+######### Biomass by Site ############################
+# excavation quadrat area m^2 (0.25 x 0.25m)
+NP_excavation_quad_area = 0.0625
+# calculate DTW / m^2 / species 
+NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>% 
+  group_by(excavation_sample, species) %>% 
+  summarize(mean_DTW = mean(tissue_dry_weight_g)) %>% # show the average DTW for each species within each excav sample
+  ungroup() %>% # undo previous grouping by excavation_sample and species
+  group_by(species) %>% # new grouping by species to determine the average DTW by species across all quads
+  summarize(mean_DTW_m2 = mean(mean_DTW/NP_excavation_quad_area)) %>% 
+  mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
+  rename(Species = species) # rename column with capital case
+
+################### Biomass by species San Rafael ####################
+# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
+SR_Density_directory = "./Data/bivalve_density_community"
+SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
+
+######## Predict SR DTW with shell length #########
+predict_DTW_logy <- function(data){
+  exp(predict(Oly_LogDTW_lm, newdata = data.frame(length_mm = data$length_mm))) 
+  # exp() converts log value, predict needs data.frame input
+  # does predict() include error term inherently in lm()
+}
+
+SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
+  mutate(DTW_g = predict_DTW_logy(SR_Oly_Shelllength_data)) %>%  # predict Oly Dry tissue weight with length_mm
+  group_by(Site, bag_number) %>% 
+  summarize(DTW_bag = mean(DTW_g)) # average DTW per sample bag
+
+Oly_italic <- expression(italic("Ostrea lurida"))
+
+SR_Oly_DTW_data2 <- SR_Oly_DTW_data %>% 
+  ungroup() %>% 
+  group_by(Site) %>% # regroup by site
+  summarize(DTW_bag_avg = mean(DTW_bag)) %>% # average DTW across sample bags
+  mutate(mean_DTW_m2 = DTW_bag_avg * 18,
+         Species = "Ostrea lurida") # sample bag is 1/3 the size of regular shell bag. There are 6 full size bags on the 
+# top of the reef unit at San Rafael. The units are 1 x 1 x 1m, so the top area of the reef is 1m^2. (3 * 6 = the amount in 1m^2)
+
+SR_Oly_DTW_data3 <- SR_Oly_DTW_data2 %>% 
+  dplyr::select(-(DTW_bag_avg)) # remove DTW_bag_avg 
+SR_Oly_DTW_data4 <- data.frame(SR_Oly_DTW_data3) # convert wierd mess of types into a data.frame
+
+SR_NPD_biv_DTWm2 <- rbind(SR_Oly_DTW_data4, NPD_biv_DTW_m2)
+
+####### Bar graph NPD Biomass / DTW by species
+Bivalve_Biomass_graph <- ggplot(SR_NPD_biv_DTWm2, aes(Site)) + 
+  geom_col(aes(x = Site, y = mean_DTW_m2, fill = Species)) +
+  theme_classic() +
+  scale_fill_manual(values = Species_colors) +
+  theme(legend.text = element_text(face = "italic")) +
+  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
+  labs(y = expression("Dry Tissue Weight (g/m" ^2* ")"))
+## Add total Biomass on top of bars
+Bivalve_Biomass_graph
+#bar_graphs <- plot_grid(Bivalve_Den_graph + theme(legend.position="none"),
+ #                       Bivalve_Biomass_graph + theme(legend.position="none"),
+  #                      align = 'vh',
+   #                     labels = c("A", "B"),
+    #                    hjust = -1,
+     #                   nrow = 1)
+#legend_b <- get_legend(Bivalve_Den_graph + theme(legend.box.margin = margin(0, 0, 0, 12)))
+#bar_graph_1legend <- plot_grid(bar_graphs, legend_b, rel_widths = c(3, .4))
+# How do I move legend inside of plot area? This method uses cowplot
+#bar_graph_1legend
+
+### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
+```
+
+```{r Bar_Graphs_up_vs_down,  include=FALSE}
+Bar_up_down_data <- Master_analysis_table %>%
+ # select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
+  rename(Upstream = Chl_ug_L_Up, Downstream = Chl_ug_L_Down) %>%  
+  gather(Upstream, Downstream, key = Position, value = Chl_ug_L) %>% 
+  mutate(Position = fct_relevel(Position, 'Upstream', 'Downstream')) %>% 
+  mutate(Site = fct_relevel(Site, 'Deanza', 'Shellmaker', 'San Rafael', 'Morro Bay')) %>% 
+  mutate(Site_exp_date = paste(Site, Experiment, Date, sep = ' ')) %>% 
+  mutate(Exp_Date = paste(Experiment, Date, sep = ' ')) %>% 
+  arrange(Site, mdy(Date))
+
+#Bar_up_down_data$Position <- as.factor(Bar_up_down_data$Position)
+
+Paired_bar_chl_graph <- ggplot(data = Bar_up_down_data, aes(x = Site_exp_date, y = Chl_ug_L, fill = Position)) +
+    geom_bar(stat="identity", position = "dodge") +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+    facet_grid(~ Site, scales = "free", space = "free") + #'free' allows axis b/w sites uneaven
+    geom_bar(data = (Bar_up_down_data %>%
+                       filter(!Experiment %in% c('Filtration'))),
+             color = "grey22",
+             stat="identity",
+             position = "dodge") +
+    labs(x = 'Experiment', y = 'Chlorophyl (ug/L)')
+
+plot(Paired_bar_chl_graph)
+```
+
+```{r Bar_Graphs_up_vs_down_grid.arrange, echo=FALSE, fig.align="default", fig.asp=0.75, fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%", fig.cap="Chlorphyll concentrations measured at upstream and downstream instruments across all sites, filtration trials, and negative controls. \\label{Bar_Graphs_up_vs_down_grid.arrange}"}
+############## Try 2 ####### make separate graphs, combine using grid.arrange()
+
+##### Can't figure out how to properly label x axis. Works with Exp_Date, but can't shorten without messing up data:label pairs. Can't spend more time on this right now. come back if time -AM 2020_3_3
+
+NPD_bar_data <- Bar_up_down_data %>% 
+  filter(Site == "Deanza") %>% 
+  mutate(graph_Label = ifelse(grepl("^Filtration", Exp_Date), str_replace(Exp_Date, "Filtration ", ""),
+                             str_replace(Exp_Date, "^Neg Control .", "")))
+
+NPD_bar_graph <- ggplot(data = NPD_bar_data, aes(x = Exp_Date, y = Chl_ug_L, 
+                                                 fill = Position)) +
+    geom_col(position = position_dodge(width = 0.9, preserve = "single")) +
+    geom_col(data = (NPD_bar_data %>% # add boarder around Neg Control experiments
+                       filter(!Experiment %in% c('Filtration'))),
+             color = "black",
+             position = "dodge") +
+    theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+          axis.title.x = element_blank(),
+          legend.position = c(0.9, 0.8),
+          plot.title = element_text(hjust = 0.5)) + # center title
+    labs(y = 'Chlorophyll a (ug/L)', title = "Newport Deanza") +
+  # This labels the x-axis
+    #scale_x_discrete(labels = Exp_Date) +
+    ylim(0, 8)
+
+NPSM_bar_data <- Bar_up_down_data %>% 
+  filter(Site == 'Shellmaker')
+
+NPSM_bar_graph <- ggplot(data = NPSM_bar_data,
+                          aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
+    geom_col(position = position_dodge2(width = 0.9, preserve = "single")) +
+    geom_col(data = (NPSM_bar_data %>% # add boarder around Neg Control experiments
+                       filter(!Experiment %in% c('Filtration'))),
+             color = "black",
+             position = "dodge") +
+    theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+          axis.title.y = element_blank(),
+          axis.title.x = element_blank(),
+          plot.title = element_text(hjust = 0.5)) + # center title
+    labs(title = "Newport Shellmaker") +
+    # scale_x_discrete(labels = NPSM_bar_data$Date) +
+    ylim(0, 8) +
+    guides(fill = FALSE) 
+
+MB_bar_data <- Bar_up_down_data %>% 
+  filter(Site == 'Morro Bay')
+
+MB_bar_graph <- ggplot(data = MB_bar_data,
+                          aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
+    geom_col(position = position_dodge2(width = 0.9, preserve = "single")) +
+    geom_col(data = (MB_bar_data %>% # add boarder around Neg Control experiments
+                       filter(!Experiment %in% c('Filtration'))),
+             color = "black",
+             position = "dodge") +
+    theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+          axis.title.y = element_blank(),
+          axis.title.x = element_blank(),
+          plot.title = element_text(hjust = 0.5)) + # center title
+    labs(title = "Morro Bay") +
+   # scale_x_discrete(labels = MB_bar_data$Date) +
+    ylim(0, 8) +
+    guides(fill = FALSE)
+
+SR_bar_data <- Bar_up_down_data %>% 
+  filter(Site == 'San Rafael')
+
+SR_bar_graph <- ggplot(data = SR_bar_data,
+                          aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
+    geom_col(position = position_dodge2(width = 0.9, preserve = "single")) +
+    geom_col(data = (SR_bar_data %>% # add boarder around Neg Control experiments
+                       filter(!Experiment %in% c('Filtration'))),
+             color = "black",
+             position = "dodge") +
+    theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+          axis.title.y = element_blank(),
+          axis.title.x = element_blank(),
+          plot.title = element_text(hjust = 0.5)) + # center title
+    labs(title = "San Rafael") +
+    #scale_x_discrete(labels = SR_bar_data$Date) +
+    ylim(0, 8) +
+    guides(fill = FALSE)
+
+Chl_graphs <- list(NPD_bar_graph, NPSM_bar_graph, SR_bar_graph, MB_bar_graph) 
+all_chl_graphs <- grid.arrange(grobs = Chl_graphs,
+             widths = c(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
+             layout_matrix = rbind(c(NA,1,1,1,1,1,1,1,1,1,1,1,1, NA),
+                                   c(2,2,2,2,2,3,3,3,3,3,4,4,4,4)))
+#plot(all_chl_graphs)
+#ggsave("Insitu_Filter_up_vs_down_all_sites.png", all_chl_graphs)
+```
+
+```{r EXTRA ANALYSIS CODE, eval=FALSE, include=FALSE}
+\/ \/ \/ THIS IS ALL EXTRA EXPLORATORY ANALYSIS NOT USED BELOW THIS POINT \/ \/ \/
+```
 
 ```{r FRpos_TPM_LM, eval=FALSE,  include=FALSE}
 FRPos_TPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_TPM_mg_L)
@@ -750,7 +1464,7 @@ plot(ChlRmdPos_TPM2_lm)
 # which.max(hatvalues(logChlRmdPos_logTPM_lm)
 ```
 
-```{r NPD_FRPos_TPM_graph, echo=FALSE, eval=F, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.show = "hold", fig.align="default", fig.asp=0.618, fig.width=4.3, out.width="50%", message= F, fig.cap="The positive habitat level filtration rates in response to seston total particulate matter (TPM) at the Deanza site in Newport Bay, California. \\label{NPD_FRPos_TPM_graph}"}
+```{r NPD_FRPos_TPM_graph, echo=FALSE, eval=F}
 NPD_FRPos_TPM_graph <- ggplot((Deanza_PosFilter_data), aes(Avg_TPM_mg_L, L_hr_m2 )) +
   geom_smooth(method = lm, se = F, color = 'grey50') + #se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -1124,67 +1838,6 @@ logChlRmdPos_logOC_NPD_lm <- lm(data = Deanza_PosFilter_data, log(pcnt_Chl_rmvd)
 ols_regress(logChlRmdPos_logOC_NPD_lm)
 ```
 
-### Seston
-
-Total Particulate Matter (TPM) varied widely among bays, while Organic Content (OC) was relatively similar among bays (Figure \ref{TPM_OC_graphs}). 
-Both Newport Bay sites had overlapping TPM, while Morro Bay and San Rafael had distictly separate TPM ranges. 
-More reportin ranges here?
-
-```{r TPM_OC_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.show = "hold", fig.asp=0.618, fig.width=6, out.width = "70%", message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all filtration and negative control trials. \\label{TPM_OC_graphs}"}
-
-TPM_OC <- ggplot(data = Avg_TPM_summary_table, aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio)) +
-  #geom_smooth(method=lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) + 
-  ylim(0,1)+
-  labs(x = TPM_Label, 
-       y = "Average Organic Content Ratio") + 
-  theme_classic() +
-  theme(legend.title = element_blank(),
-        legend.background = element_blank(),
-        legend.box.background = element_rect(colour = "black"),
-        legend.justification = c(1,1),
-        legend.position = c(1,1)) 
-  #geom_text(aes(label=Date), nudge_x = 0.007, nudge_y = 0, check_overlap = T)
-plot(TPM_OC)
-
-# I don't think a box plot is valuable to show the relationship (AM- 2020_8_24)
-TPM_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_TPM_mg_L)) +
-  geom_boxplot(color = Site_colors) +
-  theme_classic() +
-  stat_summary(fun.data = n_mean_stats3, geom = "text") + # mean isn't working 
-  labs(x = 'Site',
-       y = TPM_Label,
-       title = "Total Particulate Matter by Site")
-# I don't think a box plot is valuable to show the relationship (AM- 2020_8_24)
-OC_box <- ggplot((Avg_TPM_summary_table), aes(Site, Avg_OC_Ratio)) +
-  geom_boxplot(color = Site_colors) +
-  theme_classic() +
-  stat_summary(fun.data = n_mean_stats3, geom = "text") + 
-  labs(x = 'Site',
-       y = "Average Organic Content Ratio",
-       title = "Seston Organic Content Ratio by Site")
-
-# Y-log model
-# I don't think a log transformation is valuable to show the relationship (AM- 2020_8_24)
-OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM_mg_L))
-TPM_newrange <- data.frame(Avg_TPM_mg_L = seq(from = 0, to = 0.075, by = 0.005))
-TPMlog_Pred <- data.frame(Avg_OC_Ratio = predict(OC_logTPM_all_LM, newdata = TPM_newrange))
-pred_TPMlog_df <- data.frame(TPM_newrange, TPMlog_Pred)
-
-OC_logTPM_graph <- ggplot(Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ratio)) +
-  geom_line(data = pred_TPMlog_df, aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio)) +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) + 
-  theme_classic() +
-  labs(x = TPM_Label,
-       y = "Average Organic Content Ratio",
-       title = 'All trials',
-       subtitle = 'y ~ log(x)')
-
-# grid.arrange(OC_box, TPM_box, TPM_OC, OC_logTPM_graph, nrow = 2)
-```
-
 ```{r TPM_OC_LM, eval=FALSE,  include=FALSE}
 OC_TPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM_mg_L)
 ols_regress(OC_TPM_all_LM)
@@ -1209,76 +1862,6 @@ logOC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(
 ols_regress(logOC_logTPM_all_LM)
 ```
 
-```{r TPM_OC_Sites_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. \\label{TPM_OC_Sites_graphs}"}
-
-TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")),
-                        aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio)) +
-  geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) + 
-  ylim(0,1) +
-  scale_color_manual(values = Site_colors, guide=FALSE) + 
-  labs(x = TPM_Label, 
-       y = "Average Organic Content Ratio", 
-       title = "Newport Deanza") + 
-  theme_classic() +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-TPM_OC_NPSM <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Shellmaker")), 
-                     aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio, label = Date)) +
-  geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) + 
-  ylim(0,1) +
-  scale_color_manual(values = Site_colors, guide=FALSE) + 
-  labs(x = TPM_Label, 
-       y = "Average Organic Content Ratio", 
-       title = "Newport Shellmaker") + 
-  theme_classic() +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-TPM_OC_SR <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "San Rafael")),
-                   aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio, label = Date)) +
-  geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) + 
-  ylim(0,1) +
-  scale_color_manual(values = Site_colors, guide=FALSE) + 
-  labs(x = TPM_Label, 
-       y = "Average Organic Content Ratio", 
-       title = "San Rafael") + 
-  theme_classic() +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-TPM_OC_MB <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Morro Bay")), 
-                   aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio, label = Date)) +
-  geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = Site)) + 
-  ylim(0,1) +
-  scale_color_manual(values = Site_colors, guide=FALSE) + 
-  labs(x = TPM_Label, 
-       y = "Average Organic Content Ratio", 
-       title = "Morro Bay") + 
-  theme_classic() +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom")
-
-TPM_OC_bysite_graph <- grid.arrange(TPM_OC_SR, TPM_OC_MB, TPM_OC_NPSM, TPM_OC_Deanza, nrow = 2)
-# using plot() renders plot twice. Grid.arrange must render on its own
-# plot(TPM_OC_bysite_graph)
-```
 
 ```{r SR_TPM_OC_LM, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
 TPM_SR <- Avg_TPM_summary_table %>% filter(Site == "San Rafael")
@@ -2024,381 +2607,6 @@ NPD_ChlRmdPos_Turb_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Turbid
 ols_regress(NPD_ChlRmdPos_Turb_lm)
 ```
 
-### Filter-feeding community
-
-```{r Oly_DTW_Shell_length, fig.height=5, fig.width=6,  include=FALSE}
-############ Olympia DTW and Shell Length #####################
-# Determine what quadrat samples have missing data (NAs)
-NPD_biv_bio_summary <- NPD_bivalves %>% 
-  group_by(excavation_sample) %>% 
-  summarize(avg_DTW = mean(tissue_dry_weight_g))
-
-# what are the unique species in dataset
-#unique(NPD_bivalves$species)
-
-# Still contains missing data --> which quadrats to use for analyses
-NPD_bivalve_data_clean <- NPD_bivalves %>% 
-  filter(!excavation_sample %in% c("Q10", "Q4", "Q8")) %>% 
-  mutate(species = ifelse(grepl("adula", ignore.case = T, species), "Adula diegensis",
-                          ifelse(grepl("muscul.", ignore.case = T, species), "Musculista senhousia",
-                                 ifelse(grepl("myt", ignore.case = T, species), "Mytilus galloprovincialis",
-                                        ifelse(grepl(".lurida", ignore.case = T, species), "Ostrea lurida",
-                                               ifelse(grepl("mussel", ignore.case = T, species), "Unknown mussel",
-                                                      ifelse(grepl(".spinosum", ignore.case = T, species), "Crucibulum spinosum",
-                                                       "Pattern Not Found"))))))) %>% 
-  # Filter out unclassified/ empty species & samples less than 0g (processing error, doesn't make sense)
-  filter(!species %in% c("Pattern Not Found", "Crucibulum spinosum"))
-
-
-#Olympia DTW predicted by Shell Length - Newport, CA
-# All excavation quadrat samples processed to date aggregated (summer 2020)
-NPD_oly <- NPD_bivalve_data_clean %>% 
-  filter(species == "Ostrea lurida") %>% 
-  drop_na() %>% 
-  as_tibble() 
-
-Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
-  geom_smooth(method = lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = species)) +
-  scale_color_manual(values = Species_colors, guide = F) +
-  theme_classic() +
-  labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'With outlier (bad data)') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "top") +
-  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-                       aes(label = sprintf("%i observations", stat(count))))
-
-plot(Oly_shell_DTW)
-```
-
-```{r Oly_DTW_SH_outlier_rmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\*O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
-# Remove outlier and negative DTW value
-NPD_oly_outRmd <- NPD_oly %>%
-  mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
-  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
-
-# Graph with outliers removed
-Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
-  geom_smooth(method=lm, formula = x_y_formula, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = species)) +
-  scale_color_manual(values = Species_colors, guide = F) +
-  theme_classic() +
- # scale_color_manual(values = Site_colors, guide=FALSE) + 
-  labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom") 
-  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-   #                    aes(label = sprintf("%i observations", stat(count))))
-
-plot(Oly_shell_DTW_rm_out)
-```
-
-```{r Linear_model_DTW_length, fig.height=6, fig.width=6,  include=FALSE}
-# Linear model to predict Dry Tissue weight (g) with Oly shell length (mm)
-## This model doesn't not makes sense. DTW will never be negative. DTW will approach zero as length decreases. 
-Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
-ols_regress(Oly_DTW_lm)
-
-# coeficent results from linear model
-Oly_DTW_SL_coef <- coef(Oly_DTW_lm)
-# y-intercept in [[1]] position
-Oly_DTW_SL_coef[[1]]
-# creat function from model results
-Oly_DTW_SL_model <- function(length_mm) {length_mm*Oly_DTW_SL_coef[[2]] + Oly_DTW_SL_coef[[1]]}
-
-```
-
-
-```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", warning=F, message=F, fig.asp=0.618, fig.width=8, fig.cap="The relationship between \\*O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{Oly_DTW_SH_out_rmd_Trans}"}
-
-### y ~ log(x) model ####
-Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
-# range of Shell length values
-SH_newrange <- data.frame(length_mm = seq(from = 0, to = 53, by = 1))
-# create new dataframe with model predicted values from new data range above
-pred_logxDTW_SH <- data.frame(DTW_pred = predict(Oly_LogxDTW_lm, newdata = SH_newrange), length_mm = SH_newrange)
-
-# graph with model predicted values to draw line
-Oly_SH_logxDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
-  geom_line(data = pred_logxDTW_SH, aes(x = length_mm, y = DTW_pred)) +
-  geom_point(aes(color = species)) +
-  ylim(0,0.3) +
-  scale_color_manual(values = Species_colors, guide = F) +
-  theme_classic() +
-  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
-  annotate("text", x = 10, y = 0.2, label = "y ~ log(x)") +
-  labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)') 
-  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-   #                    aes(label = sprintf("%i observations", stat(count))))
-
-### log(y) ~ x model ####
-Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
-pred_logDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_lm, newdata = SH_newrange)), length_mm = SH_newrange)
-
-Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
-  geom_line(data = pred_logDTW_SH, aes(x = length_mm, y = DTW_pred)) +
-  geom_point(aes(color = species)) +
-  ylim(0,0.3) +
-  scale_color_manual(values = Species_colors, guide = F) +
-  theme_classic() +
-  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
-  annotate("text", x = 10, y = 0.2, label = "log(y) ~ x")+
-  labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)') 
-  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-   #                    aes(label = sprintf("%i observations", stat(count))))
-
-### log(y) ~ log(x) model ###
-Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
-# predict values for model based on model and new range of data. exp() converts log() values to regular values
-pred_loglogDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_logSH_lm, newdata = SH_newrange)), 
-                                length_mm = SH_newrange)
-
-Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
-  geom_line(data = pred_loglogDTW_SH, aes(x = length_mm, y = DTW_pred)) +
-  geom_point(aes(color = species)) +
-  ylim(0,0.3) +
-  scale_color_manual(values = Species_colors, guide = F) +
-  theme_classic() +
-  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
-  annotate("text", x = 10, y = 0.2, label = "log(y) ~ log(x)")+
-  labs(x = 'Shell Length (mm)',
-       y = ' Dry Tissue Weight (g)') 
-  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-   #                    aes(label = sprintf("%i observations", stat(count))))
-
-### Y ~ x + x^2
-Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
-SH_newrange <- data.frame(length_mm = seq(from = 2, to = 52, by = 1))
-pred_DTW2_SH_df <- data.frame(tissue_dry_weight_g = predict(Oly_DTW2_lm, newdata = SH_newrange), SH_newrange)
-
-Oly_SH_DTW2_graph <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
-  geom_line(data = pred_DTW2_SH_df, aes(x = length_mm, y = tissue_dry_weight_g)) +
-  geom_point(aes(color = species)) +
-  ylim(0,0.3) +
-  scale_color_manual(values = Species_colors, guide = F) +
-  theme_classic() +
-  scale_x_continuous(breaks = c(0,10,20,30,40,50))+
-  annotate("text", x = 10, y = 0.2, label = "Y ~ x + x^2")+
-  labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)') 
-  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-   #                    aes(label = sprintf("%i observations", stat(count))))
-
-OlySH_DTW_Trans_graphs <- grid.arrange(Oly_SH_logxDTW, Oly_shell_DTW_logline, 
-                                        Oly_shell_logDTW, Oly_SH_DTW2_graph, nrow = 2)
-
-#plot(OlySH_DTW_Trans_graphs)
-
-```
-
-```{r eval=FALSE, include=FALSE}
-Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
-ols_regress(Oly_LogxDTW_lm)
-```
-
-```{r NPD_Oly_DTW_length_LM_logy, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-# This model makes more sense. DTW will never be negative whill length is positive 
-Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
-#ols_regress(Oly_LogDTW_lm)
-summary(Oly_LogDTW_lm) # residuals median should be close to 0? #https://boostedml.com/2019/06/linear-regression-in-r-interpreting-summarylm.html
-# Q1 and Q3 should have similar magnitude
-#### Boxplot of residuals
-boxplot(Oly_LogDTW_lm[['residuals']],main='Boxplot: Residuals',ylab='residual value')
-
-coef(Oly_LogDTW_lm) # The intercept tells us that when all the features are at 0
-confint(Oly_LogDTW_lm) # confidence interval
-residuals(Oly_LogDTW_lm) # residuals of each data point entered into model
-
-Oly_LogDTW_model <- function(x) {coef(Oly_LogDTW_lm)[[2]]*x + exp(coef(Oly_LogDTW_lm)[[1]])}
-
-########## OR this ##################
-# use predict() instead of creating a function? Use function inside of predict.
-# Does predict() include error term inherint in lm()?
-
-predict_DTW_logy <- function(data){
-  exp(predict(Oly_LogDTW_lm, newdata = data.frame(length_mm = data$length_mm))) 
-  # exp() converts log value, predict needs data.frame input
-  # does predict() include error term inherently in lm()
-}
-
-
-```
-
-```{r NPD_Oly_DTW_length_LM_loglog, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-## This model has a better fit than log(y) ~ x
-Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
-#ols_regress(Oly_LogDTW_logSH_lm)
-summary(Oly_LogDTW_logSH_lm)
-coef(Oly_LogDTW_logSH_lm)
-
-par(mfrow=c(2,2))
-plot(Oly_LogDTW_logSH_lm)
-# Leverage Statistics - plots index of parameter elements against their leverage on the model
-# plot(hatvalues(Oly_LogDTW_logSH_lm)) 
-# identifies the index of the largest element of a vector
-# which.max(hatvalues(Oly_LogDTW_logSH_lm))
-
-# copied code from Dr. Nichols to extract model attributes. Do I need to exp() on any of these?
-DTW_slope = summary(Oly_LogDTW_logSH_lm)[[4]][1] # is this really the slope? Matches the intercept
-DTW_se = summary(Oly_LogDTW_logSH_lm)[[4]][2]
-DTW_df = summary(Oly_LogDTW_logSH_lm)[[7]][2]
-
-DTW_t = (DTW_slope-1)/DTW_se
-DTW_p.val = 1-pt(DTW_t,DTW_df)
-DTW_p.val
-
-# create function to predict DTW values from Shell length - Need error term in equation?? 
-#Oly_loglogDTWSH_model <- function(x){coef(Oly_LogDTW_logSH_lm)[[2]]*log(x) + exp(coef(Oly_LogDTW_logSH_lm)[[1]])}
-
-# Maybe use predict() instead of function?? 
-predict_DTW_loglog <- function(data){
-  exp(predict(Oly_LogDTW_logSH_lm, newata = data.frame(length_mm = data$length_mm)))
-}
-# show the available object attributes
-str(Oly_LogDTW_logSH_lm)
-
-```
-
-```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
-ols_regress(Oly_DTW2_lm)
-```
-
-```{r Oly_TWW_DTW_outRmd, echo=FALSE, fig.align="default", fig.asp=0.618, fig.cap="The relationship between \\*O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW = 0.0044*TWW - 0.043). \\label{Oly_TWW_DTW_outRmd}", fig.keep='all', fig.width=8, message=FALSE, warning=FALSE, dev='pdf'}
-
-# Make sure only using positive TWW values, negative values indicate processing error
-NPD_oly_TWW <- NPD_oly_outRmd %>% 
-  filter(total_wet_weight_g > 0)
-# Gray & Langdon 2017 TWW ~ DTW Olympia model to add to graph
-Gray18_DTW_TWW_lm <- function(x) 0.0044*x - 0.043 
-# Gray disertation 2016 - exponential 
-Gray18_DTW_TWW_lm_loglog <- function(TWW) ((0.0044^(-0.043))*(TWW^(-0.043)))
-
-
-# use DTW outlier data to plot graph
-Oly_TWW_DTW_rm_out <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
-  geom_smooth(method=lm, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = species)) +
-  xlim(0, 7) +
-  scale_color_manual(values = Species_colors, guide=FALSE) +
-  geom_function(fun = Gray18_DTW_TWW_lm, 
-                colour = "blue", linetype = "dashed") + # plots function without data
-  geom_function(fun = Gray18_DTW_TWW_lm_loglog, 
-                colour = "red", linetype = "dashed") + # plots function without data
-  theme_classic() +
-  labs(x = 'Total wet weight (g)',
-       y = 'Dry Tissue Weight (g)') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "left",
-               label.y = "top")
-
-### log(y) ~ x
-Oly_TWW_DTW_log_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ total_wet_weight_g)
-TWW_newrange <- data.frame(total_wet_weight_g = seq(from = 0, to = 7, by = 0.01))
-pred_DTW_TWW_log_df <- data.frame(tissue_dry_weight_g = exp(predict(Oly_TWW_DTW_log_LM, newdata = TWW_newrange)),
-                              TWW_newrange)
-
-Oly_logTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
-  geom_line(data = pred_DTW_TWW_log_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
-  geom_point(aes(color = species)) +
-  scale_color_manual(values = Species_colors, guide=FALSE) + 
- # stat_function(fun = Gray18_DTW_TWW_lm, colour = "blue", linetype="dashed") +
-  xlim(0, 7) +
-  ylim(0,0.3) +
-  theme_classic() +
-  annotate("text", x = 1, y = .25, label = "log(y) ~ x") +
-  labs(x ="Total wet weight (g)",
-       y = 'Dry Tissue Weight (g)')
-
-### log(y) ~ log(x)
-Oly_TWW_DTW_loglog_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ log(total_wet_weight_g))
-pred_DTW_TWW_loglog_df <- data.frame(tissue_dry_weight_g = exp(predict(Oly_TWW_DTW_loglog_LM, newdata = TWW_newrange)),
-                              TWW_newrange)
-
-Oly_loglogTWW_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
-  geom_line(data = pred_DTW_TWW_loglog_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
-  geom_point(aes(color = species)) +
-  scale_color_manual(values = Species_colors, guide=FALSE) + 
-  #stat_function(fun = Gray18_DTW_TWW_lm, colour = "blue", linetype="dashed") +
-  xlim(0, 7) +
-  ylim(0,0.3) +
-  theme_classic() +
-  annotate("text", x = 1, y = .25, label = "log(y) ~ log(x)") +
-  labs(x ="Total wet weight (g)",
-       y = 'Dry Tissue Weight (g)')
-
-### y ~ x + x^2
-Oly_TWW2_DTW_LM <- lm(data = NPD_oly_TWW, 
-                        tissue_dry_weight_g ~ poly(total_wet_weight_g, degree = 2, raw = T))
-pred_DTW2_TWW_log_df <- data.frame(tissue_dry_weight_g = predict(Oly_TWW2_DTW_LM, newdata = TWW_newrange),
-                              TWW_newrange)
-
-Oly_TWW2_DTW_graph <- ggplot(NPD_oly_TWW, aes(total_wet_weight_g, tissue_dry_weight_g)) +
-  geom_line(data = pred_DTW2_TWW_log_df, aes(total_wet_weight_g, tissue_dry_weight_g)) +
-  geom_point(aes(color = species)) +
-  scale_color_manual(values = Species_colors, guide=FALSE) + 
- # stat_function(fun = Gray18_DTW_TWW_lm, colour = "blue", linetype="dashed") +
-  xlim(0, 7) +
-  ylim(0,0.3) +
-  theme_classic() +
-  annotate("text", x = 1, y = .25, label = "y ~ x + x^2") +
-  labs(x ="Total wet weight (g)",
-       y = 'Dry Tissue Weight (g)')
-       
-Oly_TWW_DTW_outRmd_graph <- grid.arrange(Oly_TWW_DTW_rm_out, Oly_logTWW_DTW_graph,
-                                          Oly_loglogTWW_DTW_graph, Oly_TWW2_DTW_graph, nrow = 2)
-
-#plot(Oly_TWW_DTW_outRmd_graph)
-```
-
-```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-Oly_TWW_DTW_lm_rm_out <- lm(data = NPD_oly_outRmd,
-                         tissue_dry_weight_g ~ total_wet_weight_g)
-
-ols_regress(Oly_TWW_DTW_lm_rm_out)
-```
-
-```{r eval=FALSE, fig.height=6, fig.width=8,  include=FALSE}
-par(mfrow=c(2,2))
-plot(Oly_TWW_DTW_lm_rm_out)
-# Leverage Statistics - plots index of parameter elements against their leverage on the model
-# plot(hatvalues(Oly_TWW_DTW_lm_rm_out)) 
-# identifies the index of the largest element of a vector
-# which.max(hatvalues(Oly_TWW_DTW_lm_rm_out))
-```
-
-```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-Oly_TWW_DTW_log_LM <- lm(data = NPD_oly_TWW, log(tissue_dry_weight_g) ~ total_wet_weight_g)
-ols_regress(Oly_TWW_DTW_log_LM )
-```
-
-```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-Oly_TWW_DTW_loglog_LM <- lm(data = NPD_oly_TWW, 
-                         log(tissue_dry_weight_g) ~ log(total_wet_weight_g))
-ols_regress(Oly_TWW_DTW_loglog_LM)
-```
-
-```{r eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-Oly_TWW2_DTW_LM <- lm(data = NPD_oly_TWW, 
-                        tissue_dry_weight_g ~ poly(total_wet_weight_g, degree = 2, raw = T))
-ols_regress(Oly_TWW2_DTW_LM)
-```
-
 ```{r NPD_Bivalve_SH_DTW, echo=FALSE, fig.align="center", fig.asp=0.618, fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%", fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay \\label{NPD_Bivalve_SH_DTW}"}
 ## Graph Newport Deanza biomass by shell length
 NPD_bivalve_biomass_graph <-  NPD_bivalve_data_clean %>% 
@@ -2433,145 +2641,6 @@ Oly_TWW_DTW<- ggplot(NPD_oly, aes(total_wet_weight_g, tissue_dry_weight_g)) +
 plot(Oly_TWW_DTW)
 ```
 
-```{r NPD_Bivalve_SH_DTW_outrmd, echo=FALSE, fig.align="center", fig.asp=0.618, fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay \\label{NPD_Bivalve_SH_DTW_outrmd}", fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%"}
-# Remove outlier and negative DTW value
-NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
-  mutate(DTW_outlier = find_outlier(NPD_bivalve_data_clean$tissue_dry_weight_g)) %>% 
-  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
-
-NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>% 
-  ggplot(aes(x = length_mm, y = tissue_dry_weight_g, group = species, color = species)) +
-  geom_point() +
-  scale_color_manual(values = Species_colors, guide = FALSE) +
-  facet_wrap(~species) +
-  labs(x = "Shell length (mm)",
-       y = "Dry Tissue Weight (g)",
-       title = "NPD Bivalve Biomass - Pos DTW Outlier Rmd") +
-  theme_classic() +
-  theme(strip.text = element_text(face = "italic"))
-
-# NPD_bi_Biomass_graphs <- grid.arrange(NPD_bivalve_biomass_graph, NPD_bivalve_outrmd_graph, nrow = 1)
-plot(NPD_bivalve_outrmd_graph)
-```
-
-```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The bivlaves community density for each study site. San Rafel data was collected November 2017 by the Zabin lab, Morro Bay was estimated by Morro Bay Oyster Company, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab.  \\label{Bivalve_Den_Biomass}"}
-################### Bivalve Density by Site #########################
-# read in bivalve density data from cleaned data file
-Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
-
-# replace NAs with 0s
-Bivalve_Den_data[is.na(Bivalve_Den_data)] <- 0
-
-Bivalve_Den_data <- Bivalve_Den_data %>% 
-  # move species from individual columns to a single column with new density column to contain data
-  pivot_longer(c(Adula_diegensis_m2, Musculista_senhousia_m2, Mytilus_galloprovincialis_m2,
-                 Ostrea_lurida_m2, Crassostrea_gigas_m2, Argopecten_ventricosa_m2, 
-                 Geukensia_demissa_m2, Crassostrea_gigas_m2), 
-               names_to = "Species", 
-               values_to =  "individuals_m2") %>% 
-  # remove "_m2" from species names in Species column
-  mutate(Species = str_replace(Species, "_m2", ""),
-         Species = str_replace(Species, "_", " "))
-
-#Reorder levels of Site factor - display North to South
-order_by_site <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
-Bivalve_Den_data <- arrange(transform(Bivalve_Den_data, Site = factor(Site,levels = order_by_site)), Site)
-
-
-#unique(Bivalve_Den_data$Species) # list each individual bivalve species
-# Assign species to specific color
-Species_colors <- c("Adula diegensis" = "#8D8680",
-                    "Argopecten ventricosa" = "#CCC3C5",
-                    "Crassostrea gigas" = "#6D6340",
-                    "Geukensia demissa" = "#524D4F",
-                    "Musculista senhousia" = "#B0915B",
-                    "Mytilus galloprovincialis" = "#7E4B41",
-                    "Ostrea lurida" = "#9986A5",
-                    "Unknown mussel" = "black")
-
-# Stacked bar graph
-Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) + 
-  geom_col(aes(x = Site, y = individuals_m2, fill = Species)) +
- # geom_text(aes(label = round(Bivalve_den_m2,0), y = Bivalve_den_m2), 
-          #  vjust = -0.5) +
-  theme_classic() +
-  theme(legend.text = element_text(face = "italic")) +
-  scale_fill_manual(values = Species_colors) +
-  scale_y_continuous(breaks = seq(0, max(Bivalve_Den_data$Bivalve_den_m2), by = 500)) +
-  labs(y = expression("Individuals per m"^2))
-Bivalve_Den_graph
-```
-
-```{r Bivalve_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Estimated biomass of \\textit{O. lurida} habitat at Newport Deanza and San Rafael sites. Data for Deanza was collected by the Zacherl lab in May 2018, the relationship between \\*O. lurida* shell length and dry tissue weight (DTW) from the Deanza 2018 survey was used to estimate DTW at San Rafael with shell length data collected by the Zabin lab in November 2017. \\label{Bivalve_Den_Biomass}"}
-######### Biomass by Site ############################
-# excavation quadrat area m^2 (0.25 x 0.25m)
-NP_excavation_quad_area = 0.0625
-# calculate DTW / m^2 / species 
-NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>% 
-  group_by(excavation_sample, species) %>% 
-  summarize(mean_DTW = mean(tissue_dry_weight_g)) %>% # show the average DTW for each species within each excav sample
-  ungroup() %>% # undo previous grouping by excavation_sample and species
-  group_by(species) %>% # new grouping by species to determine the average DTW by species across all quads
-  summarize(mean_DTW_m2 = mean(mean_DTW/NP_excavation_quad_area)) %>% 
-  mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
-  rename(Species = species) # rename column with capital case
-
-################### Biomass by species San Rafael ####################
-# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
-SR_Density_directory = "./Data/bivalve_density_community"
-SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
-
-######## Predict SR DTW with shell length #########
-predict_DTW_logy <- function(data){
-  exp(predict(Oly_LogDTW_lm, newdata = data.frame(length_mm = data$length_mm))) 
-  # exp() converts log value, predict needs data.frame input
-  # does predict() include error term inherently in lm()
-}
-
-SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
-  mutate(DTW_g = predict_DTW_logy(SR_Oly_Shelllength_data)) %>%  # predict Oly Dry tissue weight with length_mm
-  group_by(Site, bag_number) %>% 
-  summarize(DTW_bag = mean(DTW_g)) # average DTW per sample bag
-
-Oly_italic <- expression(italic("Ostrea lurida"))
-
-SR_Oly_DTW_data2 <- SR_Oly_DTW_data %>% 
-  ungroup() %>% 
-  group_by(Site) %>% # regroup by site
-  summarize(DTW_bag_avg = mean(DTW_bag)) %>% # average DTW across sample bags
-  mutate(mean_DTW_m2 = DTW_bag_avg * 18,
-         Species = "Ostrea lurida") # sample bag is 1/3 the size of regular shell bag. There are 6 full size bags on the 
-# top of the reef unit at San Rafael. The units are 1 x 1 x 1m, so the top area of the reef is 1m^2. (3 * 6 = the amount in 1m^2)
-
-SR_Oly_DTW_data3 <- SR_Oly_DTW_data2 %>% 
-  dplyr::select(-(DTW_bag_avg)) # remove DTW_bag_avg 
-SR_Oly_DTW_data4 <- data.frame(SR_Oly_DTW_data3) # convert wierd mess of types into a data.frame
-
-SR_NPD_biv_DTWm2 <- rbind(SR_Oly_DTW_data4, NPD_biv_DTW_m2)
-
-####### Bar graph NPD Biomass / DTW by species
-Bivalve_Biomass_graph <- ggplot(SR_NPD_biv_DTWm2, aes(Site)) + 
-  geom_col(aes(x = Site, y = mean_DTW_m2, fill = Species)) +
-  theme_classic() +
-  scale_fill_manual(values = Species_colors) +
-  theme(legend.text = element_text(face = "italic")) +
-  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
-  labs(y = expression("Dry Tissue Weight (g/m" ^2* ")"))
-## Add total Biomass on top of bars
-Bivalve_Biomass_graph
-#bar_graphs <- plot_grid(Bivalve_Den_graph + theme(legend.position="none"),
- #                       Bivalve_Biomass_graph + theme(legend.position="none"),
-  #                      align = 'vh',
-   #                     labels = c("A", "B"),
-    #                    hjust = -1,
-     #                   nrow = 1)
-#legend_b <- get_legend(Bivalve_Den_graph + theme(legend.box.margin = margin(0, 0, 0, 12)))
-#bar_graph_1legend <- plot_grid(bar_graphs, legend_b, rel_widths = c(3, .4))
-# How do I move legend inside of plot area? This method uses cowplot
-#bar_graph_1legend
-
-### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
-```
 
 
 ```{r fig.height=5, fig.width=12,  include=FALSE}
@@ -2714,129 +2783,6 @@ grid.arrange(NPD_Unknown_Posbiomass_graph, NPD_Unknown_Posbiomass_loggraph, nrow
 
 ```
 
-```{r Bar_Graphs_up_vs_down,  include=FALSE}
-Bar_up_down_data <- Master_analysis_table %>%
- # select(Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>%
-  rename(Upstream = Chl_ug_L_Up, Downstream = Chl_ug_L_Down) %>%  
-  gather(Upstream, Downstream, key = Position, value = Chl_ug_L) %>% 
-  mutate(Position = fct_relevel(Position, 'Upstream', 'Downstream')) %>% 
-  mutate(Site = fct_relevel(Site, 'Deanza', 'Shellmaker', 'San Rafael', 'Morro Bay')) %>% 
-  mutate(Site_exp_date = paste(Site, Experiment, Date, sep = ' ')) %>% 
-  mutate(Exp_Date = paste(Experiment, Date, sep = ' ')) %>% 
-  arrange(Site, mdy(Date))
-
-#Bar_up_down_data$Position <- as.factor(Bar_up_down_data$Position)
-
-Paired_bar_chl_graph <- ggplot(data = Bar_up_down_data, aes(x = Site_exp_date, y = Chl_ug_L, fill = Position)) +
-    geom_bar(stat="identity", position = "dodge") +
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
-    facet_grid(~ Site, scales = "free", space = "free") + #'free' allows axis b/w sites uneaven
-    geom_bar(data = (Bar_up_down_data %>%
-                       filter(!Experiment %in% c('Filtration'))),
-             color = "grey22",
-             stat="identity",
-             position = "dodge") +
-    labs(x = 'Experiment', y = 'Chlorophyl (ug/L)')
-
-plot(Paired_bar_chl_graph)
-```
-
-```{r Bar_Graphs_up_vs_down_grid.arrange, echo=FALSE, fig.align="default", fig.asp=0.75, fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%", fig.cap="Chlorphyll concentrations measured at upstream and downstream instruments across all sites, filtration trials, and negative controls. \\label{Bar_Graphs_up_vs_down_grid.arrange}"}
-############## Try 2 ####### make separate graphs, combine using grid.arrange()
-
-##### Can't figure out how to properly label x axis. Works with Exp_Date, but can't shorten without messing up data:label pairs. Can't spend more time on this right now. come back if time -AM 2020_3_3
-
-NPD_bar_data <- Bar_up_down_data %>% 
-  filter(Site == "Deanza") %>% 
-  mutate(graph_Label = ifelse(grepl("^Filtration", Exp_Date), str_replace(Exp_Date, "Filtration ", ""),
-                             str_replace(Exp_Date, "^Neg Control .", "")))
-
-NPD_bar_graph <- ggplot(data = NPD_bar_data, aes(x = Exp_Date, y = Chl_ug_L, 
-                                                 fill = Position)) +
-    geom_col(position = position_dodge(width = 0.9, preserve = "single")) +
-    geom_col(data = (NPD_bar_data %>% # add boarder around Neg Control experiments
-                       filter(!Experiment %in% c('Filtration'))),
-             color = "black",
-             position = "dodge") +
-    theme_classic() +
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
-          axis.title.x = element_blank(),
-          legend.position = c(0.9, 0.8),
-          plot.title = element_text(hjust = 0.5)) + # center title
-    labs(y = 'Chlorophyll a (ug/L)', title = "Newport Deanza") +
-  # This labels the x-axis
-    #scale_x_discrete(labels = Exp_Date) +
-    ylim(0, 8)
-
-NPSM_bar_data <- Bar_up_down_data %>% 
-  filter(Site == 'Shellmaker')
-
-NPSM_bar_graph <- ggplot(data = NPSM_bar_data,
-                          aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
-    geom_col(position = position_dodge2(width = 0.9, preserve = "single")) +
-    geom_col(data = (NPSM_bar_data %>% # add boarder around Neg Control experiments
-                       filter(!Experiment %in% c('Filtration'))),
-             color = "black",
-             position = "dodge") +
-    theme_classic() +
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
-          axis.title.y = element_blank(),
-          axis.title.x = element_blank(),
-          plot.title = element_text(hjust = 0.5)) + # center title
-    labs(title = "Newport Shellmaker") +
-    # scale_x_discrete(labels = NPSM_bar_data$Date) +
-    ylim(0, 8) +
-    guides(fill = FALSE) 
-
-MB_bar_data <- Bar_up_down_data %>% 
-  filter(Site == 'Morro Bay')
-
-MB_bar_graph <- ggplot(data = MB_bar_data,
-                          aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
-    geom_col(position = position_dodge2(width = 0.9, preserve = "single")) +
-    geom_col(data = (MB_bar_data %>% # add boarder around Neg Control experiments
-                       filter(!Experiment %in% c('Filtration'))),
-             color = "black",
-             position = "dodge") +
-    theme_classic() +
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
-          axis.title.y = element_blank(),
-          axis.title.x = element_blank(),
-          plot.title = element_text(hjust = 0.5)) + # center title
-    labs(title = "Morro Bay") +
-   # scale_x_discrete(labels = MB_bar_data$Date) +
-    ylim(0, 8) +
-    guides(fill = FALSE)
-
-SR_bar_data <- Bar_up_down_data %>% 
-  filter(Site == 'San Rafael')
-
-SR_bar_graph <- ggplot(data = SR_bar_data,
-                          aes(x = Exp_Date, y = Chl_ug_L, fill = Position)) +
-    geom_col(position = position_dodge2(width = 0.9, preserve = "single")) +
-    geom_col(data = (SR_bar_data %>% # add boarder around Neg Control experiments
-                       filter(!Experiment %in% c('Filtration'))),
-             color = "black",
-             position = "dodge") +
-    theme_classic() +
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
-          axis.title.y = element_blank(),
-          axis.title.x = element_blank(),
-          plot.title = element_text(hjust = 0.5)) + # center title
-    labs(title = "San Rafael") +
-    #scale_x_discrete(labels = SR_bar_data$Date) +
-    ylim(0, 8) +
-    guides(fill = FALSE)
-
-Chl_graphs <- list(NPD_bar_graph, NPSM_bar_graph, SR_bar_graph, MB_bar_graph) 
-all_chl_graphs <- grid.arrange(grobs = Chl_graphs,
-             widths = c(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
-             layout_matrix = rbind(c(NA,1,1,1,1,1,1,1,1,1,1,1,1, NA),
-                                   c(2,2,2,2,2,3,3,3,3,3,4,4,4,4)))
-#plot(all_chl_graphs)
-#ggsave("Insitu_Filter_up_vs_down_all_sites.png", all_chl_graphs)
-```
-
 ```{r LM_PrctChl_pos_add, eval=FALSE, fig.height=5, fig.width=6,  include=FALSE}
 # Multiple Linear Regression - Chl Rmd Filtration Stepwise Selection
 # Positive Percent Chl removed trials only
@@ -2932,7 +2878,7 @@ LM_FR_NPD_Posfilter <- lm(data = Deanza_PosFilter_data, L_hr_m2 ~
 ols_step_both_p(LM_FR_NPD_Posfilter)
 ```
 
-```{r T_test_table, fig.height=5, fig.width=6, include=FALSE}
+```{r T_test_table, eval=FALSE, fig.height=5, fig.width=6, include=FALSE}
 #### T-test is not an appropriate analysis for my data (per Dr. Kevin Nichols CSUF) The groups are not independent, violating the assumptions. 
 T_test_Table <- Master_analysis_table %>%
   mutate(Date = mdy(Date),
