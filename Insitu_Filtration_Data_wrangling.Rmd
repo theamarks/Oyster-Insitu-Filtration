@@ -423,14 +423,14 @@ filtration_summary_table <- fread("output/4_Filtration_Calculations/Filtration_S
 Master_analysis_table <- filtration_summary_table %>% 
   left_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
   # Exclude downstream average WQ values and unneeded single tail t-test results
-  dplyr::select(-c("estimate", "conf.high", "sample_type","Temp_C_Down", "SpCond_mS_cm_Down",
-            "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down")) %>% 
-  # Add in site simple variables for regression
-   mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
-         NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
-         NPSM = ifelse(grepl("Shellmaker", filtration_summary_table$Site), T, F),
-         MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F),
-         Filter_trial = ifelse(grepl("Filtration", filtration_summary_table$Experiment), T, F)) %>% 
+  dplyr::select(-c("Temp_C_Down", "SpCond_mS_cm_Down",
+            "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down"))#  %>% 
+  # Add in site simple variables for regression - removed b/c not using Multiple Linear Regression
+  # mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
+   #      NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
+    #     NPSM = ifelse(grepl("Shellmaker", filtration_summary_table$Site), T, F),
+     #    MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F),
+      #   Filter_trial = ifelse(grepl("Filtration", filtration_summary_table$Experiment), T, F)) %>% 
   left_join(Species_density_summary, by = c("Site")) %>% 
   dplyr::select(-c("Date.y")) %>% 
   rename(Date = Date.x)
