@@ -19,28 +19,29 @@ knitr::opts_knit$set(root.dir = normalizePath('../'), # set working directory to
 ################### Packages ###########################
 library(dplyr)
 library(tidyr)
-library(readr)
-library(magrittr)
-library(data.table)
+library(readr) # reading in files 
+library(magrittr) # pipe function %>%
+library(data.table) # file read function and needed for xtable
 library(lubridate) # dealing with time and dates
-library(ggplot2)
+library(ggplot2) # graphing
 library(ggthemes) # theme_classic() for graphs
-library(stringr)
-library(hms)
-library(viridisLite)
+library(stringr) # dealing with text strings
+library(hms) # dealing with time
+library(viridisLite) # color palette
 library(forcats)
 library(gridExtra)
 library(ggpmisc) # package for adding line equation and R^2 to plots
 library(viridis) # Color palette - Options: magma , inferno, plasma, viridis, cividis
-library(scales)
+library(scales) # add different number scales in graphs
 library(cowplot) # for arranging multiple plots into a single figure
-library(wesanderson)
-library(olsrr) 
+library(wesanderson) # color palette
+library(olsrr) # regression output table
 library(xtable) # creates tables in LaTex
 library(MASS) # collection of datasets and functions
 library(ISLR) # Dataset in Intro to statistical learning
 library(knitr)
-library(tinytex)
+library(tinytex) # LaTeX conversion package
+library(broom) # tidy() function to convert t.test to dataframe
 
 # source functions 
 source("./functions.R")
@@ -435,11 +436,17 @@ colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity
 ## Shellmaker 06-09 Neg Control - floating algae mats caused me to reposition instruments after ~10 mins into Neg Control trial. Looks like sediments never settled afterward. Huge spikes in Chl afterwards that even cutting out is suspect. Avg depth and distance b/w sondes are wrong If I just use the first part of the neg control. Going to change values in Insitu_Filter_Veolcity_All_Data.csv - will reduce clearance rate b/c reduced water volume. 
 
 #Filtration (unadjusted) mud vs oyster
-
 test1 = test[abs(test$Chl.removal) < 50,]
 exp = test1[test1$Experiment=="Filtration",]
 control = test1[test1$Experiment!="Filtration",]
-t.test(exp$Clearance,control$Clearance,alternative="greater")
+t_test <- t.test(exp$Clearance,control$Clearance,alternative="greater") # single sided t-test?
+# extract t.test results from tibble format
+filter_control_ttest <- broom::tidy(t.test(exp$Clearance,control$Clearance,alternative="greater"))
+filter_control_ttest
+# Degrees of freedom two-sample t-test
+t_test_df <- (nrow(exp) - nrow(control)) - 2 
+### t-test results #####
+# Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`t_test_df`) = t-value = `filter_control_ttest$statistic`, p < filter_control_ttest$p.value)
 
 #Descriptive Filtration (as a function of turbitidy, salinity ect ect)
 
