@@ -451,7 +451,7 @@ t_test_df <- (nrow(exp) - nrow(control)) - 2
 ### t-test results - AM #####
 # Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`t_test_df`) = t-value = `filter_control_ttest$statistic`, p < `filter_control_ttest$p.value`).
 
-######## Descriptive Filtration (as a function of turbitidy, salinity ect ect) --> RANDOM FOREST MODEL
+######## Descriptive Filtration (as a function WQ) --> RANDOM FOREST MODEL- control for WQ & Site
 model.rf = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,
                         data=test1, # use data with extreme values removed 
                         ntree=100,
@@ -459,17 +459,19 @@ model.rf = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,
                         control=rpart.control(minsplit=2,cp=.05))
 model.rf
 plot(model.rf)
-y.hat = predict(model.rf,newdata=test1) #predict new clearance values based on original data set values
-res = test1$Clearance - y.hat # residuals?
+y.hat = predict(model.rf,newdata=test1) # model predicted values
+res = test1$Clearance - y.hat # residuals - difference between measured values and model predicted values 
 r.sq = (var(test1$Clearance) - var(res))/var(test1$Clearance)
 r.sq # r squared value for random forest model
 #r.sq  is about 66.3% (yay)
 
 ### Random Forest variable importance
+importance(model.rf)
 model.rf$importance[order(model.rf$importance)] # trying to order variable importance in decending order
-print(importance(model.rf))
 
-y.adj = res + mean(test1$Clearance)
+
+###### Adjust values based on Random Forest model - compare Mud flat to Oyster habitat. 
+y.adj = res + mean(test1$Clearance) # I don't understand adding residuals and mean(Clearance) - AM 
 y.adj.experiment = y.adj[test1$Experiment=="Filtration"]
 y.adj.control = y.adj[test1$Experiment!="Filtration"]
 t.test(y.adj.experiment,y.adj.control,alternative="greater")
@@ -478,6 +480,33 @@ t.test(y.adj.experiment,y.adj.control,alternative="greater")
 #model.tree = rpart(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,method="anova",control=rpart.control(minsplit=2,cp=0.05),data=test1)
 #plot(model.tree)
 #text(model.tree,cex=.65)
+
+############# WQ values effect on Filtration only #############
+
+test2 <- test1[test1$Experiment=="Filtration",] # Filtraton trials only
+model.rf.filter = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,
+                        data=test2, # use data with extreme values removed 
+                        ntree=100,
+                        mtry=3,
+                        control=rpart.control(minsplit=2,cp=.05))
+model.rf.filter
+plot(model.rf.filter)
+y.hat.filter = predict(model.rf.filter,newdata=test2) # model predicted values
+res.filter = test2$Clearance - y.hat.filter # residuals - difference between measured values and model predicted values 
+r.sq.filter = (var(test2$Clearance) - var(res))/var(test2$Clearance)
+r.sq.filter # r squared value for random forest model
+
+### Random Forest variable importance
+Var_import <- importance(model.rf.filter)
+Var_import <- Var_import[order(Var_import[,1], decreasing=TRUE),] # sort matrix highest to lowest - output names numeric
+Var_import_df <- data.frame(as.list(Var_import)) # convert named numeric to data.frame
+Var_import_df %<>% 
+  pivot_longer(cols = c(Turbidity, Temp, TPM, Salinity, OC, Site), names_to = "Variable", values_to = "Importance")
+Var_import_df # dataframe with sorted importance values - highest to lowest
+
+model.rf.filter$importance[order(model.rf.filter$importance)] # trying to order variable importance in decending order
+
+
 
 ###################### Is this just exploritory? ################
 m1 = lm(Chl.up~Chl.dn,data=test)
