@@ -345,11 +345,7 @@ sum_table2 <- xtable(df, display = c("s","f","f","f"))
 sum_table2
 ```
 
-```{r Dr Nichols code, include=FALSE}
-#In our data we are missing 4 out of 400ish values.  
-#Because we have limited observations but a high number of variables simply
-#removing incomplete observations is too costly
-
+```{r Chl_Corr_Filter_diff_graph}
 ##### Althea's Chl correction x Filtration diff Graph ###########
 ## Correction data & OG Chl values
 #Sbs_correction_data 
@@ -402,6 +398,13 @@ Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_c
 Corr_Chl_diff_graph
      
 Corr_chl_diff_data[c(9,21,23),] # Look at problem data points
+```
+
+```{r Random_Forest_DrNichols, include=FALSE}
+##################### Estimate missing values (Imputation) ##########################
+#In our data we are missing 4 out of 400ish values.  (cells)
+#Because we have limited observations but a high number of variables simply
+#removing incomplete observations is too costly
 
 #For imputation we are doing a non parametric random forest imputation.  See missForest documentation for details/references.  
 #Stekhoven, D.J. and Buehlmann, P. (2012), "missForest - nonparametric missing value imputation for mixed-type data', Bioinformatics, 28(1) 2012, 112-118, doi: 10.1093/bioinformatics/btr597
@@ -416,19 +419,19 @@ library(rpart)
 library(randomForest)
 library(adabag)
 
-temp1 = Final_table[,c(1,2,3)]
-temp2 = missForest(Final_table[,-c(1,2,3)])$ximp
-test = cbind(temp1,temp2)
+# Imputation for 4 missing values (TPM & OC)
+temp1 = Final_table[,c(1,2,3)] # temporarily remove data labels for imputation
+temp2 = missForest(Final_table[,-c(1,2,3)])$ximp # This is the imputation step? -AM
+test = cbind(temp1,temp2) # bing back data labels 
 
-#Filtration (adjusted) mud vs oyster
-
+############### Filtration (adjusted) mud vs oyster #########################
 
 colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity",
                             "TPM", "OC", "Chl.up", "Chl.dn", 
                            "Depth","Distance", "Water veolcity", "Chl.removal", 
                            "Clearance")
 
-#Descriptive Filtration (as a function of turbitidty, salinity ect, oyster only)
+# Descriptive Filtration (as a function of turbitidty, salinity ect, oyster only) 
 
 #Shellmaker 06-09 Neg Control, Shellmaker 05-22 Filtration and Deanze 4-17 Filtration just have astronomical outlier values for clearance.
 #Lets ignore them for now as they complete dominate any model useful for comparison.
@@ -436,44 +439,47 @@ colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity
 ## Shellmaker 06-09 Neg Control - floating algae mats caused me to reposition instruments after ~10 mins into Neg Control trial. Looks like sediments never settled afterward. Huge spikes in Chl afterwards that even cutting out is suspect. Avg depth and distance b/w sondes are wrong If I just use the first part of the neg control. Going to change values in Insitu_Filter_Veolcity_All_Data.csv - will reduce clearance rate b/c reduced water volume. 
 
 #Filtration (unadjusted) mud vs oyster
-test1 = test[abs(test$Chl.removal) < 50,]
-exp = test1[test1$Experiment=="Filtration",]
-control = test1[test1$Experiment!="Filtration",]
+test1 = test[abs(test$Chl.removal) < 50,] # remove extreme values (NPSM 2020_6_9, NPSM 2020_5_22, NPD 2020_4_17)
+exp = test1[test1$Experiment=="Filtration",] # separate Filtraiton trials
+control = test1[test1$Experiment!="Filtration",] # separate negative control trials
 t_test <- t.test(exp$Clearance,control$Clearance,alternative="greater") # single sided t-test?
 # extract t.test results from tibble format
 filter_control_ttest <- broom::tidy(t.test(exp$Clearance,control$Clearance,alternative="greater"))
 filter_control_ttest
 # Degrees of freedom two-sample t-test
 t_test_df <- (nrow(exp) - nrow(control)) - 2 
-### t-test results #####
+### t-test results - AM #####
 # Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`t_test_df`) = t-value = `filter_control_ttest$statistic`, p < `filter_control_ttest$p.value`).
 
-#Descriptive Filtration (as a function of turbitidy, salinity ect ect)
-
-
+######## Descriptive Filtration (as a function of turbitidy, salinity ect ect) --> RANDOM FOREST MODEL
 model.rf = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,
-                        data=test1,
+                        data=test1, # use data with extreme values removed 
                         ntree=100,
                         mtry=3,
                         control=rpart.control(minsplit=2,cp=.05))
-y.hat = predict(model.rf,newdata=test1)
-res = test1$Clearance - y.hat
+model.rf
+plot(model.rf)
+y.hat = predict(model.rf,newdata=test1) #predict new clearance values based on original data set values
+res = test1$Clearance - y.hat # residuals?
 r.sq = (var(test1$Clearance) - var(res))/var(test1$Clearance)
-r.sq
-model.rf$importance[order(model.rf$importance)]
+r.sq # r squared value for random forest model
+#r.sq  is about 66.3% (yay)
+
+### Random Forest variable importance
+model.rf$importance[order(model.rf$importance)] # trying to order variable importance in decending order
+print(importance(model.rf))
 
 y.adj = res + mean(test1$Clearance)
 y.adj.experiment = y.adj[test1$Experiment=="Filtration"]
 y.adj.control = y.adj[test1$Experiment!="Filtration"]
 t.test(y.adj.experiment,y.adj.control,alternative="greater")
 
-
-#r.sq  is about 66.3% (yay)
+### Example tree ######
 #model.tree = rpart(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,method="anova",control=rpart.control(minsplit=2,cp=0.05),data=test1)
 #plot(model.tree)
 #text(model.tree,cex=.65)
 
-
+###################### Is this just exploritory? ################
 m1 = lm(Chl.up~Chl.dn,data=test)
 summary(m1)
 plot(test$Chl.up,test$Chl.dn)
@@ -606,7 +612,7 @@ plot(Chl_RmdPos_TPM_graph)
 #grid.arrange(FRPos_TPM_graph, Chl_RmdPos_TPM_graph, nrow = 1)
 ```
 
-```{r TPM_OC_Sites_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. \\label{TPM_OC_Sites_graphs}"}
+```{r TPM_OC_Sites_graphs, echo=FALSE, include=F, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. \\label{TPM_OC_Sites_graphs}"}
 
 TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")),
                         aes(x = Avg_TPM_mg_L, y = Avg_OC_Ratio)) +
@@ -676,6 +682,10 @@ TPM_OC_bysite_graph <- grid.arrange(TPM_OC_SR, TPM_OC_MB, TPM_OC_NPSM, TPM_OC_De
 # using plot() renders plot twice. Grid.arrange must render on its own
 # plot(TPM_OC_bysite_graph)
 ```
+
+\begin{figure}[h]
+  \label{fig:TPM_OC_Sites_graphs}
+\end{figure}
 
 ### Filter-feeding community
 
