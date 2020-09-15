@@ -1,11 +1,11 @@
 ---
+header-includes: \usepackage{setspace}\doublespacing\usepackage{rotating}
 output: 
   pdf_document:
     fig_caption: yes
     extra_dependencies: ["flafter"]
 indent: true
 ---
-possibly use template: quarterly-report.tex in YAML header. Use Fullerton_thesis.tex as template?
 ```{r setup, include = F}
 library(knitr)
 # set default code chunk settings to save figures in Figures folder, show no output, and cache 
@@ -261,7 +261,7 @@ FR_box <- ggplot((Filtration_only_data), aes(Site, L_hr_m2)) +
 plot(FR_box) 
 ```
 
-```{r Final_Summary_table, include=FALSE, results='asis'}
+```{r Final_Summary_table, echo=FALSE, results='asis'}
 
 #fig.cap="A summary table reporting every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively. \\label{Final_Summary_table}",
 
@@ -295,13 +295,13 @@ colnames(Final_table) <- c( "Site", "Date", "Experiment", "Temp ($\\textdegree$C
                            "Depth (m)","Distance (m)", "Water veolcity (m/s)", 
                            "% Chl $\\alpha$ removal", "Clearance rate (L/hr/$m^2$)")
 # create xtable
-#sumtable_latex <- xtable(Final_table, 
- #                        caption = "Summary Table of all field days",
-  #                       label = "tb:summary",
-   #                      type = "latex")
+sumtable_latex <- xtable(Final_table, 
+                         caption = "Every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively.",
+                         label = "tb:summary",
+                         type = "latex")
                         #display= c("s","s","s","s","f","f","f","f","f","f","f","f","f","f","f","f"))
-
-#print(sumtable_latex, booktabs=TRUE, caption.placement="top")
+toLatex(sumtable_latex,booktabs=TRUE, caption.placement="top", include.rownames = FALSE,floating.environment = "sidewaystable")
+#print(sumtable_latex, booktabs=TRUE, caption.placement="top", include.rownames = FALSE,floating.environment = "sidewaystable")
 
 #print(sumtable_latex, include.rownames = FALSE)
 #type = "latex",
@@ -345,7 +345,7 @@ sum_table2 <- xtable(df, display = c("s","f","f","f"))
 sum_table2
 ```
 
-```{r Chl_Corr_Filter_diff_graph}
+```{r Chl_Corr_Filter_diff_graph, include=FALSE}
 ##### Althea's Chl correction x Filtration diff Graph ###########
 ## Correction data & OG Chl values
 #Sbs_correction_data 
@@ -578,20 +578,21 @@ p.val = 1-pt(t,df)
 p.val
 ```
 
-Missing values / imputation
-Remove 3 extreme onservations
+* Missing values / imputation
+* Remove 3 extreme onservations
+
 ### Oyster vs mudflat t-test
-*unadjusted control vs filtration t-test
-*Random Forest Model
-+https://stackoverflow.com/questions/14996619/random-forest-output-interpretation
-*Variable Importance - detrimental impact to model if variable removed
-*adjusted control vs filtration t-test
-*mean adjusted filter is practically very different than mean adjusted control HCR
-*less emphasis on p-values because of small sample size
+* unadjusted control vs filtration t-test
+* Random Forest Model
++ https://stackoverflow.com/questions/14996619/random-forest-output-interpretation
+* Variable Importance - detrimental impact to model if variable removed
+* adjusted control vs filtration t-test
+* mean adjusted filter is practically very different than mean adjusted control HCR
+* less emphasis on p-values because of small sample size
 
 ### Variables affecting HCR
-Random Forest Model
-Variable Importance
+* Random Forest Model
+* Variable Importance
 
 4 data values (2 TPM and 2 OC) values are missing from our dataset, representing `r round((4/336)*100, digits = 0)`% of the dataset. 
 Removing these incomplete ovservations is costly for our data set where we have a limited number of observations with a larg number of variables. 
@@ -601,9 +602,9 @@ Three extreme observations were removed from the dataset based on a correction-t
 ### Oyster Habitat vs. Control 
 
 The unadjusted filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
-We used a fitted a Random Forest model to predict HCR from temperature, salinity, turbidity, TPM, OC, and site. Temperature had the most relative importance to the model (`r round(Temp_rel_import, 1)`), followed by OC (`r round(OC_rel_import, 1)`), turbidity ((`r round(turb_rel_import, 1)`)), TPM (`r round(TPM_rel_import, 1)`), salinity (`r round(Sal_rel_import, 1)`), and site (`r round(Site_rel_import, 1)`) respectively.
+We used a fitted a Random Forest model to predict HCR from temperature, salinity, turbidity, TPM, OC, and site. Temperature had the most relative importance to the model (`r round(Temp_rel_import, 1)`%), followed by OC (`r round(OC_rel_import, 1)`%), turbidity (`r round(Turb_rel_import, 1)`%), TPM (`r round(TPM_rel_import, 1)`%), salinity (`r round(Sal_rel_import, 1)`%), and site (`r round(Site_rel_import, 1)`%) respectively.
 
-Var_import_df2
+
 
 
 ```{r FR_ChlRmd_Site_posFilter_boxplot, echo=FALSE, include=F}
