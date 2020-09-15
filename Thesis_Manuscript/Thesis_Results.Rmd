@@ -570,6 +570,21 @@ p.val = 1-pt(t,df)
 p.val
 ```
 
+Missing values / imputation
+Remove 3 extreme onservations
+### Oyster vs mudflat t-test
+unadjusted control vs filtration t-test
+Random Forest Model
+Variable Importance - detrimental impact to model if variable removed
+adjusted control vs filtration t-test
+mean adjusted filter is practically very different than mean adjusted control HCR
+less emphasis on p-values because of small sample size
+
+### Variables affecting HCR
+Random Forest Model
+Variable Importance
+
+
 Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
 
 ```{r FR_ChlRmd_Site_posFilter_boxplot, echo=FALSE, include=F}
