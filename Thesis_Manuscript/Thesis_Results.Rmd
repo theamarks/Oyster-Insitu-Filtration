@@ -424,14 +424,15 @@ temp1 = Final_table[,c(1,2,3)] # temporarily remove data labels for imputation
 temp2 = missForest(Final_table[,-c(1,2,3)])$ximp # Imputation of missing values
 test = cbind(temp1,temp2) # bing back data labels 
 
+dim(Final_table[,-c(1,2,3)]) # dimensions of data with labels removed (data only) 28 x 12 = 336 data cells
+num_NA_values <- sum(is.na(Final_table)) # 4 missing values
+
 ############### Filtration (adjusted) mud vs oyster #########################
 
 colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity",
                             "TPM", "OC", "Chl.up", "Chl.dn", 
                            "Depth","Distance", "Water veolcity", "Chl.removal", 
                            "Clearance")
-
-# Descriptive Filtration (as a function of turbitidty, salinity ect, oyster only) 
 
 #Shellmaker 06-09 Neg Control, Shellmaker 05-22 Filtration and Deanze 4-17 Filtration just have astronomical outlier values for clearance.
 #Lets ignore them for now as they complete dominate any model useful for comparison.
@@ -474,7 +475,14 @@ Var_import_df2 %<>%
   pivot_longer(cols = c(Turbidity, Temp, TPM, Salinity, OC, Site), names_to = "Variable", values_to = "Importance") %>% 
   arrange(desc(Importance))
 Var_import_df2 # dataframe with sorted importance values - highest to lowest
-
+## Calculate the percent relative importance for each variable
+sum_import2 <- sum(Var_import_df2$Importance)
+Temp_rel_import <- (Var_import_df2[[1,2]] / sum_import2) * 100
+OC_rel_import <- (Var_import_df2[[2,2]] / sum_import2) * 100
+Turb_rel_import <- (Var_import_df2[[3,2]] / sum_import2) *100
+TPM_rel_import <- (Var_import_df2[[4,2]] / sum_import2) * 100
+Sal_rel_import <- (Var_import_df2[[5,2]] / sum_import2) *100
+Site_rel_import <- (Var_import_df2[[6,2]] / sum_import2) *100
 ###### Adjust values based on Random Forest model - compare Mud flat to Oyster habitat. 
 
 y.adj = res + mean(test1$Clearance) # take residuals (diff between data and model - what the model doesn't account for (oysters)) and add to the mean response (same for data and model?). This gives me response with the effects of all variables accounted for. 
@@ -573,19 +581,30 @@ p.val
 Missing values / imputation
 Remove 3 extreme onservations
 ### Oyster vs mudflat t-test
-unadjusted control vs filtration t-test
-Random Forest Model
-Variable Importance - detrimental impact to model if variable removed
-adjusted control vs filtration t-test
-mean adjusted filter is practically very different than mean adjusted control HCR
-less emphasis on p-values because of small sample size
+*unadjusted control vs filtration t-test
+*Random Forest Model
++https://stackoverflow.com/questions/14996619/random-forest-output-interpretation
+*Variable Importance - detrimental impact to model if variable removed
+*adjusted control vs filtration t-test
+*mean adjusted filter is practically very different than mean adjusted control HCR
+*less emphasis on p-values because of small sample size
 
 ### Variables affecting HCR
 Random Forest Model
 Variable Importance
 
+4 data values (2 TPM and 2 OC) values are missing from our dataset, representing `r round((4/336)*100, digits = 0)`% of the dataset. 
+Removing these incomplete ovservations is costly for our data set where we have a limited number of observations with a larg number of variables. 
+Instead we used a non parametric random forest imputation to estimate the missing values (MissForest Package;[@Stekhoven2012]).
+Three extreme observations were removed from the dataset based on a correction-to-signal comparison (Shellmaker 2020/6/9, Shellmaker 2020/5/22, Deanza 2020/4/17).
 
-Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
+### Oyster Habitat vs. Control 
+
+The unadjusted filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
+We used a fitted a Random Forest model to predict HCR from temperature, salinity, turbidity, TPM, OC, and site. Temperature had the most relative importance to the model (`r round(Temp_rel_import, 1)`), followed by OC (`r round(OC_rel_import, 1)`), turbidity ((`r round(turb_rel_import, 1)`)), TPM (`r round(TPM_rel_import, 1)`), salinity (`r round(Sal_rel_import, 1)`), and site (`r round(Site_rel_import, 1)`) respectively.
+
+Var_import_df2
+
 
 ```{r FR_ChlRmd_Site_posFilter_boxplot, echo=FALSE, include=F}
 # Filtration_pos_data defined in setup
