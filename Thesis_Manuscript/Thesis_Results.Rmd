@@ -421,7 +421,7 @@ library(adabag)
 
 # Imputation for 4 missing values (TPM & OC)
 temp1 = Final_table[,c(1,2,3)] # temporarily remove data labels for imputation
-temp2 = missForest(Final_table[,-c(1,2,3)])$ximp # This is the imputation step? -AM
+temp2 = missForest(Final_table[,-c(1,2,3)])$ximp # Imputation of missing values
 test = cbind(temp1,temp2) # bing back data labels 
 
 ############### Filtration (adjusted) mud vs oyster #########################
@@ -466,15 +466,23 @@ r.sq # r squared value for random forest model
 #r.sq  is about 66.3% (yay)
 
 ### Random Forest variable importance
-importance(model.rf)
-model.rf$importance[order(model.rf$importance)] # trying to order variable importance in decending order
-
+Var_import2 <- importance(model.rf)
+Var_import2
+#model.rf$importance[order(model.rf$importance)] # trying to order variable importance in decending order
+Var_import_df2 <- data.frame(as.list(Var_import2)) # convert named numeric to data.frame
+Var_import_df2 %<>% 
+  pivot_longer(cols = c(Turbidity, Temp, TPM, Salinity, OC, Site), names_to = "Variable", values_to = "Importance") %>% 
+  arrange(desc(Importance))
+Var_import_df2 # dataframe with sorted importance values - highest to lowest
 
 ###### Adjust values based on Random Forest model - compare Mud flat to Oyster habitat. 
-y.adj = res + mean(test1$Clearance) # I don't understand adding residuals and mean(Clearance) - AM 
+
+y.adj = res + mean(test1$Clearance) # take residuals (diff between data and model - what the model doesn't account for (oysters)) and add to the mean response (same for data and model?). This gives me response with the effects of all variables accounted for. 
 y.adj.experiment = y.adj[test1$Experiment=="Filtration"]
 y.adj.control = y.adj[test1$Experiment!="Filtration"]
 t.test(y.adj.experiment,y.adj.control,alternative="greater")
+#t_test_adj <- broom::tidy(t.test(y.adj.experiment,y.adj.control,alternative="greater"))
+#t_test_adj
 
 ### Example tree ######
 #model.tree = rpart(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,method="anova",control=rpart.control(minsplit=2,cp=0.05),data=test1)
@@ -498,13 +506,13 @@ r.sq.filter # r squared value for random forest model
 
 ### Random Forest variable importance
 Var_import <- importance(model.rf.filter)
-Var_import <- Var_import[order(Var_import[,1], decreasing=TRUE),] # sort matrix highest to lowest - output names numeric
+#Var_import <- Var_import[order(Var_import[,1], decreasing=TRUE),] # sort matrix highest to lowest - output names numeric
 Var_import_df <- data.frame(as.list(Var_import)) # convert named numeric to data.frame
 Var_import_df %<>% 
-  pivot_longer(cols = c(Turbidity, Temp, TPM, Salinity, OC, Site), names_to = "Variable", values_to = "Importance")
+  pivot_longer(cols = c(Turbidity, Temp, TPM, Salinity, OC, Site), names_to = "Variable", values_to = "Importance") %>% 
+  arrange(desc(Importance))
 Var_import_df # dataframe with sorted importance values - highest to lowest
 
-model.rf.filter$importance[order(model.rf.filter$importance)] # trying to order variable importance in decending order
 
 
 
