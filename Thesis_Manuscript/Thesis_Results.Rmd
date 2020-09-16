@@ -1022,9 +1022,13 @@ Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
 ```{r Gray_OlyDTW_SL}
 
 Gray_Oly_Data <- fread(file.path('./Data/bivalve_density_community', "MattGray_2011_2013_Olurida_allometric_data.csv"))
-colnames(Gray_Oly_Data) <- c("ID", "Date", "Species", "shell_length_mm", "shell_tissue_g", "vial_weight", "Vial_wet_oyster", "Tissue_weight_g", "vial_dry_oyster", "DTW_g")
+colnames(Gray_Oly_Data) <- c("ID", "Date", "species", "length_mm", "shell_tissue_g", "vial_weight", "Vial_wet_oyster", "Tissue_weight_g", "vial_dry_oyster", "tissue_dry_weight_g")
 Gray_Oly_Data %<>% 
-  mutate(Species = ifelse(Species %in% "O. lurida", "Ostrea_lurida", "Pattern Not FOund"))
+  mutate(species = ifelse(species %in% "O. lurida", "Ostrea lurida", "Pattern Not FOund"),
+         Site = "Yaquina")
+
+Gray_Oly_SL_DTW <- Gray_Oly_Data %>% 
+  dplyr::select(Date, Site, species, length_mm, tissue_dry_weight_g)
 
 ```
 
@@ -1033,6 +1037,12 @@ Gray_Oly_Data %<>%
 NPD_oly_outRmd <- NPD_oly %>%
   mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
   filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
+
+NPD_Oly_SL_DTW <- NPD_oly_outRmd %>% 
+  mutate(Date = excavation_date) %>% 
+  dplyr::select(Date, Site, species, length_mm, tissue_dry_weight_g)
+
+Oly_combo_DTW_SL <- full_join(NPD_Oly_SL_DTW,Gray_Oly_SL_DTW)
 
 # Graph with outliers removed
 Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
