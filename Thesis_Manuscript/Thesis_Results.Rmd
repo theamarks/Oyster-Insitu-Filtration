@@ -285,7 +285,7 @@ FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
 #plot(FR_pos_box)
 ```
 
-```{r Final_Summary_table, echo=FALSE, results='asis'}
+```{r Final_Summary_table, include=FALSE, results='asis'}
 
 #fig.cap="A summary table reporting every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively. \\label{Final_Summary_table}",
 
@@ -612,9 +612,92 @@ Three extreme observations were removed from the dataset based on a correction-t
 The unadjusted filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
 We used a fitted a Random Forest model to predict HCR from temperature, salinity, turbidity, TPM, OC, and site. Temperature had the most relative importance to the model (`r round(Temp_rel_import, 1)`%), followed by OC (`r round(OC_rel_import, 1)`%), turbidity (`r round(Turb_rel_import, 1)`%), TPM (`r round(TPM_rel_import, 1)`%), salinity (`r round(Sal_rel_import, 1)`%), and site (`r round(Site_rel_import, 1)`%) respectively.
 
+```{r TPM_OC_models, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8,warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are missing TPM data because of filter processing errors. \\label{TPM_OC_models}"}
+############ Linear Model
+OC_TPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM_mg_L)
+#summary(OC_TPM_LM)
+#par(mfrow=c(2,2))
+#plot(OC_TPM_LM)
 
-```{r FR_ChlRmd_TPM_point, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.show = "hold", fig.align="center", fig.asp=0.618, fig.width=6, out.width="70%", warning = F, fig.cap="The habitat clearance rates and filtration trials in response to seston total particulate matter (TPM). Extreme values not included in the analysis are not shown. \\label{FR_ChlRmd_TPM_point}"}
+OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ratio )) +
+  geom_smooth(method = lm, se = F, color = 'grey50') +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  ylim(0,0.5) +
+  labs(x = TPM_Label,
+       y = "Organic Content (ratio)") +
+  guides(color = FALSE) +
+  annotate("text", x = 60, y = 0.3, label = "y ~ x") +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "top")
 
+############ Y ~ log(x)
+OC_logTPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM_mg_L))
+#summary(OC_logTPM_LM)
+#par(mfrow=c(2,2))
+#plot(OC_logTPM_LM)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(OC_logTPM_all_LM)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(OC_logTPM_all_LM))
+
+# create range of values to predict with model
+TPM_newrange <- data.frame(Avg_TPM_mg_L = seq(from = 0, to = 80, by = 0.001))
+# predict alone gives log(y) values, exponentiate y to get regular values with exp()
+logTPM_Pred <- data.frame(pred_OC = predict(OC_logTPM_LM, newdata = TPM_newrange))
+pred_logTPM_df <- data.frame(TPM_newrange, logTPM_Pred)
+
+# Testing function to extract lm model
+# equatiomatic::extract_eq(FR_logTPM_lm, use_coefs = T)
+
+OC_logTPM_graph <- ggplot((Avg_TPM_summary_table), aes(Avg_TPM_mg_L, Avg_OC_Ratio)) +
+  geom_line(data = pred_logTPM_df, aes(x = Avg_TPM_mg_L, y = pred_OC)) +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  annotate("text", x = 60, y = 0.3, label = "y ~ log(x)") +
+  guides(color = FALSE) +
+  ylim(0,0.5) +
+  labs(x = TPM_Label,
+       y = "Organic Content (ratio)") +
+  guides(fill = FALSE)
+
+########## Log-log model 
+logOC_logTPM_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM_mg_L))
+#summary(logOC_logTPM_LM)
+
+loglogTPM_Pred <- data.frame(pred_OC = exp(predict(logOC_logTPM_LM, newdata = TPM_newrange)))
+pred_loglogTPM_df <- data.frame(TPM_newrange, loglogTPM_Pred)
+
+logOC_logTPM_graph <- ggplot((Avg_TPM_summary_table), aes(Avg_TPM_mg_L, Avg_OC_Ratio)) +
+  geom_line(data = pred_loglogTPM_df, aes(x = Avg_TPM_mg_L, y = pred_OC)) +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  guides(color = FALSE) +
+  ylim(0,0.5) +
+  annotate("text", x = 60, y = 0.3, label = "log(y) ~ log(x)") +
+  labs(x = TPM_Label,
+       y = "Organic Content (ratio)") +
+  guides(fill = FALSE)
+
+grid.arrange(OC_TPM_graph, OC_logTPM_graph, logOC_logTPM_graph, nrow = 2)
+
+# compare models
+#summary(OC_TPM_LM) # R2: 0.3309
+#summary(OC_logTPM_LM) # R2: 0.2701
+#summary(logOC_logTPM_LM) # R2: 0.3594
+```
+
+```{r FR_TPM_point, echo=FALSE, include=F, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.show = "hold", fig.align="center", fig.asp=0.618, fig.width=6, out.width="70%", warning = F, fig.cap="The habitat clearance rates and filtration trials in response to seston total particulate matter (TPM). Extreme values not included in the analysis are not shown. \\label{FR_ChlRmd_TPM_point}"}
+### Doesn't make sense to include - doesn't align with Random Forest justificaiton - TPM x OC more interesting
 ############ All Filtration trials w/ outliers removed ##################
 
 # Need to add relationship to graph
@@ -691,7 +774,11 @@ Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM_mg_L, pcnt_Chl
 #grid.arrange(FRPos_TPM_graph, Chl_RmdPos_TPM_graph, nrow = 1)
 ```
 
-```{r FR_TPM_models}
+```{r FR_TPM_models, eval=FALSE, include=FALSE}
+
+######## Don't include - Doesn't make sense to include this relationship with HCR with Random Forest analysis justification
+##### TPM x OC makes more sense
+
 FR_TPM_LM <- lm(data = Filter_only_outRmd_data, L_hr_m2 ~ Avg_TPM_mg_L)
 # Extract LaTeX formula
 equatiomatic::extract_eq(FR_TPM_LM, use_coefs = T)
@@ -878,10 +965,6 @@ TPM_OC_bysite_graph <- grid.arrange(TPM_OC_SR, TPM_OC_MB, TPM_OC_NPSM, TPM_OC_De
 # using plot() renders plot twice. Grid.arrange must render on its own
 # plot(TPM_OC_bysite_graph)
 ```
-
-\begin{figure}[h]
-  \label{fig:TPM_OC_Sites_graphs}
-\end{figure}
 
 ### Filter-feeding community
 
@@ -1258,8 +1341,8 @@ Oly_TWW2_DTW_LM <- lm(data = NPD_oly_TWW,
 ols_regress(Oly_TWW2_DTW_LM)
 ```
 
-```{r NPD_Bivalve_SH_DTW_outrmd, echo=FALSE, include = F, fig.align="center", fig.asp=0.618, fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay \\label{NPD_Bivalve_SH_DTW_outrmd}", fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%"}
-###### Not included ######### 
+```{r NPD_Bivalve_SH_DTW_outrmd, fig.align="center", fig.asp=0.618, fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay \\label{NPD_Bivalve_SH_DTW_outrmd}", fig.keep='all', fig.width=8.6, dev='pdf', include=FALSE, out.width="100%"}
+###### Not included - Need code for other graphs ######### 
 
 # Remove outlier and negative DTW value
 NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
@@ -1278,10 +1361,10 @@ NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>%
   theme(strip.text = element_text(face = "italic"))
 
 # NPD_bi_Biomass_graphs <- grid.arrange(NPD_bivalve_biomass_graph, NPD_bivalve_outrmd_graph, nrow = 1)
-plot(NPD_bivalve_outrmd_graph)
+#plot(NPD_bivalve_outrmd_graph)
 ```
 
-```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The bivlaves community density for each study site. San Rafel data was collected November 2017 by the Zabin lab, Morro Bay was estimated by Morro Bay Oyster Company, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab.  \\label{Bivalve_Den_Biomass}"}
+```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The bivlaves community density and composition for each study site. San Rafael data was collected November 2017 by the Zabin lab, Morro Bay was estimated by Morro Bay Oyster Company, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab.  \\label{Bivalve_Den_Biomass}"}
 ################### Bivalve Density by Site #########################
 # read in bivalve density data from cleaned data file
 Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
@@ -2039,30 +2122,6 @@ logChlRmdPos_logOC_NPD_lm <- lm(data = Deanza_PosFilter_data, log(pcnt_Chl_rmvd)
 ols_regress(logChlRmdPos_logOC_NPD_lm)
 ```
 
-```{r TPM_OC_LM, eval=FALSE,  include=FALSE}
-OC_TPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM_mg_L)
-ols_regress(OC_TPM_all_LM)
-```
-
-```{r OC_logTPM_all_LM, eval=FALSE,  include=FALSE}
-OC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM_mg_L))
-ols_regress(OC_logTPM_all_LM)
-```
-
-```{r OC_logTPM_all_LM_diag, eval=FALSE, fig.height=6, fig.width=8,  include=FALSE}
-par(mfrow=c(2,2))
-plot(OC_logTPM_all_LM)
-# Leverage Statistics - plots index of parameter elements against their leverage on the model
-# plot(hatvalues(OC_logTPM_all_LM)) 
-# identifies the index of the largest element of a vector
-# which.max(hatvalues(OC_logTPM_all_LM))
-```
-
-```{r logOC_logTPM_all_LM, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-logOC_logTPM_all_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM_mg_L))
-ols_regress(logOC_logTPM_all_LM)
-```
-
 
 ```{r SR_TPM_OC_LM, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
 TPM_SR <- Avg_TPM_summary_table %>% filter(Site == "San Rafael")
@@ -2808,7 +2867,7 @@ NPD_ChlRmdPos_Turb_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Turbid
 ols_regress(NPD_ChlRmdPos_Turb_lm)
 ```
 
-```{r NPD_Bivalve_SH_DTW, echo=FALSE, fig.align="center", fig.asp=0.618, fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%", fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay \\label{NPD_Bivalve_SH_DTW}"}
+```{r NPD_Bivalve_SH_DTW, echo=FALSE}
 ## Graph Newport Deanza biomass by shell length
 NPD_bivalve_biomass_graph <-  NPD_bivalve_data_clean %>% 
   ggplot(aes(x = length_mm, y = tissue_dry_weight_g, color = species)) +
