@@ -305,15 +305,15 @@ colnames(Final_table) <- paste("\\multicolumn{1}{c|}{", colnames(Final_table), "
 
 # create xtable
 sumtable_latex <- xtable(Final_table, 
-                         caption = "Every filtration and negative control trial across four California sites. Water quality values are upstream instrument averages, with the exception of Chlorophyll $\\alpha$ (reported from both instruments). Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively.",
+                         caption = "Every filtration and negative control trial across four California sites. Water quality values are upstream instrument averages, with the exception of Chlorophyll $\\alpha$ (reported from both instruments). Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples.",
                          label = "tb:summary",
                          type = "latex",
-                         align = c("l", "p{0.5in\\textwidth}", rep('l',14)))
+                         align = c("p{0.5\\textwidth}", rep('l',15))) # 0.5 seems to be relative number, change to much lower
         
 print(sumtable_latex, 
       booktabs=TRUE, 
       caption.placement="top", 
-     # sanitize.colnames.function = identity, 
+      sanitize.colnames.function = identity, 
       floating.environment = "sidewaystable")
      # sanitize.colnames.function=function(x){x}) # <-- throwing \noalign errors & not knitting 
 
