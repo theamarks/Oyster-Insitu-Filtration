@@ -313,7 +313,7 @@ sumtable_latex <- xtable(Final_table,
 print(sumtable_latex, 
       booktabs=TRUE, 
       caption.placement="top", 
-      sanitize.colnames.function = identity, 
+      sanitize.colnames.function = identity, # still causing errors
       floating.environment = "sidewaystable")
      # sanitize.colnames.function=function(x){x}) # <-- throwing \noalign errors & not knitting 
 
