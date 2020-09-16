@@ -283,8 +283,6 @@ FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
        y = Hab_FR_Label)
 
 #plot(FR_pos_box)
-
-
 ```
 
 ```{r Final_Summary_table, echo=FALSE, results='asis'}
@@ -638,8 +636,7 @@ FR_TPM_graph <- ggplot(data = Filter_only_outRmd_data, aes(Avg_TPM_mg_L, L_hr_m2
 
 plot(FR_TPM_graph)
 
-
-########### Positive Filtration trials only ########################
+########### Not Used - Positive Filtration trials only ########################
 FRPos_TPM_graph <- ggplot(data = Filtration_pos_data, aes(Avg_TPM_mg_L, L_hr_m2 )) +
   #geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -658,7 +655,7 @@ FRPos_TPM_graph <- ggplot(data = Filtration_pos_data, aes(Avg_TPM_mg_L, L_hr_m2 
 
 #plot(FRPos_TPM_graph)
 
-###################### Chl Removed All Filtration Trials - outliers removed ########################
+############### Not USed- Chl Removed All Filtration Trials - outliers removed ########################
 Chl_Rmd_TPM_graph <- ggplot(Filter_only_outRmd_data, aes(Avg_TPM_mg_L, pcnt_Chl_rmvd)) +
   #geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -675,7 +672,7 @@ Chl_Rmd_TPM_graph <- ggplot(Filter_only_outRmd_data, aes(Avg_TPM_mg_L, pcnt_Chl_
 ### Not included Chl Removed graph - DZ meeting (2020/9/15)
 # plot(Chl_Rmd_TPM_graph)
 
-################ Chl Removed Positive values only ################
+################ Not Used - Chl Removed Positive values only ################
 Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM_mg_L, pcnt_Chl_rmvd)) +
   #geom_smooth(method = lm, se = T, level = 0.95, color = 'grey50') +
   geom_point(aes(color = Site)) +
@@ -694,7 +691,122 @@ Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM_mg_L, pcnt_Chl
 #grid.arrange(FRPos_TPM_graph, Chl_RmdPos_TPM_graph, nrow = 1)
 ```
 
-# TPM X HCR relationship Needed
+```{r FR_TPM_models}
+FR_TPM_LM <- lm(data = Filter_only_outRmd_data, L_hr_m2 ~ Avg_TPM_mg_L)
+# Extract LaTeX formula
+equatiomatic::extract_eq(FR_TPM_LM, use_coefs = T)
+
+
+FR_TPM_graph_lm <- ggplot(Filter_only_outRmd_data, aes(Avg_TPM_mg_L, L_hr_m2)) +
+  geom_smooth(method = lm, se = F, color = "gray50") +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Hab_FR_Label,
+       title = '',
+       subtitle = 'Y ~ X') +
+  guides(fill = FALSE) +
+  # line equation on graph
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "bottom")
+
+# log-log model predicitons
+logFR_logTPM_lm <- lm(data = Filter_only_outRmd_data, log(L_hr_m2) ~ log(Avg_TPM_mg_L))
+# create range of values to predict with model
+TPM_newrange <- data.frame(Avg_TPM_mg_L = seq(from = 0, to = 80, by = 0.001))
+# predict alone gives log(y) values, exponentiate y to get regular values with exp()
+loglogTPM_Pred <- data.frame(pred_FR = exp(predict(logFR_logTPM_lm, newdata = TPM_newrange)))
+pred_loglog_TPM_df <- data.frame(TPM_newrange, loglogTPM_Pred)
+  
+
+logFR_logTPM_graph <- ggplot((Filter_only_outRmd_data), aes(Avg_TPM_mg_L, L_hr_m2)) +
+  geom_line(data = pred_loglog_TPM_df, aes(x = Avg_TPM_mg_L, y = pred_FR)) +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Hab_FR_Label,
+       title = '',
+       subtitle = 'log(Y) ~ log(X)') +
+  guides(fill = FALSE)
+
+# Y-log model predicitons
+FR_logTPM_lm <- lm(data = Filter_only_outRmd_data, L_hr_m2 ~ log(Avg_TPM_mg_L))
+# predict alone gives log(y) values, exponentiate y to get regular values with exp()
+logTPM_Pred <- data.frame(pred_FR = predict(FR_logTPM_lm, newdata = TPM_newrange))
+pred_logTPM_df <- data.frame(TPM_newrange, logTPM_Pred)
+
+# Testing function to extract lm model
+# equatiomatic::extract_eq(FR_logTPM_lm, use_coefs = T)
+
+FR_logTPM_graph <- ggplot((Filter_only_outRmd_data), aes(Avg_TPM_mg_L, L_hr_m2)) +
+  geom_line(data = pred_logTPM_df, aes(x = Avg_TPM_mg_L, y = pred_FR)) +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Hab_FR_Label,
+       title = '',
+       subtitle = 'Y ~ log(X)') +
+  guides(fill = FALSE)
+
+# Y-log model predicitons --> producing complex numbers OR NaNs - Won't graph
+logFR_TPM_lm <- lm(data = Filter_only_outRmd_data, log(L_hr_m2) ~ Avg_TPM_mg_L)
+# predict alone gives log(y) values, exponentiate y to get regular values with exp()
+logFR_Pred <- data.frame(pred_FR = exp(predict(logFR_TPM_lm, newdata = TPM_newrange)))
+pred_logFR_df <- data.frame(TPM_newrange, logFR_Pred)
+
+logFR_TPM_graph <- ggplot((Filter_only_outRmd_data), aes(Avg_TPM_mg_L, L_hr_m2)) +
+  geom_line(data = pred_logFR_df, aes(x = Avg_TPM_mg_L, y = logFR_Pred)) +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Hab_FR_Label,
+       title = '',
+       subtitle = 'log(Y) ~ X') +
+  guides(fill = FALSE)
+
+
+# Y~x + x^2 model predicitons
+FR_TPM2_lm <- lm(data = Filter_only_outRmd_data, L_hr_m2 ~ poly(Avg_TPM_mg_L, degree = 2, raw = T))
+TPM2_Pred <- data.frame(FR_pred = predict(FR_TPM2_lm, newdata = TPM_newrange))
+pred_TPM2_df <- data.frame(TPM_newrange, TPM2_Pred)
+
+FR_TPM2_graph <- ggplot((Filter_only_outRmd_data), aes(Avg_TPM_mg_L, L_hr_m2)) +
+  geom_line(data = pred_TPM2_df, aes(x = Avg_TPM_mg_L, y = FR_pred)) +
+  geom_point(aes(color = Site)) +
+  # geom_abline(aes(intercept=0, slope=1)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = TPM_Label,
+       y = Hab_FR_Label,
+       title = '',
+       subtitle = 'Y ~ x + x^2') +
+  guides(fill = FALSE) +
+  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = x2_y_formula,
+               parse = TRUE,
+               label.x = "right",
+               label.y = "top")
+
+grid.arrange(FR_TPM_graph_lm , logFR_logTPM_graph, FR_logTPM_graph, FR_TPM2_graph, nrow = 2)
+
+summary(FR_TPM_LM)
+summary(logFR_logTPM_lm)
+summary(FR_logTPM_lm)
+summary(FR_TPM2_lm)
+
+
+```
 
 ```{r TPM_OC_Sites_graphs, echo=FALSE, include=F, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. \\label{TPM_OC_Sites_graphs}"}
 
@@ -1146,7 +1258,9 @@ Oly_TWW2_DTW_LM <- lm(data = NPD_oly_TWW,
 ols_regress(Oly_TWW2_DTW_LM)
 ```
 
-```{r NPD_Bivalve_SH_DTW_outrmd, echo=FALSE, fig.align="center", fig.asp=0.618, fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay \\label{NPD_Bivalve_SH_DTW_outrmd}", fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%"}
+```{r NPD_Bivalve_SH_DTW_outrmd, echo=FALSE, include = F, fig.align="center", fig.asp=0.618, fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay \\label{NPD_Bivalve_SH_DTW_outrmd}", fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%"}
+###### Not included ######### 
+
 # Remove outlier and negative DTW value
 NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
   mutate(DTW_outlier = find_outlier(NPD_bivalve_data_clean$tissue_dry_weight_g)) %>% 
@@ -1411,13 +1525,6 @@ all_chl_graphs <- grid.arrange(grobs = Chl_graphs,
 
 ```{r EXTRA ANALYSIS CODE, eval=FALSE, include=FALSE}
 \/ \/ \/ THIS IS ALL EXTRA EXPLORATORY ANALYSIS NOT USED BELOW THIS POINT \/ \/ \/
-```
-
-```{r FRpos_TPM_LM, eval=FALSE,  include=FALSE}
-FRPos_TPM_lm <- lm(data = Filtration_pos_data, L_hr_m2 ~ Avg_TPM_mg_L)
-#summary(FR_TPM_lm)
-ols_regress(FRPos_TPM_lm)
-# Not significant
 ```
 
 ```{r ChlRmdpos_TPM_LM, eval=FALSE,  include=FALSE}
