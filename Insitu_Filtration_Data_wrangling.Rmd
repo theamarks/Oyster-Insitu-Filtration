@@ -266,8 +266,8 @@ TPM_data = fread(file.path(TPM_directory, "Insitu_Filter_POM_PIM_Data.csv"))
 ######################################################################
 
 TPM_summary_table <- TPM_data %>% 
-  mutate(TPM_mg_L = ((dry_weight_corrected_g - filter_weight_corrected_g) * 1000 / sample_volume_ml), # grams to mg
-         PIM_mg_L = ((ash_weight_corrected_g - filter_weight_corrected_g) * 1000 / sample_volume_ml),
+  mutate(TPM_mg_L = (((dry_weight_corrected_g - filter_weight_corrected_g)*1000) * sample_volume_ml/1000), # grams to mg
+         PIM_mg_L = (((ash_weight_corrected_g - filter_weight_corrected_g)*1000) * sample_volume_ml/1000),
          POM_mg_L = TPM_mg_L - PIM_mg_L,
          Organic_Content_Ratio = POM_mg_L / TPM_mg_L) %>% 
   as_tibble()
