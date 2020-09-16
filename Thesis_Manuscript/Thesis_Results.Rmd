@@ -1349,16 +1349,16 @@ NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
   mutate(DTW_outlier = find_outlier(NPD_bivalve_data_clean$tissue_dry_weight_g)) %>% 
   filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
 
-NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>% 
-  ggplot(aes(x = length_mm, y = tissue_dry_weight_g, group = species, color = species)) +
-  geom_point() +
-  scale_color_manual(values = Species_colors, guide = FALSE) +
-  facet_wrap(~species) +
-  labs(x = "Shell length (mm)",
-       y = "Dry Tissue Weight (g)",
-       title = "NPD Bivalve Biomass - Pos DTW Outlier Rmd") +
-  theme_classic() +
-  theme(strip.text = element_text(face = "italic"))
+#NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>% 
+ # ggplot(aes(x = length_mm, y = tissue_dry_weight_g, group = species, color = species)) +
+  #geom_point() +
+#  scale_color_manual(values = Species_colors, guide = FALSE) +
+ # facet_wrap(~species) +
+  #labs(x = "Shell length (mm)",
+#       y = "Dry Tissue Weight (g)",
+ #      title = "NPD Bivalve Biomass - Pos DTW Outlier Rmd") +
+#  theme_classic() +
+ # theme(strip.text = element_text(face = "italic"))
 
 # NPD_bi_Biomass_graphs <- grid.arrange(NPD_bivalve_biomass_graph, NPD_bivalve_outrmd_graph, nrow = 1)
 #plot(NPD_bivalve_outrmd_graph)
@@ -2867,7 +2867,7 @@ NPD_ChlRmdPos_Turb_lm <- lm(data = Deanza_PosFilter_data, pcnt_Chl_rmvd ~ Turbid
 ols_regress(NPD_ChlRmdPos_Turb_lm)
 ```
 
-```{r NPD_Bivalve_SH_DTW, echo=FALSE}
+```{r NPD_Bivalve_SH_DTW, eval=FALSE, include=FALSE}
 ## Graph Newport Deanza biomass by shell length
 NPD_bivalve_biomass_graph <-  NPD_bivalve_data_clean %>% 
   ggplot(aes(x = length_mm, y = tissue_dry_weight_g, color = species)) +
