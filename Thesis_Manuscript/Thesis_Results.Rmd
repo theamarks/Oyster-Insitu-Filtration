@@ -230,13 +230,17 @@ Chl_Rmd_box <- ggplot(Filter_only_outRmd_data, aes(Site, pcnt_Chl_rmvd)) +
        y = Prt_Chl_Label) 
 plot(Chl_Rmd_box)
 
-#FR_Site_boxplot <- grid.arrange(FR_box, Chl_Rmd_box, nrow = 1)
-#FR_Site_boxplot
-#ggsave(FR_Site_boxplot, 
-      # filename = "FR_Site_boxplot.pdf", 
-      # path = "./Figures", 
-       #fig.width = 6,
-       #scale = 1 )
+####### Don't include - doesn't match analysis data
+ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
+  geom_boxplot(color = Site_colors) +
+    geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  stat_summary(fun.data = n_mean_stats, geom = "text") +
+  labs(x = 'Site',
+       y = Prt_Chl_Label)
+#plot(ChlRmd_pos_box)
 
 ```
 
@@ -264,6 +268,23 @@ FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
        y = Hab_FR_Label)
   #ylim(-2500, 1300)
 plot(FR_box) 
+
+######### Don't include ######
+#### Doesn't make sense to exclue negative values if everything is going into model.
+
+FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
+  geom_boxplot(color = Site_colors) +
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  stat_summary(fun.data = n_mean_stats, geom = "text") +
+  labs(x = 'Site',
+       y = Hab_FR_Label)
+
+#plot(FR_pos_box)
+
+
 ```
 
 ```{r Final_Summary_table, echo=FALSE, results='asis'}
@@ -294,12 +315,12 @@ Final_table <- Master_analysis_table %>%
  dplyr::arrange(Site, Date)
 # Make date formated as character to display properly
 Final_table$Date <- as.character(Final_table$Date)
-colnames(Final_table) <- c( "Site", "Date", "Experiment", "Temp ($\\textdegree$C)",
+colnames(Final_table) <- c( "Site", "Date", "Experiment", "Temp ($\textdegree$C)",
                             "Salinity (ppt)", "Turbidity (NTU)","TPM (mg/L)", "OC", 
-                            "Chl $\\alpha$ up ($\\mu$g/L)", 
-                            "Chl $\\alpha$ down ($\\mu$g/L)", 
+                            "Chl $\alpha$ up ($\\mu$g/L)", 
+                            "Chl $\alpha$ down ($\\mu$g/L)", 
                            "Depth (m)","Distance (m)", "Water veolcity (m/s)", 
-                           "% Chl $\\alpha$ removal", "Clearance rate (L/hr/$m^2$)")
+                           "% Chl $\alpha$ removal", "Clearance rate (L/hr/$m^2$)")
 # allow column names text to wrap
 #colnames(Final_table) <- paste("\\multicolumn{1}{c|}{", colnames(Final_table), "}")
 colnames(Final_table) <- stringr::str_wrap(colnames(Final_table))
@@ -332,37 +353,6 @@ print.xtable(sumtable_latex,
   #  floating = TRUE,
   # caption.placement = "top"
   # floating.environment = "sidewaystable"
-```
-
-```{R Summary_Table, eval=FALSE, include=FALSE}
-
-## Stack Exchange -TEX help suggestion
-rm(list=ls()) 
-library(xtable) 
-data(tli) 
-xtable(tli[1:10, ])
-
-### simply example to figure out xtable error
-
-# trying to download olderr version of data.table. Won't install newest version on Mac
-require(remotes)
-install_version("data.table", version = "1.12.6", repos = "http://cran.us.r-project.org")
-
-library(knitr)
-library(tinytex)
-library(xtable)
-options(xtable.timestamp = FALSE)
-
-df <- data.frame(A = c(1:10),
-                 B = c(11:20),
-                 C = c(21:30))
-
-xtable(df)
-df
-# print LaTex code for sideways table
-print.xtable(xtable(df))
-sum_table2 <- xtable(df, display = c("s","f","f","f"))
-sum_table2
 ```
 
 ```{r Chl_Corr_Filter_diff_graph, include=FALSE}
@@ -625,37 +615,6 @@ The unadjusted filtration trials had significantly higher HCRs (habitat clearanc
 We used a fitted a Random Forest model to predict HCR from temperature, salinity, turbidity, TPM, OC, and site. Temperature had the most relative importance to the model (`r round(Temp_rel_import, 1)`%), followed by OC (`r round(OC_rel_import, 1)`%), turbidity (`r round(Turb_rel_import, 1)`%), TPM (`r round(TPM_rel_import, 1)`%), salinity (`r round(Sal_rel_import, 1)`%), and site (`r round(Site_rel_import, 1)`%) respectively.
 
 
-```{r FR_ChlRmd_Site_posFilter_boxplot, echo=FALSE, include=F}
-# Filtration_pos_data defined in setup
-
-#### Doesn't make sense to exclue negative values if everything is going into model.
-
-FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
-  geom_boxplot(color = Site_colors) +
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  stat_summary(fun.data = n_mean_stats, geom = "text") +
-  labs(x = 'Site',
-       y = Hab_FR_Label)
-
-plot(FR_pos_box)
-
-ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
-  geom_boxplot(color = Site_colors) +
-    geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  stat_summary(fun.data = n_mean_stats, geom = "text") +
-  labs(x = 'Site',
-       y = Prt_Chl_Label)
-plot(ChlRmd_pos_box)
-
-#grid.arrange(FR_TPM_box_pos, Chl_Rmd_box_pos, nrow = 1)
-```
-
 ```{r FR_ChlRmd_TPM_point, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.show = "hold", fig.align="center", fig.asp=0.618, fig.width=6, out.width="70%", warning = F, fig.cap="The habitat clearance rates and filtration trials in response to seston total particulate matter (TPM). Extreme values not included in the analysis are not shown. \\label{FR_ChlRmd_TPM_point}"}
 
 ############ All Filtration trials w/ outliers removed ##################
@@ -735,6 +694,8 @@ Chl_RmdPos_TPM_graph <- ggplot((Filtration_pos_data), aes(Avg_TPM_mg_L, pcnt_Chl
 #grid.arrange(FRPos_TPM_graph, Chl_RmdPos_TPM_graph, nrow = 1)
 ```
 
+# TPM X HCR relationship Needed
+
 ```{r TPM_OC_Sites_graphs, echo=FALSE, include=F, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. \\label{TPM_OC_Sites_graphs}"}
 
 TPM_OC_Deanza <- ggplot(data = (Avg_TPM_summary_table %>% filter(Site == "Deanza")),
@@ -812,7 +773,7 @@ TPM_OC_bysite_graph <- grid.arrange(TPM_OC_SR, TPM_OC_MB, TPM_OC_NPSM, TPM_OC_De
 
 ### Filter-feeding community
 
-```{r Oly_DTW_Shell_length, include=FALSE}
+```{r Oly_DTW_Shell_length_setup, include=FALSE}
 ############ Olympia DTW and Shell Length #####################
 # Determine what quadrat samples have missing data (NAs)
 NPD_biv_bio_summary <- NPD_bivalves %>% 
@@ -860,7 +821,7 @@ Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
   stat_quadrant_counts(quadrants = 0L, label.x = "left", 
                        aes(label = sprintf("%i observations", stat(count))))
 
-plot(Oly_shell_DTW)
+#plot(Oly_shell_DTW)
 ```
 
 ```{r Oly_DTW_SH_outlier_rmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\*O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
