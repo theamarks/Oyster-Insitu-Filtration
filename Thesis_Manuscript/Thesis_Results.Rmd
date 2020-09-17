@@ -1019,7 +1019,7 @@ Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
 #plot(Oly_shell_DTW)
 ```
 
-```{r Gray_OlyDTW_SL}
+```{r Gray_OlyDTW_SL, include=FALSE}
 
 Gray_Oly_Data <- fread(file.path('./Data/bivalve_density_community', "MattGray_2011_2013_Olurida_allometric_data.csv"))
 colnames(Gray_Oly_Data) <- c("ID", "Date", "species", "length_mm", "shell_tissue_g", "vial_weight", "Vial_wet_oyster", "Tissue_weight_g", "vial_dry_oyster", "tissue_dry_weight_g")
@@ -1032,7 +1032,7 @@ Gray_Oly_SL_DTW <- Gray_Oly_Data %>%
 
 ```
 
-```{r Oly_DTW_SH_outlier_rmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\*O. lurida* shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
+```{r Oly_DTW_SH_outlier_rmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', warning=F, message=F, fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\*O. lurida* shell length and its dry tissue weight (DTW) at two locations, Newport Bay, California (Zacherl) and Yaquina Bay, Oregon (Gray). The Newport Bay data was collected at the Deanza restoration site and outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
 # Remove outlier and negative DTW value
 NPD_oly_outRmd <- NPD_oly %>%
   mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
@@ -1042,27 +1042,45 @@ NPD_Oly_SL_DTW <- NPD_oly_outRmd %>%
   mutate(Date = excavation_date) %>% 
   dplyr::select(Date, Site, species, length_mm, tissue_dry_weight_g)
 
-Oly_combo_DTW_SL <- full_join(NPD_Oly_SL_DTW,Gray_Oly_SL_DTW)
+Oly_combo_DTW_SL <- full_join(NPD_Oly_SL_DTW,Gray_Oly_SL_DTW) %>% 
+  mutate(legend = case_when(Site == "Deanza" & species == "Ostrea lurida" ~ "Deanza",
+                            Site == "Yaquina" & species == "Ostrea lurida" ~ "Yaquina"))
+
+Oly_combo_DTW_SL$legend <- fct_relevel(Oly_combo_DTW_SL$legend, "Yaquina", "Deanza")
+#Oly_combo_DTW_SL$legend <- fct_expand()
+
+Site_Shapes <- c("Deanza" = 16,
+                 "Yaquina" = 3)
 
 # Graph with outliers removed
-Oly_shell_DTW_rm_out <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
-  geom_smooth(method=lm, formula = x_y_formula, se = F, color = 'grey50') + # se = T, level = 0.95, color = 'grey50') +
-  geom_point(aes(color = species)) +
-  scale_color_manual(values = Species_colors, guide = F) +
+Oly_shell_DTW_NPD_Yaquina <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_weight_g)) +
+  geom_point(aes(color = legend, shape = legend)) +
+  #geom_smooth(se = F, color = 'grey50') + # method=lm, formula = x_y_formula, level = 0.95, color = 'grey50') +
+  scale_color_manual(labels = c("Yaquina", 
+                                "Deanza"),
+                     values = c("Yaquina" = "#9986A5",
+                                "Deanza" = "#9986A5"),
+                     na.translate = TRUE, drop = FALSE) + 
+  scale_shape_manual(labels = c("Yaquina", 
+                                "Deanza"),
+                     values = c("Yaquina" = 3,
+                                "Deanza" = 16),
+                     na.translate = TRUE, drop = FALSE) + 
   theme_classic() +
- # scale_color_manual(values = Site_colors, guide=FALSE) + 
+  theme(legend.box.background = element_rect(colour = "black"),
+        legend.justification = c(0, 1), 
+        legend.position = c(0.1, 0.95)) +
   labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "bottom") 
+       y = 'Dry Tissue Weight (g)') 
+ # ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+  #             formula = x_y_formula,
+   #            parse = TRUE,
+    #           label.x = "right",
+     #          label.y = "bottom") 
   #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
    #                    aes(label = sprintf("%i observations", stat(count))))
 
-plot(Oly_shell_DTW_rm_out)
+plot(Oly_shell_DTW_NPD_Yaquina)
 ```
 
 ```{r Linear_model_DTW_length, fig.height=6, fig.width=6,  include=FALSE}
@@ -1165,7 +1183,7 @@ OlySH_DTW_Trans_graphs <- grid.arrange(Oly_SH_logxDTW, Oly_shell_DTW_logline,
 
 ```
 
-```{r NPD_OlyDTW_SL_ylogx eval=FALSE, include=FALSE}
+```{r NPD_OlyDTW_SL_ylogx, eval=FALSE, include=FALSE}
 ### Doesn't look like a good fit
 Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
 summary(Oly_LogxDTW_lm)
@@ -1236,13 +1254,15 @@ str(Oly_LogDTW_logSH_lm)
 
 ```
 
-```{r NPD_Oly_DTW_SL_poly2 eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
+```{r NPD_Oly_DTW_SL_poly2, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
 Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
 summary(Oly_DTW2_lm)
 #ols_regress(Oly_DTW2_lm)
 ```
 
-```{r Oly_TWW_DTW_outRmd, echo=FALSE, fig.align="default", fig.asp=0.618, fig.cap="The relationship between \\*O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW = 0.0044*TWW - 0.043). \\label{Oly_TWW_DTW_outRmd}", fig.keep='all', fig.width=8, message=FALSE, warning=FALSE, dev='pdf'}
+```{r Oly_TWW_DTW_outRmd, eval=FALSE, fig.align="default", fig.asp=0.618, fig.cap="The relationship between \\*O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, fig.keep='all', fig.width=8, message=FALSE, warning=FALSE, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW=0.0044*TWW - 0.043). \\label{Oly_TWW_DTW_outRmd}", dev='pdf', include=FALSE}
+
+######### NPD Oly TWW DTW Graphs - Not using 
 
 # Make sure only using positive TWW values, negative values indicate processing error
 NPD_oly_TWW <- NPD_oly_outRmd %>% 
