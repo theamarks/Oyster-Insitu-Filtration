@@ -2,10 +2,10 @@
 bibliography: library.bib
 csl: marine-ecology-progress-series.csl
 header-includes: 
-  \usepackage{setspace}
-  \doublespacing
-  \usepackage{rotating}
-  \usepackage{booktabs}
+- \usepackage{setspace}
+- \doublespacing
+- \usepackage{rotating}
+- \usepackage{booktabs}
 output: 
   pdf_document:
     fig_caption: yes
