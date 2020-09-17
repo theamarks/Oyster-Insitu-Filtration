@@ -635,8 +635,8 @@ NP_combo_TPM_OC <- TPM_OC_Values %>%
 Total Particulate Matter (TPM) is a weak predictor seston OC when sites are combined (Need to pick model, report here) (Figure \ref{TPM_OC_models}). 
 This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collect the same way regardless of the trial. 
 Bays have distinct TPM signatures that do not overlap (Figure \ref{TPM_OC_models}), while OC remains relatively constant across bay.
-Northern San Francisco Bay (San Rafael site) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(SR_TPM_OC)`, SD = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`, and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(MB_TPM_OC)`, SD = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`.
-Newport Bay (Deanza and Shellmaker sites) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),3)` mg/L (n = `r nrow(NP_combo_TPM_OC)`, SD = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`.
+Northern San Francisco Bay (San Rafael site) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(SR_TPM_OC)`, SD = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`, and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(MB_TPM_OC)`, SD = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`).
+Newport Bay (Deanza and Shellmaker sites) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),3)` mg/L (n = `r nrow(NP_combo_TPM_OC)`, SD = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
 
 ```{r TPM_OC_models, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8,warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are missing TPM data because of filter processing errors. \\label{TPM_OC_models}"}
 ############ Linear Model
@@ -1244,7 +1244,7 @@ NPD_total_DTW <- SR_NPD_biv_DTWm2 %>%
   filter(Site == "Deanza") %>% 
   summarise(total = sum(mean_DTW_m2))
 
-SR_species_DTW <- SR_NPD_biv_DTWm2 %>% 
+NPD_species_DTW <- SR_NPD_biv_DTWm2 %>% 
   filter(Site == "Deanza") %>%
   group_by(Species) %>% 
   summarise(total = sum(mean_DTW_m2))
@@ -1252,7 +1252,8 @@ SR_species_DTW <- SR_NPD_biv_DTWm2 %>%
 ```
 
 Direct biomass data was only available for Deanza, which estimated `r round(NPD_total_DTW, 3)` g/m^2^ of bivalve dry tissue weight (DTW). 
-*O. lurida* had the highest DTW with `r SR_species_DTW[SR_species_DTW$Species=="Ostrea lurida",2]` g/m^2^, followed by *Mytilus galloprovincialis* (`r SR_species_DTW[SR_species_DTW$Species=="Mytilus galloprovincialis",2]` g/m^2^), an unknown mussel (`r SR_species_DTW[SR_species_DTW$Species=="Unknown mussel",2]` g/m^2^), *Adula diegensis* (`r SR_species_DTW[SR_species_DTW$Species=="Adula diegensis",2]` g/m^2^), and *Musculista senhousia* (`r SR_species_DTW[SR_species_DTW$Species=="Musculista senhousia",2]` g/m^2^).
+*O. lurida* had the highest DTW with `r NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2]` g/m^2^, followed by *Mytilus galloprovincialis* (`r NPD_species_DTW[NPD_species_DTW$Species=="Mytilus galloprovincialis",2]` g/m^2^), an unknown mussel (`r NPD_species_DTW[NPD_species_DTW$Species=="Unknown mussel",2]` g/m^2^), *Adula diegensis* (`r NPD_species_DTW[NPD_species_DTW$Species=="Adula diegensis",2]` g/m^2^), and *Musculista senhousia* (`r NPD_species_DTW[NPD_species_DTW$Species=="Musculista senhousia",2]` g/m^2^).
+San Rafael survey data did not directly assess biomass, but did include shell length measurements which was used to estimate DTW of *O. lurida* (`r round(SR_total_DTW,3)` g/m^2^) from the Deanza shell length:DTW model (model equation here). 
 
 
 ```{r Bivalve_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Estimated biomass of \\textit{O. lurida} habitat at Newport Deanza and San Rafael sites. Data for Deanza was collected by the Zacherl lab in May 2018, the relationship between \\*O. lurida* shell length and dry tissue weight (DTW) from the Deanza 2018 survey was used to estimate DTW at San Rafael with shell length data collected by the Zabin lab in November 2017. \\label{Bivalve_Den_Biomass}"}
