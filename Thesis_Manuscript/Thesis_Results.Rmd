@@ -1,10 +1,12 @@
 ---
 bibliography: library.bib
 csl: marine-ecology-progress-series.csl
-header-includes: \usepackage{setspace}\doublespacing\usepackage{rotating}\usepackage{booktabs}
+header-includes: 
+  \usepackage{setspace}\doublespacing\usepackage{rotating}\usepackage{booktabs}
 output: 
   pdf_document:
     fig_caption: yes
+    latex_engine: xelatex
 indent: true
 ---
 ```{r setup, include = F}
@@ -284,7 +286,7 @@ FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
 #plot(FR_pos_box)
 ```
 
-```{r Final_Summary_table, include=FALSE, results='asis'}
+```{r Final_Summary_table, echo=FALSE, results='asis'}
 
 #fig.cap="A summary table reporting every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively. \\label{Final_Summary_table}",
 
@@ -352,7 +354,7 @@ print.xtable(sumtable_latex,
   # floating.environment = "sidewaystable"
 ```
 
-```{r Chl_Corr_Filter_diff_graph, include=FALSE}
+```{r Chl_Corr_Filter_diff_graph, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.align= "center", fig.asp=0.618, out.width="70%", message= F, warning=F, fig.cap="The relationship between side-by-side corrections and the chlorophyll difference (signal). Identified extreme values were removed from analysis \\label{SbsCorr_ChlDiff_graph}"}
 ##### Althea's Chl correction x Filtration diff Graph ###########
 ## Correction data & OG Chl values
 #Sbs_correction_data 
@@ -404,7 +406,7 @@ Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_c
   
 Corr_Chl_diff_graph
      
-Corr_chl_diff_data[c(9,21,23),] # Look at problem data points
+#Corr_chl_diff_data[c(9,21,23),] # Look at problem data points
 ```
 
 ```{r Random_Forest_DrNichols, include=FALSE}
@@ -595,7 +597,7 @@ p.val
 Two field days are missing TPM and OC values from our data set, representing `r round((4/336)*100, digits = 0)`% of the data set. 
 Removing these incomplete observations is costly for our data set where we have a limited number of observations with a large number of variables. 
 Instead we used a non-parametric random forest imputation to estimate the missing values (MissForest Package; [@Stekhoven2012]).
-Three extreme observations were removed from the data set based on a correction-to-signal comparison (Shellmaker 2020/6/9, Shellmaker 2020/5/22, Deanza 2020/4/17).
+Three extreme observations were removed from the data set based on a correction-to-signal comparison (Shellmaker 2020/6/9, Shellmaker 2020/5/22, Deanza 2020/4/17) (Figure \ref{SbsCorr_ChlDiff_graph).
 
 We used a fitted a Random Forest model to predict HCR from temperature, salinity, turbidity, TPM, OC, and site.
 
@@ -1458,7 +1460,7 @@ Paired_bar_chl_graph <- ggplot(data = Bar_up_down_data, aes(x = Site_exp_date, y
 plot(Paired_bar_chl_graph)
 ```
 
-```{r Bar_Graphs_up_vs_down_grid.arrange, echo=FALSE, fig.align="default", fig.asp=0.75, fig.keep='all', fig.width=8.6, dev='pdf', out.width="100%", fig.cap="Chlorphyll concentrations measured at upstream and downstream instruments across all sites, filtration trials, and negative controls. \\label{Bar_Graphs_up_vs_down_grid.arrange}"}
+```{r Bar_Graphs_up_vs_down_grid.arrange, fig.align="default", fig.asp=0.75, fig.keep='all', fig.width=8.6, dev='pdf', include=FALSE, out.width="100%"}
 ############## Try 2 ####### make separate graphs, combine using grid.arrange()
 
 ##### Can't figure out how to properly label x axis. Works with Exp_Date, but can't shorten without messing up data:label pairs. Can't spend more time on this right now. come back if time -AM 2020_3_3
