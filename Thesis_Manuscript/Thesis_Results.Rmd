@@ -820,6 +820,10 @@ NPD_bivalve_data_clean <- NPD_bivalves %>%
   # Filter out unclassified/ empty species & samples less than 0g (processing error, doesn't make sense)
   filter(!species %in% c("Pattern Not Found", "Crucibulum spinosum"))
 
+# Remove outlier and negative DTW value
+NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
+  mutate(DTW_outlier = find_outlier(NPD_bivalve_data_clean$tissue_dry_weight_g)) %>% 
+  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0)
 
 #Olympia DTW predicted by Shell Length - Newport, CA
 # All excavation quadrat samples processed to date aggregated (summer 2020)
@@ -1219,10 +1223,7 @@ ols_regress(Oly_TWW2_DTW_LM)
 ```{r NPD_Bivalve_SH_DTW_outrmd, fig.align="center", fig.asp=0.618, fig.cap="The biomass of bivalves excavated from Deanza in Newport Bay \\label{NPD_Bivalve_SH_DTW_outrmd}", fig.keep='all', fig.width=8.6, dev='pdf', include=FALSE, out.width="100%"}
 ###### Not included - Need code for other graphs ######### 
 
-# Remove outlier and negative DTW value
-NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
-  mutate(DTW_outlier = find_outlier(NPD_bivalve_data_clean$tissue_dry_weight_g)) %>% 
-  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
+ 
 
 #NPD_bivalve_outrmd_graph <- NPD_bivalve_outrmd %>% 
  # ggplot(aes(x = length_mm, y = tissue_dry_weight_g, group = species, color = species)) +
