@@ -109,6 +109,13 @@ Data cleaning, corrections, and calculations were made in R (1.2.5) and the code
 
 ### Analysis
 
+Two field days are missing TPM and OC values from our data set, representing `r round((4/336)*100, digits = 0)`% of the data set. 
+Removing these incomplete observations is costly for our data set where we have a limited number of observations with a large number of variables. 
+Instead we used a non-parametric random forest imputation to estimate the missing values (MissForest Package; [@Stekhoven2012]).
+Three extreme observations were removed from the data set based on a correction-to-signal comparison (Shellmaker 2020/6/9, Shellmaker 2020/5/22, Deanza 2020/4/17) (Figure \ref{SbsCorr_ChlDiff_graph).
+
+We used a fitted a Random Forest model to predict HCR from temperature, salinity, turbidity, TPM, OC, and site.
+
 ```{r Study_site_map, eval=FALSE, include=FALSE}
 study_sites <- data.frame(Site = c("San Rafael", "Morro Bay", "Deanza", "Shellmaker"),
                           Lat = c(37.964179, 35.334707, 33.620362, 33.622098),
