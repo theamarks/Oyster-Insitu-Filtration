@@ -31,6 +31,8 @@ The Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Mor
 MBOC grows *C. gigas* in plastic mesh bags measuring about (insert dimensions) attached to floating lines that stretch across an area about 75 m x 75 m. 
 The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
 
+##### Need Map Figure Here
+
 ### Exerpimental Setup
 Methods were adapted from @Grizzle2006 and @Grizzle2008's in situ filtration measurements of bivalve beds on the Atlantic coast.
 Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (hensforth Chl $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
@@ -70,12 +72,12 @@ Next, the dried filters were ashed at 450&deg;C for \( \leq 4 \) hours and weigh
 
 \begin{equation}
 \label{Eq:TPM}
-TPM (mg/L)= \frac{Filter Dry Weight (mg) - Filter Pre Weight (mg)}{Water sample volume (mL)} \times 1000
+TPM (mg/L)= \frac{[Filter Dry Weight (g) - Filter Pre Weight (g)] \times \frac{100 mg}{L}}{Water sample volume (mL) \times \frac{1 L}{1000 mL}} \
 \end{equation}
 
 \begin{equation}
 \label{Eq:PIM}
-PIM (mg/L)= \frac{Filter Ash Weight (mg) - Filter Pre Weight (mg)}{Water sample volume (ml)} \times 1000
+PIM (mg/L)= \frac{[Filter Ash Weight (g) - Filter Pre Weight (g)] \times \frac{100 mg}{L}}{Water sample volume (ml)\times \frac{1 L}{1000 mL}} \
 \end{equation}
 
 \begin{equation}
