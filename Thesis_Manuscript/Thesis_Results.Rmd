@@ -498,6 +498,8 @@ y.adj.control = y.adj[test1$Experiment!="Filtration"]
 t.test(y.adj.experiment,y.adj.control,alternative="greater")
 t_test_adj <- broom::tidy(t.test(y.adj.experiment,y.adj.control,alternative="greater"))
 t_test_adj
+# Degrees of freedom two-sample t-test
+t_test_adj_df <- (length(y.adj.experiment) - length(y.adj.control)) - 2 
 
 ### Example tree ######
 #model.tree = rpart(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,method="anova",control=rpart.control(minsplit=2,cp=0.05),data=test1)
@@ -615,8 +617,13 @@ We used a fitted a Random Forest model to predict HCR from temperature, salinity
 
 ### Oyster Habitat vs. Control 
 
-Filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
-The Random Forest model that included all filtration and control trials indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 1)`%), followed by OC (`r round(OC_rel_import, 1)`%), turbidity (`r round(Turb_rel_import, 1)`%), TPM (`r round(TPM_rel_import, 1)`%), salinity (`r round(Sal_rel_import, 1)`%), and site (`r round(Site_rel_import, 1)`%) respectively.
+Filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two-sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
+The Random Forest model that included all filtration and control trials indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 1)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively.
+Filtration and control trials adjusted by the Random Forest model were not significantly different (two-sample t(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, p = `r round(t_test_adj$p.value, digits = 2)`).
+
+### Variables Affecting HCR
+
+The random forest model built with only filtration trials indicated that temperature (`r round(Temp_rel_import_HCR),1)`\% had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
 
 ```{r TPM_OC_models, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8,warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are missing TPM data because of filter processing errors. \\label{TPM_OC_models}"}
 ############ Linear Model
