@@ -852,7 +852,7 @@ Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
 #plot(Oly_shell_DTW)
 ```
 
-```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The bivlaves community density and composition for each study site. San Rafael data was collected November 2017 by the Zabin lab, Morro Bay was estimated by Morro Bay Oyster Company, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab.  \\label{Bivalve_Den_Biomass}"}
+```{r Bivalve_Den_Setup, include=FALSE}
 ################### Bivalve Density by Site #########################
 # read in bivalve density data from cleaned data file
 Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
@@ -875,6 +875,31 @@ Bivalve_Den_data <- Bivalve_Den_data %>%
 order_by_site <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
 Bivalve_Den_data <- arrange(transform(Bivalve_Den_data, Site = factor(Site,levels = order_by_site)), Site)
 
+SR_Den <- Bivalve_Den_data %>% 
+  filter(Site == "San Rafael",
+         individuals_m2 > 0) %>% 
+  summarise(total_den = sum(individuals_m2))
+
+MB_Den <- Bivalve_Den_data %>% 
+  filter(Site == "Morro Bay",
+         individuals_m2 > 0) %>% 
+  summarise(total_den = sum(individuals_m2))
+
+NPSM_Den <- Bivalve_Den_data %>% 
+  filter(Site == "Shellmaker",
+         individuals_m2 > 0) %>% 
+  summarise(total_den = sum(individuals_m2))
+
+NPD_Den <- Bivalve_Den_data %>% 
+  filter(Site == "Deanza",
+         individuals_m2 > 0) %>% 
+  summarise(total_den = sum(individuals_m2))
+  
+```
+
+In November 2017 the estimated bivalve density at San Rafael was 
+
+```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The bivlaves community density and composition for each study site. San Rafael data was collected November 2017 by the Zabin lab, Morro Bay was estimated by Morro Bay Oyster Company, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab.  \\label{Bivalve_Den_Biomass}"}
 
 #unique(Bivalve_Den_data$Species) # list each individual bivalve species
 # Assign species to specific color
