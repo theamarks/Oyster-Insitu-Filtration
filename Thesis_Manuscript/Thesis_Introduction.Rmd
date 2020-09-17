@@ -59,7 +59,7 @@ Filtration estimates of oyster habitat on the west coast need measurements that 
 * Clearance Rate vs. FIltration cpacity vs. Filtration Rate
   - Clearance Rate (L/hr) - measure of water processing - used by @Grizzle2018 for L/hr/m^2
   - Filtration Rate (mg/hr) - teh amss of particles cleared per unit time
-  - Filtration Capacity - definition? used by @ZuErmgassen2013
+  - Filtration Capacity - definition? used by ZuErmgassen2013
 * First sentence list of fauna using habitat - mobile & sessile invertebrates, juvenille crabs and fishes? use east coast references? 
 
 ### Incorporate these tidbits?
@@ -67,7 +67,7 @@ Whole -habitat measurements inately measure the habitat-level filtraiton reactio
 
 Chl $\alpha$ - proxy for photosynthetic organic matterial - Check @Secor2006 for ideas
 
-Higher organic content means a higher proportion of digestable food, which increases clearance rates (@Gray2017a). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
+Higher organic content means a higher proportion of digestable food, which increases clearance rates (@Gray2018). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
 
 Residence time, temperature, turbidity, food availability, salinity, emersion time, and water flow speed are all parameters known to affect bivalve filter feeding rates, and will be unique to each California estuary. 
 Thus, previous filtration estimates are not directly applicable to existing restoration and aquaculture operations in California.
