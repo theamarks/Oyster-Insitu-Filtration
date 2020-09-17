@@ -527,9 +527,13 @@ Var_import_df %<>%
   pivot_longer(cols = c(Turbidity, Temp, TPM, Salinity, OC, Site), names_to = "Variable", values_to = "Importance") %>% 
   arrange(desc(Importance))
 Var_import_df # dataframe with sorted importance values - highest to lowest
-
-
-
+sum_import <- sum(Var_import_df$Importance)
+Temp_rel_import_HCR <- (Var_import_df[[1,2]] / sum_import) * 100
+Turb_rel_import_HCR <- (Var_import_df[[2,2]] / sum_import) * 100
+TPM_rel_import_HCR <- (Var_import_df[[3,2]] / sum_import) * 100
+OC_rel_import_HCR <- (Var_import_df[[4,2]] / sum_import) * 100
+Site_rel_import_HCR <- (Var_import_df[[5,2]] / sum_import) * 100
+Sal_rel_import_HCR <- (Var_import_df[[6,2]] / sum_import) * 100
 
 ###################### Is this just exploritory? ################
 m1 = lm(Chl.up~Chl.dn,data=test)
