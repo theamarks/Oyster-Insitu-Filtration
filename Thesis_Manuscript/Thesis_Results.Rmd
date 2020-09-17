@@ -202,12 +202,12 @@ find_outlier <- function(data){
 
 # Results
 
-Field work was conducted from February 2018 to June 2019 and produced 28 usable trials (filtration and negative controls) across the four sites.
-Filtration trials at San Rafael were conducted on the ebb and flood tides surround a low tide.
-Three filtration trials conducted on flood tides (2018/7/7, 2018/7/18, 2018/9/10), 1 ebb filtration trial (2018/11/8), and 1 ebb negative control (2018/11/7).
-We recorded 4 filtration trials and 1 negative control at Morro Bay, all conducted on flood tides (Table 1).
-At Newport Shellmaker we recorded 4 filtration and 1 negative control trial on flood tides.
-Newport Deanza had the most field days with 10 filtration and 3 negative controls all conducted on ebb tides. 
+Field work was conducted from February 2018 to June 2019 and measured 22 filtration trials and 6 control trials (Table 1).
+Filtration trials at San Rafael were conducted on the ebb and flood tides surrouning low tide.
+Three filtration trials were conducted on flood tides (2018/7/7, 2018/7/18, 2018/9/10), one on an ebb tide (2018/11/8), and one control trial on an ebb tide (2018/11/7).
+We recorded four filtration trials and one control at Morro Bay, all conducted on flood tides.
+At Shellmaker we recorded four filtration trials and one control on flood tides.
+Deanza had the most field days with 10 filtration trials and 3 controls all conducted on ebb tides. 
 
 ### Percent chlorophyll $\alpha$ removal
 
@@ -317,7 +317,7 @@ colnames(Final_table) <- c( "Site", "Date", "Experiment", "Temp ($\textdegree$C)
                             "Salinity (ppt)", "Turbidity (NTU)","TPM (mg/L)", "OC", 
                             "Chl $\alpha$ up ($\\mu$g/L)", 
                             "Chl $\alpha$ down ($\\mu$g/L)", 
-                           "Depth (m)","Distance (m)", "Water veolcity (m/s)", 
+                           "Depth (m)","Distance (m)", "Water velocity (m/s)", 
                            "% Chl $\alpha$ removal", "Clearance rate (L/hr/$m^2$)")
 # allow column names text to wrap
 #colnames(Final_table) <- paste("\\multicolumn{1}{c|}{", colnames(Final_table), "}")
@@ -439,7 +439,7 @@ num_NA_values <- sum(is.na(Final_table)) # 4 missing values
 
 colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity",
                             "TPM", "OC", "Chl.up", "Chl.dn", 
-                           "Depth","Distance", "Water veolcity", "Chl.removal", 
+                           "Depth","Distance", "Water velocity", "Chl.removal", 
                            "Clearance")
 
 #Shellmaker 06-09 Neg Control, Shellmaker 05-22 Filtration and Deanze 4-17 Filtration just have astronomical outlier values for clearance.
@@ -587,7 +587,7 @@ p.val
 ```
 
 * Missing values / imputation
-* Remove 3 extreme onservations
+* Remove 3 extreme observations
 
 ### Oyster vs mudflat t-test
 * unadjusted control vs filtration t-test
@@ -602,10 +602,10 @@ p.val
 * Random Forest Model
 * Variable Importance
 
-4 data values (2 TPM and 2 OC) values are missing from our dataset, representing `r round((4/336)*100, digits = 0)`% of the dataset. 
-Removing these incomplete ovservations is costly for our data set where we have a limited number of observations with a larg number of variables. 
+4 data values (2 TPM and 2 OC) values are missing from our data set, representing `r round((4/336)*100, digits = 0)`% of the data set. 
+Removing these incomplete observations is costly for our data set where we have a limited number of observations with a large number of variables. 
 Instead we used a non parametric random forest imputation to estimate the missing values (MissForest Package;[@Stekhoven2012]).
-Three extreme observations were removed from the dataset based on a correction-to-signal comparison (Shellmaker 2020/6/9, Shellmaker 2020/5/22, Deanza 2020/4/17).
+Three extreme observations were removed from the data set based on a correction-to-signal comparison (Shellmaker 2020/6/9, Shellmaker 2020/5/22, Deanza 2020/4/17).
 
 ### Oyster Habitat vs. Control 
 
@@ -1052,24 +1052,27 @@ Oly_combo_DTW_SL$legend <- fct_relevel(Oly_combo_DTW_SL$legend, "Yaquina", "Dean
 Site_Shapes <- c("Deanza" = 16,
                  "Yaquina" = 3)
 
-# Graph with outliers removed
+######## Graph with Deanza and Yaquina DTW x Shell length
+# Combine legend --> https://gist.github.com/mps9506/39b70aec30ab1322f7ecd6b21f04120e#file-testplot-r-L96
 Oly_shell_DTW_NPD_Yaquina <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_weight_g)) +
   geom_point(aes(color = legend, shape = legend)) +
   #geom_smooth(se = F, color = 'grey50') + # method=lm, formula = x_y_formula, level = 0.95, color = 'grey50') +
-  scale_color_manual(labels = c("Yaquina", 
-                                "Deanza"),
+  scale_color_manual(labels = c("Yaquina Bay, OR", 
+                                "Deanza, Newport Bay, CA"),
                      values = c("Yaquina" = "#9986A5",
                                 "Deanza" = "#9986A5"),
                      na.translate = TRUE, drop = FALSE) + 
-  scale_shape_manual(labels = c("Yaquina", 
-                                "Deanza"),
+  scale_shape_manual(labels = c("Yaquina Bay, OR", 
+                                "Deanza, Newport Bay, CA"),
                      values = c("Yaquina" = 3,
                                 "Deanza" = 16),
                      na.translate = TRUE, drop = FALSE) + 
   theme_classic() +
   theme(legend.box.background = element_rect(colour = "black"),
         legend.justification = c(0, 1), 
-        legend.position = c(0.1, 0.95)) +
+        legend.position = c(0.1, 0.95),
+        legend.title = element_blank()) +
+  ylim(0,1)+
   labs(x = 'Shell Length (mm)',
        y = 'Dry Tissue Weight (g)') 
  # ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
@@ -1549,7 +1552,7 @@ Paired_bar_chl_graph <- ggplot(data = Bar_up_down_data, aes(x = Site_exp_date, y
              color = "grey22",
              stat="identity",
              position = "dodge") +
-    labs(x = 'Experiment', y = 'Chlorophyl (ug/L)')
+    labs(x = 'Experiment', y = 'Chlorophyll (ug/L)')
 
 plot(Paired_bar_chl_graph)
 ```
@@ -2699,7 +2702,7 @@ NPD_FRPos_Chl <- ggplot(Deanza_PosFilter_data, aes(Chl_ug_L_Up, L_hr_m2)) +
   theme_classic() +
   labs(x = 'Chlorophyll Upstream (ug/L)',
        y = Hab_FR_Label,
-       title = "NPD Positive Filtraiton") +
+       title = "NPD Positive Filtration") +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
@@ -2712,7 +2715,7 @@ NPD_ChlRmdPos_Chl <- ggplot(Deanza_Filter_data, aes(Chl_ug_L_Up, pcnt_Chl_rmvd))
   theme_classic() +
   labs(x = 'Chlorophyll Upstream (ug/L)',
        y = Prt_Chl_Label,
-       title = "NPD Positive Filtraiton") +
+       title = "NPD Positive Filtration") +
   ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
                formula = x_y_formula,
                parse = TRUE,
