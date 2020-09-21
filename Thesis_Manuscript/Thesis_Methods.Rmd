@@ -71,7 +71,7 @@ The water samples were filtered through Whatman GF/F pre-wash and weighed filter
 Thawed filters were rinsed with a 0.5 M ammonium formate solution to remove salt. 
 Typically this step immediately precedes filtering [@Gray2018], but this was not possible to do in the field. 
 Filters were then dried in an 60&deg;C oven for 48 hours, and weighed to determine TPM (equation \ref{Eq:TPM}). 
-Next, the dried filters were ashed at 450&deg;C for \( \leq 4 \) hours and weighed to determine PIM (equation \ref{Eq:PIM}) and POM (equation \ref{Eq:POM}). Seston OC is simply the ratio of POM to TPM.
+Next, the dried filters were ashed at 450&deg;C for \( \geq 4 \) hours and weighed to determine PIM (equation \ref{Eq:PIM}) and POM (equation \ref{Eq:POM}). Seston OC is simply the ratio of POM to TPM.
 ***Need to address my filter weight mistakes?***
 
 \begin{equation}
