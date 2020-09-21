@@ -899,13 +899,19 @@ NPSM_species <- Bivalve_Den_data %>%
   group_by(Species) %>% 
   summarise(species_den = individuals_m2)
  
+NPD_species <- Bivalve_Den_data %>% 
+  filter(Site == "Deanza",
+         individuals_m2 > 0) %>% 
+  group_by(Species) %>% 
+  summarise(species_den = individuals_m2)
   
 ```
 
 In November 2017 the estimated bivalve density at San Rafael was `r SR_Den` individuals / m^2^, all bivalves were *O. lurida* (Figure \ref{Bivalve_Den_Biomass}).
 Other bivalves were noted, but were not measured in sample bags (Zabin unpublished data?). 
 Morro Bay has an estimated `r MB_Den` *C. gigas* individuals / m^2^ (Morro Bay Oyster Company), personal field observations confirm the lack of bivalve fouling on the aquaculture lines.
-Shellmaker had an estimated `r NPSM_Den` individuals / m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals / m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals / m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals / m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals / m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals / m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals / m^2^).
+Shellmaker has an estimated `r NPSM_Den` individuals / m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals / m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals / m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals / m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals / m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals / m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals / m^2^).
+Deanza has an estimated `r NPD_Den` individuals / m^2^, composed of *M. senhousia* (`r NPD_species[NPD_species$Species=="Musculista senhousia",2]`), *A. diegensis* (`r NPD_species[NPD_species$Species=="Adula diegensis",2]`), *O. lurida* (`r NPD_species[NPD_species$Species=="Ostrea lurida",2]`), *M. galloprovincialis* (`r NPD_species[NPD_species$Species=="Mytilus galloprovincialis",2]`).
 
 ```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The bivlaves community density and composition for each study site. San Rafael data was collected November 2017 by the Zabin lab, Morro Bay was estimated by Morro Bay Oyster Company, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab.  \\label{Bivalve_Den_Biomass}"}
 
