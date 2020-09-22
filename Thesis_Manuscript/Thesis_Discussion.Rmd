@@ -16,6 +16,7 @@ indent: true
     - dynamic environmental conditons 
   + Filtration services of restored *O. lurida* 
   + Filtration services of *C. gigas* aquaculture
+  
 * Assumptions / Data Description
   + Instruments measuring same mass of water
     - each site required several days in the field - RWT observations
@@ -24,6 +25,7 @@ indent: true
   + HCR values are snap shots
     - time averaged (talk about trial durations)
     - tide restricted when measurements could be taken (Wheat & Ruesink talk about depth)
+    
 * Control vs. Oyster habitat stats
   + contextualize t-test. Went from sig to no sig
   + small sample size, p-values aren't the whole story
@@ -63,7 +65,40 @@ indent: true
     - unique to bay hydrodynamics - residence time 
     - effeciently direct retoration for filtration / food availability
     
+The goal of this paper was to characterize the filtration function of several types of constructed oyster habitat in California using in situ methods to incorporate whole-habitat and environmental effects. 
+More precice methods of measuring bivalve filtration exsist (e.g. flume studies, biodeposition, particle clearance), but they compromise the ability to incorporate the dynamic environmental and biological conditions that exsist in actual oyster habitats. 
+Our in situ methods, while able to inherently incorporate the affects of environmental and biological conditions had several assumptions that are important in contextualizing our findings. 
+First, we assumed that the water flowed linearly from the upstream insturment to the downstream instrument, thus both instruments are measuring the change in the same mass of water. 
+Before taking any data, we observed and characterized the water dynamics at each site by using Rhodamine WT. 
+Rhodamine WT is a flourecent dye commonly used in many water tracing studies (EPA etc.) and made it visually clear the direction of the water flow and how it dilluted traveling over the oyster habitats.
+However, Rhodamine WT floureces in the range that the chl $\alpha$ sensors detect, so we could not use Rhodamine WT traces to check the water flow during experimental trials, and we had to be sure pre-experiment Rhodamine WT traces had completely cleared the study area. 
+Second, we assumed that water depth and velocity remained constant through the trial and habitat. 
+Both depth and velocity were measured several times through out trials, and averaged for calculation simplicity. 
+Third, we assumed a well mixed water column.
+Fluid dynamics are highly complex, and can vary along the depth profile and across oyster habitat. 
+Texture of habitat leads to varied hydrodynamics and mixing (Harsh & Luckenback 1999)
 
+
+## Extra From Intro
+
+Slow flow can lead to food depletion to downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
+Higher flows can redistribute particles throughout the water column replenishing food for bivalve filter feeders ( Officer 1982 & Fredett 1989 in Harsh & Lauckenbach1999)
+Water dynamics in shallow estuaries often mixes water column "eliminating stratification of chlorophyll (Holligan et al. 1984 cited in @Judge1993).
+Deeper waters might limit the access that benthic bivalves have to food (citations in @Ruesink2005).
+Orientation of oyster relative to flow effect feeding behavior [@Grizzle1992; @Harsh1999].
+
+along with the presence of predators [@Byers2014] 
+
+Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
+This suggests that filtration rates among *O. lurida* habitats, may have unique filtration rates locally or regionally depending on the composition of filter-feeders, and laboratory methods a likely insufficient at estimating habitat-level filtration functions. 
+
+Gray & Langdon (2017) point out that O. lurida selects larger particles from the water column compared to C. gigas, likely because of anatomical differences in gill ostea, which may differentiate the quality of filtration by each species. 
+C. gigas is also faster growing, larger, and has a greater filtration rate than O. lurida (zu Ermgassen, Gray, et al. 2013, Gray & Langdon 2017)
+
+Different species have different ideal water velocities for feeding [@Cranford2011].
+Slow velocity, although possibly ideal for individual filtration [@Grizzle1992], can lead to food depletion for downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
+On the other hand, both higher flows and shallow estuaries can redistribute particles throughout the water column replenishing food for bivalve filter feeders (Officer 1982 & Fredett 1989 in Harsh & Lauckenbach1999) (Holligan et al. 1984 cited in @Judge1993)
+In addition, deeper water might limit benthic bivalves access to food (citations in Ruesink et al. 2005), while the orientation of oysters relative to the waterfowl may effect feeding behavior[@Grizzle1992; @Harsh1999].
 
 ## Long Form Introduction  --> Save for discussion
 
