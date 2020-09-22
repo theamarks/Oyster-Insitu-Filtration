@@ -65,15 +65,15 @@ indent: true
     - unique to bay hydrodynamics - residence time 
     - effeciently direct retoration for filtration / food availability
     
-The goal of this paper was to characterize the filtration function of several types of constructed oyster habitat in California using in situ methods to incorporate whole-habitat and environmental effects. 
+The goal of this paper was to characterize the filtration functions of several types of constructed oyster habitat in California using in situ methods to incorporate whole-habitat and environmental effects. 
 More precice methods of measuring bivalve filtration exsist (e.g. flume studies, biodeposition, particle clearance), but they compromise the ability to incorporate the dynamic environmental and biological conditions that exsist in actual oyster habitats. 
-Our in situ methods, while able to inherently incorporate the affects of environmental and biological conditions had several assumptions that are important in contextualizing our findings. 
-First, we assumed that the water flowed linearly from the upstream insturment to the downstream instrument, thus both instruments are measuring the change in the same mass of water. 
-Before taking any data, we observed and characterized the water dynamics at each site by using Rhodamine WT. 
-Rhodamine WT is a flourecent dye commonly used in many water tracing studies (EPA etc.) and made it visually clear the direction of the water flow and how it dilluted traveling over the oyster habitats.
-However, Rhodamine WT floureces in the range that the chl $\alpha$ sensors detect, so we could not use Rhodamine WT traces to check the water flow during experimental trials, and we had to be sure pre-experiment Rhodamine WT traces had completely cleared the study area. 
+Our in situ methods, while inherently incorporating the affects of environmental and biological conditions have several assumptions important in contextualizing our findings. 
+First, we assumed that the water flowed linearly from the upstream insturment to the downstream instrument, thus both instruments are measuring the same uninterupted mass of water. 
+Before taking any data, we observed and characterized the water dynamics at each site using Rhodamine WT. 
+Rhodamine WT is a flourecent dye commonly used in many water tracing studies (EPA etc.) and makes the direction of the water flow and its dillution visually clear.
+However, Rhodamine WT floureces in the wavelength range that the chl $\alpha$ sensors detect, so we could not use Rhodamine WT traces to check the water flow during experimental trials, and we had to be sure pre-experiment Rhodamine WT traces completely cleared the study area. 
 Second, we assumed that water depth and velocity remained constant through the trial and habitat. 
-Both depth and velocity were measured several times through out trials, and averaged for calculation simplicity. 
+Both depth and velocity were measured several times through out trials and averaged for calculation simplicity. 
 Third, we assumed a well mixed water column.
 Fluid dynamics are highly complex, and can vary along the depth profile and across oyster habitat. 
 Texture of habitat leads to varied hydrodynamics and mixing (Harsh & Luckenback 1999)
