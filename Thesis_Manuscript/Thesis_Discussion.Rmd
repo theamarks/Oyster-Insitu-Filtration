@@ -66,7 +66,7 @@ indent: true
     - effeciently direct retoration for filtration / food availability
     
 The goal of this paper was to characterize the filtration functions of several types of constructed oyster habitat in California using in situ methods to incorporate whole-habitat and environmental effects. 
-More precice methods of measuring bivalve filtration exsist (e.g. flume studies, biodeposition, particle clearance), but they compromise the ability to incorporate the dynamic environmental and biological conditions that exsist in actual oyster habitats. 
+More precice methods of measuring bivalve filtration exsist (e.g. flume studies @Harsh1999, biodeposition, particle clearance), but they compromise the ability to incorporate the dynamic environmental and biological conditions that exsist in actual oyster habitats. 
 Our in situ methods, while inherently incorporating the affects of environmental and biological conditions have several assumptions important in contextualizing our findings. 
 First, we assumed that the water flowed linearly from the upstream insturment to the downstream instrument, thus both instruments are measuring the same uninterupted mass of water. 
 Before taking any data, we observed and characterized the water dynamics at each site using Rhodamine WT. 
@@ -75,14 +75,17 @@ However, Rhodamine WT floureces in the wavelength range that the chl $\alpha$ se
 Second, we assumed that water depth and velocity remained constant through the trial and habitat. 
 Both depth and velocity were measured several times through out trials and averaged for calculation simplicity. 
 Third, we assumed a well mixed water column.
+All experimental trials were conducted at a depth less than 0.9 m (Table 1), San Rafael was recorded at the deepest depth because of the vertical relief of the oyster reefs, all other sites were less than 0.5 m.
+Water dynamics in shallow estuaries often mixes water column "eliminating stratification of chlorophyll (Holligan et al. 1984 cited in @Judge1993), providing consistently suspended food to bivalve filter feeders [Officer 1982 & Fredett 1989 in @@Harsh1999; olligan et al. 1984 cited in @Judge1993] and eliminates possible food depletion to downstream animals. 
 Fluid dynamics are highly complex, and can vary along the depth profile and across oyster habitat. 
-Texture of habitat leads to varied hydrodynamics and mixing (Harsh & Luckenback 1999)
+Texture of habitat leads to varied hydrodynamics and particle redistribution in the water column (Harsh & Luckenback 1999)
 
 
 ## Extra From Intro
 
+@Harsh1999's flume study using varing flow speeds and *C. virginica* found that filtration rates were generally similar at less than 6cm/s, and "more negative rates > 6cm/s.
 Slow flow can lead to food depletion to downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
-Higher flows can redistribute particles throughout the water column replenishing food for bivalve filter feeders ( Officer 1982 & Fredett 1989 in Harsh & Lauckenbach1999)
+Vertical mixing can redistribute particles throughout the water column replenishing food for bivalve filter feeders ( Officer 1982 & Fredett 1989 in Harsh & Lauckenbach1999)
 Water dynamics in shallow estuaries often mixes water column "eliminating stratification of chlorophyll (Holligan et al. 1984 cited in @Judge1993).
 Deeper waters might limit the access that benthic bivalves have to food (citations in @Ruesink2005).
 Orientation of oyster relative to flow effect feeding behavior [@Grizzle1992; @Harsh1999].
