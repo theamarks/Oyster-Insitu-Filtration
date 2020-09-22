@@ -88,12 +88,14 @@ In addition, Harsh and Luckenbach (-@Harsh1999) found that the texture of oyster
 Our water velocities were relatively slow, and at risk for uneven food availability across the habitat (Monismith et al 1990 in @Harsh1999).
 However, the water dynamics in shallow estuaries often mix the wate rcolumn, amelerating chlorophyll stratification (Holligan et al. 1984 cited in @Judge1993) (Add Officer 1982 & Fredett 1989 in @Harsh1999?)
 
+Habitat Clearance Rates differ from individual bivalve clearance rates, as they inherently include variables that complicate individual filtration models. 
+Bivalve oreientation relative to water flow direcction can affect individual filtration rates (citations).
+Bivalves growing in a natural community are position every which way. While flow firection and speed may inhibit some individuals or species feeding, others may be more optimally positioned. 
+By measuring the whole habiatt, we are incorporating and averaging individual bivalve's feeding responses to environmentals conditions, and resolve the issue of expanding individual filtration rates to habitat leverls (see Cranford et al. 2011).
+
 All experimental trials were conducted at a depth less than 0.9 m (Table 1), San Rafael was recorded at the deepest depth because of the vertical relief of the oyster reefs, all other sites were less than 0.5 m.
 
 ### Control vs. Oyster habitat stats
-
-
-
 
 
 ## Extra From Intro
