@@ -642,7 +642,7 @@ p.val
 
 Filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two-sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
 The Random Forest model that included all filtration and control trials indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively (DO I Need these relative importance numbers if the point is to determine the diff between experiment and control?).
-Filtration and control trials adjusted by the Random Forest model were not significantly different (two-sample t(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, p = `r round(t_test_adj$p.value, digits = 3)`).
+Filtration and control trials adjusted by the Random Forest model were not significantly different (two-sample t(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, p = `r round(t_test_adj$p.value, digits = 3)`); our limited sample size inhibits statistical signal detection.
 
 ### Variables Affecting HCR
 
@@ -677,7 +677,7 @@ Bays have distinct TPM signatures that do not overlap (Figure \ref{TPM_OC_models
 Northern San Francisco Bay (San Rafael site) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(SR_TPM_OC)`, SD = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`, and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(MB_TPM_OC)`, SD = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`).
 Newport Bay (Deanza and Shellmaker sites) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),3)` mg/L (n = `r nrow(NP_combo_TPM_OC)`, SD = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
 
-```{r TPM_OC_models, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=6, out.width="70%, warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are missing TPM data because of filter processing errors. \\label{TPM_OC_models}"}
+```{r TPM_OC_models, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.asp=0.618, fig.width=6, out.width="70%", warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are missing TPM data because of filter processing errors. \\label{TPM_OC_models}"}
 ############ Linear Model
 OC_TPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM_mg_L)
 #summary(OC_TPM_LM)
@@ -1106,7 +1106,7 @@ summary(Oly_DTW2_lm)
 # R^2: 0.5042
 ```
 
-```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%, fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. \\label{Oly_DTW_SH_out_rmd_Trans}"}
+```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%", fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. \\label{Oly_DTW_SH_out_rmd_Trans}"}
 
 ### y ~ log(x) model ####
 Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
