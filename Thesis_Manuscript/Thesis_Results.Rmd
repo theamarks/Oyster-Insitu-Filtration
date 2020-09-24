@@ -6,6 +6,7 @@ header-includes:
 - \doublespacing
 - \usepackage{rotating}
 - \usepackage{booktabs}
+- \usepackage{makecell}
 - \usepackage{gensymb}
 output: 
   pdf_document:
@@ -293,7 +294,7 @@ FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
 ### Summary Table Here - Still broken
 
 
-```{r Final_Summary_table, include=FALSE, results='asis'}
+```{r Final_Summary_table, eval=FALSE, include=FALSE, results='asis'}
 
 #fig.cap="A summary table reporting every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively. \\label{Final_Summary_table}",
 
@@ -676,7 +677,7 @@ Bays have distinct TPM signatures that do not overlap (Figure \ref{TPM_OC_models
 Northern San Francisco Bay (San Rafael site) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(SR_TPM_OC)`, SD = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`, and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(MB_TPM_OC)`, SD = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`).
 Newport Bay (Deanza and Shellmaker sites) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),3)` mg/L (n = `r nrow(NP_combo_TPM_OC)`, SD = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
 
-```{r TPM_OC_models, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8,warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are missing TPM data because of filter processing errors. \\label{TPM_OC_models}"}
+```{r TPM_OC_models, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=6, out.width="70%, warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are missing TPM data because of filter processing errors. \\label{TPM_OC_models}"}
 ############ Linear Model
 OC_TPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM_mg_L)
 #summary(OC_TPM_LM)
@@ -747,11 +748,11 @@ logOC_logTPM_graph <- ggplot((Avg_TPM_summary_table), aes(Avg_TPM_mg_L, Avg_OC_R
   theme_classic() +
   guides(color = FALSE) +
   ylim(0,0.5) +
-  annotate("text", x = 60, y = 0.3, label = "log(y) ~ log(x)") +
+  #annotate("text", x = 60, y = 0.3, label = "log(y) ~ log(x)") +
   labs(x = TPM_Label,
        y = "Organic Content (ratio)") +
   guides(fill = FALSE) +
-    ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+    ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..rr.label.., ")", sep ="")),
                formula = logy_logx_formula,
                eq.x.rhs = (" ln(x)"), 
                eq.with.lhs = ("ln(y) =="),
@@ -759,7 +760,7 @@ logOC_logTPM_graph <- ggplot((Avg_TPM_summary_table), aes(Avg_TPM_mg_L, Avg_OC_R
                label.x = "right",
                label.y = "top")
 
-grid.arrange(OC_TPM_graph, OC_logTPM_graph, logOC_logTPM_graph, nrow = 2)
+logOC_logTPM_graph
 
 
 
@@ -769,6 +770,7 @@ grid.arrange(OC_TPM_graph, OC_logTPM_graph, logOC_logTPM_graph, nrow = 2)
 #summary(OC_TPM_LM) # R2: 0.3309
 #summary(OC_logTPM_LM) # R2: 0.2701
 #summary(logOC_logTPM_LM) # R2: 0.3594
+
 ```
 
 ```{r}
