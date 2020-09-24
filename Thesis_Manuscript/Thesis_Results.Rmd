@@ -726,12 +726,18 @@ OC_logTPM_graph <- ggplot((Avg_TPM_summary_table), aes(Avg_TPM_mg_L, Avg_OC_Rati
   # geom_abline(aes(intercept=0, slope=1)) +
   scale_color_manual(values = Site_colors) +
   theme_classic() +
-  annotate("text", x = 60, y = 0.3, label = "y ~ log(x)") +
+  #annotate("text", x = 60, y = 0.3, label = "y ~ log(x)") +
   guides(color = FALSE) +
   ylim(0,0.5) +
   labs(x = TPM_Label,
        y = "Organic Content (ratio)") +
-  guides(fill = FALSE)
+  guides(fill = FALSE) +
+    ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+               formula = y_logx_fomula,
+               eq.x.rhs = (" ln(x)"),
+               parse = TRUE,
+               label.x = "right",
+               label.y = "top")
 
 ########## Log-log model 
 logOC_logTPM_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM_mg_L))
@@ -763,59 +769,10 @@ logOC_logTPM_graph <- ggplot((Avg_TPM_summary_table), aes(Avg_TPM_mg_L, Avg_OC_R
 logOC_logTPM_graph
 
 
-
-# 
-
-# compare models
+# compare transformation models
 #summary(OC_TPM_LM) # R2: 0.3309
 #summary(OC_logTPM_LM) # R2: 0.2701
 #summary(logOC_logTPM_LM) # R2: 0.3594
-
-```
-
-```{r}
-y_logx_fomula <- y ~ log(x)
-
-############ Y ~ log(x)
-OC_logTPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM_mg_L))
-#summary(OC_logTPM_LM)
-#par(mfrow=c(2,2))
-#plot(OC_logTPM_LM)
-# Leverage Statistics - plots index of parameter elements against their leverage on the model
-# plot(hatvalues(OC_logTPM_all_LM)) 
-# identifies the index of the largest element of a vector
-# which.max(hatvalues(OC_logTPM_all_LM))
-
-# create range of values to predict with model
-TPM_newrange <- data.frame(Avg_TPM_mg_L = seq(from = 0, to = 80, by = 0.001))
-# predict alone gives log(y) values, exponentiate y to get regular values with exp()
-logTPM_Pred <- data.frame(pred_OC = predict(OC_logTPM_LM, newdata = TPM_newrange))
-pred_logTPM_df <- data.frame(TPM_newrange, logTPM_Pred)
-
-# Testing function to extract lm model
-# equatiomatic::extract_eq(FR_logTPM_lm, use_coefs = T)
-
-OC_logTPM_graph <- ggplot((Avg_TPM_summary_table), aes(Avg_TPM_mg_L, Avg_OC_Ratio)) +
-  geom_line(data = pred_logTPM_df, aes(x = Avg_TPM_mg_L, y = pred_OC)) +
-  geom_point(aes(color = Site)) +
-  # geom_abline(aes(intercept=0, slope=1)) +
-  scale_color_manual(values = Site_colors) +
-  theme_classic() +
-  annotate("text", x = 60, y = 0.3, label = "y ~ log(x)") +
-  guides(color = FALSE) +
-  ylim(0,0.5) +
-  labs(x = TPM_Label,
-       y = "Organic Content (ratio)") +
-  guides(fill = FALSE) +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = y_logx_fomula,
-               eq.x.rhs = (" ln(x)"),
-               parse = TRUE,
-               label.x = "right",
-               label.y = "top")
-
-OC_logTPM_graph 
-
 
 ```
 
