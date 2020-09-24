@@ -1087,7 +1087,26 @@ Oly_DTW_SL_model <- function(length_mm) {length_mm*Oly_DTW_SL_coef[[2]] + Oly_DT
 ```
 
 
-```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", warning=F, message=F, fig.asp=0.618, fig.width=8, fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. Possible transformations. \\label{Oly_DTW_SH_out_rmd_Trans}"}
+```{r Compare_NPD_DTW_SL_transformations, eval=FALSE, include=FALSE}
+
+Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
+summary(Oly_DTW_lm)
+# R^2: 0.4914
+
+Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
+summary(Oly_LogxDTW_lm)
+# R^2: 0.4289
+
+Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
+summary(Oly_LogDTW_lm)
+# R^2: 0.6772
+
+Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
+summary(Oly_DTW2_lm)
+# R^2: 0.5042
+```
+
+```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="default", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%, fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. \\label{Oly_DTW_SH_out_rmd_Trans}"}
 
 ### y ~ log(x) model ####
 Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
@@ -1121,11 +1140,19 @@ Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight
   scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
   scale_x_continuous(breaks = c(0,10,20,30,40,50))+
-  annotate("text", x = 10, y = 0.2, label = "log(y) ~ x")+
+  #annotate("text", x = 10, y = 0.2, label = "log(y) ~ x")+
   labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)') 
-  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-   #                    aes(label = sprintf("%i observations", stat(count))))
+       y = 'Dry Tissue Weight (g)') +
+    ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..rr.label.., ")", sep ="")),
+               formula = logy_x_formula,
+              # eq.x.rhs = (" ln(x)"), 
+               eq.with.lhs = ("ln(y) =="),
+               parse = TRUE,
+               label.x = "left",
+               label.y = "top")
+
+
+Oly_shell_DTW_logline
 
 ### log(y) ~ log(x) model ###
 Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
@@ -1164,8 +1191,8 @@ Oly_SH_DTW2_graph <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g))
   #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
    #                    aes(label = sprintf("%i observations", stat(count))))
 
-OlySH_DTW_Trans_graphs <- grid.arrange(Oly_SH_logxDTW, Oly_shell_DTW_logline, 
-                                        Oly_shell_logDTW, Oly_SH_DTW2_graph, nrow = 2)
+#OlySH_DTW_Trans_graphs <- grid.arrange(Oly_SH_logxDTW, Oly_shell_DTW_logline, 
+                                       # Oly_shell_logDTW, Oly_SH_DTW2_graph, nrow = 2)
 
 #plot(OlySH_DTW_Trans_graphs)
 
