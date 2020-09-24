@@ -81,6 +81,10 @@ Master_analysis_table <- arrange(transform(Master_analysis_table, Site = factor(
 Filtration_only_data <- Master_analysis_table %>% 
   filter(Experiment %in% c("Filtration"))
 
+# Negative Control Trials only 
+Control_only_data <- Master_analysis_table %>% 
+  filter(grepl("Neg*", Master_analysis_table$Experiment))
+
 # Filtration trials with Outliers removed - same syntax used by Dr. Nichols
 Filter_only_outRmd_data <- Filtration_only_data %>% 
   filter(abs(pcnt_Chl_rmvd) < 50)
@@ -91,33 +95,29 @@ SR_filter_sum <- Filter_only_outRmd_data %>%
   filter(Site %in% c("San Rafael"),
          Experiment %in% c("Filtration")) 
 # SR Negative control data
-SR_NC_sum <- Filter_only_outRmd_data %>% 
-  filter(Site %in% c("San Rafael"),
-         grepl("Neg Control*", Experiment)) 
+SR_NC_sum <- Control_only_data %>% 
+  filter(Site %in% c("San Rafael"))
 
 MB_filter_sum <- Filter_only_outRmd_data %>% 
   filter(Site %in% c("Morro Bay"),
          Experiment %in% c("Filtration"))
 
-MB_NC_sum <- Filter_only_outRmd_data %>% 
-  filter(Site %in% c("Morro Bay"),
-         grepl("Neg Control*", Experiment)) 
+MB_NC_sum <- Control_only_data %>% 
+  filter(Site %in% c("Morro Bay"))
 
 NPD_filter_sum <- Filter_only_outRmd_data %>% 
   filter(Site %in% c("Deanza"),
          Experiment %in% c("Filtration"))
 
-NPD_NC_sum <- Filter_only_outRmd_data %>% 
-  filter(Site %in% c("Deanza"),
-         grepl("Neg Control*", Experiment)) 
+NPD_NC_sum <- Control_only_data %>% 
+  filter(Site %in% c("Deanza")) 
 
 NPSM_filter_sum <- Filter_only_outRmd_data %>% 
   filter(Site %in% c("Shellmaker"),
          Experiment %in% c("Filtration"))
 
-NPSM_NC_sum <- Filter_only_outRmd_data %>% 
-  filter(Site %in% c("Shellmaker"),
-         grepl("Neg Control*", Experiment)) 
+NPSM_NC_sum <- Control_only_data %>% 
+  filter(Site %in% c("Shellmaker")) 
 
 # Filtration trials only - exclude Negative controls & Percent Chl removed greater than 0
 ### Important Note ## When Percent Chl removed is positive, so is L/hr/m^2 and vice visa. 
@@ -221,7 +221,7 @@ Deanza had the most field days with 10 filtration trials and 3 controls all cond
 Percent Chl $\alpha$ removed at San Rafael averaged `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (n = `r nrow(SR_filter_sum)`, SD = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`; Figure \ref{ChlRmd_Site_boxplot}) and recorded `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
 Morro Bay averaged `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% Chl $\alpha$ removed (n = `r nrow(MB_filter_sum)`, SD = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and measured `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
 At Deanza Chl $\alpha$ removed averaged `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (n = `r nrow(NPD_filter_sum)`, SD =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and during three consecutive control trials averaged `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removed (n = `r nrow(NPD_NC_sum)`, SD =  `r round(sd(NPD_NC_sum$pcnt_Chl_rmvd))`).
-Shellmaker averaged `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)`\% Chl $\alpha$ removed (n = `r nrow(NPSM_filter_sum)`, SD = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(NPSM_NC_sum$pcnt_Chl_rmvd,1)`\% Chl $\alpha$ removal in the single control. 
+Shellmaker averaged `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% Chl $\alpha$ removed (n = `r nrow(NPSM_filter_sum)`, SD = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(NPSM_NC_sum$pcnt_Chl_rmvd,1)`\% Chl $\alpha$ removal in the single control. 
 
 ```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.show="hold", fig.asp=0.618, out.width="70%", message= F, fig.cap="Percent chlorophyll removed during filtration trials. Each data point is an the average value from the experiment. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA that contained Shellmaker and Deanza sites (both restored \\textit{O. lurida} shell beds) Extreme values excluded from analysis are not shown. \\label{ChlRmd_Site_boxplot}"}
 
@@ -254,12 +254,12 @@ ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
 
 ### Habitat Clearance Rates 
 
-HCR at Ran Rafael average `r round(mean(SR_filter_sum$L_hr_m2),1)` Lhr^-1^m^2^ (n = `r nrow(SR_filter_sum)`, SD = `r round(sd(SR_filter_sum$L_hr_m2),1)`; Figure \ref{FR_Site_boxplot}). 
-Morro Bay averaged `r round(mean(MB_filter_sum$L_hr_m2),1)` Lhr^-1^m^2^ (n = to `r nrow(MB_filter_sum)`, SD = `r round(sd(MB_filter_sum$L_hr_m2),1)`).
-Shellmaker HCR averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` Lhr^-1^m^2^ (n = `r nrow(NPSM_filter_sum)`, SD = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`).
-Deanza's HCR average was `r round(mean(NPD_filter_sum$L_hr_m2),1)` Lhr^-1^m^2^ (n = `r nrow(NPD_filter_sum)`, SD = `r round(sd(NPD_filter_sum$L_hr_m2),1)`).
+HCR at Ran Rafael average `r round(mean(SR_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (n = `r nrow(SR_filter_sum)`, SD = `r round(sd(SR_filter_sum$L_hr_m2),1)`; Figure \ref{FR_Site_boxplot}). 
+Morro Bay averaged `r round(mean(MB_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (n = to `r nrow(MB_filter_sum)`, SD = `r round(sd(MB_filter_sum$L_hr_m2),1)`).
+Shellmaker HCR averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (n = `r nrow(NPSM_filter_sum)`, SD = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`).
+Deanza's HCR average was `r round(mean(NPD_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (n = `r nrow(NPD_filter_sum)`, SD = `r round(sd(NPD_filter_sum$L_hr_m2),1)`).
 Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, and `r round(NPSM_NC_sum$L_hr_m2,1)` Lhr^-1^m^2^ for San Rafael, Morro Bay, and Shellmaker respectively.
-Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` Lhr^-1^m^2^ (n = `r nrow(NPD_NC_sum$L_hr_m2)`, SD = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
+Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` Lhr^-1^m^-2^ (n = `r nrow(NPD_NC_sum$L_hr_m2)`, SD = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
 
 ```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="The habitat clearance rate during filtration trials. Each data point is an the average value from the experiment. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA that contained Shellmaker and Deanza sites (both restored \\textit{O. lurida} shell beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
 ### Filtration by site (Filtration Trials only)
@@ -642,7 +642,7 @@ p.val
 
 Filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two-sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
 The Random Forest model that included all filtration and control trials indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively (DO I Need these relative importance numbers if the point is to determine the diff between experiment and control?).
-Filtration and control trials adjusted by the Random Forest model were not significantly different (two-sample t(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, p = `r round(t_test_adj$p.value, digits = 3)`); our limited sample size inhibits statistical signal detection.
+Filtration and control trials adjusted by the Random Forest model were not significantly different (two-sample t(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, p = `r round(t_test_adj$p.value, digits = 3)`); however, we expect our limited sample size inhibits statistical signal detection.
 
 ### Variables Affecting HCR
 
