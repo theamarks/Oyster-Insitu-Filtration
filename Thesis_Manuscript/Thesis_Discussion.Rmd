@@ -125,6 +125,7 @@ Slow velocity, although possibly ideal for individual filtration [@Grizzle1992],
 On the other hand, both higher flows and shallow estuaries can redistribute particles throughout the water column replenishing food for bivalve filter feeders (Officer 1982 & Fredett 1989 in Harsh & Lauckenbach1999) (Holligan et al. 1984 cited in @Judge1993)
 In addition, deeper water might limit benthic bivalves access to food (citations in Ruesink et al. 2005), while the orientation of oysters relative to the waterfowl may effect feeding behavior[@Grizzle1992; @Harsh1999].
 
+```{r Extra_Text, eval=FALSE, include=FALSE}
 ## Long Form Introduction  --> Save for discussion
 
 ### Natural History 
@@ -210,3 +211,4 @@ Native O. lurida and non-native C. gigas may overlap in ecological services like
 Water residence time, and the presence of aquaculture operations are other factors that will affect overall oyster filtration capacity. California bays typically have low average residence times, so zu Ermgassen, Gray, et al. (2013) speculate that oysters may only affect seston and phytoplankton concentrations in the back portions of such bays and estuaries where residence times increases, and thus where oysters and other filter feeders may impact water quality. Evidence from Wheat & Ruesink (2013) and Gray & Langdon (2017) suggests that C. gigas aquaculture operations located in the inner reaches of California’s bays and estuaries may play a role in returning filtration services lost from decimated O. lurida populations. 
 
 The Nature Conservancy (TNC) and the National Oceanic and Atmospheric Administration (NOAA) published a Manager's guide (zu Ermgassen et al. 2016) that includes several models to estimate the quantity of ecosystem services provided by restored oyster habitat. Filtration of *O. lurida* habitat is calculated using data from a single laboratory study (zu Ermgassen et al., 2013), while the eastern oyster (Crassostrea virginica) filtration model uses a combination of laboratory and in situ data. In situ filtration rates of *O. lurida* habitat are important to estimate filtration functions under complex environmental conditions often difficult to simulate in a laboratory setting. Gray and Langdon (2017) measured in situ filtration of isolated *O. lurida* in Yaquina Bay, Oregon, providing a foundation for estimating in situ *O. lurida* filtration rates. However, three factors important to filtration remain underexplored.
+```
