@@ -58,7 +58,7 @@ output_directory = "./output"
 createOutputDirectories()
 
 ##################### Read in Data from  project output ##########################
-Master_analysis_table <- fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
+All_data <- fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
 Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
 Density_directory = "./Data/bivalve_density_community"
 NPD_bivalves = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
@@ -67,7 +67,7 @@ Sbs_correction_data = fread(file.path('./output/6_Sbs_Corrections_Summary', "sbs
 
 ##################### Data #########################################
 # Remove San Diego filtration trial - not applicable to this analysis - different experimental set up
-Master_analysis_table <- Master_analysis_table %>% 
+Master_analysis_table <- All_data %>% 
   filter(!Site %in% c("San Diego"))
 
 # Order Sites by Latitude
@@ -447,18 +447,38 @@ Corr_Chl_diff_graph
 #install.packages('randomForest')
 #install.packages('adabag')
 
+Analysis_data <- Master_analysis_table %>% 
+    mutate(Date = mdy(Date),
+         L_hr_m2 = round(L_hr_m2),
+         pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1),
+         Temp_C_Up = round(Temp_C_Up, digits = 2),
+         Sal_ppt_Up = round(Sal_ppt_Up, digits = 1),
+         Turbidity_NTU_Up = round(Turbidity_NTU_Up, digits = 1),
+         Avg_TPM_mg_L = round(Avg_TPM_mg_L, digits = 4),
+         Avg_OC_Ratio = round(Avg_OC_Ratio, digits = 2),
+         Chl_ug_L_Up = round(Chl_ug_L_Up, digits = 1),
+         Chl_ug_L_Down = round(Chl_ug_L_Down, digits = 1),
+         avg_depth_m = round((avg_depth_cm/100), digits = 2),
+         d_bw_sondes_m = round(d_bw_sondes_m, digits = 1),
+         avg_m_sec = round(avg_m_hr/3600, 2)) %>%
+  dplyr::select(Site, Date, Experiment, Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, 
+          Avg_OC_Ratio, Chl_ug_L_Up, Chl_ug_L_Down, avg_depth_m, d_bw_sondes_m, avg_m_sec, 
+          pcnt_Chl_rmvd, L_hr_m2) %>% 
+ dplyr::arrange(Site, Date)
+  
+
 library(missForest)
 library(rpart)
 library(randomForest)
 library(adabag)
 
 # Imputation for 4 missing values (TPM & OC)
-temp1 = Final_table[,c(1,2,3)] # temporarily remove data labels for imputation
-temp2 = missForest(Final_table[,-c(1,2,3)])$ximp # Imputation of missing values
+temp1 = Analysis_data[,c(1,2,3)] # temporarily remove data labels for imputation
+temp2 = missForest(Analysis_data[,-c(1,2,3)])$ximp # Imputation of missing values
 test = cbind(temp1,temp2) # bing back data labels 
 
-dim(Final_table[,-c(1,2,3)]) # dimensions of data with labels removed (data only) 28 x 12 = 336 data cells
-num_NA_values <- sum(is.na(Final_table)) # 4 missing values
+dim(Analysis_data[,-c(1,2,3)]) # dimensions of data with labels removed (data only) 28 x 12 = 336 data cells
+num_NA_values <- sum(is.na(Analysis_data)) # 4 missing values
 
 ############### Filtration (adjusted) mud vs oyster #########################
 
