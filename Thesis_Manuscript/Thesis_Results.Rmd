@@ -73,6 +73,7 @@ Master_analysis_table <- All_data %>%
 
 # Order Sites by Latitude
 site_by_lat <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
+site_by_lat_abv <- c("SR", "MB", "NPSM", "NPD")
 
 # transform Site variable to factor and arange by Latitude
 Master_analysis_table <- arrange(transform(Master_analysis_table, Site = factor(Site,levels = site_by_lat)), Site)
@@ -326,6 +327,9 @@ Final_table <- Master_analysis_table %>%
                 Turbidity_NTU_Up, Avg_TPM_mg_L, Avg_OC_Ratio, Chl_ug_L_Up, avg_depth_m, 
                 d_bw_sondes_m, avg_m_sec) %>% 
  dplyr::arrange(Site, Date)
+
+# arrange by site latitude
+Final_table <- arrange(transform(Final_table, Site = factor(Site,levels = site_by_lat_abv)), Site)
 
 data_removed <- Final_table[c(13, 15, 19),] # name excluded data
 data_analysis <- Final_table[-c(13, 15, 19),] # remove excluded analysis data points
