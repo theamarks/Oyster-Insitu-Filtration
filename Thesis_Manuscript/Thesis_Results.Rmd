@@ -291,7 +291,7 @@ FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
 #plot(FR_pos_box)
 ```
 
-### Summary Table Here - Still broken
+### Summary Table Here 
 
 
 ```{r Final_Summary_table, eval=FALSE, include=FALSE, results='asis'}
@@ -305,7 +305,11 @@ FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
 # Organize & clean summary table data
 Final_table <- Master_analysis_table %>%
   mutate(Date = mdy(Date),
-         Experiment = gsub("Neg Control*", "Control", Master_analysis_table$Experiment),
+         Site = ifelse(Site == "San Rafael", "SR",
+                       ifelse(Site == "Morro Bay", "MB",
+                              ifelse(Site == "Shellmaker", "NPSM",
+                                     ifelse(Site == "Deanza", "NPD",  "Pattern Not Found")))),
+         Experiment = ifelse(grepl("Neg Control*", Master_analysis_table$Experiment), gsub("Neg Control*", "Ctrl", Master_analysis_table$Experiment), "Fltr"),
          L_hr_m2 = round(L_hr_m2),
          pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1),
          Temp_C_Up = round(Temp_C_Up, digits = 2),
@@ -318,9 +322,9 @@ Final_table <- Master_analysis_table %>%
          avg_depth_m = round((avg_depth_cm/100), digits = 2),
          d_bw_sondes_m = round(d_bw_sondes_m, digits = 1),
          avg_m_sec = round(avg_m_hr/3600, 2)) %>%
-  dplyr::select(Site, Date, Experiment, Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, 
-          Avg_OC_Ratio, Chl_ug_L_Up, avg_depth_m, d_bw_sondes_m, avg_m_sec, 
-          pcnt_Chl_rmvd, L_hr_m2) %>% 
+  dplyr::select(Site, Date, Experiment, pcnt_Chl_rmvd, L_hr_m2, Temp_C_Up, Sal_ppt_Up, 
+                Turbidity_NTU_Up, Avg_TPM_mg_L, Avg_OC_Ratio, Chl_ug_L_Up, avg_depth_m, 
+                d_bw_sondes_m, avg_m_sec) %>% 
  dplyr::arrange(Site, Date)
 
 data_removed <- Final_table[c(13, 15, 19),] # name excluded data
@@ -334,24 +338,24 @@ Latex_table_data <- rbind(data_analysis, data_removed) # add excluded data back 
 Latex_table_data$Date <- as.character(Latex_table_data$Date)
 colnames(Latex_table_data) <- c( "\\multicolumn{1}{p{1cm}}{\\centering Site}", 
                             "\\multicolumn{1}{p{1cm}}{\\centering Date}", 
-                            "\\multicolumn{1}{p{1cm}}{\\centering Experiment}", 
+                            "\\multicolumn{1}{p{1cm}}{\\centering Trial}", 
+                           "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{rmd} \\\ (\\%)}",
+                           "\\multicolumn{1}{p{1cm}}{\\centering HCR \\\ (L/hr/m^2)}",
                             "\\multicolumn{1}{p{1cm}}{\\centering Temp \\\ (\\si{\\degree}C)}",
-                            "\\multicolumn{1}{p{1cm}}{\\centering Salinity \\\ (ppt)} ", 
-                            "\\multicolumn{1}{p{1cm}}{\\centering Turbidity \\\ (NTU)}",
+                            "\\multicolumn{1}{p{1cm}}{\\centering Sal. \\\ (ppt)} ", 
+                            "\\multicolumn{1}{p{1cm}}{\\centering Turb. \\\ (NTU)}",
                             "\\multicolumn{1}{p{1cm}}{\\centering TPM \\\ (mg/L)}", 
                             "\\multicolumn{1}{p{1cm}}{\\centering OC \\\ (ratio)}", 
                             "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{up} \\\ (\\mu g/L)}", 
                            "\\multicolumn{1}{p{1cm}}{\\centering Depth \\\ (m)}",
-                           "\\multicolumn{1}{p{1cm}}{\\centering Distance \\\ (m)}",
-                           "\\multicolumn{1}{p{1cm}}{\\centering Velocity \\\ (m/s)}", 
-                           "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{rmd} \\\ (\\%)}",
-                           "\\multicolumn{1}{p{1cm}}{\\centering HCR \\\ (L/hr/m^2 )}")
+                           "\\multicolumn{1}{p{1cm}}{\\centering Dist. \\\ (m)}",
+                           "\\multicolumn{1}{p{1cm}}{\\centering Vel. \\\ (m/s)}")
 
 # create xtable
 sumtable_latex <- xtable(Latex_table_data, 
                          caption = "Whole-habitat in situ filtration and control trials across four California sites. Water quality values are upstream instrument averages. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. The three observations separated at the bottom are extreme values not included in the analysis.",
                          label = "tb:summary",
-                         align = "llllccccccccccr",
+                         align = "llllrrccccccccr",
                          type = "latex")
 
 print.xtable(sumtable_latex, 
@@ -363,7 +367,7 @@ print.xtable(sumtable_latex,
       comment = F,
       include.rownames = FALSE,
       timestamp = NULL,
-      size = "\\fontsize{7pt}{10pt}\\selectfont") # font size / line spacing 
+      size = "\\fontsize{10pt}{10pt}\\selectfont") # font size / line spacing 
 
 
 ####### Extra syntax #########
@@ -671,7 +675,8 @@ NP_combo_TPM_OC <- TPM_OC_Values %>%
 
 ### Seston Quantity and Quality
 
-Total Particulate Matter (TPM) is a weak predictor seston OC when sites are combined (Need to pick model, report here) (Figure \ref{TPM_OC_models}). 
+Total Particulate Matter (TPM) is a weak predictor seston OC when sites are combined (ln(y) = -1.19 - 0.179 ln(x), R*^2^*: 0.36) (Figure \ref{TPM_OC_models}). 
+***I don't think this graph equation is populating correctly. Doesn't match model summary output***
 This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collect the same way regardless of the trial. 
 Bays have distinct TPM signatures that do not overlap (Figure \ref{TPM_OC_models}), while OC remains relatively constant across bay.
 Northern San Francisco Bay (San Rafael site) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(SR_TPM_OC)`, SD = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`, and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(MB_TPM_OC)`, SD = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`).
@@ -1028,9 +1033,10 @@ Oly_combo_DTW_SL$legend <- fct_relevel(Oly_combo_DTW_SL$legend, "Yaquina", "Dean
 #fwrite(Data_For_Kevin, file = "Marks_Data_DTW_SL_Newport_Yaquina.csv")
 ```
 
-We found *O. lurida* shell length best predicted DTW in a log-log model (equation here, and need to determine best fit).
+At Deanza we found *O. lurida* shell length best predicted DTW in a natural log-linear model (ln(y) = -5.76 + 0.096x, R*^2^*= 0.74).
+***I don't think this graph equation is populating correctly. Doesn't match model summary output***
 *O. lurida* from different bays showed different allometric relationships? 
-How to compare two non-linear models that have different ranges? 
+Dr. Nichols is writing code to see if the two data sets can use same model, or if we need two site specific models. 
 
 ```{r Oly_DTW_SH_outlier_rmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', warning=F, message=F, fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) at two locations, Newport Bay, California (Zacherl unpublished data) and Yaquina Bay, Oregon (Gray unpublished data). The Newport Bay data was collected at the Deanza restoration site and outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
 
