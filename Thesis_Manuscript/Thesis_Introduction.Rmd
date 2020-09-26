@@ -44,6 +44,9 @@ This illustrates bivalve's highly variable feeding responses to natural conditio
 
 ### Research Questions
 
+The motivation of this study is to assess weather *O. lurida* habitat and *C. gigas* aquaculture on the US west coast contribute to filtration services using whole-habitat in situ methods developed by @Grizzle2006. 
+
+
 The motivation of this study is to determine the first ecologically and environmentally realistic clearance rates of restored *O. lurida* habitat and *C. gigas* aquaculture in California.
 Our research objectives were: 
 1) quantify the changes in water quality (temperature & salinity) and seston (chl $\alpha$, turbidity) as water traveled over oyster habitat; 
