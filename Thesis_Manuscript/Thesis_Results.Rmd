@@ -219,10 +219,10 @@ Deanza had the most field days with 10 filtration trials and 3 controls all cond
 
 ### Percent chlorophyll $\alpha$ removal
 
-Percent Chl $\alpha$ removed at San Rafael averaged `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (n = `r nrow(SR_filter_sum)`, SD = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`; Figure \ref{ChlRmd_Site_boxplot}) and recorded `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
-Morro Bay averaged `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% Chl $\alpha$ removed (n = `r nrow(MB_filter_sum)`, SD = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and measured `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
-At Deanza Chl $\alpha$ removed averaged `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (n = `r nrow(NPD_filter_sum)`, SD =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and during three consecutive control trials averaged `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removed (n = `r nrow(NPD_NC_sum)`, SD =  `r round(sd(NPD_NC_sum$pcnt_Chl_rmvd))`).
-Shellmaker averaged `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% Chl $\alpha$ removed (n = `r nrow(NPSM_filter_sum)`, SD = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(NPSM_NC_sum$pcnt_Chl_rmvd,1)`\% Chl $\alpha$ removal in the single control. 
+Percent Chl $\alpha$ removed at San Rafael averaged `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`; Figure \ref{ChlRmd_Site_boxplot}) and recorded `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
+Morro Bay averaged `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% Chl $\alpha$ removed (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and measured `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
+At Deanza Chl $\alpha$ removed averaged `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and during three consecutive control trials averaged `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removed (*N* = `r nrow(NPD_NC_sum)`, *SD* =  `r round(sd(NPD_NC_sum$pcnt_Chl_rmvd))`).
+Shellmaker averaged `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% Chl $\alpha$ removed (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(NPSM_NC_sum$pcnt_Chl_rmvd,1)`\% Chl $\alpha$ removal in the single control. 
 
 ```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.show="hold", fig.asp=0.618, out.width="70%", message= F, fig.cap="Percent chlorophyll removed during filtration trials. Each data point is an the average value from the experiment. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA that contained Shellmaker and Deanza sites (both restored \\textit{O. lurida} shell beds) Extreme values excluded from analysis are not shown. \\label{ChlRmd_Site_boxplot}"}
 
@@ -255,12 +255,12 @@ ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
 
 ### Habitat Clearance Rates 
 
-HCR at Ran Rafael average `r round(mean(SR_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (n = `r nrow(SR_filter_sum)`, SD = `r round(sd(SR_filter_sum$L_hr_m2),1)`; Figure \ref{FR_Site_boxplot}). 
-Morro Bay averaged `r round(mean(MB_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (n = to `r nrow(MB_filter_sum)`, SD = `r round(sd(MB_filter_sum$L_hr_m2),1)`).
-Shellmaker HCR averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (n = `r nrow(NPSM_filter_sum)`, SD = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`).
-Deanza's HCR average was `r round(mean(NPD_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (n = `r nrow(NPD_filter_sum)`, SD = `r round(sd(NPD_filter_sum$L_hr_m2),1)`).
+HCR at Ran Rafael average `r round(mean(SR_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$L_hr_m2),1)`; Figure \ref{FR_Site_boxplot}). 
+Morro Bay averaged `r round(mean(MB_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = to `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$L_hr_m2),1)`).
+Shellmaker HCR averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`).
+Deanza's HCR average was `r round(mean(NPD_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`).
 Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, and `r round(NPSM_NC_sum$L_hr_m2,1)` Lhr^-1^m^2^ for San Rafael, Morro Bay, and Shellmaker respectively.
-Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` Lhr^-1^m^-2^ (n = `r nrow(NPD_NC_sum$L_hr_m2)`, SD = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
+Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` Lhr^-1^m^-2^ (*N* = `r nrow(NPD_NC_sum$L_hr_m2)`, *SD* = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
 
 ```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="The habitat clearance rate during filtration trials. Each data point is an the average value from the experiment. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA that contained Shellmaker and Deanza sites (both restored \\textit{O. lurida} shell beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
 ### Filtration by site (Filtration Trials only)
@@ -640,9 +640,9 @@ p.val
 
 ### Oyster Habitat vs. Control 
 
-Filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two-sample t(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
-The Random Forest model that included all filtration and control trials indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively (DO I Need these relative importance numbers if the point is to determine the diff between experiment and control?).
-Filtration and control trials adjusted by the Random Forest model were not significantly different (two-sample t(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, p = `r round(t_test_adj$p.value, digits = 3)`); however, we expect our limited sample size inhibits statistical signal detection.
+Filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two-sample *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
+The Random Forest model that included all filtration and control trials indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively.
+Filtration and control trials adjusted by the Random Forest model were not significantly different (two-sample *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`); however, we expect our limited sample size inhibits statistical signal detection.
 
 ### Variables Affecting HCR
 
@@ -671,7 +671,7 @@ NP_combo_TPM_OC <- TPM_OC_Values %>%
 
 ### Seston Quantity and Quality
 
-```{r Seston_Models, include=FALSE}
+```{r TPM_OC_Models, include=FALSE}
 ### Linear Model 
 OC_TPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM_mg_L)
 #summary(OC_TPM_LM)
@@ -693,14 +693,14 @@ logOC_logTPM_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_
 logOC_logTPM_LM_sum <- summary(logOC_logTPM_LM)
 ```
 
-Total Particulate Matter (TPM) is a significant predictor of seston OC when sites are combined (ln(y) = `r round(coef(logOC_logTPM_LM_sum)[1,1],digits=2)` `r round(coef(logOC_logTPM_LM_sum)[2,1],digits=3)` ln(x), R*^2^* = 0.30. p = `r round(coef(logOC_logTPM_LM_sum)[2,4],digits = 3)` (Figure \ref{TPM_OC_models}). 
-***I don't think this graph equation is populating correctly. Doesn't match model summary output***
+Total Particulate Matter (TPM) is a significant predictor of seston OC when sites are combined (ln(y) = `r round(coef(logOC_logTPM_LM_sum)[1,1],digits=2)` `r round(coef(logOC_logTPM_LM_sum)[2,1],digits=3)` ln(x), R^2^ = 0.30. *p* = `r round(coef(logOC_logTPM_LM_sum)[2,4],digits = 3)` (Figure \ref{TPM_OC_model}). 
+***I don't think this graph equation is populating correctly. coef is actually log(coef)??***
 This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collect the same way regardless of the trial. 
 Bays have distinct TPM signatures that do not overlap (Figure \ref{TPM_OC_models}), while OC remains relatively constant across bay.
-Northern San Francisco Bay (San Rafael site) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(SR_TPM_OC)`, SD = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`, and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (n = `r nrow(MB_TPM_OC)`, SD = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`).
-Newport Bay (Deanza and Shellmaker sites) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),3)` mg/L (n = `r nrow(NP_combo_TPM_OC)`, SD = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
+Northern San Francisco Bay (San Rafael site) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`, and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`).
+Newport Bay (Deanza and Shellmaker sites) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),3)` mg/L (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
 
-```{r TPM_OC_models, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.asp=0.618, fig.width=6, out.width="70%", warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are missing TPM data because of filter processing errors. \\label{TPM_OC_models}"}
+```{r TPM_OC_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.asp=0.618, fig.width=6, out.width="70%", warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are missing TPM data because of filter processing errors. \\label{TPM_OC_model}"}
 ############ Linear Model
 
 OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ratio )) +
