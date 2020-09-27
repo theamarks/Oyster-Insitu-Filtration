@@ -636,7 +636,7 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
   # Add in simple logic variables from field notes
   filter_df_logicVar = filtration_sub_df_sum %>% 
     inner_join(one_water_vel_summary %>% 
-                 dplyr::select(Date, Site, Experiment, Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae), 
+                 dplyr::select(Date, Site, Experiment, Tide, Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae), 
                by = c("Date", "Site", "Experiment")
     )
   
