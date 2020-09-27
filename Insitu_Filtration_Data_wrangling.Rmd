@@ -308,7 +308,8 @@ NP_density_data = fread(file.path(NP_Density_directory, "Insitu_filter_NP_may18_
 #SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
 
 # Morro Bay total bivalve density - data from MBOC staff 
-MB_gigas_m2 = 600
+MB_gigas_m2 = 409
+# 180 oysters per bag, bag 55cm x 80cm, 100 bags /line, oysters ~3" length, 7 lines b/w sondes
 
 # Newport Deanza total bivalve Density - Data from Zacherl lab surveys 
 NP_excavation_quad_area = 0.0625
