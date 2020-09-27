@@ -691,9 +691,10 @@ OC_logTPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM_mg_L
 ### log - log model
 logOC_logTPM_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM_mg_L))
 logOC_logTPM_LM_sum <- summary(logOC_logTPM_LM)
+str(logOC_logTPM_LM_sum)
 ```
 
-Total Particulate Matter (TPM) is a significant predictor of seston OC when sites are combined (ln(y) = `r round(coef(logOC_logTPM_LM_sum)[1,1],digits=2)` `r round(coef(logOC_logTPM_LM_sum)[2,1],digits=3)` ln(x), R^2^ = 0.30. *p* = `r round(coef(logOC_logTPM_LM_sum)[2,4],digits = 3)` (Figure \ref{TPM_OC_model}). 
+Total Particulate Matter (TPM) is a significant predictor of seston OC when sites are combined (ln(y) = `r round(coef(logOC_logTPM_LM_sum)[1,1],digits=2)` `r round(coef(logOC_logTPM_LM_sum)[2,1],digits=3)` ln(x), R^2^ = `r  round(logOC_logTPM_LM_sum$r.squared,digits=2)` *p* = `r round(coef(logOC_logTPM_LM_sum)[2,4],digits = 3)` (Figure \ref{TPM_OC_model}). 
 ***I don't think this graph equation is populating correctly. coef is actually log(coef)??***
 This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collect the same way regardless of the trial. 
 Bays have distinct TPM signatures that do not overlap (Figure \ref{TPM_OC_models}), while OC remains relatively constant across bay.
@@ -1035,7 +1036,28 @@ Oly_combo_DTW_SL$legend <- fct_relevel(Oly_combo_DTW_SL$legend, "Yaquina", "Dean
 #fwrite(Data_For_Kevin, file = "Marks_Data_DTW_SL_Newport_Yaquina.csv")
 ```
 
-At Deanza we found *O. lurida* shell length best predicted DTW in a natural log-linear model (ln(y) = -5.76 + 0.096x, R*^2^*= 0.74).
+```{r Compare_NPD_DTW_SL_transformations, include=FALSE}
+
+Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
+summary(Oly_DTW_lm)
+# R^2: 0.4914
+
+Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
+summary(Oly_LogxDTW_lm)
+# R^2: 0.4289
+
+Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
+Oly_logDTW_lm_sum <- summary(Oly_LogDTW_lm)
+coef(Oly_logDTW_lm_sum)
+# R^2: 0.6772
+str(Oly_logDTW_lm_sum) ## displays all values in summary
+
+Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
+summary(Oly_DTW2_lm)
+# R^2: 0.5042
+```
+
+At Deanza we found a significant relationship between *O. lurida* shell length and DTW (ln(y) = `r round(coef(Oly_logDTW_lm_sum)[1,1],digits=2)` `r round(coef(Oly_logDTW_lm_sum)[2,1],digits=3)`x, R^2^ = `r round(Oly_logDTW_lm_sum$r.squared,digits=2)`, *p* = `r round(coef(Oly_logDTW_lm_sum)[2,4],digits=3)`).
 ***I don't think this graph equation is populating correctly. Doesn't match model summary output***
 *O. lurida* from different bays showed different allometric relationships? 
 Dr. Nichols is writing code to see if the two data sets can use same model, or if we need two site specific models. 
@@ -1079,45 +1101,9 @@ Oly_shell_DTW_NPD_Yaquina <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_
 plot(Oly_shell_DTW_NPD_Yaquina)
 ```
 
-```{r Linear_model_DTW_length, fig.height=6, fig.width=6,  include=FALSE}
-# Linear model to predict Dry Tissue weight (g) with Oly shell length (mm)
-## This model doesn't not makes sense. DTW will never be negative. DTW will approach zero as length decreases. 
-Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
-ols_regress(Oly_DTW_lm)
-
-# coeficent results from linear model
-Oly_DTW_SL_coef <- coef(Oly_DTW_lm)
-# y-intercept in [[1]] position
-Oly_DTW_SL_coef[[1]]
-# creat function from model results
-Oly_DTW_SL_model <- function(length_mm) {length_mm*Oly_DTW_SL_coef[[2]] + Oly_DTW_SL_coef[[1]]}
-
-```
-
-
-```{r Compare_NPD_DTW_SL_transformations, eval=FALSE, include=FALSE}
-
-Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
-summary(Oly_DTW_lm)
-# R^2: 0.4914
-
-Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
-summary(Oly_LogxDTW_lm)
-# R^2: 0.4289
-
-Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
-summary(Oly_LogDTW_lm)
-# R^2: 0.6772
-
-Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
-summary(Oly_DTW2_lm)
-# R^2: 0.5042
-```
-
-```{r Oly_DTW_SH_out_rmd_Trans, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%", fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. \\label{Oly_DTW_SH_out_rmd_Trans}"}
+```{r Oly_DTW_SH_outrmd_Graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%", fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. \\label{Oly_DTW_SH_out_rmd_Trans}"}
 
 ### y ~ log(x) model ####
-Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
 # range of Shell length values
 SH_newrange <- data.frame(length_mm = seq(from = 0, to = 53, by = 1))
 # create new dataframe with model predicted values from new data range above
@@ -1138,7 +1124,7 @@ Oly_SH_logxDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
    #                    aes(label = sprintf("%i observations", stat(count))))
 
 ### log(y) ~ x model ####
-Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
+
 pred_logDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_lm, newdata = SH_newrange)), length_mm = SH_newrange)
 
 Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) +
@@ -1163,7 +1149,7 @@ Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight
 Oly_shell_DTW_logline
 
 ### log(y) ~ log(x) model ###
-Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
+
 # predict values for model based on model and new range of data. exp() converts log() values to regular values
 pred_loglogDTW_SH <- data.frame(DTW_pred = exp(predict(Oly_LogDTW_logSH_lm, newdata = SH_newrange)), 
                                 length_mm = SH_newrange)
@@ -1182,7 +1168,7 @@ Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) 
    #                    aes(label = sprintf("%i observations", stat(count))))
 
 ### Y ~ x + x^2
-Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
+
 SH_newrange <- data.frame(length_mm = seq(from = 2, to = 52, by = 1))
 pred_DTW2_SH_df <- data.frame(tissue_dry_weight_g = predict(Oly_DTW2_lm, newdata = SH_newrange), SH_newrange)
 
