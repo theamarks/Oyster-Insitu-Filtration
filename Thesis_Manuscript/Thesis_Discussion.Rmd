@@ -10,6 +10,39 @@ indent: true
 
 # Discussion 
 
+
+### Restate Research Goals
+   
+The goal of this paper was to characterize the insitu filtration functions of several types of constructed oyster habitat in California that incorporate whole-habitat and environmental effects. 
+More precice methods of measuring bivalve filtration exsist (e.g. flume studies @Harsh1999, biodeposition, particle clearance), but they compromise the ability to incorporate the dynamic environmental and biological conditions that exsist in actual oyster habitats (citations?). 
+
+### Assumptions / Condition Description
+
+Our in situ methods, while inherently incorporating the affects of environmental and biological conditions, have several assumptions important in contextualizing our findings. 
+First, we assumed that water flowed linearly from the upstream insturment to the downstream instrument, thus both instruments measured the same uninterupted mass of water. 
+We observed and characterized the water dynamics at each site using Rhodamine WT before taking any data.
+Rhodamine WT is a flourecent dye commonly used in many water tracing studies (EPA etc.) and makes the direction of the water flow and its dillution visually clear.
+However, Rhodamine WT's flourecence is detected by the chl $\alpha$ sensors, so we could not use Rhodamine WT traces to check the water flow during experimental trials, and had to be sure pre-experiment Rhodamine WT traces completely cleared the study area. 
+Second, we assumed that water depth and velocity remained constant through the trial and habitat. 
+Both depth and velocity were measured several times through out a trial and averaged for calculation simplicity. 
+Third, we assumed a well mixed water column.
+
+Fluid dynamic are complex along rugous habitats - 'vertical gradients' in velocity and and particale concentration ((Nowell and Ju- mars 1984; Muschenheim 1987 in @Monismith1990). We positioned our instruments at the hight of the oyster habitat to measure address this habiat layer depletion (@Grizzle2008)
+
+Slow water flows causes suspended solids to settle out of the water column (separate citation needed) leading ot food depletion for downstream filter-feeders (Monismith et al 1990 only looked at siphon feeders in @Harsh1999).
+In addition, Harsh and Luckenbach (-@Harsh1999) found that the texture of oyster habitat causes varied hydrodynamics and particle redistribution in the water column.
+Our water velocities were relatively slow, and at risk for uneven food availability across the habitat (Monismith et al 1990 in @Harsh1999).
+However, the water dynamics in shallow estuaries often mix the wate rcolumn, amelerating chlorophyll stratification (Holligan et al. 1984 cited in @Judge1993) (Add Officer 1982 & Fredett 1989 in @Harsh1999?)
+
+Habitat Clearance Rates differ from individual bivalve clearance rates, as they inherently include variables that complicate individual filtration models. 
+Bivalve oreientation relative to water flow direcction can affect individual filtration rates (citations).
+Bivalves growing in a natural community are position every which way. While flow firection and speed may inhibit some individuals or species feeding, others may be more optimally positioned. 
+By measuring the whole habiatt, we are incorporating and averaging individual bivalve's feeding responses to environmentals conditions, and resolve the issue of expanding individual filtration rates to habitat leverls (see Cranford et al. 2011).
+
+All experimental trials were conducted at a depth less than 0.9 m (Table 1), San Rafael was recorded at the deepest depth because of the vertical relief of the oyster reefs, all other sites were less than 0.5 m.
+
+### Outline
+
 * Restate research goals
   + In situ whole-habitat measurements
     - filter feeding community - move beyond single-species estimates
@@ -67,38 +100,6 @@ indent: true
     - Season, scale of restoration, locations within estuary important to filtration services
     - unique to bay hydrodynamics - residence time 
     - effeciently direct retoration for filtration / food availability
-
-### Restate Research Goals
-   
-The goal of this paper was to characterize the insitu filtration functions of several types of constructed oyster habitat in California that incorporate whole-habitat and environmental effects. 
-More precice methods of measuring bivalve filtration exsist (e.g. flume studies @Harsh1999, biodeposition, particle clearance), but they compromise the ability to incorporate the dynamic environmental and biological conditions that exsist in actual oyster habitats (citations?). 
-
-### Assumptions / Condition Description
-
-Our in situ methods, while inherently incorporating the affects of environmental and biological conditions have several assumptions important in contextualizing our findings. 
-First, we assumed that water flowed linearly from the upstream insturment to the downstream instrument, thus both instruments measured the same uninterupted mass of water. 
-We observed and characterized the water dynamics at each site using Rhodamine WT before taking any data.
-Rhodamine WT is a flourecent dye commonly used in many water tracing studies (EPA etc.) and makes the direction of the water flow and its dillution visually clear.
-However, Rhodamine WT's flourecence is detected by the chl $\alpha$ sensors, so we could not use Rhodamine WT traces to check the water flow during experimental trials, and had to be sure pre-experiment Rhodamine WT traces completely cleared the study area. 
-Second, we assumed that water depth and velocity remained constant through the trial and habitat. 
-Both depth and velocity were measured several times through out a trial and averaged for calculation simplicity. 
-Third, we assumed a well mixed water column.
-
-Fluid dynamic are complex along rugous habitats - 'vertical gradients' in velocity and and particale concentration ((Nowell and Ju- mars 1984; Muschenheim 1987 in @Monismith1990). We positioned our instruments at the hight of the oyster habitat to measure address this habiat layer depletion (@Grizzle2008)
-
-Slow water flows causes suspended solids to settle out of the water column (separate citation needed) leading ot food depletion for downstream filter-feeders (Monismith et al 1990 only looked at siphon feeders in @Harsh1999).
-In addition, Harsh and Luckenbach (-@Harsh1999) found that the texture of oyster habitat causes varied hydrodynamics and particle redistribution in the water column.
-Our water velocities were relatively slow, and at risk for uneven food availability across the habitat (Monismith et al 1990 in @Harsh1999).
-However, the water dynamics in shallow estuaries often mix the wate rcolumn, amelerating chlorophyll stratification (Holligan et al. 1984 cited in @Judge1993) (Add Officer 1982 & Fredett 1989 in @Harsh1999?)
-
-Habitat Clearance Rates differ from individual bivalve clearance rates, as they inherently include variables that complicate individual filtration models. 
-Bivalve oreientation relative to water flow direcction can affect individual filtration rates (citations).
-Bivalves growing in a natural community are position every which way. While flow firection and speed may inhibit some individuals or species feeding, others may be more optimally positioned. 
-By measuring the whole habiatt, we are incorporating and averaging individual bivalve's feeding responses to environmentals conditions, and resolve the issue of expanding individual filtration rates to habitat leverls (see Cranford et al. 2011).
-
-All experimental trials were conducted at a depth less than 0.9 m (Table 1), San Rafael was recorded at the deepest depth because of the vertical relief of the oyster reefs, all other sites were less than 0.5 m.
-
-### Control vs. Oyster habitat stats
 
 
 ## Extra Text
