@@ -211,9 +211,8 @@ find_outlier <- function(data){
 
 # Results
 
-
 Filtration trials at San Rafael were conducted on the ebb and flood tides surrounding low tide.
-Three filtration trials were conducted on flood tides (2018/7/7, 2018/7/18, 2018/9/10), one on an ebb tide (2018/11/8), and one control trial on an ebb tide (2018/11/7).
+Three filtration trials were conducted on flood tides, one on an ebb tide, and one control trial on an ebb tide (Table 1).
 We recorded four filtration trials and one control at Morro Bay, all conducted on flood tides.
 At Shellmaker we recorded four filtration trials and one control on flood tides.
 Deanza had the most field days with 10 filtration trials and 3 controls all conducted on ebb tides. 
