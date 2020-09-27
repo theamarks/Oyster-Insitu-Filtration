@@ -671,7 +671,29 @@ NP_combo_TPM_OC <- TPM_OC_Values %>%
 
 ### Seston Quantity and Quality
 
-Total Particulate Matter (TPM) is a weak predictor seston OC when sites are combined (ln(y) = -1.19 - 0.179 ln(x), R*^2^*: 0.36) (Figure \ref{TPM_OC_models}). 
+```{r Seston_Models, include=FALSE}
+### Linear Model 
+OC_TPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM_mg_L)
+#summary(OC_TPM_LM)
+#par(mfrow=c(2,2))
+#plot(OC_TPM_LM)
+
+### linear - log model
+OC_logTPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM_mg_L))
+#summary(OC_logTPM_LM)
+#par(mfrow=c(2,2))
+#plot(OC_logTPM_LM)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(OC_logTPM_all_LM)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(OC_logTPM_all_LM))
+
+### log - log model
+logOC_logTPM_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM_mg_L))
+logOC_logTPM_LM_sum <- summary(logOC_logTPM_LM)
+```
+
+Total Particulate Matter (TPM) is a significant predictor of seston OC when sites are combined (ln(y) = `r round(coef(logOC_logTPM_LM_sum)[1,1],digits=2)` `r round(coef(logOC_logTPM_LM_sum)[2,1],digits=3)` ln(x), R*^2^* = 0.30. p = `r round(coef(logOC_logTPM_LM_sum)[2,4],digits = 3)` (Figure \ref{TPM_OC_models}). 
 ***I don't think this graph equation is populating correctly. Doesn't match model summary output***
 This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collect the same way regardless of the trial. 
 Bays have distinct TPM signatures that do not overlap (Figure \ref{TPM_OC_models}), while OC remains relatively constant across bay.
@@ -680,10 +702,6 @@ Newport Bay (Deanza and Shellmaker sites) TPM averaged `r round(mean(NP_combo_TP
 
 ```{r TPM_OC_models, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.asp=0.618, fig.width=6, out.width="70%", warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are missing TPM data because of filter processing errors. \\label{TPM_OC_models}"}
 ############ Linear Model
-OC_TPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM_mg_L)
-#summary(OC_TPM_LM)
-#par(mfrow=c(2,2))
-#plot(OC_TPM_LM)
 
 OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ratio )) +
   geom_smooth(method = lm, se = F, color = 'grey50') +
@@ -703,15 +721,6 @@ OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ra
                label.y = "top")
 
 ############ Y ~ log(x)
-OC_logTPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM_mg_L))
-#summary(OC_logTPM_LM)
-#par(mfrow=c(2,2))
-#plot(OC_logTPM_LM)
-# Leverage Statistics - plots index of parameter elements against their leverage on the model
-# plot(hatvalues(OC_logTPM_all_LM)) 
-# identifies the index of the largest element of a vector
-# which.max(hatvalues(OC_logTPM_all_LM))
-
 # create range of values to predict with model
 TPM_newrange <- data.frame(Avg_TPM_mg_L = seq(from = 0, to = 80, by = 0.001))
 # predict alone gives log(y) values, exponentiate y to get regular values with exp()
@@ -741,9 +750,6 @@ OC_logTPM_graph <- ggplot((Avg_TPM_summary_table), aes(Avg_TPM_mg_L, Avg_OC_Rati
                label.y = "top")
 
 ########## Log-log model 
-logOC_logTPM_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM_mg_L))
-#summary(logOC_logTPM_LM)
-
 loglogTPM_Pred <- data.frame(pred_OC = exp(predict(logOC_logTPM_LM, newdata = TPM_newrange)))
 pred_loglogTPM_df <- data.frame(TPM_newrange, loglogTPM_Pred)
 
