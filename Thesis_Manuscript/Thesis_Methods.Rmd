@@ -48,6 +48,7 @@ Depth measurements were recorded at each sonde housing at the beginning and end 
 The sondes recorded measurements every 1 second, and trials lasted as long as field conditions were appropriate; anywhere from 5 and 30 minutes. 
 Control trials used the same set up, but the instruments were positioned over a bare mudflat adjacent to the oyster habitat.
 Detailed notes of all field events and disturbances were recorded with a watch synced to the sondes' internal clocks.
+Field work was conducted from February 2018 to June 2019 and measured 22 filtration trials and 6 control trials.
 
 ### Chlorophyll $\alpha$ Corrections
 In addition to the filtration and control trials, two side-by-side trials were conducted before and after the experimental tial to record and correct any chlorophyll $\alpha$ sensor differences.
