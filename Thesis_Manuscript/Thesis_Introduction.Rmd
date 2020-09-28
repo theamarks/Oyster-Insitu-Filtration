@@ -12,15 +12,16 @@ indent: true
 
 # Introduction
 
-The Olympia oyster (*Ostrea lurida*) is a former foundation species in estuaries along the Pacific North American Coast that autogeneously provided complex three-dimensional habitat [@Dayton1972] used by a variety of invertebrates, fishes, and birds [@Kimbro2006; @Ramsey2012; @Coen2007; @Peterson2003].
+The Olympia oyster (*Ostrea lurida*) is a former foundation species in estuaries along the Pacific North American Coast that autogeneously provided complex three-dimensional habitat [@Dayton1972].
+The shells of living and dead oysters provide habitat for invertebrates across trophic levels [@Kimbro2006; @Rodney2006], nursery/refuge habitat for fishes, and feeding habitat for birds [@Ramsey2012; @Coen2007; @Peterson2003].
 *O. lurida* and many of the invertebrates that recruit to the oyster habitat (i.e. mussels, tunicates, scallops, and sponges) are suspension feeders that remove organic and inorganic particles from the water column (seston) and deposit unused material in the benthos [@Baird1989; @Dame1999]. This feeding activity increases water clarity [@Newell2004b; @Grizzle2008; @Grizzle2018] and enriches benthic sediments (need citations) useful to benthic primary producers like seagrasses [@Peterson1999].
 Overfishing in concert with destructive fishing practices [@Kirby2004], introduction of non-native species [@Bonnot1935], pollution, and excessive sedimentation [@Gilbert1917; @Lotze2006; @Nelson1909] decimated *O. lurida* populations to less than 10% of historical abundances in parts of the Pacific Northwest, and to less than 1% in the rest of its geographic distribution [@Beck2011; @ZuErmgassen2012].
 The extreme reduction of native *O. lurida* abundances is coupled with the loss of estuarine habitat structure, and water filtration functions.
 Restoring these ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
 
-***Beter Transition - Importance of filtration***
-***Motivate why C. gigas is important to measure***
-***Motivate why shell length X DTW relationship is important***
+***Beter Transition - Importance of filtration*** --> biochemical processing, sequester N & P, provide nutrients to other trophic levels - nutrient connector from water column, to benthos, to grazers, to ominvores/ carnivores
+***Motivate why C. gigas is important to measure*** --> Now dominate cultured species in West coast bays, shown to moderate chlorophyll top-down (Wheat & Ruesink 2013)
+***Motivate why shell length X DTW relationship is important*** --> important to estimate biomass of habitats to contextualize measured clearance rates. Restoration projects may be resistant to sacrifice organisms & time consumping to directly measure. Estimate through species specific shell length measurements. 
 
 ### Single-species Research
 
