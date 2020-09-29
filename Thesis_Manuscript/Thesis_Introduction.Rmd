@@ -12,7 +12,7 @@ indent: true
 
 # Introduction
 
-The Olympia oyster (*Ostrea lurida*) is a former foundation species in estuaries along the Pacific North American Coast that autogeneously create complex three-dimensional habitat [@Dayton1972].
+The Olympia oyster (*Ostrea lurida*) is a former foundation species in estuaries along the North American Pacific Coast (NAPC) that autogeneously create complex three-dimensional habitat [@Dayton1972].
 The shells of living and dead oysters provide habitat for a variety of invertebrates [@Kimbro2006; @Ramsey2012; @Rodney2006], nursery and refuge habitat for fishes [@Coen2007; @Peterson2003; @Stunz2010], and feeding habitat for birds [@Galtsoff1929; Boyer et al. 2016 waiting for ILL copy].
 *O. lurida* and the bivalves recruited to oyster habitat are suspension feeders that remove particulate matter (seston) from the water column and deposit mucus-bound feces and pseudofeces (i.e. biodeposits) on the sediment surface [@Elsey1935; @Baird1989; @Dame1999; @Kellogg2013], consituting several critical ecosystem functions. 
 Most of the seston particulate organic matter (hensforth POM) is ingested by bivalves for growth and maintence.
@@ -28,16 +28,15 @@ Restoring these ecosystem functions is part of the impetus behind native *O. lur
 
 the Japanese oyster (*Crassostrea gigas*), was successfully cultivated in the Salish Sea in the early 1920s [@Quayle1988], and  introduced to California in 1928 [@Conte1982] to replace dwindlying *O. lurida* harvests [@Beattie1982].
 *C. gigas* now accounts for the overwhelming majority of commercial oyster harvest on the North American west coast [@Beattie1982; @Pauley1988], and has established feral populations outside of aquaculture operations in the Salish Sea [@Quayle1988], Willipa Bay, WA [@Kincaid1968], and Southern California [@Crooks2015a; @Polson2009; @Tronske2018].
-*C. gigas* is a large, fast growing oyster with higher filtration rates than *O. lurida* [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019] that can exert top-down control on seston at aquaculture densities [@Wheat2013].
-*C. gigas* is a faster growing and larger oyster than *O. lurida* with a higher filtration rate [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019] that is documented to decrease chlorophyll concentrations in Willipa Bay, WA [@Wheat2013].
+*C. gigas* is a large, fast growing oyster with higher filtration rates than *O. lurida* [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019], and can exert top-down control on seston at aquaculture densities [@Wheat2013].
+Ecosystem filtration functions (e.g. nutrient sequestration, water clarity, and sediment enrichment) in NAPC estuaries may differ between native *O. lurida* habitat and cultivated *C. gigas* aquaculture [reviewed by @Ruesink2005], because of these biological and ecological differences.
 
-***Beter Transition - Importance of filtration*** --> biochemical processing, sequester N & P, provide nutrients to other trophic levels - nutrient connector from water column, to benthos, to grazers, to ominvores/ carnivores
-***Motivate why C. gigas is important to measure*** --> Now dominate cultured species in West coast bays, shown to moderate chlorophyll top-down (Wheat & Ruesink 2013)
 ***Motivate why shell length X DTW relationship is important*** --> important to estimate biomass of habitats to contextualize measured clearance rates. Restoration projects may be resistant to sacrifice organisms & time consumping to directly measure. Estimate through species specific shell length measurements. 
 
 ### Single-species Research
 
-Estimating the filtration capacity of natural and restored *O. lurida* habitat and *C. gigas* aquaculture currently relies on single-species models produced by a handful of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a]. 
+Estimating the filtration capacity of natural and restored *O. lurida* habitat currently relies on single-species models produced by a handful of studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a].
+*C. gigas* aquaculture in the NAPC has relies on the same studies plus a single in situ study [@Wheat2013].
 @Gray2018 determined the clearance rates (Lhr^-1^g^-1^ Dry Tissue Weight) of *O. lurida* and *C. gigas* under a range of  laboratory and seasonal in situ conditions using the biodeposition method [@Hawkins1996].
 During the in situ trials, individual oyster were placed in a flow through chamber filled with ambient seawater from Yaquina Bay, Oregon at a rate of 150-200 ml min^-1^, and individuals not filtering (closed valve) were excluded from the analysis [see @Cranford2011].
 The models from this study provide important insights into *O. lurida* and *C. gigas* individual's feeding responses to specific conditions (temperature, salinity, turbidity, chlorophyll $\alpha$, Total Particulate Matter (TPM), and Organic Content (OC)) but may not be appropriate for estimating whole-habitat filtration in the field [@Cranford2011; @Grizzle2018; check these: Velasco2005; Newell2005] because it does not incorporate habitat or environmental conditions.
