@@ -13,10 +13,13 @@ indent: true
 # Introduction
 
 The Olympia oyster (*Ostrea lurida*) is a former foundation species in estuaries along the Pacific North American Coast that autogeneously create complex three-dimensional habitat [@Dayton1972].
-The shells of living and dead oysters provide habitat for invertebrates across trophic levels [@Kimbro2006; @Ramsey2012; @Rodney2006], nursery and refuge habitat for fishes [@Coen2007; @Peterson2003; @Stunz2010], and feeding habitat for birds [@Galtsoff1929; Boyer et al. 2016 waiting for ILL copy].
-*O. lurida* and the bivalves recruited to oyster habitat are suspension feeders that remove particulate matter (seston) from the water column and deposit mucus-bound feces and pseudofeces (i.e. biodeposits) on the sediment surface [@Baird1989; @Dame1999; @Kellogg2013], consituting a critical ecosystem function. 
+The shells of living and dead oysters provide habitat for a variety of invertebrates [@Kimbro2006; @Ramsey2012; @Rodney2006], nursery and refuge habitat for fishes [@Coen2007; @Peterson2003; @Stunz2010], and feeding habitat for birds [@Galtsoff1929; Boyer et al. 2016 waiting for ILL copy].
+*O. lurida* and the bivalves recruited to oyster habitat are suspension feeders that remove particulate matter (seston) from the water column and deposit mucus-bound feces and pseudofeces (i.e. biodeposits) on the sediment surface [@Elsey1935; @Baird1989; @Dame1999; @Kellogg2013], consituting several critical ecosystem functions. 
 Most of the seston particulate organic matter (hensforth POM) is ingested by bivalves for growth and maintence.
-Nutrients incorporated into bivalve shells can be sequestration long-term [@Kellogg2013] when burried in sediments [@Hu2011], and likely serve as a sink for anthropogenically produced nutrients [@Martinetto2006; @Carmichael2012].
+Nutrients incorporated into bivalve shells can be sequestered long-term [@Kellogg2013] when burried in sediments [@Hu2011], and likely serve as a sink for anthropogenically produced nutrients [@Martinetto2006; @Carmichael2012].
+Seston removal through bivalve feeding also increases water clarity [@Newell2004b; @Grizzle2008; @Grizzle2018] raising the amount of photosynthetically available radiation reaching benthic primary producers like seagrasses [@Peterson1999] and microalgae [@Newell2002].
+Lastly, bivalve feeding is an important water column to benthos biochemical pathway that transfers energy to higher trophic levels [@Rodney2006; @Kautsky1987]. 
+Bivalve biodeposits can have higher organic and nitrogen content than ambient sedimentation [@Kautsky1987], providing high quality food for deposit feeders subsequently feeding omnivores and carnivores including fish [@Rodney2006].
 
 
 This water column to benthos connection is an important ecosystem pathway that increases water clarity [@Newell2004b; @Grizzle2008; @Grizzle2018] and enriches benthic sediments [@Kellogg2013; @Newell2002] useful to benthic primary producers like seagrasses [@Peterson1999] and microalgae [@Newell2002].
