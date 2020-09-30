@@ -222,7 +222,7 @@ Deanza had the most field days with 10 filtration trials and 3 controls all cond
 Percent Chl $\alpha$ removed at San Rafael averaged `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`; Figure \ref{ChlRmd_Site_boxplot}) and recorded `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
 Morro Bay averaged `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% Chl $\alpha$ removed (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and measured `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
 At Deanza Chl $\alpha$ removed averaged `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and during three consecutive control trials averaged `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removed (*N* = `r nrow(NPD_NC_sum)`, *SD* =  `r round(sd(NPD_NC_sum$pcnt_Chl_rmvd))`).
-Shellmaker averaged `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% Chl $\alpha$ removed (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(NPSM_NC_sum$pcnt_Chl_rmvd,1)`\% Chl $\alpha$ removal in the single control. 
+Shellmaker averaged `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% Chl $\alpha$ removed (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`), and its control trial was removed from analysis as an extreme value.
 
 ```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.show="hold", fig.asp=0.618, out.width="70%", message= F, fig.cap="Percent chlorophyll removed during filtration trials. Each data point is an the average value from the experiment. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA that contained Shellmaker and Deanza sites (both restored \\textit{O. lurida} shell beds) Extreme values excluded from analysis are not shown. \\label{ChlRmd_Site_boxplot}"}
 
@@ -1037,27 +1037,47 @@ Oly_combo_DTW_SL$legend <- fct_relevel(Oly_combo_DTW_SL$legend, "Yaquina", "Dean
 ```
 
 ```{r Compare_NPD_DTW_SL_transformations, include=FALSE}
-
+####### Linear 
 Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
 summary(Oly_DTW_lm)
 # R^2: 0.4914
 
+######### linear - log
 Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
 summary(Oly_LogxDTW_lm)
 # R^2: 0.4289
 
+###### Log - linear
 Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
 Oly_logDTW_lm_sum <- summary(Oly_LogDTW_lm)
 coef(Oly_logDTW_lm_sum)
 # R^2: 0.6772
 str(Oly_logDTW_lm_sum) ## displays all values in summary
 
+####### Polynomial
 Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
 summary(Oly_DTW2_lm)
 # R^2: 0.5042
+
+###### Log - Log
+## This model has a better fit than log(y) ~ x
+Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
+OlyDTW_loglog_sum <- summary(Oly_LogDTW_logSH_lm)
+# R^2: 0.7299
+coef(OlyDTW_loglog_sum)
+
+par(mfrow=c(2,2))
+plot(Oly_LogDTW_logSH_lm)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(Oly_LogDTW_logSH_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(Oly_LogDTW_logSH_lm))
+
+# show the available object attributes
+str(Oly_LogDTW_logSH_lm)
 ```
 
-At Deanza we found a significant relationship between *O. lurida* shell length and DTW (ln(y) = `r round(coef(Oly_logDTW_lm_sum)[1,1],digits=2)` `r round(coef(Oly_logDTW_lm_sum)[2,1],digits=3)`x, R^2^ = `r round(Oly_logDTW_lm_sum$r.squared,digits=2)`, *p* = `r round(coef(Oly_logDTW_lm_sum)[2,4],digits=3)`).
+At Deanza we found a significant relationship between *O. lurida* shell length and DTW (ln(y) = `r round(coef(OlyDTW_loglog_sum)[1,1],digits=2)` `r round(coef(OlyDTW_loglog_sum)[2,1],digits=3)`x, R^2^ = `r round(OlyDTW_loglog_sum$r.squared,digits=2)`, *p* = `r round(coef(OlyDTW_loglog_sum)[2,4],digits=3)`).
 ***I don't think this graph equation is populating correctly. Doesn't match model summary output***
 *O. lurida* from different bays showed different allometric relationships? 
 Dr. Nichols is writing code to see if the two data sets can use same model, or if we need two site specific models. 
@@ -1146,7 +1166,6 @@ Oly_shell_DTW_logline <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight
                label.y = "top")
 
 
-Oly_shell_DTW_logline
 
 ### log(y) ~ log(x) model ###
 
@@ -1161,11 +1180,18 @@ Oly_shell_logDTW <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g)) 
   scale_color_manual(values = Species_colors, guide = F) +
   theme_classic() +
   scale_x_continuous(breaks = c(0,10,20,30,40,50))+
-  annotate("text", x = 10, y = 0.2, label = "log(y) ~ log(x)")+
+  #annotate("text", x = 10, y = 0.2, label = "log(y) ~ log(x)")+
   labs(x = 'Shell Length (mm)',
-       y = ' Dry Tissue Weight (g)') 
-  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-   #                    aes(label = sprintf("%i observations", stat(count))))
+       y = ' Dry Tissue Weight (g)') +
+    ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..rr.label.., ")", sep ="")),
+               formula = logy_logx_formula,
+               eq.x.rhs = (" ln(x)"), 
+               eq.with.lhs = ("ln(y) =="),
+               parse = TRUE,
+               label.x = "left",
+               label.y = "top")
+    
+Oly_shell_logDTW
 
 ### Y ~ x + x^2
 
@@ -1228,40 +1254,7 @@ predict_DTW_logy <- function(data){
 
 ```
 
-```{r NPD_Oly_DTW_SL_loglog, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-## This model has a better fit than log(y) ~ x
-Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
-#ols_regress(Oly_LogDTW_logSH_lm)
-summary(Oly_LogDTW_logSH_lm)
-coef(Oly_LogDTW_logSH_lm)
 
-par(mfrow=c(2,2))
-plot(Oly_LogDTW_logSH_lm)
-# Leverage Statistics - plots index of parameter elements against their leverage on the model
-# plot(hatvalues(Oly_LogDTW_logSH_lm)) 
-# identifies the index of the largest element of a vector
-# which.max(hatvalues(Oly_LogDTW_logSH_lm))
-
-# copied code from Dr. Nichols to extract model attributes. Do I need to exp() on any of these?
-DTW_slope = summary(Oly_LogDTW_logSH_lm)[[4]][1] # is this really the slope? Matches the intercept
-DTW_se = summary(Oly_LogDTW_logSH_lm)[[4]][2]
-DTW_df = summary(Oly_LogDTW_logSH_lm)[[7]][2]
-
-DTW_t = (DTW_slope-1)/DTW_se
-DTW_p.val = 1-pt(DTW_t,DTW_df)
-DTW_p.val
-
-# create function to predict DTW values from Shell length - Need error term in equation?? 
-#Oly_loglogDTWSH_model <- function(x){coef(Oly_LogDTW_logSH_lm)[[2]]*log(x) + exp(coef(Oly_LogDTW_logSH_lm)[[1]])}
-
-# Maybe use predict() instead of function?? 
-predict_DTW_loglog <- function(data){
-  exp(predict(Oly_LogDTW_logSH_lm, newata = data.frame(length_mm = data$length_mm)))
-}
-# show the available object attributes
-str(Oly_LogDTW_logSH_lm)
-
-```
 
 ```{r NPD_Oly_DTW_SL_poly2, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
 Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
