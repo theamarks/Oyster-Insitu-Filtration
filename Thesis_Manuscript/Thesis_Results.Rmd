@@ -1077,7 +1077,7 @@ plot(Oly_LogDTW_logSH_lm)
 str(Oly_LogDTW_logSH_lm)
 ```
 
-At Deanza we found a significant relationship between *O. lurida* shell length and DTW (ln(y) = `r round(coef(OlyDTW_loglog_sum)[1,1],digits=2)` `r round(coef(OlyDTW_loglog_sum)[2,1],digits=3)`x, R^2^ = `r round(OlyDTW_loglog_sum$r.squared,digits=2)`, *p* = `r round(coef(OlyDTW_loglog_sum)[2,4],digits=3)`).
+At Deanza we found a significant relationship between *O. lurida* shell length and DTW (ln(y) = `r round(coef(OlyDTW_loglog_sum)[1,1],digits=2)` `r round(coef(OlyDTW_loglog_sum)[2,1],digits=3)`ln(x), R^2^ = `r round(OlyDTW_loglog_sum$r.squared,digits=2)`, *p* = `r round(coef(OlyDTW_loglog_sum)[2,4],digits=3)`).
 ***I don't think this graph equation is populating correctly. Doesn't match model summary output***
 *O. lurida* from different bays showed different allometric relationships? 
 Dr. Nichols is writing code to see if the two data sets can use same model, or if we need two site specific models. 
