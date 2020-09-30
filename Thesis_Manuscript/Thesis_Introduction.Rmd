@@ -21,13 +21,14 @@ Nutrients incorporated into bivalve shells can be sequestered long-term [@Kellog
 Seston removal through bivalve feeding also increases water clarity [@Newell2004b; @Grizzle2008; @Grizzle2018] raising the amount of photosynthetically available radiation reaching benthic primary producers like seagrasses [@Peterson1999] and microalgae [@Newell2002].
 Lastly, bivalve feeding is an important biochemical pathway, linking the water column to the benthos, that transfers energy to higher trophic levels [@Rodney2006; @Kautsky1987]. 
 Bivalve biodeposits can have higher organic and nitrogen content than ambient sedimentation [@Kautsky1987], providing high quality food for deposit feeders and subsequently feeding omnivores and carnivores including fish [@Rodney2006].
+*Summary / Transition sentence?*
 
 *O. lurida* populations were decimated by destructive fishing practices [@Kirby2004], introduction of non-native species [@Bonnot1935], pollution, and excessive sedimentation [@Gilbert1917; @Lotze2006; @Nelson1909].
 Currently, *O. lurida* populations are less than 10% of historical abundances in parts of the Pacific Northwest, and to less than 1% in the rest of its geographic distribution [@Beck2011; @ZuErmgassen2012].
-The extreme reduction of native *O. lurida* abundances and the important estuarine habitat *O. lurida* creates, is couple with the loss of water filtration functions descirbed above. 
+The extreme reduction of native *O. lurida* abundances, therefore the important estuarine habitat *O. lurida* creates, is coupled with the loss of water filtration functions descirbed above. 
 Restoring these ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
 
-the Japanese oyster (*Crassostrea gigas*), was successfully cultivated in the Salish Sea in the early 1920s [@Quayle1988], and  introduced to California in 1928 [@Conte1982] to replace dwindlying *O. lurida* harvests [@Beattie1982].
+Dwindlying *O. lurida* harvests led to the cultivation of the Japanese oyster (*Crassostrea gigas*) in the Salish Sea in the early 1920s [@Quayle1988], and in California in 1928 [@Conte1982].
 *C. gigas* now accounts for the overwhelming majority of commercial oyster harvest on the North American west coast [@Beattie1982; @Pauley1988], and has established feral populations outside of aquaculture operations in the Salish Sea [@Quayle1988], Willipa Bay, WA [@Kincaid1968], and Southern California [@Crooks2015a; @Polson2009; @Tronske2018].
 *C. gigas* is a large, fast growing oyster with higher filtration rates than *O. lurida* [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019], and can exert top-down control on seston at aquaculture densities [@Wheat2013].
 Ecosystem filtration functions (e.g. nutrient sequestration, water clarity, and sediment enrichment) in NAPC estuaries may differ between native *O. lurida* habitat and cultivated *C. gigas* aquaculture [@Ruesink2006; reviewed by @Ruesink2005].
