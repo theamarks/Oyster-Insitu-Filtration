@@ -75,43 +75,11 @@ My research questions were:
 
 Filtration estimates of oyster habitat on the west coast need measurements that incorporate the entire filter-feeding community of constructed oyster restorations and commercial aquaculture.
   
-
-
 ### Incorporate these tidbits?
-Whole -habitat measurements innately measure the habitat-level filtration reaction to hydrodynamics and food availability.
 
-Chl $\alpha$ - proxy for photosynthetic organic material - Check @Secor2006 for ideas
-
-Higher organic content means a higher proportion of digestible food, which increases clearance rates (@Gray2018). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
-
-Residence time, temperature, turbidity, food availability, salinity, immersion time, and water flow speed are all parameters known to affect bivalve filter feeding rates, and will be unique to each California estuary. 
-Thus, previous filtration estimates are not directly applicable to existing restoration and aquaculture operations in California.
-
-### Save for discussion? 
-
-along with the presence of predators [@Byers2014] 
-
-Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
-This suggests that filtration rates among *O. lurida* habitats, may have unique filtration rates locally or regionally depending on the composition of filter-feeders, and laboratory methods a likely insufficient at estimating habitat-level filtration functions. 
-
-Gray & Langdon (2017) point out that O. lurida selects larger particles from the water column compared to C. gigas, likely because of anatomical differences in gill ostea, which may differentiate the quality of filtration by each species. 
-C. gigas is also faster growing, larger, and has a greater filtration rate than O. lurida (zu Ermgassen, Gray, et al. 2013, Gray & Langdon 2017)
-
-Different species have different ideal water velocities for feeding [@Cranford2011].
-Slow velocity, although possibly ideal for individual filtration [@Grizzle1992], can lead to food depletion for downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
-On the other hand, both higher flows and shallow estuaries can redistribute particles throughout the water column replenishing food for bivalve filter feeders (Officer 1982 & Fredett 1989 in Harsh & Lauckenbach1999) (Holligan et al. 1984 cited in @Judge1993)
-In addition, deeper water might limit benthic bivalves access to food (citations in Ruesink et al. 2005), while the orientation of oysters relative to the waterfowl may effect feeding behavior[@Grizzle1992; @Harsh1999].
+* Chl $\alpha$ - proxy for photosynthetic organic material - Check @Secor2006 for ideas
+* Higher organic content means a higher proportion of digestible food, which increases clearance rates (@Gray2018). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
 
 
-### Whole-habitat outline
-* Whole-habitat measurements also include realistic environmental conditions known to affect bivalve filtration rates
-  + Texture of habitat leads to varied hydrodynamics and mixing (Harsh & Luckenback 1999) that can effect environmental that mediate filtration.
-  + Slow flow can lead to food depletion to downstream animals (Monismith et al 1990 in Harsh & Luckenbach1999).
-  + Higher flows can redistribute particles throughout the water column replenishing food for bivalve filter feeders ( Officer 1982 & Fredett 1989 in Harsh & Lauckenbach1999)
-  + Water dynamics in shallow estuaries often mixes water column "eliminating stratification of chlorophyll (Holligan et al. 1984 cited in @Judge1993).
-  + Deeper waters might limit the access that benthic bivalves have to food (citations in @Ruesink2005).
-  + Orientation of oyster relative to flow effect feeding behavior [@Grizzle1992; @Harsh1999].
-  + Laboratory studies often don't include oysters not feeding, closed valves, resulting in artificially high filtration rates [@Gray2018; @Harsh1999], and may partly explain why many field studies find lower FR than laboratory studies [@Gray2018 cited Newell 2005; @Grizzle2008; @Cranford2011].
-  + In situ studies may not be able to produce the sophisticated models based on manipulated variables, but can record the range of Filtration capacity of a specific restoration or aquaculture operation within its complex environment.
 
 
