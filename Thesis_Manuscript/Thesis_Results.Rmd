@@ -431,7 +431,28 @@ Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_c
   
 Corr_Chl_diff_graph
      
-#Corr_chl_diff_data[c(9,21,23),] # Look at problem data points
+
+model.temp = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data)
+x.seq = seq(min(Corr_chl_diff_data$correction_noabs),max(Corr_chl_diff_data$correction_noabs),by=.005)
+y.seq = predict(model.temp,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.95)
+low.bound = y.seq[,2]
+high.bound = y.seq[,3]
+plot(Corr_chl_diff_data$correction_noabs,Corr_chl_diff_data$filter_chl_diff)
+lines(x.seq,low.bound,lty=2,col=2)
+lines(x.seq,high.bound,lty=2,col=2)
+
+Corr_chl_diff_data1 = Corr_chl_diff_data[-c(21,23),]
+
+model.temp = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data1)
+x.seq = seq(min(Corr_chl_diff_data1$correction_noabs),max(Corr_chl_diff_data1$correction_noabs),by=.005)
+y.seq = predict(model.temp,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.98)
+low.bound = y.seq[,2]
+high.bound = y.seq[,3]
+plot(Corr_chl_diff_data1$correction_noabs,Corr_chl_diff_data1$filter_chl_diff)
+lines(x.seq,low.bound,lty=2,col=2)
+lines(x.seq,high.bound,lty=2,col=2)
+
+Corr_chl_diff_data[c(9,21,23),] # Look at problem data points
 ```
 
 ```{r Random_Forest_DrNichols, include=FALSE}
