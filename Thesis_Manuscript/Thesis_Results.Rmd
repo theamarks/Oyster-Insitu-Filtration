@@ -414,14 +414,28 @@ Corr_chl_diff_data %<>%
 
 Corr_chl_diff_data$dummie = 1:32
 
+#Corr_chl_diff_data[c(9,21,23),] # Look at problem data points
+
+### Confidence intervals
+model.temp = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data)
+x.seq = seq(-5,5,by=.005)
+y.seq = predict(model.temp,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.95)
+low.bound = y.seq[,2]
+high.bound = y.seq[,3]
+plot(Corr_chl_diff_data$correction_noabs,Corr_chl_diff_data$filter_chl_diff)
+lines(x.seq,low.bound,lty=2,col=2)
+lines(x.seq,high.bound,lty=2,col=2)
+
 Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_chl_diff)) +
   geom_point() +
   theme_classic() + 
   xlim(-3,3) + # even axes
   ylim(-3,3) +
-  xlab("SBS Correction Value (Not 1/2 or Abs)") +
-  ylab("Chl Diff Filtration Trial (velocity paired)") +
-  geom_abline(slope = 1, linetype = "dashed") + # 1-1 reference line
+  xlab(expression("Side-by-side Chlorphyll" ~ alpha ~"difference")) +
+  ylab(expression("Experiment Chlorphyll" ~ alpha ~ "Difference (velocity paired)")) +
+  geom_abline(slope = 1) + # 1-1 reference line
+  geom_line(data = data.frame(y.seq), aes(x = fit, y = lwr), linetype = "dashed", color = "red") +
+  geom_line(data = data.frame(y.seq), aes(x = fit, y = upr), linetype = "dashed", color = "red") +
   #geom_text(aes(x=correction_noabs + .12,label=dummie)) 
   #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
   #geom_label(aes(label = graph_labels))
@@ -430,29 +444,38 @@ Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_c
                             nudge_x = c(0.25,0.1,0.1))
   
 Corr_Chl_diff_graph
-     
-
-model.temp = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data)
-x.seq = seq(min(Corr_chl_diff_data$correction_noabs),max(Corr_chl_diff_data$correction_noabs),by=.005)
-y.seq = predict(model.temp,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.95)
-low.bound = y.seq[,2]
-high.bound = y.seq[,3]
-plot(Corr_chl_diff_data$correction_noabs,Corr_chl_diff_data$filter_chl_diff)
-lines(x.seq,low.bound,lty=2,col=2)
-lines(x.seq,high.bound,lty=2,col=2)
-
+    
+### Remove two problem data points - remove their influence on confidence intervals
 Corr_chl_diff_data1 = Corr_chl_diff_data[-c(21,23),]
 
-model.temp = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data1)
-x.seq = seq(min(Corr_chl_diff_data1$correction_noabs),max(Corr_chl_diff_data1$correction_noabs),by=.005)
-y.seq = predict(model.temp,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.98)
-low.bound = y.seq[,2]
-high.bound = y.seq[,3]
+model.temp1 = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data1)
+x.seq1 = seq(-5,5,by=.005)
+y.seq1 = predict(model.temp1,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.98)
+low.bound1 = y.seq1[,2]
+high.bound1 = y.seq1[,3]
 plot(Corr_chl_diff_data1$correction_noabs,Corr_chl_diff_data1$filter_chl_diff)
-lines(x.seq,low.bound,lty=2,col=2)
-lines(x.seq,high.bound,lty=2,col=2)
+lines(x.seq1,low.bound1,lty=2,col=2)
+lines(x.seq1,high.bound1,lty=2,col=2)
 
-Corr_chl_diff_data[c(9,21,23),] # Look at problem data points
+Corr_Chl_diff_graph1 <- ggplot(Corr_chl_diff_data1, aes(correction_noabs, filter_chl_diff)) +
+  geom_point() +
+  theme_classic() + 
+  xlim(-3,3) + # even axes
+  ylim(-3,3) +
+  xlab(expression("Side-by-side Chlorphyll" ~ alpha ~"difference")) +
+  ylab(expression("Experiment Chlorphyll" ~ alpha ~ "Difference (velocity paired)")) +
+  geom_abline(slope = 1) + # 1-1 reference line
+  geom_line(data = data.frame(y.seq1), aes(x = fit, y = lwr), linetype = "dashed", color = "red") +
+  geom_line(data = data.frame(y.seq1), aes(x = fit, y = upr), linetype = "dashed", color = "red") +
+  #geom_text(aes(x=correction_noabs + .12,label=dummie)) 
+  #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
+  #geom_label(aes(label = graph_labels))
+  ggrepel::geom_label_repel(aes(label = graph_labels), point.padding = 0.75, na.rm = T,
+                            nudge_y = c(-0.5,0,0),
+                            nudge_x = c(0.25,0.1,0.1))
+  
+Corr_Chl_diff_graph1
+
 ```
 
 ```{r Random_Forest_DrNichols, include=FALSE}
