@@ -337,8 +337,6 @@ Deanza had the most field days with ten filtration trials and three controls all
 Three experimental trials were removed from the analysis because of their extreme values Figure \ref{Corr_to_signal_95CI_graph} and \ref{Corr_to_signal_98CI_graph}.
 
 
-
-
 ### Percent chlorophyll $\alpha$ removal
 
 Percent Chl $\alpha$ removed at San Rafael averaged `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`; Figure \ref{ChlRmd_Site_boxplot}) and recorded `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
@@ -550,8 +548,6 @@ test = cbind(temp1,temp2) # bing back data labels
 dim(Analysis_data[,-c(1,2,3)]) # dimensions of data with labels removed (data only) 28 x 12 = 336 data cells
 num_NA_values <- sum(is.na(Analysis_data)) # 4 missing values
 
-############### Filtration (adjusted) mud vs oyster #########################
-
 colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity",
                             "TPM", "OC", "Chl.up", "Chl.dn", 
                            "Depth","Distance", "Water velocity", "Chl.removal", 
@@ -562,7 +558,7 @@ colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity
 ## Thea Notes ###
 ## Shellmaker 06-09 Neg Control - floating algae mats caused me to reposition instruments after ~10 mins into Neg Control trial. Looks like sediments never settled afterward. Huge spikes in Chl afterwards that even cutting out is suspect. Avg depth and distance b/w sondes are wrong If I just use the first part of the neg control. Going to change values in Insitu_Filter_Veolcity_All_Data.csv - will reduce clearance rate b/c reduced water volume. 
 
-#Filtration (unadjusted) mud vs oyster
+#############  Mud vs Oyster - Filtraiton vs Control (unadjusted)
 test1 = test[abs(test$Chl.removal) < 50,] # remove extreme values (NPSM 2020_6_9, NPSM 2020_5_22, NPD 2020_4_17)
 exp = test1[test1$Experiment=="Filtration",] # separate Filtraiton trials
 control = test1[test1$Experiment!="Filtration",] # separate negative control trials
@@ -590,24 +586,24 @@ r.sq # r squared value for random forest model
 #r.sq  is about 66.3% (yay)
 
 ### Random Forest variable importance
-Var_import2 <- importance(model.rf)
-Var_import2
-Var_import2 <- Var_import2[order(Var_import2[,1], decreasing=TRUE),] # sort matrix highest to lowest - output names numeric
-Var_import_df2 <- data.frame(as.list(Var_import2)) # convert named numeric to data.frame
-Var_import_df2 %<>% 
+Var_import1 <- importance(model.rf)
+Var_import1
+Var_import1 <- Var_import2[order(Var_import2[,1], decreasing=TRUE),] # sort matrix highest to lowest - output names numeric
+Var_import_df1 <- data.frame(as.list(Var_import1)) # convert named numeric to data.frame
+Var_import_df1 %<>% 
   pivot_longer(cols = c(Turbidity, Temp, TPM, Salinity, OC, Site), names_to = "Variable", values_to = "Importance") %>% 
   arrange(desc(Importance))
-Var_import_df2 # dataframe with sorted importance values - highest to lowest
+Var_import_df1 # dataframe with sorted importance values - highest to lowest
 ## Calculate the percent relative importance for each variable
-sum_import2 <- sum(Var_import_df2$Importance)
-Temp_rel_import <- (Var_import_df2[[1,2]] / sum_import2) * 100
-OC_rel_import <- (Var_import_df2[[2,2]] / sum_import2) * 100
-Turb_rel_import <- (Var_import_df2[[3,2]] / sum_import2) *100
-TPM_rel_import <- (Var_import_df2[[4,2]] / sum_import2) * 100
-Sal_rel_import <- (Var_import_df2[[5,2]] / sum_import2) *100
-Site_rel_import <- (Var_import_df2[[6,2]] / sum_import2) *100
-###### Adjust values based on Random Forest model - compare Mud flat to Oyster habitat. 
+sum_import1 <- sum(Var_import_df1$Importance)
+Temp_rel_import <- (Var_import_df1[[1,2]] / sum_import1) * 100
+OC_rel_import <- (Var_import_df1[[2,2]] / sum_import1) * 100
+Turb_rel_import <- (Var_import_df1[[3,2]] / sum_import1) *100
+TPM_rel_import <- (Var_import_df1[[4,2]] / sum_import1) * 100
+Sal_rel_import <- (Var_import_df1[[5,2]] / sum_import1) *100
+Site_rel_import <- (Var_import_df1[[6,2]] / sum_import1) *100
 
+######## Adjust values - Random Forest model - compare Mud flat to Oyster habitat. 
 y.adj = res + mean(test1$Clearance) # take residuals (diff between data and model - what the model doesn't account for (oysters)) and add to the mean response (same for data and model?). This gives me response with the effects of all variables accounted for. 
 y.adj.experiment = y.adj[test1$Experiment=="Filtration"]
 y.adj.control = y.adj[test1$Experiment!="Filtration"]
@@ -622,7 +618,7 @@ t_test_adj_df <- (length(y.adj.experiment) - length(y.adj.control)) - 2
 #plot(model.tree)
 #text(model.tree,cex=.65)
 
-############# WQ values effect on Filtration only #############
+############# WQ values affect on Filtration only #############
 
 test2 <- test1[test1$Experiment=="Filtration",] # Filtraton trials only
 model.rf.filter = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,
@@ -634,8 +630,9 @@ model.rf.filter
 plot(model.rf.filter)
 y.hat.filter = predict(model.rf.filter,newdata=test2) # model predicted values
 res.filter = test2$Clearance - y.hat.filter # residuals - difference between measured values and model predicted values 
-r.sq.filter = (var(test2$Clearance) - var(res))/var(test2$Clearance)
+r.sq.filter = (var(test2$Clearance) - var(res.filter))/var(test2$Clearance)
 r.sq.filter # r squared value for random forest model
+### R^2: 0.646
 
 ### Random Forest variable importance
 Var_import <- importance(model.rf.filter)
@@ -653,7 +650,7 @@ OC_rel_import_HCR <- (Var_import_df[[4,2]] / sum_import) * 100
 Site_rel_import_HCR <- (Var_import_df[[5,2]] / sum_import) * 100
 Sal_rel_import_HCR <- (Var_import_df[[6,2]] / sum_import) * 100
 
-###################### Is this just exploritory? ################
+###################### Initial analysis ################
 m1 = lm(Chl.up~Chl.dn,data=test)
 summary(m1)
 plot(test$Chl.up,test$Chl.dn)
@@ -710,12 +707,12 @@ p.val
 ### Oyster Habitat vs. Control 
 
 Filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two-sample *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
-The Random Forest model that included all filtration and control trials indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively.
+The Random Forest model that included all filtration and control trials (*R*^2^: `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively.
 Filtration and control trials adjusted by the Random Forest model were not significantly different (two-sample *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`); however, we expect our limited sample size inhibits statistical signal detection.
 
 ### Variables Affecting HCR
 
-The random forest model built with only filtration trials indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
+The random forest model with only filtration trials (*R*^2^: `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
 
 ```{r TPM_OC_Values, include=FALSE}
 TPM_OC_Values <- Master_analysis_table %>% 
