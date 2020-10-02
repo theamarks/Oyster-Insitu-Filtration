@@ -1,6 +1,6 @@
 # Oyster-Insitu-Filtration
 
-##Insitu Filtration Rates of Olympia Oyster and Japanese Oyster Habitats in California
+## Insitu Filtration Rates of Olympia Oyster and Japanese Oyster Habitats in California
 
 -----------
 
