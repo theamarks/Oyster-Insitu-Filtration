@@ -27,7 +27,7 @@ The matrix is positioned approximately 200 m from shore on a mudflat at -0.3 m M
 The Upper Newport Bay Living Shorelines Project has four sites in Newport Bay, California and was constructed in May 2017 by Orange County Coast Keeper, and collaborators at CSU Fullerton and CSU Long Beach. 
 This experimental project investigates the effects of interactions between restored *O. lurida* beds and restored *Z. marina* eelgrass beds on biological communities. 
 My research includes two of the four sites, Shellmaker (33.622097, -117.892399, henceforth Shellmaker) and Deanza (33.620291, -117.897692, henceforth Deanza) because of their accessibility, water flow dynamics, and higher abundances of *O. lurida*. 
-Each site has four plots; control mudflats, *Z. marina* beds restored in isolation, *O. lurida* oyster beds restored in isolations, and oyster beds restored adjacent to seaward eelgrass beds. 
+Each site has four plots; control mudflats, *Z. marina* beds restored in isolation, *O. lurida* oyster beds restored in isolation, and oyster beds restored adjacent to seaward eelgrass beds. 
 The oyster beds measure 20 m x 1 m x 0.25 m and are constructed with coconut coir bogs filled with clean commercially-grown dead *C. gigas* and *Mytilus galloprovincialis* mussel shell. 
 The beds are positioned approximately 30 m from shore on a mudflat at approximately -0.15 m MLLW.
 
@@ -52,7 +52,7 @@ Detailed notes of all field events and disturbances were recorded with a watch s
 Field work was conducted from February 2018 to June 2019 and measured 22 filtration trials and 6 control trials.
 
 ### Chlorophyll $\alpha$ Corrections
-In addition to the filtration and control trials, two side-by-side trials were conducted before and after the experimental tial to record and correct any chl $\alpha$ sensor differences.
+In addition to the filtration and control trials, two side-by-side trials were conducted before and after the experimental trial to record and correct any chl $\alpha$ sensor differences.
 In the side-by-side trials, I placed the instruments adjacent to one another to compare the sensors' chlorophyll $\alpha$ measurements in the same mass of water for approximately 10 minutes.  
 The data was reviewed for extreme Chl $\alpha$ spikes caused by unnatural sediment plumes that would skew the average Chl $\alpha$.
 Extreme Chl $\alpha$ values were removed from the data.
@@ -113,19 +113,21 @@ $A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$
 
 ### Analysis
 
-Two field days are missing TPM and OC values from our data set, representing `r round((4/336)*100, digits = 0)`% of the data set. 
-Removing these incomplete observations is costly for our data set where I have a limited number of observations with a large number of variables. 
-Instead I used a semi-parametric random forest imputation to estimate the missing values [missForest package; @Stekhoven2012].
-Three extreme observations were removed from the data set based on a correction-to-signal comparison (Shellmaker 2020/6/9, Shellmaker 2020/5/22, Deanza 2020/4/17) (***Citation?***) (Figure \ref{SbsCorr_ChlDiff_graph}).
+Two field days are missing TPM and OC values from my data set, representing `r round((4/336)*100, digits = 0)`% of the data set. 
+Removing these incomplete observations is costly for my data set where I have a limited number of observations with a large number of variables. 
+Instead I used a semi-parametric random forest imputation in R to estimate the missing values [missForest package; @Stekhoven2012].
+Next, I examined the signal-to-correction relationship between the chl $\alpha$ difference in side-by-side trials compared to the corresponding experiment chl $\alpha$ difference.
+This comparison showed if any instrument corrections obfuscate the experimental signal.
+I used the 95\\% intervals of a linear model (experiment chl $\alpha$ difference = side-by-side chl $\alpha$ difference) to remove extreme values outside of the intervals.
+Because my data set is small, extreme values likely influenced my initial confidence intervals; therefore I created a second linear model with the extreme values removed and 98\\% confidence intervals to identify any addition extreme values to remove from the analysis. 
+Three extreme observations were removed from the data set based on this signal-to-correction comparison (Shellmaker 2020/6/9, Shellmaker 2020/5/22, Deanza 2020/4/17) (***Citation?***) (Figure Figure \ref{Corr_to_signal_95CI_graph} and \ref{Corr_to_signal_98CI_graph}).
 To determine if there was a difference between control and filtration trials, I used a two-sample t-test not controlling for water quality and site parameters.
 To control for water quality and site parameters, I fit a random forest model (including all filtration and control trials) to HCR from temperature, salinity, turbidity, TPM, OC, and site.
 Residuals from the random forest model adjusted data in a second two-sample t-test to control for the effects of water quality and site parameters were used to examine the difference between control and filtration trials.
 Next, to examine the relationship of water quality variables and site on HCR, I fitted a second Random Forest model with only filtration trials.
-
-* Report here how to select TPM:OC model (transformations) - emailed Kevin (9/16)
-* Report here how to select Oly Shell length:DTW model (transformations & comparison to Matt Gray data) emailed Kevin (9/16)
-
-Data cleaning, corrections, calculations, and analysis were made in R (1.2.5), the code is available at (Find way to reference github/InsituFiltration Repo)
+The relationship between TPM and OC was transformed to a log-log model based on the R^2^ value.
+Finally the relationship between *O. lurida* shell length at Deanza and DTW was transformed to a log-log model based on the R^2^ value. 
+All Data cleaning, corrections, calculations, and analysis were made in R (1.2.5), the code is publicly available on Github [@Marks2020].
 
 ```{r Study_site_map, eval=FALSE, include=FALSE}
 study_sites <- data.frame(Site = c("San Rafael", "Morro Bay", "Deanza", "Shellmaker"),
