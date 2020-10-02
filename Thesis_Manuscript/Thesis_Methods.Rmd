@@ -122,11 +122,11 @@ I used the 95\\% intervals of a linear model (experiment chl $\alpha$ difference
 Because my data set is small, extreme values likely influenced my initial confidence intervals; therefore I created a second linear model with the extreme values removed and 98\\% confidence intervals to identify any addition extreme values to remove from the analysis. 
 Three extreme observations were removed from the data set based on this signal-to-correction comparison (Shellmaker 2020/6/9, Shellmaker 2020/5/22, Deanza 2020/4/17) (***Citation?***) (Figure Figure \ref{Corr_to_signal_95CI_graph} and \ref{Corr_to_signal_98CI_graph}).
 To determine if there was a difference between control and filtration trials, I used a two-sample t-test not controlling for water quality and site parameters.
-To control for water quality and site parameters, I fit a random forest model (including all filtration and control trials) to HCR from temperature, salinity, turbidity, TPM, OC, and site.
+To control for water quality and site parameters, I fit a random forest regression (including all filtration and control trials) to HCR from temperature, salinity, turbidity, TPM, OC, and site.
 Residuals from the random forest model adjusted data in a second two-sample t-test to control for the effects of water quality and site parameters were used to examine the difference between control and filtration trials.
-Next, to examine the relationship of water quality variables and site on HCR, I fitted a second Random Forest model with only filtration trials.
-The relationship between TPM and OC was transformed to a log-log model based on the R^2^ value.
-Finally the relationship between *O. lurida* shell length at Deanza and DTW was transformed to a log-log model based on the R^2^ value. 
+Next, to examine the relationship of water quality variables and site on HCR, I fitted a second Random Forest regression with only filtration trials.
+The relationship between TPM and OC was transformed to a log-log linear model based on the R^2^ value.
+Finally the relationship between *O. lurida* shell length at Deanza and DTW was transformed to a log-log linear model based on the R^2^ value. 
 All Data cleaning, corrections, calculations, and analysis were made in R (1.2.5), the code is publicly available on Github [@Marks2020].
 
 ```{r Study_site_map, eval=FALSE, include=FALSE}
