@@ -334,7 +334,7 @@ Three filtration trials were conducted on flood tides, one on an ebb tide, and o
 We recorded four filtration trials and one control at Morro Bay, all conducted on flood tides.
 At Shellmaker we recorded four filtration trials and one control on flood tides.
 Deanza had the most field days with ten filtration trials and three controls all conducted on ebb tides. 
-Three experimental trials were removed from the analysis because of their extreme values Figure \ref{Correction_to_Signal_95CI_graph, Correction_to_Signal_98CI_graph}
+Three experimental trials were removed from the analysis because of their extreme values Figure \ref{Corr_to_signal_95CI_graph} and \ref{Corr_to_signal_98CI_graph}.
 
 
 
