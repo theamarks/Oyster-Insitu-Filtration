@@ -217,7 +217,7 @@ find_outlier <- function(data){
 
 # Results
 
-```{r Correction_to_Signal_95CI_graph, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show = "hold", fig.align= 'center', out.width="70%", fig.asp=0.618, fig.width=6, message=FALSE, warning=FALSE,  fig.cap= "The relationship between side-by-side chlorophyll difference (correction) and experiment trial chlorophyll difference (signal). The solid black line is a 1-1 relationship, the dashed red lines are 95% confience intervals of the signal-to-correction relationship. Identified extreme values with 95% confience interval were removed from analysis and model. Confience intervals were recalculated with 98% intervals to identify addition extreme values. \\label{Corr_to_signal_95CI_graph}"}
+```{r Correction_to_Signal_95CI_graph, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show = "hold", fig.align= 'center', out.width="70%", fig.asp=0.618, fig.width=6, message=FALSE, warning=FALSE,  fig.cap= "The relationship between side-by-side chlorophyll difference (correction) and experiment trial chlorophyll difference (signal). The solid black line is a 1-1 relationship, the dashed red lines are 95\\% confience intervals of the signal-to-correction relationship. Identified extreme values with 95\\% confience interval were removed from analysis and model. Confience intervals were recalculated with 98\\% intervals to identify addition extreme values. \\label{Corr_to_signal_95CI_graph}"}
 
 #The relationship between side-by-side chlorophyll corrections and experiment trial chlorophyll difference (signal). Solid black line is the linear model, dashed red lines are confience intervals. A) Identified extreme values with a 95% confience interval. B) The two extreme values were excluded to remove their influence on the model, and 98% confience intervals were calculated. A third extreme value was identified and excluded from the analysis.
 
@@ -289,9 +289,7 @@ print(Corr_Chl_diff_graph)
 #plot_grid(Corr_Chl_diff_graph, labels = c("A"))
 ```
 
-
-
-```{r Correction_to_Signal_98CI_graph, echo=FALSE, warning=F, message=F, fig.width = 6, out.width="70%", fig.asp=0.618, fig.cap = "The relationship between side-by-side chlorophyll difference (corrections) and experiment chlorophyll difference (signal). Solid black line is a 1-1 model, dashed red lines are 98% confience intervals of the signal-to-correction relationship. Initial extreme values identified with 95% confience interval were removed to exclude their influence on the model. Intervals were recalculated with 98% confience to identify addition extreme values. A third extreme value was identified and excluded from the analysis.\\label{Corr_to_signal_98CI_graph}"}
+```{r Correction_to_Signal_98CI_graph, echo=FALSE, warning=F, message=F, fig.width = 6, out.width="70%", fig.asp=0.618, fig.align='center', fig.cap = "The relationship between side-by-side chlorophyll difference (corrections) and experiment chlorophyll difference (signal). Solid black line is a 1-1 model, dashed red lines are 98\\% confience intervals of the signal-to-correction relationship. Initial extreme values identified with 95\\% confience interval were removed to exclude their influence on the model. Intervals were recalculated with 98\\% confience to identify addition extreme values. A third extreme value was identified and excluded from the analysis.\\label{Corr_to_signal_98CI_graph}"}
 ### Remove two problem data points - remove their influence on confidence intervals
 Corr_chl_diff_data1 = Corr_chl_diff_data[-c(21,23),]
 
