@@ -2,8 +2,6 @@
 
 ## Insitu Filtration Rates of Olympia Oyster and Japanese Oyster Habitats in California
 
------------
-
 Althea N. Marks
 
 Masters in Biology
