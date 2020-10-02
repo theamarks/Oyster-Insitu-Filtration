@@ -2,9 +2,13 @@
 
 Insitu Filtration Rates of Olympia Oyster and Japanese Oyster Habitats in California
 
-M.S. Thesis
+Althea N. Marks
+
+Masters in Biology
 
 California State University Fullerton
+
+theamarks 'at' csu 'dot' fullerton 'dot' edu
 
 -----------
 Advisor: Dr. Danielle Zacherl
