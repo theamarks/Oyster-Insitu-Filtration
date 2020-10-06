@@ -72,18 +72,3 @@ My research questions were:
 4) Is there a predictable allometric relationship between *O. lurida* shell length and dry tissue weight?
 
 \newpage
-
-## Intro Extra Text & Outlines
-
-### Theme - take home sentence
-
-Filtration estimates of oyster habitat on the west coast need measurements that incorporate the entire filter-feeding community of constructed oyster restorations and commercial aquaculture.
-  
-### Incorporate these tidbits?
-
-* Chl $\alpha$ - proxy for photosynthetic organic material - Check @Secor2006 for ideas
-* Higher organic content means a higher proportion of digestible food, which increases clearance rates (@Gray2018). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
-
-
-
-
