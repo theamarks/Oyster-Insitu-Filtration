@@ -23,7 +23,7 @@ library(knitr)
 
 # set default code chunk settings to save figures in Figures folder, show no output, and cache 
 knitr::opts_knit$set(root.dir = normalizePath('../'), # set working directory to project level
-                      #fig.path = "./Thesis_Manuscript/Figures", 
+                      fig.path = "./Thesis_Manuscript/Figures", 
                       echo = FALSE, warning = FALSE, message = FALSE, 
                      fig.asp=0.618, fig.align = "center", fig.show = "hold")
 
@@ -217,7 +217,7 @@ find_outlier <- function(data){
 
 # Results
 
-```{r Correction_to_Signal_95CI_graph, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show = "hold", fig.align= 'center', out.width="70%", fig.asp=0.618, fig.width=6, message=FALSE, warning=FALSE,  fig.cap= "The relationship between side-by-side chlorophyll difference (correction) and experiment trial chlorophyll difference (signal). The solid black line is a 1-1 relationship, the dashed red lines are 95\\% confience intervals of the signal-to-correction relationship. Identified extreme values with 95\\% confience interval were removed from analysis and model. Confience intervals were recalculated with 98\\% intervals to identify addition extreme values. \\label{Corr_to_signal_95CI_graph}"}
+```{r Correction_to_Signal_95CI_graph, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show = "hold", fig.align= 'default', out.width="50%", fig.asp=1, fig.width=4, message=FALSE, warning=FALSE,  fig.cap= "The relationship between side-by-side chlorophyll difference (correction) and experiment trial chlorophyll difference (signal). The solid black line is a 1-1 relationship, the dashed red lines are 95\\% confience intervals of the signal-to-correction relationship. Identified extreme values with 95\\% confience interval were removed from analysis and model. Confience intervals were recalculated with 98\\% intervals to identify addition extreme values. \\label{Corr_to_signal_95CI_graph}"}
 
 #The relationship between side-by-side chlorophyll corrections and experiment trial chlorophyll difference (signal). Solid black line is the linear model, dashed red lines are confience intervals. A) Identified extreme values with a 95% confience interval. B) The two extreme values were excluded to remove their influence on the model, and 98% confience intervals were calculated. A third extreme value was identified and excluded from the analysis.
 
@@ -283,13 +283,11 @@ Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_c
   #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
   #geom_label(aes(label = graph_labels))
   ggrepel::geom_label_repel(aes(label = graph_labels), point.padding = 0.9, na.rm = T,
-                            nudge_y = c(-1.2,-0.5),
-                            nudge_x = c(-0.1,0.75))
+                            nudge_y = c(-1.2,-0.75),
+                            nudge_x = c(-0.5,0.75))
 print(Corr_Chl_diff_graph)
 #plot_grid(Corr_Chl_diff_graph, labels = c("A"))
-```
 
-```{r Correction_to_Signal_98CI_graph, echo=FALSE, warning=F, message=F, fig.width = 6, out.width="70%", fig.asp=0.618, fig.align='center', fig.cap = "The relationship between side-by-side chlorophyll difference (corrections) and experiment chlorophyll difference (signal). Solid black line is a 1-1 model, dashed red lines are 98\\% confience intervals of the signal-to-correction relationship. Initial extreme values identified with 95\\% confience interval were removed to exclude their influence on the model. Intervals were recalculated with 98\\% confience to identify addition extreme values. A third extreme value was identified and excluded from the analysis.\\label{Corr_to_signal_98CI_graph}"}
 ### Remove two problem data points - remove their influence on confidence intervals
 Corr_chl_diff_data1 = Corr_chl_diff_data[-c(21,23),]
 
@@ -325,8 +323,6 @@ Corr_Chl_diff_graph1 <- ggplot(Corr_chl_diff_data1, aes(correction_noabs, filter
                             nudge_x = c(0.4))
 print(Corr_Chl_diff_graph1)
 # plot_grid(Corr_Chl_diff_graph1, labels = c("B"))
-
-
 ```
 
 Filtration trials at San Rafael were conducted on the ebb and flood tides surrounding low tide.
@@ -588,7 +584,7 @@ r.sq # r squared value for random forest model
 ### Random Forest variable importance
 Var_import1 <- importance(model.rf)
 Var_import1
-Var_import1 <- Var_import2[order(Var_import2[,1], decreasing=TRUE),] # sort matrix highest to lowest - output names numeric
+Var_import1 <- Var_import1[order(Var_import1[,1], decreasing=TRUE),] # sort matrix highest to lowest - output names numeric
 Var_import_df1 <- data.frame(as.list(Var_import1)) # convert named numeric to data.frame
 Var_import_df1 %<>% 
   pivot_longer(cols = c(Turbidity, Temp, TPM, Salinity, OC, Site), names_to = "Variable", values_to = "Importance") %>% 
@@ -707,12 +703,12 @@ p.val
 ### Oyster Habitat vs. Control 
 
 Filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two-sample *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
-The Random Forest model that included all filtration and control trials (*R*^2^: `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively.
+The Random Forest model that included all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively.
 Filtration and control trials adjusted by the Random Forest model were not significantly different (two-sample *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`); however, we expect our limited sample size inhibits statistical signal detection.
 
 ### Variables Affecting HCR
 
-The random forest model with only filtration trials (*R*^2^: `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
+The random forest model with only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
 
 ```{r TPM_OC_Values, include=FALSE}
 TPM_OC_Values <- Master_analysis_table %>% 
@@ -816,9 +812,11 @@ OC_logTPM_graph <- ggplot((Avg_TPM_summary_table), aes(Avg_TPM_mg_L, Avg_OC_Rati
                label.x = "right",
                label.y = "top")
 
-########## Log-log model 
-loglogTPM_Pred <- data.frame(pred_OC = exp(predict(logOC_logTPM_LM, newdata = TPM_newrange)))
-pred_loglogTPM_df <- data.frame(TPM_newrange, loglogTPM_Pred)
+########## Log-log model logOC_logTPM_LM 
+
+
+loglog_Pred_OC <- data.frame(pred_OC = exp(predict(logOC_logTPM_LM, newdata = TPM_newrange)))
+pred_loglogTPM_df <- data.frame(TPM_newrange, loglog_Pred_OC)
 
 logOC_logTPM_graph <- ggplot((Avg_TPM_summary_table), aes(Avg_TPM_mg_L, Avg_OC_Ratio)) +
   geom_line(data = pred_loglogTPM_df, aes(x = Avg_TPM_mg_L, y = pred_OC)) +
