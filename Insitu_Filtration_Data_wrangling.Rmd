@@ -386,7 +386,7 @@ SR_nov17_species_den <- SR_nov17_den_summary %>%
 MB_species_den <- tibble(Site = "Morro Bay",
                          Date = mdy("11/21/17"), # Date info was recorded in field notebook 
                          Species = "Crassostrea_gigas", 
-                         species_den_m2 = 600)
+                         species_den_m2 = MB_gigas_m2)
 
 # combine species density dataframes - All sites
 Bivalve_summary <- bind_rows(NPD_may18_species_den,
