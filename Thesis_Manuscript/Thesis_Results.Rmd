@@ -410,11 +410,10 @@ FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
 
 ```{r Final_Summary_table, eval=FALSE, include=FALSE, results='asis'}
 
-#fig.cap="A summary table reporting every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively. \\label{Final_Summary_table}",
+## Having hard time compiling this table in Rmd. LaTeX output in Console runs perfectly in Overleaf. ## Need to build table in Word per request of CSUF Thesis Reader :(
+## Export to pdf from Overleaf, Open pdf in Word
 
-#library(xtable) # load xtable package 
-#options(xtable.floating = FALSE)
-#options(xtable.timestamp = FALSE)
+#library(xtable)
 
 # Organize & clean summary table data
 Final_table <- Master_analysis_table %>%
@@ -462,21 +461,25 @@ colnames(Latex_table_data) <- c( "\\multicolumn{1}{p{1cm}}{\\centering Site}",
                            "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{rmd} \\\ (\\%)}",
                            "\\multicolumn{1}{p{1cm}}{\\centering HCR \\\ (L/hr/m^2)}",
                             "\\multicolumn{1}{p{1cm}}{\\centering Temp \\\ (\\si{\\degree}C)}",
-                            "\\multicolumn{1}{p{1cm}}{\\centering Sal. \\\ (ppt)} ", 
-                            "\\multicolumn{1}{p{1cm}}{\\centering Turb. \\\ (NTU)}",
+                            "\\multicolumn{1}{p{1cm}}{\\centering Sal \\\ (ppt)} ", 
+                            "\\multicolumn{1}{p{1cm}}{\\centering Turb \\\ (NTU)}",
                             "\\multicolumn{1}{p{1cm}}{\\centering TPM \\\ (mg/L)}", 
                             "\\multicolumn{1}{p{1cm}}{\\centering OC \\\ (ratio)}", 
                             "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{up} \\\ (\\mu g/L)}", 
                            "\\multicolumn{1}{p{1cm}}{\\centering Depth \\\ (m)}",
-                           "\\multicolumn{1}{p{1cm}}{\\centering Dist. \\\ (m)}",
-                           "\\multicolumn{1}{p{1cm}}{\\centering Vel. \\\ (m/s)}")
+                           "\\multicolumn{1}{p{1cm}}{\\centering Dist \\\ (m)}",
+                           "\\multicolumn{1}{p{1cm}}{\\centering Vel \\\ (m/s)}")
 
 # create xtable
 sumtable_latex <- xtable(Latex_table_data, 
-                         caption = "Whole-habitat in situ filtration and control trials across four California sites. Water quality values are upstream instrument averages. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. The three observations separated at the bottom are extreme values not included in the analysis.",
+                         caption = "Whole-habitat in situ filtration and control trials across four California sites. Water quality values are upstream instrument averages. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. The three observations separated at the bottom are extreme values removed from the analysis.",
                          label = "tb:summary",
-                         align = "lllllrrccccccccr",
+                         align = "lllllrrrrrrrrrrr",
                          type = "latex")
+
+#foot_note <-list(pos = list(0), command = NULL)
+#foot_note$pos[[1]] <- c(nrow(sumtable_latex))
+#foot_note$command <- c("\\hline\\footnotesize{SR: San Rafael, MB: Morro Bay, NPSM: Newport Shellmaker, NPD: Newport Deanza, Fltr: Filtration, Ctrl: Control, Chl\\textsubscript{rmd}: Percent Chlorophyll $\alpha$ Removed, HCR: habitat clearance rate, Temp: temperature, Sal: salinity, Turb: turbidity, TPM: total particulate matter, OC: organic content, Dist: Distance between instruments, Vel: water velocity.}\n")
 
 print.xtable(sumtable_latex, 
       booktabs=TRUE, 
@@ -484,6 +487,8 @@ print.xtable(sumtable_latex,
       NA.string = NA, 
       sanitize.colnames.function=function(x){x},
       floating.environment = "sidewaystable",
+      #add.to.row = foot_note,
+      hline.after = c(-1,0,25),
       comment = F,
       include.rownames = FALSE,
       timestamp = NULL,
@@ -1128,7 +1133,17 @@ summary(Oly_DTW2_lm)
 Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
 OlyDTW_loglog_sum <- summary(Oly_LogDTW_logSH_lm)
 # R^2: 0.7299
-coef(OlyDTW_loglog_sum)
+# Residuals should be close to 0
+#https://boostedml.com/2019/06/linear-regression-in-r-interpreting-summarylm.html
+# Q1 and Q3 should have similar magnitude
+#### Boxplot of residuals
+boxplot(Oly_LogDTW_logSH_lm[['residuals']],main='Boxplot: Residuals',ylab='residual value')
+
+summary(Oly_LogDTW_logSH_lm) # residuals median should be close to 0? 
+coef(Oly_LogDTW_logSH_lm) # The intercept tells us that when all the features are at 0
+confint(Oly_LogDTW_logSH_lm) # confidence interval
+residuals(Oly_LogDTW_logSH_lm) # residuals of each data point entered into model
+
 
 par(mfrow=c(2,2))
 plot(Oly_LogDTW_logSH_lm)
@@ -1282,50 +1297,6 @@ Oly_SH_DTW2_graph <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g))
 
 ```
 
-```{r NPD_OlyDTW_SL_ylogx, eval=FALSE, include=FALSE}
-### Doesn't look like a good fit
-Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
-summary(Oly_LogxDTW_lm)
-#ols_regress(Oly_LogxDTW_lm)
-```
-
-```{r NPD_Oly_DTW_SL_logy, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-# This model makes more sense. DTW will never be negative whill length is positive 
-Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
-#ols_regress(Oly_LogDTW_lm)
-summary(Oly_LogDTW_lm) # residuals median should be close to 0? #https://boostedml.com/2019/06/linear-regression-in-r-interpreting-summarylm.html
-# Q1 and Q3 should have similar magnitude
-#### Boxplot of residuals
-boxplot(Oly_LogDTW_lm[['residuals']],main='Boxplot: Residuals',ylab='residual value')
-
-coef(Oly_LogDTW_lm) # The intercept tells us that when all the features are at 0
-confint(Oly_LogDTW_lm) # confidence interval
-residuals(Oly_LogDTW_lm) # residuals of each data point entered into model
-
-#### I don't think this function methods works
-#Oly_LogDTW_model <- function(x) {coef(Oly_LogDTW_lm)[[2]]*x + exp(coef(Oly_LogDTW_lm)[[1]])}
-
-########## OR this ##################
-# use predict() instead of creating a function? Use function inside of predict.
-# Does predict() include error term inherint in lm()?
-
-predict_DTW_logy <- function(data){
-  exp(predict(Oly_LogDTW_lm, newdata = data.frame(length_mm = data$length_mm))) 
-  # exp() converts log value, predict needs data.frame input
-  # does predict() include error term inherently in lm()
-}
-
-
-```
-
-
-
-```{r NPD_Oly_DTW_SL_poly2, eval=FALSE, fig.height=6, fig.width=6,  include=FALSE}
-Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
-summary(Oly_DTW2_lm)
-#ols_regress(Oly_DTW2_lm)
-```
-
 ```{r Bivalve_biomass_setup, include=FALSE}
 ######### Biomass by Site ############################
 # excavation quadrat area m^2 (0.25 x 0.25m)
@@ -1346,15 +1317,15 @@ SR_Density_directory = "./Data/bivalve_density_community"
 SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
 
 ######## Predict SR DTW with shell length #########
-####### log(y) ~ x 
-predict_DTW_logy <- function(data){
-  exp(predict(Oly_LogDTW_lm, newdata = data.frame(length_mm = data$length_mm))) 
+## Predict with log-log model (best fit)
+predict_DTW_loglog <- function(data){
+  exp(predict(Oly_LogDTW_logSH_lm, newdata = data.frame(length_mm = data$length_mm))) 
   # exp() converts log value, predict needs data.frame input
   # does predict() include error term inherently in lm()
 }
 
 SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
-  mutate(DTW_g = predict_DTW_logy(SR_Oly_Shelllength_data)) %>%  # predict Oly Dry tissue weight with length_mm
+  mutate(DTW_g = predict_DTW_loglog(SR_Oly_Shelllength_data)) %>%  # predict Oly Dry tissue weight with length_mm
   group_by(Site, bag_number) %>% 
   summarize(DTW_bag = mean(DTW_g)) # average DTW per sample bag
 
