@@ -382,6 +382,9 @@ FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
   #ylim(-2500, 1300)
 plot(FR_box) 
 
+# Example data for DZ to try ANOVA by site HCR
+#fwrite(Filter_only_outRmd_data, "Filter_data_HCR_ForDZ.csv")
+
 ######### Don't include ######
 #### Doesn't make sense to exclue negative values if everything is going into model.
 
