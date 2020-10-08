@@ -217,9 +217,7 @@ find_outlier <- function(data){
 
 # Results
 
-```{r Correction_to_Signal_95CI_graph, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show = "hold", fig.align= 'default', out.width="50%", fig.asp=1, fig.width=4, message=FALSE, warning=FALSE,  fig.cap= "The relationship between side-by-side chlorophyll difference (correction) and experiment trial chlorophyll difference (signal). The solid black line is a 1-1 relationship, the dashed red lines are 95\\% confience intervals of the signal-to-correction relationship. Identified extreme values with 95\\% confience interval were removed from analysis and model. Confience intervals were recalculated with 98\\% intervals to identify addition extreme values. \\label{Corr_to_signal_95CI_graph}"}
-
-#The relationship between side-by-side chlorophyll corrections and experiment trial chlorophyll difference (signal). Solid black line is the linear model, dashed red lines are confience intervals. A) Identified extreme values with a 95% confience interval. B) The two extreme values were excluded to remove their influence on the model, and 98% confience intervals were calculated. A third extreme value was identified and excluded from the analysis.
+```{r Correction_to_Signal_95CI_graph, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show = "hold", fig.align= 'default', out.width="50%", fig.asp=1, fig.width=4, message=FALSE, warning=FALSE,  fig.cap= "The relationship between side-by-side chlorophyll $\\alpha$ difference (correction) and experiment trial chlorophyll $\\alpha$ difference (signal). The solid black line is a 1-1 relationship, the dashed red lines are confience intervals of the signal-to-correction relationship. Extreme values were identified with 95\\% confience interval and were removed from the model and further analyses (left). Confience intervals were recalculated to 98\\% to identify addition extreme values from analyses (right). \\label{Corr_to_signal_95CI_graph}"}
 
 ##### Althea's Chl correction x Filtration diff Graph ###########
 ## Correction data & OG Chl values
@@ -324,14 +322,6 @@ Corr_Chl_diff_graph1 <- ggplot(Corr_chl_diff_data1, aes(correction_noabs, filter
 print(Corr_Chl_diff_graph1)
 # plot_grid(Corr_Chl_diff_graph1, labels = c("B"))
 ```
-
-Filtration trials at San Rafael were conducted on the ebb and flood tides surrounding low tide.
-Three filtration trials were conducted on flood tides, one on an ebb tide, and one control trial on an ebb tide (Table 1).
-We recorded four filtration trials and one control at Morro Bay, all conducted on flood tides.
-At Shellmaker we recorded four filtration trials and one control on flood tides.
-Deanza had the most field days with ten filtration trials and three controls all conducted on ebb tides. 
-Three experimental trials were removed from the analysis because of their extreme values Figure \ref{Corr_to_signal_95CI_graph} and \ref{Corr_to_signal_98CI_graph}.
-
 
 ### Percent chlorophyll $\alpha$ removal
 
