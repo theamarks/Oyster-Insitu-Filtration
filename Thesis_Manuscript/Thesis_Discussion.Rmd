@@ -102,6 +102,15 @@ All experimental trials were conducted at a depth less than 0.9 m (Table 1), San
     - effeciently direct retoration for filtration / food availability
 
 
+### Theme - take home sentence
+
+Filtration estimates of oyster habitat on the west coast need measurements that incorporate the entire filter-feeding community of constructed oyster restorations and commercial aquaculture.
+  
+### Incorporate these tidbits?
+
+* Chl $\alpha$ - proxy for photosynthetic organic material - Check @Secor2006 for ideas
+* Higher organic content means a higher proportion of digestible food, which increases clearance rates (@Gray2018). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
+
 ## Extra Text
 
 Simply expanding individual filtration rates to other areas need to account for water depth, as bivalves may not have the same access to food at depth or the whole water column [@Monismith1990; @Wheat2013]
