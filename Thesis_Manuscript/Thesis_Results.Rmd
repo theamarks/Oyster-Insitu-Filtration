@@ -1151,7 +1151,7 @@ str(Oly_LogDTW_logSH_lm)
 ```
 
 
-```{r Oly_DTW_SH_outlier_rmd, echo=FALSE, fig.keep = 'all', dev = 'pdf', warning=F, message=F, fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) at two locations, Newport Bay, California (Zacherl unpublished data) and Yaquina Bay, Oregon (Gray unpublished data). The Newport Bay data was collected at the Deanza restoration site and outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
+```{r Oly_DTW_SH_outlier_rmd, include=F, fig.keep = 'all', dev = 'pdf', warning=F, message=F, fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) at two locations, Newport Bay, California (Zacherl unpublished data) and Yaquina Bay, Oregon (Gray unpublished data). The Newport Bay data was collected at the Deanza restoration site and outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
 
 Site_Shapes <- c("Deanza" = 16,
                  "Yaquina" = 3)
