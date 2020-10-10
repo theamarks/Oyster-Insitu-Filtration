@@ -76,8 +76,6 @@ Next, the dried filters were ashed at 450&deg;C for \( \geq 4 \) hours and weigh
 The protocol used by @Gray2018 calls for washed and ashed filters, however I only used washed filters. 
 I found that the weight difference between washed and ashed filters to washed filters was was 0.5\% and corrected my samples accordingly.
 
-***Need to address my filter weight mistakes?*** <-- Yes
-
 \begin{equation}
 \label{Eq:TPM}
 TPM (mg/L)= \frac{[Filter Dry Weight (g) - Filter Pre Weight (g)] \times \frac{100 mg}{L}}{Water sample volume (mL) \times \frac{1 L}{1000 mL}} \
@@ -123,7 +121,7 @@ Next, I examined the signal-to-correction relationship between the chl $\alpha$ 
 This comparison showed if any instrument corrections obfuscate the experimental signal.
 I used the 95\% intervals of a linear model of the two variables to remove extreme values outside of the intervals.
 Because my data set is small, extreme values likely influenced my initial confidence intervals; therefore I created a second linear model with the extreme values removed and 98\% confidence intervals to identify any addition extreme values to remove from the analysis. 
-Three extreme observations were removed from the data set based on this signal-to-correction comparison (Shellmaker 2020/6/9, Shellmaker 2020/5/22, Deanza 2020/4/17) (***Citation?***) (Figure Figure \ref{Corr_to_signal_95CI_graph} and \ref{Corr_to_signal_98CI_graph}).
+Three extreme observations were removed from the data set based on this signal-to-correction comparison (Figure Figure \ref{Corr_to_signal_95CI_graph} and \ref{Corr_to_signal_98CI_graph}).
 
 To determine if there was a difference between control and filtration trials, I used a two-sample t-test not controlling for water quality and site parameters.
 To control for water quality and site parameters, I fit a random forest regression (including all filtration and control trials) to HCR from temperature, salinity, turbidity, TPM, OC, and site.
