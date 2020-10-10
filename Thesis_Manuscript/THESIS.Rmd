@@ -15,7 +15,6 @@ header-includes:
 - \usepackage{setspace}
 - \doublespacing
 - \usepackage{lineno}
-- \linenumbers
 - \usepackage{makecell}
 - \usepackage{gensymb}
 csl: marine-ecology-progress-series.csl
@@ -56,6 +55,7 @@ library()
 
 ```{r child = 'Thesis_Discussion.Rmd'}
 ```
+
 \FloatBarrier
 \newpage 
 
