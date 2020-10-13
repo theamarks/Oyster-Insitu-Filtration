@@ -1,0 +1,64 @@
+---
+title: In situ Clearance Rates of Olympia Oyster (*Ostrea lurida*) Habitat and Pacific
+  Oyster (*Crassostrea gigas*) Aquaculture in California
+author: Althea N. Marks
+date: "9/17/2020"
+output:
+  pdf_document:
+    fig_caption: yes
+    latex_engine: xelatex
+    number_sections: yes
+documentclass: report
+classoptions: 12pt, titlepage
+geometry: left=1.5in, right=1in, top=1in, bottom=1in
+header-includes:
+- \usepackage{placeins}
+- \usepackage{setspace}
+- \doublespacing
+- \usepackage{lineno}
+- \usepackage{makecell}
+- \usepackage{gensymb}
+- \usepackage{pdfpages}
+csl: marine-ecology-progress-series.csl
+bibliography: library.bib
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(fig.path = 'figures/', 
+                      echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r include=FALSE}
+library()
+```
+
+\tableofcontents
+\newpage 
+
+\listoffigures
+\newpage 
+
+```{r child = 'Thesis_Introduction.Rmd'}
+```
+
+\newpage 
+
+```{r child = 'Thesis_Methods.Rmd'}
+```
+
+\FloatBarrier
+\newpage 
+
+```{r child = 'Thesis_Results.Rmd'}
+```
+
+\FloatBarrier
+\newpage 
+
+```{r child = 'Thesis_Discussion.Rmd'}
+```
+
+\FloatBarrier
+\newpage 
+
+# References

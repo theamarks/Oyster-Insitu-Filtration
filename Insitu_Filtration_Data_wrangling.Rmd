@@ -266,17 +266,17 @@ TPM_data = fread(file.path(TPM_directory, "Insitu_Filter_POM_PIM_Data.csv"))
 ######################################################################
 
 TPM_summary_table <- TPM_data %>% 
-  mutate(TPM = ((dry_weight_corrected_g - filter_weight_corrected_g) * 1000 / sample_volume_ml),
-         PIM = TPM - ((ash_weight_corrected_g - filter_weight_corrected_g) * 1000 / sample_volume_ml),
-         POM = TPM - PIM,
-         Organic_Content_Ratio = POM / TPM) %>% 
+  mutate(TPM_mg_L = (((dry_weight_corrected_g - filter_weight_corrected_g)*1000) / (sample_volume_ml/1000)), # grams to mg
+         PIM_mg_L = (((ash_weight_corrected_g - filter_weight_corrected_g)*1000) / (sample_volume_ml/1000)),
+         POM_mg_L = TPM_mg_L - PIM_mg_L,
+         Organic_Content_Ratio = POM_mg_L / TPM_mg_L) %>% 
   as_tibble()
 
 Avg_TPM_summary_table <- TPM_summary_table %>% 
   group_by(Date, Site, sample_type) %>% 
-  summarize(Avg_TPM = round(mean(TPM), 4),
-            Avg_PIM = round(mean(PIM), 4),
-            Avg_POM = round(mean(POM), 4),
+  summarize(Avg_TPM_mg_L = round(mean(TPM_mg_L), 4),
+            Avg_PIM_mg_L = round(mean(PIM_mg_L), 4),
+            Avg_POM_mg_L = round(mean(POM_mg_L), 4),
             Avg_OC_Ratio = round(mean(Organic_Content_Ratio), 4)) 
 
 #####################################################################
@@ -308,7 +308,8 @@ NP_density_data = fread(file.path(NP_Density_directory, "Insitu_filter_NP_may18_
 #SR_nov17_olympia_m2 <- mean(SR_density_data$density_m2)      
 
 # Morro Bay total bivalve density - data from MBOC staff 
-MB_gigas_m2 = 600
+MB_gigas_m2 = 409
+# 180 oysters per bag, bag 55cm x 80cm, 100 bags /line, oysters ~3" length, 7 lines b/w sondes
 
 # Newport Deanza total bivalve Density - Data from Zacherl lab surveys 
 NP_excavation_quad_area = 0.0625
@@ -385,18 +386,20 @@ SR_nov17_species_den <- SR_nov17_den_summary %>%
 MB_species_den <- tibble(Site = "Morro Bay",
                          Date = mdy("11/21/17"), # Date info was recorded in field notebook 
                          Species = "Crassostrea_gigas", 
-                         species_den_m2 = 600)
+                         species_den_m2 = MB_gigas_m2)
 
 # combine species density dataframes - All sites
-Species_density_summary <- bind_rows(NPD_may18_species_den,
+Bivalve_summary <- bind_rows(NPD_may18_species_den,
                                      NPSM_may18_species_den,
                                      SR_nov17_species_den,
                                      MB_species_den, .id = NULL)
 
-Species_density_summary <- Species_density_summary %>% 
+fwrite(Bivalve_summary, file.path(Bivalve_output_directory, "Bivalve_Site_summary.csv"))
+
+Species_density_summary <- Bivalve_summary %>% 
   pivot_wider(names_from = Species,
               values_from = species_den_m2) %>% 
-  select(Site, Date,
+  dplyr::select(Site, Date,
          "Adula_diegensis_m2" = Adula_diegensis,
          "Musculista_senhousia_m2" = Musculista_senhousia,
          "Mytilus_galloprovincialis_m2" = Mytilus_galloprovincialis,
@@ -421,16 +424,16 @@ filtration_summary_table <- fread("output/4_Filtration_Calculations/Filtration_S
 Master_analysis_table <- filtration_summary_table %>% 
   left_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
   # Exclude downstream average WQ values and unneeded single tail t-test results
-  select(-c("estimate", "conf.high", "sample_type","Temp_C_Down", "SpCond_mS_cm_Down",
-            "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down")) %>% 
-  # Add in site simple variables for regression
-   mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
-         NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
-         NPSM = ifelse(grepl("Shellmaker", filtration_summary_table$Site), T, F),
-         MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F),
-         Filter_trial = ifelse(grepl("Filtration", filtration_summary_table$Experiment), T, F)) %>% 
+  dplyr::select(-c("Temp_C_Down", "SpCond_mS_cm_Down",
+            "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down"))#  %>% 
+  # Add in site simple variables for regression - removed b/c not using Multiple Linear Regression
+  # mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
+   #      NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
+    #     NPSM = ifelse(grepl("Shellmaker", filtration_summary_table$Site), T, F),
+     #    MB = ifelse(grepl("Morro Bay", filtration_summary_table$Site), T, F),
+      #   Filter_trial = ifelse(grepl("Filtration", filtration_summary_table$Experiment), T, F)) %>% 
   left_join(Species_density_summary, by = c("Site")) %>% 
-  select(-c("Date.y")) %>% 
+  dplyr::select(-c("Date.y")) %>% 
   rename(Date = Date.x)
   
 

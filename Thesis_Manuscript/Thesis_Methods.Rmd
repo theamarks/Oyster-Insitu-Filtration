@@ -1,7 +1,10 @@
 ---
 bibliography: library.bib
 csl: marine-ecology-progress-series.csl
-header-includes: \usepackage{setspace}\doublespacing\usepackage{rotating}
+header-includes: 
+- \usepackage{setspace}
+- \doublespacing
+- \usepackage{rotating}
 output:
   pdf_document:
     fig_caption: yes
@@ -11,43 +14,49 @@ indent: true
 # Methods
 
 ### Study Sites
-I conducted my research from February 2018 to June 2019 at four sties along the California coast. The sites represent a range of constructed oyster habitats including shell reef, shell bed, and floating aquaculture lines.
-The San Francisco Living Shorelines Project, San Francisco Bay, California was constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015]. 
-It is a large-scale experiment that investigates the effects of various reef designs and *Z. marina* plantings on biological habitat and physical shoreline protection [@EnvironmentalScienceAssociates2014]. 
-The project has two major sites, The Nature Conservancy site in San Rafael, CA and the Eden Landing Ecological Reserve in Hayward, CA. 
-The Nature Conservancy site (37.964179, -122.487217, hensforth San Rafael) was selected for this study because of its accessability, size, and higher abundances of *O. lurida*. 
-San Rafael consists of a matrix of shell bag reefs with a 32 m x 10 m footprint consisting of 3 rows of 8 shell bag reefs [@EnvironmentalScienceAssociates2014]. 
-Each reef measures 2 m x 2 m x 1 m  and is composed of 4 shell bag elements measuring 1 m x 1 m x 1 m. A shell bag are made of plastic mesh filled with clean, commercially-grown *C. gigas* shell. 
-The matrix is positioned approximately 200 m from shore on a mudflat at -0.3 m MLLW (Mean Low Lower Water) tidal evlevation [@EnvironmentalScienceAssociates2014]. 
+I selected four sites along the California coast to measure in situ filtration.
+The sites represent a range of constructed oyster habitats including shell bag reef, shell bed, and floating aquaculture lines.
+The San Francisco Living Shorelines Project has two sites in San Francisco Bay, California, constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015]. 
+It is a large-scale experiment that investigates the effects of various reef designs and *Zostrea marina* plantings on biological habitat provision and physical shoreline protection [@EnvironmentalScienceAssociates2014]. 
+I selected The Nature Conservancy site (37.964179, -122.487217, henceforth San Rafael) of the two sites because of its accessibility, size, and higher abundances of *O. lurida*. 
+San Rafael consists of a shell bag reef matrix with a 32 m x 10 m footprint consisting of three rows of eight shell bag reefs [@EnvironmentalScienceAssociates2014]. 
+Each reef measures 2 m x 2 m x 1 m  and is composed of four shell bag elements measuring 1 m x 1 m x 1 m. A shell bag is made of plastic mesh filled with clean, commercially-grown *C. gigas* shell. 
+The matrix is positioned approximately 200 m from shore on a mudflat at -0.3 m MLLW (Mean Low Lower Water) tidal elevation [@EnvironmentalScienceAssociates2014]. 
 
-The Upper Newport Bay Living Shorelines Project, Newport Bay, California was constructed May 2017 by Orange County Coast Keeper, and collaborators at CSU Fullerton and CSU Long Beach. 
-This experimental project investigates the interactions between constructed shell beds and transplanted *Z. marina* on biological communities. 
-The project consists of 4 sites, Pacfic Coast Highway, Westcliff, Deanza, and Shellmaker. This study only includes Deanza (33.620291, -117.897692, hensforth Newport Deanza) and Shellmaker (33.622097, -117.892399, hensforth Newport Shellmaker) because of their accessibility, water flow dynamics, and higher abundances of *O. lurida*. 
-Each site has a 4 plots; a combination of control mudflats, *Z. marina* beds, and shell beds. The shell beds measure 20 m x 1 m x 0.25 m and are constructed with coconut coir bogs filled with clean commercially-grown *C. gigas* and mussel *species name* shell. 
-The beds are positioned approximately 30 m from shore on a frim mudflat at approximately 0.15 m MLLW.
+The Upper Newport Bay Living Shorelines Project has four sites in Newport Bay, California and was constructed in May 2017 by Orange County Coast Keeper, and collaborators at CSU Fullerton and CSU Long Beach. 
+This experimental project investigates the effects of interactions between restored *O. lurida* beds and restored *Z. marina* eelgrass beds on biological communities. 
+My research includes two of the four sites, Shellmaker (33.622097, -117.892399, henceforth Shellmaker) and Deanza (33.620291, -117.897692, henceforth Deanza) because of their accessibility, water flow dynamics, and higher abundances of *O. lurida*. 
+Each site has four plots; control mudflats, *Z. marina* beds restored in isolation, *O. lurida* oyster beds restored in isolation, and oyster beds restored adjacent to seaward eelgrass beds. 
+The oyster beds measure 20 m x 1 m x 0.25 m and are constructed with coconut coir bogs filled with clean commercially-grown dead *C. gigas* and *Mytilus galloprovincialis* mussel shell. 
+The beds are positioned approximately 30 m from shore on a mudflat at approximately -0.15 m MLLW.
 
-The Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Morro Bay, Califonia (35.334707, -120.844000, hensforth Morro Bay). 
+The Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Morro Bay, California (35.334707, -120.844000, henceforth Morro Bay). 
 MBOC grows *C. gigas* in plastic mesh bags measuring about (insert dimensions) attached to floating lines that stretch across an area about 75 m x 75 m. 
 The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
 
-### Experimental Design
-This research is based on previous in situ filtration studies of Atlantic bivalve reefs by @Grizzle2006, @Grizzle2008, and @Milbrandt2015a. 
-More precice methods of measuring bivalve filtration exsist, like the biodeposition method used in @Gray2017a and @Hawkins1996a. 
-However, the in situ methods described in @Grizzle2006 measure an entire filter-feeding community within an oyster habitat with natural water quality and flow dynamics. 
-@Grizzle2008’s results inform the Atlantic and Gulf Coasts' *C. virginica* habitat filtration models in ~~the National Oceans and Atmopsheric Administration's (NOAA) and The Nature Concervancy's~~ "A Manager's Guide: Setting Objectives for Oyster Habitat Restoration Using Ecosystem Services" and associated online tool at https://oceanwealth.org/tools/oyster-calculator/ [@ZuErmgassen2016]. 
-This research aims to provide field filtraiton rates for the *O. lurida* habitat model using similar methods.
+##### Need Map Figure Here
 
-Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$), temperature, salinity, and turbidity across the oyster habitat. 
-The instruments hung inside of free standing PVC (polyvinyl chloride) housings (Figure \ref{fig:fieldgear}) to align the sesnsors with the approximate height of the oyster habitat. 
-I positioned the instruments upstream and downstream of the oyster habitat and released a water tracing dye (Rhodamine WT) at the upstream instrument. 
-The dye provided a visual indication of water flow direction and highlighted any cross currents or eddies that invalidate the measurements. 
-I repositioned the instruments based on the dye release to measure a linear water flow traveling from the upstream instrument, over the oyster habitat, to the downstream instrument. 
-Once the instruments were properly positioned, an electromagnetic meter (Marsh McBirney Flo Mate 2000) measured water velocity at each instrument and in the center of the habitat at the depth of the sensors. 
-I measured water velocity and water column depth at the begining, middle, and end of the filtration trial and the distance between instruments after the filtraiton trial. 
-The instruments recorded measurements every 1 second. Filtration trials lasted as long as field conditions were appropriate; anywhere from 5 and 30 minutes. 
-In addition to the filtration trial, two side-by-side trials were conducted before and after the filtration tial. In the side-by-side trial, I placed the instruments adjacent to one another to compare the sensors' chlorophyll $\alpha$ measurements in the same mass of water. 
-The average chlorophyll $\alpha$ difference corrected sensor differences in the filtration trial data. 
-I took detailed notes of all field events and disturbances with a watch synced to the sondes' internal clocks.
+### Experimental Setup
+Methods used were adapted from Grizzle et al.'s (2008) in situ filtration measurements of bivalve beds on the Atlantic coast.
+Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (henceforth Chl $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
+The sondes hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and hung at height to align the sensors with the approximate height of the oyster habitat. 
+Prior to each filtration trial, water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and any interfering currents or eddies.
+The sonde housings were positioned to measure an uninterrupted linear water flow across the oyster habitat based on the dye.
+Linear water flow assumes that the upstream instrument is measuring the same water as the downstream instrument.
+An electromagnetic meter (Marsh McBirney Flo Mate 2000) measured water velocity in the center of the habitat at the depth of the sensors during the beginning, middle, and end of each trial. 
+Depth measurements were recorded at each sonde housing at the beginning and end of the trial along with the distance between sondes.
+The sondes recorded measurements every 1 second, and trials lasted as long as field conditions were appropriate; anywhere from 5 and 30 minutes. 
+Control trials used the same set up, but the instruments were positioned over a bare mudflat adjacent to the oyster habitat.
+Detailed notes of all field events and disturbances were recorded with a watch synced to the sondes' internal clocks.
+Field work was conducted from February 2018 to June 2019 and measured 22 filtration trials and 6 control trials.
+
+### Chlorophyll $\alpha$ Corrections
+In addition to the filtration and control trials, two side-by-side trials were conducted before and after the experimental trial to record and correct any chl $\alpha$ sensor differences.
+In the side-by-side trials, I placed the instruments adjacent to one another to compare the sensors' chlorophyll $\alpha$ measurements in the same mass of water for approximately 10 minutes.  
+The data was reviewed for extreme Chl $\alpha$ spikes caused by unnatural sediment plumes that would skew the average Chl $\alpha$.
+Extreme Chl $\alpha$ values were removed from the data.
+The average Chl $\alpha$ difference between sondes in the side-by-side trail was divided in half to get a correction term for filtration and control trial Chl $\alpha$ measurements (***Citations?!***).
+The sonde with higher Chl $\alpha$ in the side-by-side trial was corrected in the filtration trial by subtracting the correction term from Chl $\alpha$ measurements, and the lower sonde was corrected by adding the correction term.
 
 \begin{figure}[h]
   \centering
@@ -56,32 +65,25 @@ I took detailed notes of all field events and disturbances with a watch synced t
   \label{fig:fieldgear}
 \end{figure}
 
-### Methodology Assumpitons
-In situ filtration measurements based on @Grizzle2006 require: 1) linear water flow across the habitat; 2) slow water velocity (between 0.1 – 0.3 m/s); 3) shallow water depths; and 4) little to no wind (@Grizzle2008, and @Milbrandt2015a). 
-Linear water flow assumes that the upstream instrument is measureing the same water as the downstream instrument.
-Eddies or side currents in the water course invalidate this assumption by mixing with the measured water. 
-Slow water velocities minimize the amound of benthic sediments resupended into the water column and is associated with higher filtration rates in non siphonated bivalves like oysters (@Grizzle1992) [More references]. 
-The oyster habitat must be completely submerged in the water column for filtraiton to occur, and a shallow water column prevents large amounts of water drownding out the filtration signal. 
-Lastly, strong winds can generate water flows that resuspend benthic sediments into the water column, clouding out chlorophyll $\alpha$ draw down between instruments (@Grizzle2008). [read Dame 1985 & 1992]
-
-### Seston Organic Content
-The ratio of seston organic content effects bivalve clearance rates **(Need references)**. 
-Higher organic content means a higher proportion of digestable food, which increases clearance rates (@Gray2017a). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
-To determine seston content, I collected water samples adjacent to the study area, filtered the water through 
-Whatman GF/F pre-wash and weighed filters, and stored the samples on ice until they could be stored in a freezer. 
+### Seston Content
+I determined seston Total Particulate Content (TPM), Particulate Inorganic Matter (PIM), Particulate Organic Matter (POM), and Organic content (OC) gravametrically.
+I collecting water samples next to the study area during the filtration or control trial, and filtered the water through Whatman GF/F pre-wash and weighed filters in the field.
+The filters were stored on ice until they could be stored in a freezer. 
 Thawed filters were rinsed with a 0.5 M ammonium formate solution to remove salt. 
-Typically this step follows filtering (@Gray2017a), but this was not possible to do in the field. 
-Filters were then dried in an 60C oven for 48 hours, and weighed to determine total particulate matter (TPM; \ref{eq:TPM}). 
-Next, the dried filters were ashed at 450C for \( \leq 4 \) hours and weighed to determine particulate inorganic matter (PIM; \ref{eq:PIM}) and particulate organic matter (POM; \ref{eq:POM}).
+Typically this step immediately precedes filtering [@Gray2018], but this was not possible to do in the field. 
+Filters were then dried in an 60&deg;C oven for 48 hours, and weighed to determine TPM (equation \ref{Eq:TPM}). 
+Next, the dried filters were ashed at 450&deg;C for \( \geq 4 \) hours and weighed to determine PIM (equation \ref{Eq:PIM}) and POM (equation \ref{Eq:POM}). Seston OC is simply the ratio of POM to TPM.
+The protocol used by @Gray2018 calls for washed and ashed filters, however I only used washed filters. 
+I found that the weight difference between washed and ashed filters to washed filters was was 0.5\% and corrected my samples accordingly.
 
 \begin{equation}
 \label{Eq:TPM}
-TPM (mg/L)= \frac{Filter Dry Weight (mg) - Filter Pre Weight (mg)}{Water sample volume (mL)} \times 1000
+TPM (mg/L)= \frac{[Filter Dry Weight (g) - Filter Pre Weight (g)] \times \frac{100 mg}{L}}{Water sample volume (mL) \times \frac{1 L}{1000 mL}} \
 \end{equation}
 
 \begin{equation}
 \label{Eq:PIM}
-PIM (mg/L)= TPM (mg/L) - \frac{Filter Ash Weight (mg) - Filter Pre Weight (mg)}{Water sample volume (ml)} \times 1000
+PIM (mg/L)= \frac{[Filter Ash Weight (g) - Filter Pre Weight (g)] \times \frac{100 mg}{L}}{Water sample volume (ml)\times \frac{1 L}{1000 mL}} \
 \end{equation}
 
 \begin{equation}
@@ -89,83 +91,71 @@ PIM (mg/L)= TPM (mg/L) - \frac{Filter Ash Weight (mg) - Filter Pre Weight (mg)}{
 POM (mg/L) = TPM (mg/L) - PIM (mg/L)
 \end{equation}
 
-### Filtration Calculations & Analysis
-To calculate filtration I first paired upstream and downstream measurements using average velocity and instrument distance to calculate travel time. 
-Downstream measurement times were corrected by the travel time to pair with upstream sonde measurements, unpaired measurements were discarded. 
-Next, I corrected the chlorophyll $\alpha$ measurements by the average difference calculated from the side-by-side trials and calculated percent chlorophyll removal (\(\autoref{Eq:PrctChl}\)) and habitat filtration (\(\autoref{Eq:Lhrm2}\)). 
-Percent chlorophyll $\alpha$ removed is simply the relative change in chlorophyll $\alpha$ concentration from upstream ($Chl_{up}$) to downstream ($Chl_{down}$). Habitat filtration, originally used by @Milbrandt2015a, expresses filtration as a rate and in terms of habitat area rather than the traditional dry tissue weight **(Need references)**. 
-$A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$ assumed 1 m width), *V* is the average water velocity (m/hr), *1000* is the conversion factor from $m^2$ to L, $A_{habitat}$ is the area being measured (distance between the instruments $\times$ assumed 1 m width), $Chl_{up}$ is the upstream chlorophyll $\alpha$ concentration, and $Chl_{down}$ is the downstream chlorophyll $\alpha$ concentration.
+### Filtration Calculations
+To calculate filtration I first checked the filtration and control trials' raw data for extreme Chl $\alpha$ and turbidity spikes indicating disturbance.
+Extreme spikes were cross referenced with field notes and removed if field notes corroborated a disturbance. 
+Next I paired upstream and downstream Chl $\alpha$ measurements. 
+I used average water velocity and sonde distance to estimate the time it took a parcle of water to travel from the upstream sonde to the downstream sonde. 
+The travel time was subtracted from downstream measurement time-stamps to pair with upstream sonde measurements; unpaired measurements were discarded. 
+Next, I calculated percent Chl $\alpha$ removal (\(\autoref{Eq:PrctChl}\); @Grizzle2008) and habitat clearance rate (HCR; \(\autoref{Eq:Lhrm2}\); @Milbrandt2015) using average Chl $\alpha$ values. 
 
 \begin{equation}
 \label{Eq:PrctChl}
-Percent Chlorophyll\alpha Removed = \frac{Chl_{up} - Chl_{down}}{Chl_{up}} \times 100
+\% Chl\alpha Removal = \frac{Chl_{up} - Chl_{down}}{Chl_{up}} \times 100
 \end{equation}
 
 \begin{equation}
 \label{Eq:Lhrm2}
-Habitat Filtration Rate (Lhr^{-1}m^2) = \frac{A_{Xsec} \times V \times 1000}{A_{habitat}} \times \frac{Chl_{up} - Chl_{down}}{Chl_{up}}
+HCR (Lhr^{-1}m^2) = \frac{A_{Xsec} \times V \times 1000}{A_{habitat}} \times \frac{Chl_{up} - Chl_{down}}{Chl_{up}}
 \end{equation}
 
-## Test Table
+$A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$ assumed 1 m width), *V* is the average water velocity (m/hr), *1000* is the conversion factor from $m^2$ to L, $A_{habitat}$ is the area being measured (distance between the instruments $\times$ assumed 1 m width), $Chl_{up}$ is the upstream chlorophyll $\alpha$ concentration, and $Chl_{down}$ is the downstream chlorophyll $\alpha$ concentration.
+.
 
-Final_table_LaTex is object with this LaTex code
+### Analysis
 
-\begin{sidewaystable}[ht]
-\centering
-\begin{tabular}{rlllrrrrrrrrrrrr}
-  \hline
- & Site & Date & Experiment & Temp\_C\_Up & Sal\_ppt\_Up & Turbidity\_NTU\_Up & Avg\_TPM & Avg\_OC\_Ratio & Chl\_ug\_L\_Up & Chl\_ug\_L\_Down & avg\_depth\_cm & d\_bw\_sondes\_m & avg\_m\_hr & pcnt\_Chl\_rmvd & L\_hr\_m2 \\ 
-  \hline
-1 & Deanza & 2018-10-25 & Filtration & 21.09 & 33.50 & 4.80 &  &  & 3.20 & 3.40 & 17.50 & 19.20 & 234.00 & -9.90 & -212.00 \\ 
-  2 & Deanza & 2018-10-26 & Filtration & 20.96 & 36.40 & 2.40 & 0.00 & 0.64 & 4.00 & 3.30 & 19.00 & 19.20 & 288.00 & 15.30 & 436.00 \\ 
-  3 & Deanza & 2019-04-15 & Filtration & 19.43 & 36.40 & 3.40 & 0.01 & 0.64 & 1.30 & 1.30 & 23.00 & 16.40 & 240.00 & -6.00 & -201.00 \\ 
-  4 & Deanza & 2019-04-17 & Filtration & 19.41 & 37.40 & 4.90 & 0.00 & 0.77 & 0.10 & 1.10 & 0.17 & 16.40 & 396.00 & 13.30 & 5.00 \\ 
-  5 & Deanza & 2019-05-10 & Filtration & 19.25 & 37.40 & 2.90 & 0.01 & 0.84 & 4.00 & 3.80 & 31.25 & 14.80 & 324.00 & 5.50 & 376.00 \\ 
-  6 & Deanza & 2019-05-11 & Filtration & 18.85 & 36.50 & 2.90 & 0.00 & 0.76 & 3.70 & 3.60 & 35.00 & 15.00 & 369.00 & 3.90 & 336.00 \\ 
-  7 & Deanza & 2019-05-21 & Filtration & 18.89 & 34.20 & 3.30 & 0.00 & 0.77 & 6.30 & 6.50 & 24.00 & 16.00 & 288.00 & -3.50 & -152.00 \\ 
-  8 & Deanza & 2019-05-22 & Filtration & 18.62 & 33.90 & 2.80 & 0.00 & 0.77 & 7.40 & 7.00 & 22.50 & 15.70 & 216.00 & 5.00 & 155.00 \\ 
-  9 & Deanza & 2019-05-09 & Filtration & 19.44 & 37.00 & 2.30 & 0.00 & 0.79 & 5.40 & 5.20 & 32.50 & 15.00 & 243.00 & 4.50 & 235.00 \\ 
-  10 & Deanza & 2019-06-08 & Filtration & 19.07 & 37.10 & 2.70 & 0.00 & 0.73 & 4.30 & 4.40 & 26.50 & 15.70 & 324.00 & -2.30 & -126.00 \\ 
-  11 & Deanza & 2019-06-09 & Neg Control 1 & 19.18 & 37.10 & 1.30 & 0.00 & 0.79 & 2.80 & 2.80 & 47.50 & 12.80 & 423.00 & -2.40 & -377.00 \\ 
-  12 & Deanza & 2019-06-09 & Neg Control 2 & 19.22 & 37.00 & 2.00 & 0.00 & 0.79 & 2.90 & 2.90 & 33.00 & 12.80 & 225.00 & -2.90 & -170.00 \\ 
-  13 & Deanza & 2019-06-09 & Neg Control 3 & 19.62 & 36.60 & 2.20 & 0.00 & 0.79 & 3.70 & 3.50 & 21.25 & 12.20 & 216.00 & 3.30 & 124.00 \\ 
-  14 & Shellmaker & 2019-05-10 & Filtration & 19.78 & 37.00 & 4.10 & 0.01 & 0.76 & 3.70 & 3.80 & 38.50 & 13.00 & 216.00 & -5.00 & -321.00 \\ 
-  15 & Shellmaker & 2019-05-11 & Filtration & 21.52 & 36.50 & 4.70 & 0.01 & 0.75 & 2.40 & 1.90 & 32.50 & 12.20 & 162.00 & 20.40 & 882.00 \\ 
-  16 & Shellmaker & 2019-05-22 & Filtration & 19.29 & 33.70 & 3.80 & 0.00 & 0.80 & 2.70 & 4.10 & 26.25 & 8.60 & 135.00 & -60.10 & -2477.00 \\ 
-  17 & Shellmaker & 2019-06-08 & Filtration & 20.06 & 36.00 & 4.00 & 0.00 & 0.80 & 2.70 & 2.70 & 26.25 & 8.60 & 153.00 & -2.80 & -131.00 \\ 
-  18 & Shellmaker & 2019-06-09 & Neg Control 1 & 22.40 & 36.00 & 5.80 & 0.00 & 0.82 & 1.10 & 3.00 & 40.75 & 7.80 & 162.00 & -201.50 & -17053.00 \\ 
-  19 & Morro Bay & 2018-07-27 & Filtration & 17.66 & 35.90 & 7.90 & 0.02 & 0.74 & 4.50 & 3.70 & 47.50 & 26.00 & 108.00 & 17.50 & 346.00 \\ 
-  20 & Morro Bay & 2018-07-28 & Filtration & 17.45 & 35.90 & 7.40 & 0.01 & 0.67 & 3.00 & 2.70 & 29.50 & 27.00 & 96.00 & 9.90 & 103.00 \\ 
-  21 & Morro Bay & 2019-05-18 & Filtration & 16.29 & 37.60 & 17.50 &  &  & 2.90 & 3.00 & 42.50 & 30.50 & 270.00 & -5.70 & -214.00 \\ 
-  22 & Morro Bay & 2019-05-19 & Filtration & 15.94 & 36.40 & 10.90 & 0.01 & 0.82 & 2.20 & 2.50 & 45.00 & 30.50 & 90.00 & -17.80 & -236.00 \\ 
-  23 & Morro Bay & 2019-06-06 & Neg Control 1 & 17.28 & 38.10 & 11.90 & 0.01 & 0.78 & 2.10 & 2.10 & 32.50 & 20.50 & 171.00 & -1.10 & -30.00 \\ 
-  24 & San Rafael & 2018-11-07 & Neg Control 1 & 16.45 & 29.90 & 25.50 & 0.03 & 0.83 & 6.90 & 7.00 & 39.50 & 11.60 & 216.00 & -1.80 & -134.00 \\ 
-  25 & San Rafael & 2018-11-08 & Filtration & 14.52 & 29.90 & 30.90 & 0.03 & 0.86 & 5.10 & 4.80 & 69.33 & 12.30 & 120.00 & 5.60 & 376.00 \\ 
-  26 & San Rafael & 2018-07-17 & Filtration & 24.51 & 29.60 & 30.60 & 0.08 & 0.88 & 4.50 & 4.50 & 72.50 & 21.00 & 108.00 & -1.10 & -42.00 \\ 
-  27 & San Rafael & 2018-07-18 & Filtration & 24.32 & 29.90 & 21.70 & 0.04 & 0.80 & 4.50 & 4.40 & 78.75 & 21.00 & 720.00 & 1.10 & 289.00 \\ 
-  28 & San Rafael & 2018-09-10 & Filtration & 19.02 & 30.30 & 23.10 & 0.04 & 0.90 & 4.90 & 4.80 & 89.00 & 25.30 & 166.00 & 2.40 & 139.00 \\ 
-   \hline
-\end{tabular}
-\caption{Summary Table of all field days} 
-\end{sidewaystable}
+Two field days are missing TPM and OC values from my data set, representing `r round((4/336)*100, digits = 0)`% of the data set. 
+Removing these incomplete observations is costly for my data set where I have a limited number of observations with a large number of variables. 
+Instead I used a semi-parametric random forest imputation in R to estimate the missing values [missForest package; @Stekhoven2012].
+Next, I examined the signal-to-correction relationship between the chl $\alpha$ difference in side-by-side trials compared to the corresponding experiment chl $\alpha$ difference.
+This comparison showed if any instrument corrections obfuscate the experimental signal.
+I used the 95\% intervals of a linear model of the two variables to remove extreme values outside of the intervals.
+Because my data set is small, extreme values likely influenced my initial confidence intervals; therefore I created a second linear model with the extreme values removed and 98\% confidence intervals to identify any addition extreme values to remove from the analysis. 
+Three extreme observations were removed from the data set based on this signal-to-correction comparison (Figure Figure \ref{Corr_to_signal_95CI_graph} and \ref{Corr_to_signal_98CI_graph}).
 
+To determine if there was a difference between control and filtration trials, I used a two-sample t-test not controlling for water quality and site parameters.
+To control for water quality and site parameters, I fit a random forest regression (including all filtration and control trials) to HCR from temperature, salinity, turbidity, TPM, OC, and site.
+Residuals from the random forest model adjusted data in a second two-sample t-test to control for the effects of water quality and site parameters were used to examine the difference between control and filtration trials.
+Next, to examine the relationship of water quality variables and site on HCR, I fitted a second Random Forest regression with only filtration trials.
+The relationship between TPM and OC was transformed to a log-log linear model based on the R^2^ value.
+Finally the relationship between *O. lurida* shell length at Deanza and DTW was transformed to a log-log linear model based on the R^2^ value. 
+All Data cleaning, corrections, calculations, and analysis were made in R (1.2.5), the code is publicly available on Github [@Marks2020].
 
-## Extra text
+```{r Study_site_map, eval=FALSE, include=FALSE}
+study_sites <- data.frame(Site = c("San Rafael", "Morro Bay", "Deanza", "Shellmaker"),
+                          Lat = c(37.964179, 35.334707, 33.620362, 33.622098),
+                          Long = c(-122.487217, -120.844000, -117.898110, -117.892408))
 
-The San Diego site is a FLoating UPwelling SYstem (FLUPSY) aquaculture structure operated by the Port of San Diego Blue Economy Incubator Program. 
-A FLUPSY is an upwelling system that pulls water up through baskets submerged at the water surface. 
-The upwelling provides juvenile oysters with a continuous supply of food from the surrounding water. 
-The San Diego site requires modified methods to measure filtration. The upstream sonde is hung off the FLUPSY at the depth of the basket bottom and the downstream sonde is placed at the basket outflow channel. 
-The operation of this FLUPSY has been episodic during my study to date and it is uncertain if operation will continue.  
-####### Other areas to address in Literature Review: Water Quality measurements - labratory methods, insitu methods, possible remote sensing methods. 
-Chlorophyll a - what it is biologically, why its important. Check @Secor2006 for ideas.
+### Download spatialpolygondataframe from rnatural earth
+country <- ne_download(scale = 10, type = 'countries', category = 'cultural', returnclass = 'sf')
 
-###Bivalve Density and Richness
-We will also record positive and negative control measurements in San Diego Bay, and, as needed, at aquaculture operations in Agua Hedionda or Morro Bay. 
-Filter feeder species richness, density, and shell height at each study site will also be measured by using replicate (n=10-15) haphazardly placed 0.25m2 quadrats and calipers.
+############ Entire Coast #######################
+(NOOC_coast <- ggplot(data = country) +
+    geom_sf() +
+    labs(x = 'Longitude', y = 'Latitude') +
+    annotate(geom = "text", x = -118, y = 41, label = "United States", 
+           fontface = "italic", color = "grey22", size = 4, angle = 0) +
+    annotate(geom = "text", x = -119, y = 51, label = "Canada", 
+          fontface = "italic", color = "grey22", size = 4, angle = 0) +
+    annotate(geom = "text", x = -118.5, y = 31, label = "Mexico", 
+             fontface = "italic", color = "grey22", size = 4, angle = 0) +
+    annotation_north_arrow(location = "bl", which_north = "true", 
+                         pad_x = unit(0.25, "in"), pad_y = unit(0.5, "in"),
+                         style = north_arrow_fancy_orienteering) +
+    coord_sf(xlim = c(coast_xmin, coast_xmax), ylim = c(coast_ymin, coast_ymax), expand = FALSE) +
+    theme(panel.grid.major = element_line(color = gray(.5), linetype = 'solid', size = 0.25), 
+        panel.background = element_rect(fill = 'aliceblue'),
+        axis.text.y = element_text(color = "black"),
+        axis.text.x = element_text(color = "black")))
+```
 
-
-These methods were originally designed for shellfish beds on the East Coast; two features of O. lurida require us to perform a positive control for the proposed methods. 
-O. lurida have a lower filtration rate compared to larger species such as C. gigas and C. virginica (zu Ermgassen, Gray, et al. 2013, Gray & Langdon 2017), and grow in smaller, less dense beds then the reefs formed by Crassostrea species (Beck et al. 2009). 
-
-## References

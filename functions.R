@@ -206,13 +206,13 @@ applyManualCorrections =  function(aTimeSeriesFile, aFileName, aManualCorrection
       # get the list of experiments 
       all_exp = unique(aTimeSeriesFile$Experiment)
       
-      if(one_correction$Experiment == ""|is.na(one_correction$Experiment))
+      if(one_correction$Experiment == ""|is.na(one_correction$Experiment)) # if Experiment is left blank or contains NA
       {
-        experiment_to_correct = all_exp[!(all_exp %in% c("sbs_before", "sbs_after"))]
+        experiment_to_correct = all_exp[!(all_exp %in% c("sbs_before", "sbs_after"))] # Then experiments besides sbs are corrected (i.e. Neg Control 1, 2 ,3)
         
       } else {
         
-        experiment_to_correct = one_correction$Experiment
+        experiment_to_correct = one_correction$Experiment # otherwise experiment entered is selected for correction
       }
       
       aTimeSeriesFile %<>%
@@ -242,7 +242,7 @@ applyManualCorrections =  function(aTimeSeriesFile, aFileName, aManualCorrection
 createChlDiffPlot = function(aTimeSeriesFile, aFileName, aGraphOutputDirectory, aType)
 {  
   aFile_Mod = aTimeSeriesFile %<>%
-    select(Time, Date, Site, Experiment, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
+    dplyr::select(Time, Date, Site, Experiment, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
     mutate(Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
            Time = as_hms(Time))
   
@@ -270,7 +270,7 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
 {
   afileSbsStats = aTimeSeriesFile %>% 
      dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-     select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs 
+      dplyr::select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs 
      tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # create two new columns Up & Down fill with Chl values, paired by time
      filter(!is.na(Up) & !is.na(Down)) %>%  # select rows with data in Up and Down
      mutate(sbs_Chl_diff = Up - Down) %>% 
@@ -284,7 +284,7 @@ calculateErrorStats = function(aTimeSeriesFile, aFileName, aManualCorrectionsFil
   # dataframe for graphing & individual sonde stats
   adistrubution = aTimeSeriesFile %>% 
       dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-      select(Time, Chl_ug_L, Position, Experiment) %>% 
+      dplyr::select(Time, Chl_ug_L, Position, Experiment) %>% 
       tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
       filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
       pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
@@ -333,7 +333,7 @@ calculateSbsGraphData = function(aTimeSeriesFile)
    # dataframe for graphing & individual sonde stats
   adistrubution = aTimeSeriesFile %>% 
     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-    select(Time, Chl_ug_L, Position, Experiment) %>% 
+    dplyr::select(Time, Chl_ug_L, Position, Experiment) %>% 
     tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
     filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
     pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
@@ -351,9 +351,9 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
   # dataframe for graphing & individual sonde stats
   distrubution = adistrubution %>% 
     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-    select(Time, Chl_ug_L, Position, Experiment) %>% 
+    dplyr::select(Time, Chl_ug_L, Position, Experiment) %>% 
     tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # spread data to remove NAs
-    filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
+    dplyr::filter(!is.na(Up) & !is.na(Down)) %>% # remove NAs
     pivot_longer(c("Up", "Down"), names_to = "Position", values_to = "Chl_ug_L") # make data longer again for graphs
   
   # downstream summary stats - to populate graphs
@@ -366,14 +366,14 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
   
   # upstream summary stats - to populate graphs
   distrubution_up <- distrubution %>%
-    filter(Position %in% "Up") %>% 
+    dplyr::filter(Position %in% "Up") %>% 
     summarise(mean_chl_up = mean(Chl_ug_L),
               median_chl_up = median(Chl_ug_L),
               sd_chl_up = sd(Chl_ug_L),
               se_chl_up = sd_chl_up/sqrt(length(Chl_ug_L)))
   
   Sbs_stats_plot = aSbs_stat_summary %>% 
-   select(Sample_count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
+   dplyr::select(Sample_count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
    mutate_if(is.numeric, round, 3) %>% 
    rename("n" = Sample_Count,  
          "Mean Chl Diff" = Mean_sbs_Chl_diff,  
@@ -425,63 +425,45 @@ summarizeSbsCorrectionValues = function(aTimeSeriesFile, aFileName)
   # check if the correction need to be applied
   correction_check = aTimeSeriesFile %>%
     dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>% # all sbs values used in correction
-    select(Time, Chl_ug_L, Position) %>% # select data relevent to sbs correction
-    tidyr::pivot_wider(names_from = Position, values_from = Chl_ug_L) %>% # create two new columns Up & Down fill with Chl values, paired by time
-    filter(!is.na(Up) & !is.na(Down)) %>% # select rows with data in Up and Down
-    dplyr::summarise(Avg_Chl_Up = mean(Up),
-                     Avg_Chl_Down = mean(Down))
-     #  dplyr::group_by(Position) %>%
-  #  dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
+    dplyr::select(Time, Chl_ug_L, Position, Sonde) %>% # select data relevent to sbs correction
+    dplyr::filter(!is.na(Chl_ug_L)) %>% # select rows with data in Up and Down / remove NA rows
+    group_by(Position, Sonde) %>% 
+    dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
   
-  # extacts value from dataframe. without $Avg_Chl at the end, object would remain data.frame -AM
- # down_chl = correction_check[which(correction_check$Position == "Down"), "Avg_Chl"]$Avg_Chl
-  down_chl = correction_check$Avg_Chl_Down
-  #up_chl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl 
-  up_chl = correction_check$Avg_Chl_Up
-  abs_difference = abs(up_chl - down_chl) # get rid of absolute value
+  # Calculate the difference in Chl from Upstream - downstream
+  down_chl = correction_check[which(correction_check$Position == "Up"), "Avg_Chl"]$Avg_Chl 
+  up_chl = correction_check[which(correction_check$Position == "Down"), "Avg_Chl"]$Avg_Chl 
+  
+  abs_difference = abs(up_chl - down_chl) # get rid of absolute value? Decided not to, looking at overall difference
+  
+  correction_factor = abs_difference/2
   
   # Chl sensor error +- 0.1 ug/L, 2 sensors, need correction if chl difference > 0.2 ug/L
  # if(abs_difference > 0.2) # Remove conditional - DZ & AM decided to correct all measurements
- # {
-    correction_factor = abs_difference/2
     
     ## determine if the correction is be applied to sbs before or sbs after
-    instrument_check = aTimeSeriesFile %>%
-      dplyr::filter(Experiment %in% c("sbs_before", "sbs_after")) %>%
-      dplyr::group_by(Sonde) %>%
-      dplyr::summarise(Avg_Chl = mean(Chl_ug_L))
-    
-    G_avg_chl = instrument_check[which(instrument_check$Sonde == "G"), "Avg_Chl"]$Avg_Chl
-    H_avg_chl = instrument_check[which(instrument_check$Sonde == "H"), "Avg_Chl"]$Avg_Chl
-    
-    sonde_higher_avg = ifelse(G_avg_chl > H_avg_chl, "G", "H")
-    sonde_lower_avg = ifelse(G_avg_chl < H_avg_chl, "G", "H")
-    
-    correction_summary = data.frame(File_Name = aFileName,
-                                    Down_Chl_Avg = down_chl,
-                                    Up_Chl_Avg = up_chl,
-                                    Abs_Avg_Diff = abs_difference,
-                                    Correction_Req = TRUE,
-                                    Correction_Factor = correction_factor,
+  
+  # Select Avg_Chl value by sonde
+  G_avg_chl = correction_check[which(correction_check$Sonde == "G"), "Avg_Chl"]$Avg_Chl
+  H_avg_chl = correction_check[which(correction_check$Sonde == "H"), "Avg_Chl"]$Avg_Chl
+  # Which sonde is reading higher
+  sonde_higher_avg = ifelse(G_avg_chl > H_avg_chl, "G", "H")
+  sonde_lower_avg = ifelse(G_avg_chl < H_avg_chl, "G", "H")
+  # Which sonde is in the upstream and downstream position
+  Sonde_Up = correction_check[which(correction_check$Position == "Up"), "Sonde"]$Sonde
+  Sonde_Down = correction_check[which(correction_check$Position == "Down"), "Sonde"]$Sonde
+  # All new correction variables in single 1x 10 dataframe that will compile with every field day
+  correction_summary = data.frame(File_Name = aFileName,
+                                    Sonde_Up = Sonde_Up,
+                                    Sonde_Down = Sonde_Down,
                                     G_Avg_Chl = G_avg_chl,
                                     H_Avg_Chl = H_avg_chl,
+                                    Abs_Avg_Diff = abs_difference,
+                                    Correction_Factor = correction_factor,
+                                    Correction_Req = TRUE,
                                     Sonde_Read_Higher_Avg = sonde_higher_avg,
                                     Sonde_Read_Lower_Avg = sonde_lower_avg,
                                     stringsAsFactors = FALSE)
- # } else {
-    
-#    correction_summary = data.frame(File_Name = aFileName,
- #                                   Down_Chl_Avg = down_chl,
-  #                                  Up_Chl_Avg = up_chl,
-   #                                 Abs_Diff = abs_difference,
-    #                                Correction_Req = FALSE,
-     #                               Correction_Factor = NA,
-      #                              G_Avg_Chl = NA,
-       #                             H_Avg_Chl = NA,
-        #                            Sonde_Higher_Avg = NA,
-         #                           Sonde_Lower_Avg = NA,
-          #                          stringsAsFactors = FALSE)
-#  }
   
   return(correction_summary)
 
@@ -537,7 +519,8 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
 adjustDownSondeTimeStamp = function(aWaterVelSummaryFile, aTimeSeriesFile)
 {
   one_correction = aWaterVelSummaryFile %>%
-    dplyr::filter(Date %in% unique(aTimeSeriesFile$Date)) # select water row with same date as time series file going through 
+    dplyr::filter(Date %in% unique(aTimeSeriesFile$Date) & # select water row with same date as time series file going through --> Problem, originally
+                  Site %in% unique(aTimeSeriesFile$Site)) # only selected Date, but multiple trials with same date, added Site to select one row (2020/9/9)
   
   for(i in 1 : nrow(one_correction))
   {  
@@ -615,8 +598,8 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
   
   filtration_sub_df =  aFiltrationFile %>% 
     dplyr::select(c(names(data_only_numeric), "Experiment", "Date", "Site"))
-  # single tail t-test on Chl_diff
-  up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_diff, alternative = "greater"))
+  # single tail t-test on Chl_diff --> Dr. Nichols said this violated independence assumption. Can't use t-test this way
+  #up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_diff, alternative = "greater"))
   
   filtration_sub_df_sum = filtration_sub_df %>%
     dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
@@ -638,26 +621,26 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
                      avg_depth_cm = mean(avg_depth_cm),
                      d_bw_sondes_m = mean(d_bw_sondes_m),
                      avg_m_hr = mean(avg_m_hr),
-                     Mean_Chl_diff = mean(Chl_diff),
-                     StDev_Chl_diff = sd(Chl_diff),
-                     StEr_Chl_diff = sd(Chl_diff)/sqrt(length(Chl_diff)),
+                     #Mean_Chl_diff = mean(Chl_diff),
+                     #StDev_Chl_diff = sd(Chl_diff),
+                     #StEr_Chl_diff = sd(Chl_diff)/sqrt(length(Chl_diff)),
                      L_hr_m2 = mean(L_hr_m2),
                      pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd)) %>% 
                      
     data.frame() %>%
     dplyr::mutate(File_Name = aFileName) %>%
-    dplyr::select(File_Name, Experiment, everything())
+    dplyr::select(File_Name, Experiment, everything()) # reorder columns, select all other variable afterwards
   
-  filter_df_Ttest = cbind(filtration_sub_df_sum, up_down_PairedTtest)
+  # filter_df_Ttest = cbind(filtration_sub_df_sum, up_down_PairedTtest) # don't need if removing t-test
   
   # Add in simple logic variables from field notes
-  filter_df_Ttest_logicVar = filter_df_Ttest %>% 
+  filter_df_logicVar = filtration_sub_df_sum %>% 
     inner_join(one_water_vel_summary %>% 
-                 select(Date, Site, Experiment, Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae), 
+                 dplyr::select(Date, Site, Experiment, Tide, Wind, G_upstream, Daylight, Sonde_fell, Boat_wake, Algae), 
                by = c("Date", "Site", "Experiment")
     )
   
-  return(filter_df_Ttest_logicVar)
+  return(filter_df_logicVar)
 }
 
 ######################################################################################
