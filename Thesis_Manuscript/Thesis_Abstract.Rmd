@@ -1,0 +1,16 @@
+---
+bibliography: library.bib
+csl: marine-ecology-progress-series.csl
+header-includes: 
+- \usepackage{setspace}
+- \doublespacing
+output:
+  pdf_document:
+    fig_caption: yes
+indent: true
+---
+
+The Olympia oyster (*Ostrea lurida*) is subject of many restoration project in North American Pacific Coast estuaries because it creates complex three-dimensional habitat that a host of other bivalve filter-feeders use. 
+This study investigates the use of a whole-habitat in situ method to measure the the contributions of restored *O. lurida* habitat and Pacific oyster (*Crassostrea gigas*) aquaculture in four California bays.
+Upstream-downstream measurements of chlorophyll $\alpha$, temperature, salinity, and turbidity measurements were collected by two water quality instruments. 
+
