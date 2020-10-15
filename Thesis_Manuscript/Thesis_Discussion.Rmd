@@ -12,10 +12,9 @@ indent: true
 
 # Discussion 
 
-
 To date, no studies have incorporated the affects of other filter-feeders and complex environmental conditions on Olympia oyster filtration functions.
-My results indicate that the habitat clearance rate (HCR) between *C. gigas* aquaculture and restored *O. lurida* habitat are similar when measured in the field; inherently including all bivalve filtration contributions and their responses to dynamic field conditions.
-The field measurements I present also show HCRs are highly variable at each site.
+My results indicate that the habitat clearance rate (HCR) between *C. gigas* long-line aquaculture and restored *O. lurida* habitat are similar when measured in the field; inherently including all bivalve filtration contributions and their responses to dynamic field conditions.
+The field measurements I measured show HCRs are highly variable at each site.
 These findings suggest that the clearance rate differences between *O. lurida* and *C. gigas* are less important in estimating ecosystem filtration functions of *O. lurida* restoration and *C. gigas* aquaculture than considering *O. lurida* as a foundation species that realistically filters alongside other bivalves in dynamic environmental conditions. 
 
 Estimates of restored *O. lurida* habitat filtration functions are currently made with single-species models [@ZuErmgassen2016; @Gray2019a; @ZuErmgassen2013c]. 
@@ -25,11 +24,10 @@ These physiological differences have called into question to filtration function
 In contrast, the spatial-explicit hydrodynamic model in @Gray2019a, *O. lurida*'s filtration function could be an order of magnitude larger than estimated by @Gray2018's single-species model depending seasonal and hydrodynamics of the system.
 Clearance rates are typically adjusted by grams of dry tissue weight (DTW), consequently a direct comparison between these results and my measured HCRs is only possible at the two sites with biomass estimates (Deanza and San Rafael) where I can clearance rates by biomass (DTW).
 @Gray2018 measured *O. lurida* clearance rates averaging 0.78 L h^-1^g^-1^ in the dry season and 0.19 L h^-1^g^-1^ in the wet season in Yaquina Bay, OR, whereas *C. gigas* averaged 0.95 L h^-1^g^-1^ in the dry season and 1.06 L h^-1^g^-1^ in the wet season in the same location.
+@Wheat2013 found that *C. gigas* grown on long-lines in Willipa Bay, WA cleared 0.73 L h^-1^g^-1^ ( 0.24 SE).
 According to the all-season model produced from these measurements and the biomass of *O. lurida* at Deanza (1.36 gDTW m^-2^), HCR should be 1.13 L hr^-1^m^-2^ with average OC and temperature from Deanza field days.
 Deanza's average HCR is 105 L hr^-1^m^-2^, two orders of magnitude different than the single-species estimate made by @Gray2018's all-season model. 
 Two important points emerge from the difference between these estimates: 1) Filtration function estimates need to incorporate the contributions of other bivalve filter-feeder, otherwise estimates may be massively underestimated; 2) Using the model derived from Yaquina Bay oysters and field conditions may not represent environmental conditions in California habitats, and local measurements are needed to estimate filtration functions.
-
-This comparison brings up several points about estimating *O. lurida* filtration functions, 1) the Yaquina Bay model may not incorporate conditions found in California bays, making the model inappropriate to estimate *O. lurida* filtration with different water quality; 2) *O. lurida* lives among other filter-feeders that can contribute substantially to filtration; 3) The Yaquina Bay model was conducted in a flow-through chamber and the oysters were not in a natural hydrodynamic environment, which may affect bivalve feeding behavior.
 
 The filtration contributions of non-oyster bivalves is best contextualized by biomass (g DTW ^m-2^).
 Biomass is an important metric that is proportional to shell length which is in turn proportional to gill size and thus bivalve pumping rate [@Cranford2011].
@@ -39,19 +37,22 @@ Future studies will benefit from a suite of models that predict bivalve species-
 In this paper, I presented a highly predictive (ln(DTWg) = -11.1 + 2.47ln(ShellLength), R^2^ = 0.73, *p* = < 0.0001) allometric model to estimate *O. lurida* biomass from shell length based on data from Newport Bay, CA that can be used in future southern California studies.
 Allometric relationships may vary regionally [@Ross2006], and more studies are need from other locations.
 
-As preciously mentions, @Gray2018's *O. lurida* in situ clearance rate model was conducted in a flow-through chamber and may not be directly applicable in estimating oyster habitat filtration functions without incorporating hydrodynmaics [@Gray2019a].
+As previously mentioned, @Gray2018's *O. lurida* in situ clearance rate model was conducted in a flow-through chamber and may not be directly applicable in estimating oyster habitat filtration functions without incorporating hydrodynmaics [@Gray2019a].
 The in situ upstream-downstream method employed in this study inherently included natural hydrodynamic conditions formed from the interaction between oyster habitat physical characteristics and water flow dynamics that dictate food availability and quality to filter-feeders.
 @Sanford1997 explains that hydrodynamics interact with aquatic ecosystems from large bay-wide scales to small-scale plankton interactions, and are not easy to simulate.
 Bivalves living in restored *O. lurida* habitat create a rough surface that produces drag and breaks up the the water flow momentum [@Dame2012; @VanDuren2006].
 This basic interaction dissipates upward creating a velocity gradient from the bottom (lower velocity) into the water column (higher velocity) known as the boundary layer [@Dame2012].
-The boundary layer is important to bivalve filter-feeders because this is where they access water column seston for feeding [@Muschenheim1987], and why I positioned my instruments at approximately the height of the oyster habitat [@Grizzle2008].
-The height of the boundary layer can be affected by the arrangement of bivalves and flow speed [@Lim2020], and mostly consists of turbulent flow in natural rough environments like bivalve beds [@Dame2012; @Styles2015].
+The boundary layer is important to bivalve filter-feeders because this is where they access water column seston for feeding [@Muschenheim1987], and why I positioned my instruments at approximately the height of the oyster habitat [@Grizzle2006].
+The height of the boundary layer can be affected by the arrangement of bivalves and flow speed [@Lim2020], and mostly consists of turbulent flow in natural, rough environments like bivalve beds [@Dame2012; @Styles2015].
 Turbulent flow within the boundary layer increases interaction and mixing with the larger water current, thus particle flux [@Muschenheim1987], and is generally characteristic of natural water bodies even in low velocity scenarios [@Sanford1997].
+My measurements show negative HCRs at each site (Figure 3); a result of higher chl $\alpha$ at the downstream instrument than chl $\alpha$ at the upstream instrument.
+This indicates that sediments were re-suspended over the habitat, and does not necessarily indicate a lack of filter-feeding, but that the signal was clouded by the net sediment transport. 
+High water velocity can re-suspend sediments; @Dame1985 found that water velocity above 15 cm/s resuspended particles in a flume, and @Widdows1998 found that in high density mussel beds water velocity above 20-25 cm/s started to errod sediments.
+My water velocity measurements ranged from 2-20 cm/s (Table 1), but velocities 15 cm/s and higher did not coorelate with negative HCR values. 
+Negative HCRs could be further reasoned that smaller, lighter, organic materials measured by chl $\alpha$ sensors are resuspended at lower water velocities than sediments [see @Muschenheim1987].
 
-***Paragraph about depth and negative values***
-
-Water depth and flow velocity constrained my field days and deployment duration, resulting in filtration function snapshots.
-Shallow water depth relative to the amount of bivalves ensures that bivalves have a greater influence on water column properties [@Wheat2013] and high water velocities can suspender sediments into the water column [@Dame1985; @Widdows1998; @Harsh1999].
+Water flow velocity and depth constrained my field days and deployment duration, resulting in filtration function snapshots.
+Shallow water depth relative to the amount of bivalves ensures that bivalves have a greater influence on water column properties [@Wheat2013] and high water velocities can re-suspend sediments into the water column [@Dame1985; @Widdows1998; @Harsh1999].
 Although my measurements do not represent a comprehensive look at filtration function across tidal and hydrodynamic conditions, they do represent filtration function at similar tidal and hydrodynamic conditions at each site (e.g. Tide, Depth, Velocity in Table 1).
 Water depth and hydrodynamics may partial explain the similar HCRs between Morro Bay *C. gigas* aquaculture and restored *O. lurida* habitat.
 Morro Bay consisted of floating lines of grow bags that rose from the sediment surface with increasing water depth.
@@ -66,64 +67,27 @@ Considering the extremely low *O. lurida* biomass at San Rafael compared to Dean
 This similarity may be an artifact of San Rafael's patchy and high relief habitat creating sediment seston sinks on the leeward side of the shell bag reef structures.
 
 Given the similar tidal and hydrodynamic conditions within each site, my results still show highly variable HCRs within each site (Figure 3).
+@Milbrandt2015 used similar upstream-downstream insitu methods on restored bivalve bed in Florida and reported a range of habitat clearance rates from -26 to 157 L hr^-1^m^-2^.
 High variability is well documented in field filtration measurements even along short periods of time (@Grizzle2008, reviewed by @Cranford2011), and in bivalves feeding on natural seston over short and long periods of time [reviewed by @Cranford2011].
 In addition, HCR variation could be the result of measuring hundreds and even thousands of bivalves. 
 Individual feeding behavior can be highly variable in short time periods [@Newell2005], and even under favorable conditions, a substantial portion of individual bivalves may not actively feed or feed at a reduced capacity [@Dolmer2000; @Saurel2007]
 
+My results provide the first 'snap-shot' habitat clearance rates of four unique sites in California, and shows that in situ upstream-downstream methods can detect filtration signals in this application.
+They suggest that restored *O. lurida* and *C. gigas* long-line aquaculture in California may clear similar amounts of water per unit area when compared in realistic biological and environmental conditions.
+@Gray2019a also found that the filtration functions of *O. lurida* may be greater than previously thought when complex environmental conditions were accounted for.
+Furthermore, overall filtration functions of *O. lurida* habitat may continue to be underestimated, unless a whole-habitat perspective is taken and future filtration function continue to incorporate the filtration contributions of other filter-feeders residing on foundational oyster habitat.
+*O. lurida* restoration efforts on the North American west coast aim to increase abundances of this foundation species and its proported filtration functions. 
+My research represents the first direct measurements of restored *O. lurida* habitat filtration functions, although highly variable, it shows that restored *O. lurida* habitat is a valuable contributor to filtration functions within California bays.
 
 
-Simply expanding individual filtration rates to other areas need to account for water depth, as bivalves may not have the same access to food at depth or the whole water column [@Monismith1990; @Wheat2013]
+## Quesitons for DZ
 
-### Save for high variability seciton
-My HCRs have a greater range of values than @Milbrandt2015 that conducted whole-habitat in situ measurements on restored bivalve beds in Florida and reported a range from -26 to 157 L hr^-1^m^-2^.
-***Use rough biomass estimate for Morro Bay to compare to Wheat & Ruesink 2013 l/hr/g***
-Cranford et al. 2011 has list of studies for gigas
-
-estimating filtration functions with a whole-habitat perspective is emmensly important
-
-
-
-
-Habitat Clearance Rates differ from individual bivalve clearance rates, as they inherently include variables that complicate individual filtration models. 
-
-By measuring the whole habitat, we are incorporating and averaging individual bivalve's feeding responses to environmental conditions, and resolve the issue of expanding individual filtration rates to habitat levels (see Cranford et al. 2011).
-
-Fast moving water or wind driven waves can re-suspend benthic sediments into the water column [@Widdows1998] leading to a net export of chl $\alpha$ from oyster habitats and negative HCRs.
-
-"Chlorophyll declined 9.6% per half hour in water passing on-bottom adult oysters and 41% for long-line adult oysters, whereas chlorophyll concentrations increased as water flowed across tide flats without adult oysters" [@Wheat2013]
-
-
-
-
-
-
-## Extra Text
-
-
-Deeper waters might limit the access that benthic bivalves have to food (citations in @Ruesink2005).
-
-Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
-
-Gray & Langdon (2017) point out that O. lurida selects larger particles from the water column compared to C. gigas, likely because of anatomical differences in gill ostea, which may differentiate the quality of filtration by each species. 
-
-
-
-
-
-### Restate Research Goals
-   
-The goal of this paper was to characterize the insitu filtration functions of several types of constructed oyster habitat in California that incorporate whole-habitat and environmental effects. 
-More precise methods of measuring bivalve filtration exist (e.g. flume studies @Harsh1999, bio-deposition, particle clearance), but they compromise the ability to incorporate the dynamic environmental and biological conditions that exist in actual oyster habitats (citations?). 
-
-
-### Outline
-    
-* Control vs. Oyster habitat stats
-  + contextualize t-test. Went from sig to no sig
-  + small sample size, p-values aren't the whole story
-  + practically, we see a suggested difference in Chl drawdown 
-  
-* HCR ~ WQ + Site
+* Future directions? 
+  + Talk about adding spatial component @Gizzle2018 or @Gray2019a?
+* Explicitly address each research question?
+  + Not mentioned in "5 pivotal paragraphs"
+* Random Forest result that Temperature is most important?
+* HCR ~ WQ + Site - Describe this more?
   + Benefits of Random Forest
     - Don't need to worry about covariance among parameters
     - allows us to use all of our data
@@ -134,43 +98,22 @@ More precise methods of measuring bivalve filtration exist (e.g. flume studies @
   + Demonstrate filtration with limited data set
   + More data - better
   + Didn't include a quantitative biomass parameter - not enough data
-  
-* Biomass Estimates
-  + Direct biomass measurements are time consuming 
-  + Shell length:DTW models are practical estimations 
-  + Regional allometric relationship? Or bigger data set - better relationship?
-  + Olympia oyster model presented here can be used without sacrificing animals
-* Future Directions
-  + These methods are limiting
-    - expensive
-    - time consuming
-    - subject to disturbance
-    - site access issues 
-  + floating / single instrument methods
-    - More practical for individual restoration projects to monitor filtration services
-    - Wheat & Ruesink 2013
-    - Grizzle et al. 2018
-    - Spatial component - how far filtration services affect water
-    - increase temporal range (not restricted by linear water flow and tide cycles)
-  + Spatially explicit models
-    - Gray et al. 2019 - FVCOM; Lemagie & Lerczak (2015)
-    - Found *O. lurda* can filter much larger part of Yaquina Bay then previously estimated (zu Ermgassen 2013)
-    - Season, scale of restoration, locations within estuary important to filtration services
-    - unique to bay hydrodynamics - residence time 
-    - effeciently direct retoration for filtration / food availability
 
 
-### Theme - take home sentence
 
-Filtration estimates of oyster habitat on the west coast need measurements that incorporate the entire filter-feeding community of constructed oyster restorations and commercial aquaculture.
-  
-### Incorporate these tidbits?
 
+## Extra Text
+
+* Deeper waters might limit the access that benthic bivalves have to food (citations in @Ruesink2005).
+* Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
+* Gray & Langdon (2017) point out that O. lurida selects larger particles from the water column compared to C. gigas, likely because of anatomical differences in gill ostea, which may differentiate the quality of filtration by each species. 
 * Chl $\alpha$ - proxy for photosynthetic organic material - Check @Secor2006 for ideas
-* Higher organic content means a higher proportion of digestible food, which increases clearance rates (@Gray2018). [read Bayne et al. 1989; Barillé et al. 1997; Hawkins et al. 1998a; Bayne 2002; Ward and Shumway 2004)]. 
 
 
 ```{r Extra_Text, eval=FALSE, include=FALSE}
+#Extra tibbit
+
+
 ## Long Form Introduction  --> Save for discussion
 
 ### Natural History 
