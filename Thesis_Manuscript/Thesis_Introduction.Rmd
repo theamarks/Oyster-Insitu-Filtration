@@ -12,7 +12,7 @@ indent: true
 
 # Introduction
 
-### Oyster Ecosystem Services
+## Oyster Filtration Functions
 
 The Olympia oyster (*Ostrea lurida*) is a foundation species in estuaries along the North American Pacific Coast (NAPC) that autogeneously creates complex three-dimensional habitat [@Dayton1972].
 The shells of living and dead oysters provide habitat for a variety of invertebrates [@Kimbro2006; @Ramsey2012; @Rodney2006; @Boyer2017], nursery and refuge habitat for fishes [@Coen2007; @Peterson2003; @Stunz2010], and foraging habitat for birds [@Galtsoff1929; @Boyer2017].
@@ -22,7 +22,7 @@ Most of the seston particulate organic matter (henceforth POM) is ingested by bi
 Nutrients incorporated into bivalve shells can be sequestered long-term [@Kellogg2013] when buried in sediments [@Hu2011], and likely serve as a sink for anthropologically produced nutrients [@Martinetto2006; @Carmichael2012].
 Seston removal through bivalve feeding also increases water clarity [@Newell2004b; @Grizzle2008; @Grizzle2018] increasing the amount of photosynthetically available radiation reaching benthic primary producers like seagrasses [@Peterson1999] and microalgae [@Newell2002].
 Lastly, bivalve feeding is an important biochemical pathway, linking the water column to the benthos, that transfers energy to higher trophic levels [@Rodney2006; @Kautsky1987]. 
-Bivalve biodeposits can have higher organic and nitrogen content than particles settling out of the water column [@Kautsky1987], providing high quality food for deposit feeders and subsequently feeding omnivores and carnivores including fish [@Rodney2006].
+Bivalve biodeposits can have higher organic and nitrogen content than particles settling out of the water column [@Kautsky1987; @Muschenheim1987], providing high quality food for deposit feeders and subsequently feeding omnivores and carnivores including fish [@Rodney2006].
 
 The ability for *O. lurida* to meaningfully contribute to filtration services was compromised when *O. lurida* populations were decimated by destructive fishing practices [@Kirby2004], introduction of non-native species [@Bonnot1935], pollution, and excessive sedimentation [@Gilbert1917; @Lotze2006; @Nelson1909] in the late 1800s and early 1900s.
 Currently, *O. lurida* populations are less than 10% of historical abundances in parts of the Pacific Northwest, and to less than 1% in the rest of its geographic distribution [@Beck2011; @ZuErmgassen2012].
@@ -34,7 +34,7 @@ Dwindling *O. lurida* harvests led to the cultivation of the Japanese oyster (*C
 *C. gigas* is a large, fast growing oyster with higher filtration rates than *O. lurida* [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019], and can exert top-down control of seston at aquaculture densities [@Wheat2013].
 Ecosystem filtration functions (e.g. habitat quality, nutrient sequestration, water clarity, and sediment enrichment) in NAPC estuaries may differ between native *O. lurida* habitat and cultivated *C. gigas* aquaculture [@Ruesink2006; reviewed by @Ruesink2005].
 
-### Single-species Research
+## Single-species Research
 
 Estimating the filtration capacity of *O. lurida* habitat and *C. gigas* aquaculture currently relies on a handful of single-species studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a] and a single field aquaculture study [@Wheat2013].
 @Gray2018 determined the clearance rates (Lhr^-1^g^-1^ Dry Tissue Weight) of *O. lurida* and *C. gigas* under a range of laboratory and seasonal in situ conditions using the biodeposition method [@Hawkins1996].
@@ -44,7 +44,7 @@ For example, non-oyster filter-feeders living in *O. lurida* habitat, or as foul
 These non-oyster filter-feeders that occupy oyster beds have species-specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011; Gray2016; @Gedan2014], and the regional composition of this filter-feeding guild is likely to change along the NAPC, consequently creating unique filtration signatures for different *O. lurida* habitat, and *C. gigas* aquaculture locations.
 In addition, clearance rates defined by biomass (DTW) are not directly aplicable to assess wheather restored *O. lurida* habitat is also restoring filtraiton functions; restoration practitioners are hesitant to sacrifice bivalves to biomass directly.
 
-### Whole-Habitat Measurements
+## Whole-Habitat Measurements
 
 The complex biological and physical characteristics of oyster habitat highlight the need for in situ, whole-habitat filtration measurements [@Grizzle2008; @Grizzle2018; @Gedan2014; @Byers2014] specific to the habitat.
 Whole-habitat in situ filtration measurements have several distinct advantages over single-species models;
@@ -62,7 +62,7 @@ Although @Gray2018 used ambient sea water from Yaquina Bay in their in situ expe
 This illustrates bivalves' highly variable feeding responses to natural conditions; further making the case that whole-habitat in situ measurements are needed for ecologically and environmentally realistic filtration estimates of *O. lurida* habitat and *C. gigas* aquaculture. 
 
 
-### Research Questions
+## Research Questions
 
 The motivation of this study is to assess the contributions of restored *O. lurida* habitat and *C. gigas* aquaculture to estuary filtration functions in California, as a function of filter feeder community which is expected to vary among locations.
 My research questions were:

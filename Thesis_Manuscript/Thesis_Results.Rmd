@@ -182,7 +182,7 @@ Species_colors <- c("Adula diegensis" = "#8D8680",
 
 ################# Labels for graphs  #########################
 Hab_FR_Label <- expression('Habitat Clearance Rate (L hr'^-1*'m'^-2*')')
-ßPrt_Chl_Label <- expression(paste('Percent Chlorophyll ', alpha, ' Removed'))
+Prt_Chl_Label <- expression(paste('Percent Chlorophyll ', alpha, ' Removed'))
 Chl_ugL_Label <- expression(paste("Chlorophyll ", alpha, " (", mu, "g/L) "))
 TPM_Label <- c('Total Particulate Matter mg/L')
 PIM_Label <- c('Particulate Inorganic Matter mg/L')
@@ -324,7 +324,7 @@ print(Corr_Chl_diff_graph1)
 # plot_grid(Corr_Chl_diff_graph1, labels = c("B"))
 ```
 
-### Percent chlorophyll $\alpha$ removal
+## Percent chlorophyll $\alpha$ removal
 
 Percent Chl $\alpha$ removed at San Rafael averaged `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`; Figure \ref{ChlRmd_Site_boxplot}) and was `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
 Filtration trials at Morro Bay averaged `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% Chl $\alpha$ removed (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and measured `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
@@ -360,7 +360,7 @@ ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
 ```
 
 
-### Habitat Clearance Rates 
+## Habitat Clearance Rates 
 
 HCR at Ran Rafael averaged `r round(mean(SR_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$L_hr_m2),1)`; Figure \ref{FR_Site_boxplot}), 
 at Morro Bay averaged `r round(mean(MB_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = to `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$L_hr_m2),1)`), 
@@ -374,8 +374,6 @@ Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_
 FR_Site <- Filter_only_outRmd_data %>% 
   group_by(Site) %>% 
   summarize(avg_L_hr_m2 = mean(L_hr_m2))
-
-FR_Site
 
 ### Filtration by site (Filtration Trials only)
 FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
@@ -709,7 +707,7 @@ p.val = 1-pt(t,df)
 p.val
 ```
 
-### Oyster Habitat vs. Control 
+## Oyster Habitat vs. Control 
 
 Filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two-sample *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
 The Random Forest model that included all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively.
@@ -740,7 +738,7 @@ NP_combo_TPM_OC <- TPM_OC_Values %>%
   filter(Site == "Deanza" | Site == "Shellmaker")
 ```
 
-### Seston Quantity and Quality
+## Seston Quantity and Quality
 
 ```{r TPM_OC_Models, include=FALSE}
 ### Linear Model 
@@ -929,7 +927,7 @@ TPM_OC_bysite_graph <- grid.arrange(TPM_OC_SR, TPM_OC_MB, TPM_OC_NPSM, TPM_OC_De
 # plot(TPM_OC_bysite_graph)
 ```
 
-### Filter-feeding community
+## Filter-feeding community
 
 ```{r Oly_DTW_Shell_length_setup, include=FALSE}
 ############ Olympia DTW and Shell Length #####################
@@ -1398,10 +1396,30 @@ Bivalve_Biomass_graph
 ### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
 ```
 
+```{r Research_Comparison, include=FALSE}
+FR_Site # Average HCR by site
+NPD_Oly_HCR = FR_Site[[4,2]] # NPD average HCR l hr-1 m-2
+NPD_Oly_Bio = NPD_species_DTW[[4,2]] # NPD Oly DTW (g m-2)
+Gray_Oly_dry_CR = 0.78 # (l hr-1 g-1) Gray dry season Oly avg CR
+
+NPD_CR_est = NPD_Oly_Bio*Gray_Oly_dry_CR
+NPD_CR_est # adjust my NPD HCR by Oly biomass to compare to Gray CR
+
+
+Avg_WQ <- Filter_only_outRmd_data %>% 
+  group_by(Site) %>% 
+  na.omit() %>% 
+  summarize(avg_OC = mean(Avg_OC_Ratio),
+            avg_Temp = mean(Temp_C_Up))
+
+Gray_Oly_CR <- (-0.96) + (2.49*Avg_WQ[[4,2]]) + (0.06*Avg_WQ[[4,3]])
+NPD_HCR_est = Gray_Oly_CR * NPD_Oly_Bio
+
+```
+
 ```{r EXTRA ANALYSIS CODE, eval=FALSE, include=FALSE}
 \/ \/ \/ THIS IS ALL EXTRA EXPLORATORY ANALYSIS NOT USED BELOW THIS POINT \/ \/ \/
 ```
-
 
 ```{r Oly_TWW_DTW_outRmd, eval=FALSE, fig.align="default", fig.asp=0.618, fig.cap="The relationship between \\*O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, fig.keep='all', fig.width=8, message=FALSE, warning=FALSE, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW=0.0044*TWW - 0.043). \\label{Oly_TWW_DTW_outRmd}", dev='pdf', include=FALSE}
 

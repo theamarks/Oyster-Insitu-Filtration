@@ -13,7 +13,7 @@ indent: true
 
 # Methods
 
-### Study Sites
+## Study Sites
 I selected four sites along the California coast to measure in situ filtration.
 The sites represent a range of constructed oyster habitats including shell bag reef, shell bed, and floating aquaculture lines.
 The San Francisco Living Shorelines Project has two sites in San Francisco Bay, California, constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015]. 
@@ -36,7 +36,7 @@ The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float
 
 ##### Need Map Figure Here
 
-### Experimental Setup
+## Experimental Setup
 Methods used were adapted from Grizzle et al.'s (2008) in situ filtration measurements of bivalve beds on the Atlantic coast.
 Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (henceforth Chl $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
 The sondes hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and hung at height to align the sensors with the approximate height of the oyster habitat. 
@@ -50,7 +50,7 @@ Control trials used the same set up, but the instruments were positioned over a 
 Detailed notes of all field events and disturbances were recorded with a watch synced to the sondes' internal clocks.
 Field work was conducted from February 2018 to June 2019 and measured 22 filtration trials and 6 control trials.
 
-### Chlorophyll $\alpha$ Corrections
+## Chlorophyll $\alpha$ Corrections
 In addition to the filtration and control trials, two side-by-side trials were conducted before and after the experimental trial to record and correct any chl $\alpha$ sensor differences.
 In the side-by-side trials, I placed the instruments adjacent to one another to compare the sensors' chlorophyll $\alpha$ measurements in the same mass of water for approximately 10 minutes.  
 The data was reviewed for extreme Chl $\alpha$ spikes caused by unnatural sediment plumes that would skew the average Chl $\alpha$.
@@ -65,7 +65,7 @@ The sonde with higher Chl $\alpha$ in the side-by-side trial was corrected in th
   \label{fig:fieldgear}
 \end{figure}
 
-### Seston Content
+## Seston Content
 I determined seston Total Particulate Content (TPM), Particulate Inorganic Matter (PIM), Particulate Organic Matter (POM), and Organic content (OC) gravametrically.
 I collecting water samples next to the study area during the filtration or control trial, and filtered the water through Whatman GF/F pre-wash and weighed filters in the field.
 The filters were stored on ice until they could be stored in a freezer. 
@@ -91,7 +91,7 @@ PIM (mg/L)= \frac{[Filter Ash Weight (g) - Filter Pre Weight (g)] \times \frac{1
 POM (mg/L) = TPM (mg/L) - PIM (mg/L)
 \end{equation}
 
-### Filtration Calculations
+## Filtration Calculations
 To calculate filtration I first checked the filtration and control trials' raw data for extreme Chl $\alpha$ and turbidity spikes indicating disturbance.
 Extreme spikes were cross referenced with field notes and removed if field notes corroborated a disturbance. 
 Next I paired upstream and downstream Chl $\alpha$ measurements. 
@@ -110,9 +110,8 @@ HCR (Lhr^{-1}m^2) = \frac{A_{Xsec} \times V \times 1000}{A_{habitat}} \times \fr
 \end{equation}
 
 $A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$ assumed 1 m width), *V* is the average water velocity (m/hr), *1000* is the conversion factor from $m^2$ to L, $A_{habitat}$ is the area being measured (distance between the instruments $\times$ assumed 1 m width), $Chl_{up}$ is the upstream chlorophyll $\alpha$ concentration, and $Chl_{down}$ is the downstream chlorophyll $\alpha$ concentration.
-.
 
-### Analysis
+## Analysis
 
 Two field days are missing TPM and OC values from my data set, representing `r round((4/336)*100, digits = 0)`% of the data set. 
 Removing these incomplete observations is costly for my data set where I have a limited number of observations with a large number of variables. 
