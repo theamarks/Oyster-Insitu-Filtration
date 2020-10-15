@@ -713,7 +713,7 @@ Filtration trials had significantly higher HCRs (habitat clearance rate) than ne
 The Random Forest model that included all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively.
 Filtration and control trials adjusted by the Random Forest model were not significantly different (two-sample *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`); however, my limited sample size and predictably variable clearance rates are expected to inhibit statistical signal detection.
 
-### Variables Affecting HCR
+## Variables Affecting HCR
 
 The random forest model using only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
 

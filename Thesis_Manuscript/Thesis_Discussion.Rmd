@@ -7,6 +7,7 @@ header-includes:
 output:
   pdf_document:
     fig_caption: yes
+    latex_engine: xelatex
 indent: true
 ---
 
@@ -83,7 +84,7 @@ My research represents the first direct measurements of restored *O. lurida* hab
 ## Questions for DZ
 
 * Future directions? 
-  + Talk about adding spatial component @Gizzle2018 or @Gray2019a?
+  + Talk about adding spatial component @Grizzle2018 or @Gray2019a?
 * Explicitly address each research question?
   + Not mentioned in "5 pivotal paragraphs"
 * Random Forest result that Temperature is most important?
