@@ -10,7 +10,16 @@ output:
 indent: true
 ---
 
+# Abstract
+
 The Olympia oyster (*Ostrea lurida*) is subject of many restoration project in North American Pacific Coast estuaries because it creates complex three-dimensional habitat that a host of other bivalve filter-feeders use. 
-This study investigates the use of a whole-habitat in situ method to measure the the contributions of restored *O. lurida* habitat and Pacific oyster (*Crassostrea gigas*) aquaculture in four California bays.
-Upstream-downstream measurements of chlorophyll $\alpha$, temperature, salinity, and turbidity measurements were collected by two water quality instruments. 
+This study investigates the contributions of restored *O. lurida* habitat and Pacific oyster (*Crassostrea gigas*) aquaculture in four California bays using a whole-habitat in situ method.
+Two water quality instruments collected upstream-downstream measurements of chlorophyll $\alpha$, temperature, salinity, and turbidity measurements for a range durations (5-40 minuets).
+I collected ambient water samples to measure seston total particulate matter (TPM), and organic content (OC), and used existing bivalve density and biomass data when available.
+Twenty-eight trials were conducted at three *O. lurida* restoration sites in San Rafael and Newport Bay, California and one *C. gigas* long-line aquaculture site in Morro Bay, California from February 2018 to June 2019.
+Results indicate that restored *O. lurida* habitat and *C. gigas* aquaculture in different bays have similar habitat clearance rates (HCR, L hr^-1^m^-2^), however HCRs were highly variable at each site.
+Direct comparison of biomass and HCR was not possible because biomass measurements were not available at all sites.
+Whole-habitat measurements, that incorporate the filtration contributions of all bivalve filter-feeders and natural hydrodynamics, are important to producing realistic water clearance functions of oyster habitats and indicated that resotred *O. lurida* habitat can also restore substantial water clearance functions to California bays.
+
+
 
