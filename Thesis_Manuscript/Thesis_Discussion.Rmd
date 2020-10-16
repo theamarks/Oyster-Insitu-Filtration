@@ -18,6 +18,8 @@ My results indicate that the habitat clearance rate (HCR) between *C. gigas* lon
 The field measurements I measured show HCRs are highly variable at each site.
 These findings suggest that the clearance rate differences between *O. lurida* and *C. gigas* are less important in estimating ecosystem filtration functions of *O. lurida* restoration and *C. gigas* aquaculture than considering *O. lurida* as a foundation species that realistically filters alongside other bivalves in dynamic environmental conditions. 
 
+## Compare to Previous Research
+
 Estimates of restored *O. lurida* habitat filtration functions are currently made with single-species models [@ZuErmgassen2016; @Gray2019a; @ZuErmgassen2013c]. 
 Olympia oysters are smaller and less robust filter-feeders than Pacific oysters [@Gray2018; @ZuErmgassen2013c].
 @Gray2018 found that maximum clearance rates of *C. gigas* are almost twice that of *O. lurida* under laboratory conditions. 
@@ -30,6 +32,8 @@ According to the all-season model produced from these measurements and the bioma
 Deanza's average HCR is 105 L hr^-1^m^-2^, two orders of magnitude different than the single-species estimate made by @Gray2018's all-season model. 
 Two important points emerge from the difference between these estimates: 1) Filtration function estimates need to incorporate the contributions of other bivalve filter-feeder, otherwise estimates may be massively underestimated; 2) Using the model derived from Yaquina Bay oysters and field conditions may not represent environmental conditions in California habitats, and local measurements are needed to estimate filtration functions.
 
+## Biomass
+
 The filtration contributions of non-oyster bivalves is best contextualized by biomass (g DTW m^-2^).
 Biomass is an important metric that is proportional to shell length which is in turn proportional to gill size and thus bivalve pumping rate [@Cranford2011].
 However, biomass is time consuming to measure directly and requires bivalve collection, sacrifice, cleaning, separation from the shell, oven drying, and weighing. 
@@ -37,6 +41,8 @@ Many restoration practitioners may not wish to sacrifice bivalves from a restore
 Future studies will benefit from a suite of models that predict bivalve species-specific biomass from shell length measurements, allowing monitoring efforts to measure bivalve shell length without disturbing the habitat to estimate habitat filter feeders.
 In this paper, I presented a highly predictive allometric model to estimate *O. lurida* biomass from shell length based on data from Newport Bay, CA (Figure 6) that can be used in future southern California studies.
 Allometric relationships may vary regionally [@Ross2006], and more studies are need from other locations.
+
+## Hydrodynamics
 
 As previously mentioned, @Gray2018's *O. lurida* in situ clearance rate model was conducted in a flow-through chamber and may not be directly applicable in estimating oyster habitat filtration functions without incorporating hydrodynamics [@Gray2019a].
 The in situ upstream-downstream method employed in this study inherently included natural hydrodynamic conditions formed from the interaction between oyster habitat physical characteristics and water flow dynamics that dictate food availability and quality to filter-feeders.
@@ -67,11 +73,15 @@ This is especially possible at San Rafael where the *O. lurida* habitat consiste
 Considering the extremely low *O. lurida* biomass at San Rafael compared to Deanza, one would not expect San Rafael to have a similar range of HCRs. 
 This similarity may be an artifact of San Rafael's patchy and high relief habitat creating sediment seston sinks on the leeward side of the shell bag reef structures.
 
+## HCR Variation
+
 Given the similar tidal and hydrodynamic conditions within each site, my results still show highly variable HCRs within each site (Figure 3).
 @Milbrandt2015 used similar upstream-downstream in situ methods on restored bivalve bed in Florida and reported a range of habitat clearance rates from -26 to 157 L hr^-1^m^-2^.
 High variability is well documented in field filtration measurements even along short periods of time (@Grizzle2008, reviewed by @Cranford2011), and in bivalves feeding on natural seston over short and long periods of time [reviewed by @Cranford2011].
 In addition, HCR variation could be the result of measuring hundreds and even thousands of bivalves. 
 Individual feeding behavior can be highly variable in short time periods [@Newell2005], and even under favorable conditions, a substantial portion of individual bivalves may not actively feed or feed at a reduced capacity [@Dolmer2000; @Saurel2007]
+
+## Conculsions
 
 My results provide the first 'snap-shot' habitat clearance rates of four unique sites in California, and shows that in situ upstream-downstream methods can detect filtration signals in this application.
 They suggest that restored *O. lurida* and *C. gigas* long-line aquaculture in California may clear similar amounts of water per unit area when compared in realistic biological and environmental conditions.
