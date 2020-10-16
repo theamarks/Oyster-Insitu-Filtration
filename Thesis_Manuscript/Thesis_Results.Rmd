@@ -9,6 +9,7 @@ header-includes:
 - \usepackage{makecell}
 - \usepackage{gensymb}
 - \usepackage{pdfpages}
+- \usepackage{caption}
 output: 
   pdf_document:
     fig_caption: yes
@@ -368,6 +369,8 @@ and at Deanza averaged `r round(mean(NPD_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*
 Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, and `r round(MB_NC_sum$L_hr_m2,1)` Lhr^-1^m^2^ for San Rafael, Morro Bay respectively, Shellmaker's control trial was removed from the analysis as an extreme value \ref{Corr_to_signal_95CI_graph}.
 Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` Lhr^-1^m^-2^ (*N* = `r nrow(NPD_NC_sum$L_hr_m2)`, *SD* = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
 
+\captionsetup[table]{labelformat=empty}
+
 ```{r HCR_Site_ANOVA, echo=FALSE, message = F, warning=F, results='asis'}
 ## HCR averages by Site
 FR_Site <- Filter_only_outRmd_data %>% 
@@ -385,8 +388,8 @@ FR_Site_alldata <- Filter_only_outRmd_data %>%
 model <- lm(L_hr_m2 ~ Site, data = FR_Site_alldata)
 aov.model <- anova(model)
 aov.xt <- xtable(aov.model,
-                       caption = 'Table 2: One-way ANOVA of the effect of site on habitat clearance rate (HCR, L hr hr\\textsuperscript{-1} m\\textsuperscript{-2}')
-colnames(aov.xt) <- c("df", "Sum sq", "Mean Sq", "\\textit{F} value", "\\textit{p} value")
+                       caption = 'Table 2: One-way ANOVA of the effect of site on habitat clearance rate (HCR L hr\\textsuperscript{-1} m\\textsuperscript{-2})')
+colnames(aov.xt) <- c("df", "Sum Sq", "Mean Sq", "\\textit{F} value", "\\textit{p} value")
 print(aov.xt,
       type="latex",
       booktabs = T,
