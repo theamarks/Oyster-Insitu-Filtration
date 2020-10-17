@@ -859,7 +859,7 @@ logOC_logTPM_graph <- ggplot((Avg_TPM_summary_table), aes(Avg_TPM_mg_L, Avg_OC_R
   # geom_abline(aes(intercept=0, slope=1)) +
   scale_color_manual(values = Site_colors) +
   theme_classic() +
-  guides(color = FALSE) +
+  #guides(color = FALSE) +
   ylim(0,0.5) +
   #annotate("text", x = 60, y = 0.3, label = "log(y) ~ log(x)") +
   labs(x = TPM_Label,
