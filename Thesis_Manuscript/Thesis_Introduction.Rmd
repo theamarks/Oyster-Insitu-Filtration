@@ -62,7 +62,6 @@ Although @Gray2018 used ambient sea water from Yaquina Bay in their in situ expe
 This illustrates bivalves' highly variable feeding responses to natural conditions; further making the case that whole-habitat in situ measurements are needed for ecologically and environmentally realistic filtration estimates of *O. lurida* habitat and *C. gigas* aquaculture. 
 
 
-## Research Questions
 
 The motivation of this study is to assess the contributions of restored *O. lurida* habitat and *C. gigas* aquaculture to estuary filtration functions in California, as a function of filter feeder community which is expected to vary among locations.
 My research questions were:

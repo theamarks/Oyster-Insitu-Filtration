@@ -360,6 +360,7 @@ ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
 #plot(ChlRmd_pos_box)
 
 ```
+
 ## Habitat Clearance Rates 
 
 HCR at Ran Rafael averaged `r round(mean(SR_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$L_hr_m2),1)`; Figure \ref{FR_Site_boxplot}), 
@@ -734,6 +735,9 @@ df = summary(m2)[[7]][2]
 t = (slope-1)/se
 p.val = 1-pt(t,df)
 p.val
+
+mlr = lm(clr~Site+Temp+Salinity+Turbidity+TPM+OC,data=test2)
+summary(mlr)
 ```
 
 \includepdf[pagecommand={},noautoscale = true]{Summary_Table_2020_10_8.pdf}
