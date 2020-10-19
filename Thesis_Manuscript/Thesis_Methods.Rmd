@@ -34,10 +34,8 @@ The Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Mor
 MBOC grows *C. gigas* in plastic mesh bags measuring about (insert dimensions) attached to floating lines that stretch across an area about 75 m x 75 m. 
 The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
 
-##### Need Map Figure Here
-
 ## Experimental Setup
-Methods used were adapted from Grizzle et al.'s (2008) in situ filtration measurements of bivalve beds on the Atlantic coast.
+In situ filtration methods used were adapted from Grizzle et al.'s (2008) upstream-downstream measurements of bivalve beds on the Atlantic coast.
 Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (henceforth Chl $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
 The sondes hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and hung at height to align the sensors with the approximate height of the oyster habitat. 
 Prior to each filtration trial, water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and any interfering currents or eddies.
