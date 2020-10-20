@@ -53,7 +53,7 @@ In addition to the filtration and control trials, two side-by-side trials were c
 In the side-by-side trials, I placed the instruments adjacent to one another to compare the sensors' chlorophyll $\alpha$ measurements in the same mass of water for approximately 10 minutes.  
 The data was reviewed for extreme Chl $\alpha$ spikes caused by unnatural sediment plumes that would skew the average Chl $\alpha$.
 Extreme Chl $\alpha$ values were removed from the data.
-The average Chl $\alpha$ difference between sondes in the side-by-side trail was divided in half to get a correction term for filtration and control trial Chl $\alpha$ measurements (***Citations?!***).
+The average Chl $\alpha$ difference between sondes in the side-by-side trail was divided in half to get a correction term for filtration and control trial Chl $\alpha$ measurements.
 The sonde with higher Chl $\alpha$ in the side-by-side trial was corrected in the filtration trial by subtracting the correction term from Chl $\alpha$ measurements, and the lower sonde was corrected by adding the correction term.
 
 \begin{figure}[h]

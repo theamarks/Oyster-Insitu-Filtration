@@ -105,23 +105,15 @@ My research represents the first direct measurements of restored *O. lurida* hab
 
 * Future directions? 
   + Talk about adding spatial component @Grizzle2018 or @Gray2019a?
-* Explicitly address each research question?
-  + Not mentioned in "5 pivotal paragraphs"
-* Random Forest result that Temperature is most important?
-* HCR ~ WQ + Site - Describe this more?
-  + Benefits of Random Forest
-    - Don't need to worry about co-variance among parameters
-    - allows us to use all of our data
-  + Compare to previous research
-    - Literature - our parameters are all important to filtration 
-    - RF doesn't spell out specific relationships
-    - We can rank the parameters - in line with previous research
-  + Demonstrate filtration with limited data set
-  + More data - better
-  + Didn't include a quantitative biomass parameter - not enough data
+* Tidal submersion time
+  + @Bayne1988a - "Intertidal individuals do not compensate
+for periods of aerial exposure by increasing their rate of feeding during immersion. 
+  + Higher intertidal may have more access to more organic matter suspended with incoming tide.
 
 
 
+```{r Extra_Text, eval=FALSE, include=FALSE}
+#Extra tibbit
 
 ## Extra Text
 
@@ -129,11 +121,6 @@ My research represents the first direct measurements of restored *O. lurida* hab
 * Moreover, various filter-feeding taxa preferentially select for specific particle sizes [@Gedan2014; @Gray2016] depending on feeding physiology [@Elsey1935], leading to possible resource partitioning or competition that effects the net filtration [@Byers2014].
 * Gray & Langdon (2017) point out that O. lurida selects larger particles from the water column compared to C. gigas, likely because of anatomical differences in gill ostea, which may differentiate the quality of filtration by each species. 
 * Chl $\alpha$ - proxy for photosynthetic organic material - Check @Secor2006 for ideas
-
-
-```{r Extra_Text, eval=FALSE, include=FALSE}
-#Extra tibbit
-
 
 ## Long Form Introduction  --> Save for discussion
 
