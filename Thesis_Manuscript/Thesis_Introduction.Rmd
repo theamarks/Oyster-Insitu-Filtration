@@ -66,6 +66,6 @@ My research questions were:
 2) How do the HCRs of restored *O. lurida* habitat compare to *C. gigas* aquaculture?
 3) What biotic and abiotic factors are important in estimating HCR?
 4) How do filter feeder density, community composition, and biomass affect clearance rates of oyster habitat?
-5) Can *O. lurida* dry tissue weight be estimated by shell length?
+5) Is there a predictable allometric relationship between *O. lurida* shell length and dry tissue weight, allowing for accurate estimates of DTW without sacrificing restored oysters?
 
 \newpage
