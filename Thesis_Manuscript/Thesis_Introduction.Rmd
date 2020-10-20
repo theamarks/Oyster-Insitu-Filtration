@@ -46,11 +46,11 @@ In addition, clearance rates defined by biomass (DTW) are not directly aplicable
 ## Whole-Habitat Measurements
 
 The complex biological and physical characteristics of oyster habitat highlight the need for in situ, whole-habitat filtration measurements [@Grizzle2008; @Grizzle2018; @Gedan2014; @Byers2014] specific to the habitat.
-Whole-habitat in situ filtration measurements have several distinct advantages over single-species models;
-1) As previously mentioned, measurements include the contributions of the entire filter-feeding guild;
-2) Measurements have an automatic averaging/aggregate of individual bivalve feeding variation with a higher precision than filtration rates derived from individuals (check these: Cranford 1998, Inglesias et al 1998).
-Furthermore, studies that exclude individuals that are not filtering (closed valves) artificially inflate filtration models, overestimate filtration when expanded to the population level [@Cranford2011; @Luckenbach1999] and may partly explain why many field studies find lower filtration rates than laboratory studies [@Gray2018 cited Newell 2005; @Grizzle2008; @Cranford2011]; 
-3) Bivalve feeding responses to natural water flow dynamics along with spatial and seasonal changes to seston composition are inherently included in whole-habitat in situ measurements. 
+Whole-habitat in situ filtration measurements have several distinct advantages over single-species models.
+First, in situ measurements include the contributions of the entire filter-feeding guild.
+Next, in situ measurements have an automatic averaging/aggregate of individual bivalve feeding variation with a higher precision than filtration rates derived from individuals (@Jones2011a; @Iglesias1998; @Cranford2011).
+Studies that exclude individuals that are not filtering (closed valves) artificially inflate filtration models, overestimate filtration when expanded to the population level [@Cranford2011; @Luckenbach1999]; this may partly explain why many field studies find lower filtration rates than laboratory studies [@Gray2018 cited Newell 2005; @Grizzle2008; @Cranford2011]; 
+Lastly, bivalve feeding responses to natural water flow dynamics along with spatial and seasonal changes to seston composition are inherently included in whole-habitat in situ measurements. 
 
 Water flow dynamics in the field are highly variable [@Wilson-Ormond1997] due to the interaction of tidal prisms and the physical characteristics of bays and estuaries.
 While the direct effects of water velocity on bivalve filter-feeding is unclear [@Grizzle1992; @Cranford1998; also see review in @Judge1992], water depth and velocity affect water column mixing and sediment re-suspension [@Widdows1998], thus food availability for benthic filter-feeders.
