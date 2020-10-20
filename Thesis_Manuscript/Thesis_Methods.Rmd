@@ -16,12 +16,12 @@ indent: true
 ## Study Sites
 I selected four sites along the California coast to measure in situ filtration.
 The sites represent a range of constructed oyster habitats including shell bag reef, shell bed, and floating aquaculture lines.
-The San Francisco Living Shorelines Project has two sites in San Francisco Bay, California, constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015]. 
-It is a large-scale experiment that investigates the effects of various reef designs and *Zostrea marina* plantings on biological habitat provision and physical shoreline protection [@EnvironmentalScienceAssociates2014]. 
+The San Francisco Living Shorelines Project was constructed July - August 2012 in San Francisco Bay, California, by The Coastal Conservancy and collaborators [@Latta2015]. 
+It is a large-scale experiment that investigated the effects of various reef designs and *Zostrea marina* plantings on biological habitat provision and physical shoreline protection [@EnvironmentalScienceAssociates2014]. 
 I selected The Nature Conservancy site (37.964179, -122.487217, henceforth San Rafael) of the two sites because of its accessibility, size, and higher abundances of *O. lurida*. 
-San Rafael consists of a shell bag reef matrix with a 32 m x 10 m footprint consisting of three rows of eight shell bag reefs [@EnvironmentalScienceAssociates2014]. 
-Each reef measures 2 m x 2 m x 1 m  and is composed of four shell bag elements measuring 1 m x 1 m x 1 m. A shell bag is made of plastic mesh filled with clean, commercially-grown *C. gigas* shell. 
-The matrix is positioned approximately 200 m from shore on a mudflat at -0.3 m MLLW (Mean Low Lower Water) tidal elevation [@EnvironmentalScienceAssociates2014]. 
+San Rafael consisted of a shell bag reef matrix with a 32 m x 10 m footprint with three rows of eight shell bag reefs [@EnvironmentalScienceAssociates2014]. 
+Each reef measured 2 m x 2 m x 1 m  and was composed of four shell bag elements measuring 1 m x 1 m x 1 m. A shell bag was made of plastic mesh filled with clean, commercially-grown *C. gigas* shell. 
+The matrix was positioned approximately 200 m from shore on a mudflat at -0.3 m MLLW (Mean Low Lower Water) tidal elevation [@EnvironmentalScienceAssociates2014]. 
 
 The Upper Newport Bay Living Shorelines Project has four sites in Newport Bay, California and was constructed in May 2017 by Orange County Coast Keeper, and collaborators at CSU Fullerton and CSU Long Beach. 
 This experimental project investigates the effects of interactions between restored *O. lurida* beds and restored *Z. marina* eelgrass beds on biological communities. 
