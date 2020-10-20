@@ -58,13 +58,14 @@ The quantity, particle size, and organic content (OC) of seston available to fil
 Natural seston is composed of phytoplankton [@Navarro1995], zooplankton [@Lehane2006; @Trottet2008], macroalgae detritus [@Page1997; @Kwak1997; @Gilbane2006], bacteria [@Newell1989], and inorganic sediments [@Wilson-Ormond1997; @Gray2018].
 Although @Gray2018 used ambient sea water from Yaquina Bay in their in situ experiment across seasons, seston also changes spatially and temporally due to tides, wind, bathometry, and proximity to benthic organisms [@Navarro1995; @Muschenheim1987; @Ashley1988; @Moody2020a], limiting their findings to bays with similar seston profiles.  
 @Cranford2011 conducted a meta-analysis of 133 bivalve clearance rate studies; they found highly variable short-term fluctuations in clearance rates, as well as intermittent feeding cessation, when bivalves were fed with natural seston.
-This illustrates bivalves' highly variable feeding responses to natural conditions; further making the case that whole-habitat in situ measurements are needed for ecologically and environmentally realistic filtration estimates of *O. lurida* habitat and *C. gigas* aquaculture. 
+This illustrates bivalves' highly variable feeding responses to natural conditions, further making the case that whole-habitat in situ measurements are needed for ecologically and environmentally realistic filtration estimates of *O. lurida* habitat and *C. gigas* aquaculture. 
 
-The motivation of this study is to assess the contributions of restored *O. lurida* habitat and *C. gigas* aquaculture to estuary filtration functions in California, as a function of filter feeder community which is expected to vary among locations.
+Here, I assessed the contributions of restored *O. lurida* habitat and *C. gigas* aquaculture to estuary filtration functions in California, as a function of natural water quality conditions and filter feeder community which are expected to vary among locations.
 My research questions were:
 1) Are oyster habitat filtration signals detectable compared to adjacent mud flat habitat using methods based on @Grizzle2008?
-2) How does filter feeder density, community composition, and biomass affect clearance rates of oyster habitat?
-3) How do water quality parameters (temperature, salinity, turbidity, TPM, OC) and site affect oyster habitat clearance rates?
-4) Is there a predictable allometric relationship between *O. lurida* shell length and dry tissue weight?
+2) How do the HCRs of restored *O. lurida* habitat compare to *C. gigas* aquaculture?
+3) What biotic and abiotic factors are important in estimating HCR?
+4) How do filter feeder density, community composition, and biomass affect clearance rates of oyster habitat?
+5) Can *O. lurida* dry tissue weight be estimated by shell length?
 
 \newpage
