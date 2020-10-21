@@ -16,28 +16,25 @@ indent: true
 ## Study Sites
 I selected four sites along the California coast to measure in situ filtration.
 The sites represent a range of constructed oyster habitats including shell bag reef, shell bed, and floating aquaculture lines.
-The San Francisco Living Shorelines Project was constructed July - August 2012 in San Francisco Bay, California, by The Coastal Conservancy and collaborators [@Latta2015]. 
-It is a large-scale experiment that investigated the effects of various reef designs and *Zostrea marina* plantings on biological habitat provision and physical shoreline protection [@EnvironmentalScienceAssociates2014]. 
-I selected The Nature Conservancy site (37.964179, -122.487217, henceforth San Rafael) of the two sites because of its accessibility, size, and higher abundances of *O. lurida*. 
-San Rafael consisted of a shell bag reef matrix with a 32 m x 10 m footprint with three rows of eight shell bag reefs [@EnvironmentalScienceAssociates2014]. 
-Each reef measured 2 m x 2 m x 1 m  and was composed of four shell bag elements measuring 1 m x 1 m x 1 m. A shell bag was made of plastic mesh filled with clean, commercially-grown *C. gigas* shell. 
+The San Francisco Living Shorelines Project is located in northern San Francisco Bay, California (37.964179, -122.487217, henceforth San Rafael), and contains *O. lurida* reefs constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015; @EnvironmentalScienceAssociates2014].
+San Rafael consisted of a shell bag reef matrix with a 32 m x 10 m footprint with three rows of eight shell bag reefs constructed as *O. lurida* habitat [@EnvironmentalScienceAssociates2014]. 
+Each reef unit measured 2 m x 2 m x 1 m and was composed of four shell bag elements measuring 1 m x 1 m x 1 m. A shell bag was made of plastic mesh filled with clean, commercially-grown *C. gigas* shell. 
 The matrix was positioned approximately 200 m from shore on a mudflat at -0.3 m MLLW (Mean Low Lower Water) tidal elevation [@EnvironmentalScienceAssociates2014]. 
 
-The Upper Newport Bay Living Shorelines Project has four sites in Newport Bay, California and was constructed in May 2017 by Orange County Coast Keeper, and collaborators at CSU Fullerton and CSU Long Beach. 
-This experimental project investigates the effects of interactions between restored *O. lurida* beds and restored *Z. marina* eelgrass beds on biological communities. 
-My research includes two of the four sites, Shellmaker (33.622097, -117.892399, henceforth Shellmaker) and Deanza (33.620291, -117.897692, henceforth Deanza) because of their accessibility, water flow dynamics, and higher abundances of *O. lurida*. 
-Each site has four plots; control mudflats, *Z. marina* beds restored in isolation, *O. lurida* oyster beds restored in isolation, and oyster beds restored adjacent to seaward eelgrass beds. 
+The Upper Newport Bay Living Shorelines Project is located in Newport Bay, California and contains restored *O. lurida* beds. 
+It was constructed in May 2017 by Orange County Coast Keeper, and collaborators at CSU Fullerton and CSU Long Beach [@Wood2018]. 
+My research included two sites: Shellmaker (33.622097, -117.892399) and Deanza (33.620291, -117.897692)
 The oyster beds measure 20 m x 1 m x 0.25 m and are constructed with coconut coir bogs filled with clean commercially-grown dead *C. gigas* and *Mytilus galloprovincialis* mussel shell. 
-The beds are positioned approximately 30 m from shore on a mudflat at approximately -0.15 m MLLW.
+The beds are positioned approximately 30 m from shore on a mudflat at approximately -0.15 m MLLW [@Wood2018].
 
 The Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Morro Bay, California (35.334707, -120.844000, henceforth Morro Bay). 
-MBOC grows *C. gigas* in plastic mesh bags measuring about (insert dimensions) attached to floating lines that stretch across an area about 75 m x 75 m. 
+MBOC grows *C. gigas* in plastic mesh bags measuring about (80 cm x 50 cm) attached to floating lines that stretch across an area about 75 m x 75 m. 
 The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
 
 ## Experimental Setup
 In situ filtration methods used were adapted from Grizzle et al.'s (2008) upstream-downstream measurements of bivalve beds on the Atlantic coast.
 Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (henceforth Chl $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
-The sondes hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and hung at height to align the sensors with the approximate height of the oyster habitat. 
+The sondes were hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and were hung at a height to align the sensors with the approximate height of the oyster habitat. 
 Prior to each filtration trial, water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and any interfering currents or eddies.
 The sonde housings were positioned to measure an uninterrupted linear water flow across the oyster habitat based on the dye.
 Linear water flow assumes that the upstream instrument is measuring the same water as the downstream instrument.
@@ -49,9 +46,9 @@ Detailed notes of all field events and disturbances were recorded with a watch s
 Field work was conducted from February 2018 to June 2019 and measured 22 filtration trials and 6 control trials.
 
 ## Chlorophyll $\alpha$ Corrections
-In addition to the filtration and control trials, two side-by-side trials were conducted before and after the experimental trial to record and correct any chl $\alpha$ sensor differences.
-In the side-by-side trials, I placed the instruments adjacent to one another to compare the sensors' chlorophyll $\alpha$ measurements in the same mass of water for approximately 10 minutes.  
-The data was reviewed for extreme Chl $\alpha$ spikes caused by unnatural sediment plumes that would skew the average Chl $\alpha$.
+In addition to the filtration and control trials, two side-by-side trials were conducted before and after the experimental trial to record and correct any Chl $\alpha$ sensor differences.
+In the side-by-side trials, I placed the instruments adjacent to one another to compare the sensors' Chl $\alpha$ measurements in the same mass of water for approximately 10 minutes.  
+The data and field notes were reviewed for extreme Chl $\alpha$ spikes caused by unnatural sediment plumes that would skew the average Chl $\alpha$.
 Extreme Chl $\alpha$ values were removed from the data.
 The average Chl $\alpha$ difference between sondes in the side-by-side trail was divided in half to get a correction term for filtration and control trial Chl $\alpha$ measurements.
 The sonde with higher Chl $\alpha$ in the side-by-side trial was corrected in the filtration trial by subtracting the correction term from Chl $\alpha$ measurements, and the lower sonde was corrected by adding the correction term.
@@ -69,10 +66,10 @@ I collecting water samples next to the study area during the filtration or contr
 The filters were stored on ice until they could be stored in a freezer. 
 Thawed filters were rinsed with a 0.5 M ammonium formate solution to remove salt. 
 Typically this step immediately precedes filtering [@Gray2018], but this was not possible to do in the field. 
-Filters were then dried in an 60&deg;C oven for 48 hours, and weighed to determine TPM (equation \ref{Eq:TPM}). 
-Next, the dried filters were ashed at 450&deg;C for \( \geq 4 \) hours and weighed to determine PIM (equation \ref{Eq:PIM}) and POM (equation \ref{Eq:POM}). Seston OC is simply the ratio of POM to TPM.
+Filters were then dried in an 60&deg;C oven for 48 hours, and weighed to determine TPM (Equation \ref{Eq:TPM}). 
+Next, the dried filters were ashed at 450&deg;C for \( \geq 4 \) hours and weighed to determine PIM (Equation \ref{Eq:PIM}) and POM (Equation \ref{Eq:POM}). Seston OC is simply the ratio of POM to TPM.
 The protocol used by @Gray2018 calls for washed and ashed filters, however I only used washed filters. 
-I found that the weight difference between washed and ashed filters to washed filters was was 0.5\% and corrected my samples accordingly.
+I found that the weight difference between washed and ashed filters to washed filters averaged 0.5\% and corrected my samples accordingly.
 
 \begin{equation}
 \label{Eq:TPM}
@@ -95,7 +92,7 @@ Extreme spikes were cross referenced with field notes and removed if field notes
 Next I paired upstream and downstream Chl $\alpha$ measurements. 
 I used average water velocity and sonde distance to estimate the time it took a parcle of water to travel from the upstream sonde to the downstream sonde. 
 The travel time was subtracted from downstream measurement time-stamps to pair with upstream sonde measurements; unpaired measurements were discarded. 
-Next, I calculated percent Chl $\alpha$ removal (\(\autoref{Eq:PrctChl}\); @Grizzle2008) and habitat clearance rate (HCR; \(\autoref{Eq:Lhrm2}\); @Milbrandt2015) using average Chl $\alpha$ values. 
+Next, I calculated percent Chl $\alpha$ removal (Equation \ref{Eq:PrctChl} @Grizzle2008) and habitat clearance rate (Equation \ref{Eq:Lhrm2} @Milbrandt2015) using average Chl $\alpha$ values. 
 
 \begin{equation}
 \label{Eq:PrctChl}
@@ -107,7 +104,7 @@ Next, I calculated percent Chl $\alpha$ removal (\(\autoref{Eq:PrctChl}\); @Griz
 HCR (Lhr^{-1}m^2) = \frac{A_{Xsec} \times V \times 1000}{A_{habitat}} \times \frac{Chl_{up} - Chl_{down}}{Chl_{up}}
 \end{equation}
 
-$A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$ assumed 1 m width), *V* is the average water velocity (m/hr), *1000* is the conversion factor from $m^2$ to L, $A_{habitat}$ is the area being measured (distance between the instruments $\times$ assumed 1 m width), $Chl_{up}$ is the upstream chlorophyll $\alpha$ concentration, and $Chl_{down}$ is the downstream chlorophyll $\alpha$ concentration.
+$A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$ assumed 1 m width), *V* is the average water velocity (m/hr), $A_{habitat}$ is the area being measured (distance between the instruments $\times$ assumed 1 m width), $Chl_{up}$ is the upstream Chl $\alpha$ concentration, and $Chl_{down}$ is the downstream Chl $\alpha$ concentration.
 
 ## Analysis
 
