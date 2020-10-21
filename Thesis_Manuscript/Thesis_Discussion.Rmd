@@ -56,7 +56,7 @@ High water velocity can re-suspend sediments; @Dame1985 found that water velocit
 My water velocity measurements ranged from 2-20 cm/s (Table 1), but velocities 15 cm/s and higher did not correlate with negative HCR values. 
 Negative HCRs cmay also be due to the fact that smaller, lighter, organic materials measured by chl $\alpha$ sensors are re-suspended at lower water velocities than inorganic sediments [see @Muschenheim1987; @Wheat2013].
 
-Water flow velocity and depth constrained my field days and deployment duration, resulting in filtration function snap shots.
+Water flow velocity and depth constrained my field days and deployment duration, resulting in filtration function snapshots.
 Shallow water depth relative to the amount of bivalves ensures that bivalves have a greater influence on water column properties [@Wheat2013] and high water velocities can re-suspend sediments into the water column [@Dame1985; @Widdows1998; @Harsh1999].
 Although my measurements do not represent a comprehensive look at filtration function across tidal and hydrodynamic conditions, they do represent filtration function at similar tidal and hydrodynamic conditions at each site (e.g. Tide, Depth, Velocity in Table 1).
 Water depth and hydrodynamics may partial explain the similar HCRs between Morro Bay *C. gigas* aquaculture and restored *O. lurida* habitat.
@@ -78,23 +78,13 @@ High variability is well documented in field filtration measurements even along 
 In addition, HCR variation could be the result of measuring hundreds and even thousands of bivalves. 
 Individual feeding behavior can be highly variable in short time periods [@Newell2005], and even under favorable conditions, a substantial portion of individual bivalves may not actively feed or feed at a reduced capacity [@Dolmer2000; @Saurel2007]
 
-I chose to fit a random forest regression to all filtration trials HCRs for over a multiple linear regression for several resasons. 
-First, random forest regressions are nonparametric models that learn nonlinearity relationships without explicitly modeling them [@Gromping2009].
-This works well for my data as previous research shows that temperature, salinity, and TPM had non-linear relationship with *O. lurida* and *C. gigas* clearance rates.
-Second, random forest regressions work with missing data [@Stekhoven2012], and I had two trials with missing TPM and OC values because of a processing error. 
-Third, multiple linear regressions can extrapolate predicited values, whereas random forest regressions can not extraploate outside the training data set [@Ellis2016; @Hengl2018]. 
-The random forest model I fit is a collection of 2,000 individual decision trees.
-Each tree is prone to overfitting the training data, but the final output is an the average of the 2,000 individual trees, correcting for the individual overfitting [@Sagi2018].
-Fourth, I had a large number of variables relative to observations which limiting my degrees of freedom in a multiple linear regression, random forests work well with this kind of data structure [@Gromping2009].
-Lastly, using all the same variables (temperature, salinity, turbidity, TPM, OC, and site) a random forest model fit HCRs better (*R*^2^ = 0.62) than a multiple linear regression (*R*^2^ = 0.43).
 I found that temperature was the most important parameter (23%) in predicting HCRs with my random forest model (*R*^2^ = 0.64), aligning with previous bivavle feeding studies.
 Temperature affects bivalve physiology and water viscosity [reviewed in @Cranford2011; @Bayne2017] and is found to be a highly predictive variable in bivalve feeding models [@ZuErmgassen2013d; @Moody2020a; @Gray2018; reviewed in @Cranford2011]. 
 After temperature, variables relating to seston quanitity and quality were reasonably important in predicting HCRs (turbidity 21.5%, TPM 21.2%, and OC 13.2%), also aligning with previous research [@Gray2018; @Moody2020a; reviewed in @Cranford2011]
 
+## Conclusions
 
-## Conculsions
-
-My results provide the first snap shot habitat clearance rates of four unique sites in California, and shows that in situ upstream-downstream methods can detect filtration signals in this application.
+My results provide the first snapshot habitat clearance rates of four unique sites in California, and shows that in situ upstream-downstream methods can detect filtration signals in this application.
 Restored *O. lurida* habiat and *C. gigas* long-line aquaculture in California may clear similar amounts of water per unit area when compared in realistic biological and environmental conditions.
 @Gray2019a also found that the filtration functions of *O. lurida* may be greater than previously thought when complex environmental conditions were accounted for.
 Furthermore, overall filtration functions of *O. lurida* habitat may continue to be underestimated, unless a whole-habitat perspective is taken; future filtration function measurements should incorporate the filtration contributions of other filter-feeders residing on foundation oyster habitat.
