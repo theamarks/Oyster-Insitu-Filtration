@@ -29,7 +29,7 @@ Currently, *O. lurida* populations are less than 10% of historical abundances in
 The extreme reduction of native *O. lurida* abundances, and therefore the important estuarine habitat *O. lurida* creates, is coupled with the loss of water filtration functions. 
 Restoring these ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the west coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
 
-Dwindling *O. lurida* harvests led to the cultivation of the Japanese oyster (*Crassostrea gigas*) [@Beattie1982] in the Salish Sea in the early 1920s [@Quayle1988], and in California in 1928 [@Conte1982].
+Dwindling *O. lurida* harvests led to the cultivation of the Japanese oyster, *Crassostrea gigas*, [@Beattie1982] in the Salish Sea in the early 1920s [@Quayle1988], and in California in 1928 [@Conte1982].
 *C. gigas* now accounts for the overwhelming majority of commercial oyster harvest on the NAWC [@Beattie1982; @Pauley1988], and has established feral populations outside of aquaculture operations in the Salish Sea [@Quayle1988], Willipa Bay, WA [@Kincaid1968], and Southern California [@Crooks2015a; @Polson2009; @Tronske2018].
 *C. gigas* is a large, fast growing oyster with higher filtration rates than *O. lurida* per unit dry tissue weight (DTW) [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019], and can exert top-down control of seston at aquaculture densities [@Wheat2013].
 Ecosystem filtration functions (e.g. habitat quality, nutrient sequestration, water clarity, and sediment enrichment) in NAPC estuaries may differ between native *O. lurida* habitat and cultivated *C. gigas* aquaculture [@Ruesink2006; reviewed by @Ruesink2005].

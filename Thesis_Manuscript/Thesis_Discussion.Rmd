@@ -13,8 +13,8 @@ indent: true
 
 # Discussion 
 
-To date, no studies have incorporated the effects of other bivalve filter-feeders and true environmental conditions on the filtration functions of Olympia oyster habitat.
-My results indicate that the habitat clearance rate (HCR) between *C. gigas* long-line aquaculture and restored *O. lurida* habitat are similar when measured in the field; inherently including all bivalve filtration contributions and their responses to dynamic field conditions.
+To date, no studies have incorporated the effects of other bivalve filter-feeders and true environmental conditions on the filtration functions of Olympia oyster (*Ostrea lurida*) habitat.
+My results indicate that the habitat clearance rate (HCR) between *Crassostrea gigas* long-line aquaculture and restored *O. lurida* habitat are similar when measured in the field; inherently including all bivalve filtration contributions and their responses to dynamic field conditions.
 My field measurements showed that HCRs are highly variable at each site.
 These findings suggest that previously measured clearance rate differences between *O. lurida* and *C. gigas* [@Gray2018] may not accurately estimate ecosystem filtration functions of *O. lurida* restoration and *C. gigas* aquaculture because they do not take into account *O. lurida* as a foundation species that filters alongside other bivalves in dynamic environmental conditions. 
 

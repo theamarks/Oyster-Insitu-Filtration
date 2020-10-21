@@ -16,9 +16,9 @@ indent: true
 ## Study Sites
 I selected four sites along the California coast to measure in situ filtration.
 The sites represent a range of constructed oyster habitats including shell bag reef, shell bed, and floating aquaculture lines.
-The San Francisco Living Shorelines Project is located in northern San Francisco Bay, California (37.964179, -122.487217, henceforth San Rafael), and contains *O. lurida* reefs constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015; @EnvironmentalScienceAssociates2014].
+The San Francisco Living Shorelines Project is located in northern San Francisco Bay, California (37.964179, -122.487217, henceforth San Rafael), and contains *Ostrea lurida* reefs constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015; @EnvironmentalScienceAssociates2014].
 San Rafael consisted of a shell bag reef matrix with a 32 m x 10 m footprint with three rows of eight shell bag reefs constructed as *O. lurida* habitat [@EnvironmentalScienceAssociates2014]. 
-Each reef unit measured 2 m x 2 m x 1 m and was composed of four shell bag elements measuring 1 m x 1 m x 1 m. A shell bag was made of plastic mesh filled with clean, commercially-grown *C. gigas* shell. 
+Each reef unit measured 2 m x 2 m x 1 m and was composed of four shell bag elements measuring 1 m x 1 m x 1 m. A shell bag was made of plastic mesh filled with clean, commercially-grown *Crassostrea gigas* shell. 
 The matrix was positioned approximately 200 m from shore on a mudflat at -0.3 m MLLW (Mean Low Lower Water) tidal elevation [@EnvironmentalScienceAssociates2014]. 
 
 The Upper Newport Bay Living Shorelines Project is located in Newport Bay, California and contains restored *O. lurida* beds. 
