@@ -72,8 +72,10 @@ Considering the extremely low *O. lurida* biomass at San Rafael compared to Dean
 This similarity may be an artifact of San Rafael's patchy and high relief habitat creating sediment seston sinks on the leeward side of the shell bag reef structures.
 
 Given the similar tidal and hydrodynamic conditions within each site, my results still show highly variable HCRs within each site (Figure \ref{FR_Site_boxplot}).
-My HCRs across all sites ranged from -242 to 845 L hr^-1^m^-2^ (Table 1), which encompasses the HCRs range from @Milbrandt2015 but 40\% of my trials far exceed their largest values.
+My HCRs across all sites ranged from -242 to 845 L hr^-1^m^-2^ (Table 1), which encompasses the HCR range of previous studies.
 @Milbrandt2015 used similar upstream-downstream in situ methods on restored bivalve bed in Florida and reported a range of habitat clearance rates from -26 to 157 L hr^-1^m^-2^.
+Fourty precent of my trials far exceed their largest value.
+@Jones2011a found the HCRs of infaunal cockles in New Zealand to be between 20 and 420 L hr^-1^m^-2^.
 High variability is well documented in field filtration measurements even along short periods of time (@Grizzle2008, reviewed by @Cranford2011), and in bivalves feeding on natural seston over short and long periods of time [reviewed by @Cranford2011].
 In addition, HCR variation could be the result of measuring hundreds and even thousands of bivalves. 
 Individual feeding behavior can be highly variable in short time periods [@Newell2005], and even under favorable conditions, a substantial portion of individual bivalves may not actively feed or feed at a reduced capacity [@Dolmer2000; @Saurel2007]
@@ -90,17 +92,6 @@ Restored *O. lurida* habiat and *C. gigas* long-line aquaculture in California m
 Furthermore, overall filtration functions of *O. lurida* habitat may continue to be underestimated, unless a whole-habitat perspective is taken; future filtration function measurements should incorporate the filtration contributions of other filter-feeders residing on foundation oyster habitat.
 *O. lurida* restoration efforts on the North American west coast aim to increase abundances of this foundation species and its purported filtration functions. 
 My research represents the first direct measurements of restored *O. lurida* habitat filtration functions, and although highly variable, it shows that restored *O. lurida* habitat is a valuable contributor to filtration functions within California bays.
-
-
-## Questions for DZ
-
-* Future directions? 
-  + Talk about adding spatial component @Grizzle2018 or @Gray2019a?
-* Tidal submersion time
-  + @Bayne1988a - "Intertidal individuals do not compensate
-for periods of aerial exposure by increasing their rate of feeding during immersion. 
-  + Higher intertidal may have more access to more organic matter suspended with incoming tide.
-
 
 
 ```{r Extra_Text, eval=FALSE, include=FALSE}
