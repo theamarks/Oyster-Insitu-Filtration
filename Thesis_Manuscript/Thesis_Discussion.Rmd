@@ -50,11 +50,11 @@ This basic interaction dissipates upward creating a velocity gradient from the b
 The boundary layer is important to bivalve filter-feeders because this is where they access water column seston for feeding [@Muschenheim1987], and why I positioned my instruments at approximately the height of the oyster habitat [@Grizzle2006].
 The height of the boundary layer can be affected by the arrangement of bivalves and flow speed [@Lim2020], and mostly consists of turbulent flow in natural, rough environments like bivalve beds [@Dame2012; @Styles2015].
 Turbulent flow within the boundary layer increases interaction and mixing with the larger water current, thus influencing particle flux [@Muschenheim1987], and is generally characteristic of natural water bodies even in low velocity scenarios [@Sanford1997].
-My measurements show at least one negative HCR trial at each site (Figure 3); a result of higher chl $\alpha$ at the downstream instrument than chl $\alpha$ at the upstream instrument.
+My measurements show at least one negative HCR trial at each site (Figure 3); a result of higher Chl $\alpha$ at the downstream instrument than Chl $\alpha$ at the upstream instrument.
 This likely indicates that sediments were re-suspended over the habitat, and does not necessarily indicate a lack of filter-feeding, but rather that the filter-feeding signal was clouded by the net sediment transport. 
 High water velocity can re-suspend sediments; @Dame1985 found that water velocity above 15 cm/s re-suspended particles in a flume, and @Widdows1998 found that in high density mussel beds water velocity above 20-25 cm/s started to erode sediments.
 My water velocity measurements ranged from 2-20 cm/s (Table 1), but velocities 15 cm/s and higher did not correlate with negative HCR values. 
-Negative HCRs cmay also be due to the fact that smaller, lighter, organic materials measured by chl $\alpha$ sensors are re-suspended at lower water velocities than inorganic sediments [see @Muschenheim1987; @Wheat2013].
+Negative HCRs cmay also be due to the fact that smaller, lighter, organic materials measured by Chl $\alpha$ sensors are re-suspended at lower water velocities than inorganic sediments [see @Muschenheim1987; @Wheat2013].
 
 Water flow velocity and depth constrained my field days and deployment duration, resulting in filtration function snapshots.
 Shallow water depth relative to the amount of bivalves ensures that bivalves have a greater influence on water column properties [@Wheat2013] and high water velocities can re-suspend sediments into the water column [@Dame1985; @Widdows1998; @Harsh1999].
@@ -65,7 +65,7 @@ This floating action may have disturbed bottom sediments, diluting the filtratio
 Water quality instruments were positioned at the height of the bivalves, but at Morro Bay this height gradually increased with the flood tide, and may have partly missed the filtration signal creating a lower HCR than expected for *C. gigas* aquaculture.
 Floating or off-bottom *C. gigas* aquaculture may not provide the same biochemical filtration function as *O. lurida* beds as waste products are not always deposited on the sediment surface and made available to other benthic organisms; although this filtration function is not directly quantified through HCRs.
 In addition, Morro Bay and San Rafael were not continuous habitat like Deanza and Shellmaker, and contained intermixed mudflat and bivalve habitat.
-This patchy habitat may have caused eddies, where water particles are retained longer than the average water flow, physically removing chl $\alpha$ from the main water flow measured by the downstream instrument.
+This patchy habitat may have caused eddies, where water particles are retained longer than the average water flow, physically removing Chl $\alpha$ from the main water flow measured by the downstream instrument.
 Chl $\alpha$ retention in eddies could be conflated as bivalve filtration.
 This is especially possible at San Rafael where the *O. lurida* habitat consisted of an array of 2m x 2m shell bag reefs each with a 1m relief above the sediment. 
 Considering the extremely low *O. lurida* biomass at San Rafael compared to Deanza, one would not expect San Rafael to have a similar range of HCRs. 
