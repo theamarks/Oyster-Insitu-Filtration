@@ -404,7 +404,7 @@ print(aov.xt,
 
 ```
 
-```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of the habitat clearance rate during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial, and triangles are the mean for the site. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
+```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.show="hold", fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of the habitat clearance rate (HCR) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial, and triangles are the mean for the site. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
 
 ### Filtration by site (Filtration Trials only)
 FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
