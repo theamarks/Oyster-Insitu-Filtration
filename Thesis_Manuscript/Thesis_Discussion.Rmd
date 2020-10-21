@@ -13,10 +13,10 @@ indent: true
 
 # Discussion 
 
-To date, no studies have incorporated the effects of other filter-feeders and complex environmental conditions on Olympia oyster filtration functions.
+To date, no studies have incorporated the effects of other bivalve filter-feeders and true environmental conditions on the filtration functions of Olympia oyster habitat.
 My results indicate that the habitat clearance rate (HCR) between *C. gigas* long-line aquaculture and restored *O. lurida* habitat are similar when measured in the field; inherently including all bivalve filtration contributions and their responses to dynamic field conditions.
 My field measurements showed that HCRs are highly variable at each site.
-These findings suggest that previously measured (***Citations***) clearance rate differences between *O. lurida* and *C. gigas* may not accurately estimate ecosystem filtration functions of *O. lurida* restoration and *C. gigas* aquaculture cecause they do not take into account *O. lurida* as a foundation species that filters alongside other bivalves in dynamic environmental conditions. 
+These findings suggest that previously measured clearance rate differences between *O. lurida* and *C. gigas* [@Gray2018] may not accurately estimate ecosystem filtration functions of *O. lurida* restoration and *C. gigas* aquaculture because they do not take into account *O. lurida* as a foundation species that filters alongside other bivalves in dynamic environmental conditions. 
 
 Estimates of restored *O. lurida* habitat filtration functions are currently made with single-species models [@ZuErmgassen2016; @Gray2019a; @ZuErmgassen2013c]. 
 Olympia oysters are smaller and less robust filter-feeders per unit biomass than Pacific oysters [@Gray2018; @ZuErmgassen2013c].
@@ -26,7 +26,7 @@ In contrast, in the spatially-explicit hydrodynamic model in @Gray2019a, *O. lur
 Clearance rates are typically adjusted by grams of dry tissue weight (DTW), consequently a direct comparison between these results and my measured HCRs is only possible at the two sites with biomass estimates (Deanza and San Rafael) where I can calculate clearance rates as a function of biomass (DTW).
 @Gray2018 measured *O. lurida* clearance rates that averaged 0.78 L h^-1^g^-1^ in the dry season and 0.19 L h^-1^g^-1^ in the wet season in Yaquina Bay, OR, whereas *C. gigas* averaged 0.95 L h^-1^g^-1^ in the dry season and 1.06 L h^-1^g^-1^ in the wet season in the same location.
 @Wheat2013 found that *C. gigas* grown on long-lines in Willipa Bay, WA cleared 0.73 L h^-1^g^-1^ ( 0.24 SE).
-According to the all-season model produced from these measurements and the biomass of *O. lurida* at Deanza (1.36 gDTW m^-2^), HCR should be 1.13 L hr^-1^m^-2^ usingh average OC and temperature from Deanza trials.
+According to the all-season model produced from these measurements and the biomass of *O. lurida* at Deanza (1.36 gDTW m^-2^), HCR should be 1.13 L hr^-1^m^-2^ using average OC and temperature from Deanza trials.
 Deanza's average HCR is 105 L hr^-1^m^-2^, two orders of magnitude different than the single-species estimate made by @Gray2018's all-season model. 
 Two important points emerge from the difference between these estimates: 1) Filtration function estimates need to incorporate the contributions of other bivalve filter-feeders, otherwise estimates may be massively underestimated; 2) Using the model derived from Yaquina Bay oysters and field conditions may not represent environmental conditions in California habitats, and this underscores the need for local measurements in order to accurately estimate filtration functions.
 
@@ -72,19 +72,20 @@ Considering the extremely low *O. lurida* biomass at San Rafael compared to Dean
 This similarity may be an artifact of San Rafael's patchy and high relief habitat creating sediment seston sinks on the leeward side of the shell bag reef structures.
 
 Given the similar tidal and hydrodynamic conditions within each site, my results still show highly variable HCRs within each site (Figure \ref{FR_Site_boxplot}).
-My HCRs across all sites ranged from -242 to 845 L hr^-1^m^-2^ (Table 1), which encompasses the HCRs range from @Milbrandt2015 but 40\% of trials far exceed their largest values.
+My HCRs across all sites ranged from -242 to 845 L hr^-1^m^-2^ (Table 1), which encompasses the HCRs range from @Milbrandt2015 but 40\% of my trials far exceed their largest values.
 @Milbrandt2015 used similar upstream-downstream in situ methods on restored bivalve bed in Florida and reported a range of habitat clearance rates from -26 to 157 L hr^-1^m^-2^.
 High variability is well documented in field filtration measurements even along short periods of time (@Grizzle2008, reviewed by @Cranford2011), and in bivalves feeding on natural seston over short and long periods of time [reviewed by @Cranford2011].
 In addition, HCR variation could be the result of measuring hundreds and even thousands of bivalves. 
 Individual feeding behavior can be highly variable in short time periods [@Newell2005], and even under favorable conditions, a substantial portion of individual bivalves may not actively feed or feed at a reduced capacity [@Dolmer2000; @Saurel2007]
 
 I chose to fit a random forest regression to all filtration trials HCRs for over a multiple linear regression for several resasons. 
-First, random forest regressions are non-linear models and previous research shows that temperature, salinity, and TPM had non-linear relationship with *O. lurida* and *C. gigas* clearance rates.
-Second, random forest regressions work with missing data, and I had two trials with missing TPM and OC values because of a processing error. 
-Third, multiple linear regressions can extrapolate predicited values, whereas random forest regressions can not extraploate outside the training data set. 
+First, random forest regressions are nonparametric models that learn nonlinearity relationships without explicitly modeling them [@Gromping2009].
+This works well for my data as previous research shows that temperature, salinity, and TPM had non-linear relationship with *O. lurida* and *C. gigas* clearance rates.
+Second, random forest regressions work with missing data [@Stekhoven2012], and I had two trials with missing TPM and OC values because of a processing error. 
+Third, multiple linear regressions can extrapolate predicited values, whereas random forest regressions can not extraploate outside the training data set [@Ellis2016; @Hengl2018]. 
 The random forest model I fit is a collection of 2,000 individual decision trees.
-Each tree is prone to overfitting the training data, but the final output is an the average of the 2,000 individual trees, correcting for the individual overfitting.
-Fourth, I had a large number of variables relative to observations, limiting my degrees of freedom in a multiple linear regression.
+Each tree is prone to overfitting the training data, but the final output is an the average of the 2,000 individual trees, correcting for the individual overfitting [@Sagi2018].
+Fourth, I had a large number of variables relative to observations which limiting my degrees of freedom in a multiple linear regression, random forests work well with this kind of data structure [@Gromping2009].
 Lastly, using all the same variables (temperature, salinity, turbidity, TPM, OC, and site) a random forest model fit HCRs better (*R*^2^ = 0.62) than a multiple linear regression (*R*^2^ = 0.43).
 I found that temperature was the most important parameter (23%) in predicting HCRs with my random forest model (*R*^2^ = 0.64), aligning with previous bivavle feeding studies.
 Temperature affects bivalve physiology and water viscosity [reviewed in @Cranford2011; @Bayne2017] and is found to be a highly predictive variable in bivalve feeding models [@ZuErmgassen2013d; @Moody2020a; @Gray2018; reviewed in @Cranford2011]. 
