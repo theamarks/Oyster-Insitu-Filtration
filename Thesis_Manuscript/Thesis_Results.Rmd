@@ -225,14 +225,14 @@ find_outlier <- function(data){
 
 # Results
 
-## Percent chlorophyll $\alpha$ removal
+## Percent Chlorophyll $\alpha$ Removal
 
-Percent Chl $\alpha$ removed at the San Rafael site averaged `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}) and was `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
-Filtration trials at Morro Bay averaged `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% Chl $\alpha$ removed (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and measured `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
-At Deanza, Chl $\alpha$ removed averaged `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and during three consecutive control trials averaged `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removed (*N* = `r nrow(NPD_NC_sum)`, *SD* =  `r round(sd(NPD_NC_sum$pcnt_Chl_rmvd))`).
-Shellmaker averaged `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% Chl $\alpha$ removed (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was removed from analysis as an extreme value (Figure \ref{Corr_to_signal_95CI_graph}).
+Percent Chl $\alpha$ removal at the San Rafael site averaged `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}) and was `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
+Filtration trials at Morro Bay averaged `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% Chl $\alpha$ removal (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and measured `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
+At Deanza, Chl $\alpha$ removal averaged `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and during three consecutive control trials averaged `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removal (*N* = `r nrow(NPD_NC_sum)`, *SD* =  `r round(sd(NPD_NC_sum$pcnt_Chl_rmvd))`).
+Shellmaker averaged `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% Chl $\alpha$ removal (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was removed from analysis as an extreme value (Figure \ref{Corr_to_signal_95CI_graph}).
 
-```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll removed during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). Each data point is the average value from a single filtration trial. Extreme values excluded from analysis are not shown. \\label{ChlRmd_Site_boxplot}"}
+```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). Each data point is the average value from a single filtration trial. Extreme values excluded from analysis are not shown. \\label{ChlRmd_Site_boxplot}"}
 
 Chl_Rmd_box <- ggplot(Filter_only_outRmd_data, aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) + 
@@ -575,9 +575,9 @@ summary(mlr)
 
 ## Oyster Habitat vs. Control 
 
-Filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two-sample *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, p = `r round(filter_control_ttest$p.value, digits = 2)`).
-The Random Forest model that included all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%) respectively.
-Filtration and control trials adjusted by the Random Forest model were not significantly different (two-sample *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`); however, my limited sample size and predictably variable clearance rates are expected to inhibit statistical signal detection.
+Filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two-sample *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, *p* = `r round(filter_control_ttest$p.value, digits = 2)`).
+The Random Forest model that included all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%).
+Filtration and control trials adjusted by the random forest model were not significantly different (two-sample *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`); however, my limited sample size and predictably variable clearance rates are expected to inhibit statistical signal detection.
 
 ## Habitat Clearance Rates 
 
@@ -585,9 +585,9 @@ HCR at Ran Rafael averaged `r round(mean(SR_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^
 at Morro Bay averaged `r round(mean(MB_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = to `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$L_hr_m2),1)`), 
 at Shellmaker averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`), 
 and at Deanza averaged `r round(mean(NPD_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`).
-Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, and `r round(MB_NC_sum$L_hr_m2,1)` Lhr^-1^m^2^ for San Rafael, Morro Bay respectively, Shellmaker's control trial was removed from the analysis as an extreme value (Figure \ref{Corr_to_signal_95CI_graph}).
-Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` Lhr^-1^m^-2^ (*N* = `r nrow(NPD_NC_sum$L_hr_m2)`, *SD* = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
-Site did not significantly affect HCR at a *p* < .05 level (*F*(3) = 0.29, *p* = 0.83) (Table 2).
+Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, and `r round(MB_NC_sum$L_hr_m2,1)` Lhr^-1^m^2^ for San Rafael, and Morro Bay respectively, Shellmaker's control trial was removed from the analysis as an extreme value (Figure \ref{Corr_to_signal_95CI_graph}).
+Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` Lhr^-1^m^-2^ (*N* = `r nrow(NPD_NC_sum)`, *SD* = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
+Site did not significantly affect HCR as determined by a one-way ANOVA at a *p* < .05 level (*F*(3,16) = 0.29, *p* = 0.83) (Table 2).
 
 ```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of the habitat clearance rate (HCR) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial, and triangles are the mean for the site. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
 
@@ -891,11 +891,11 @@ logOC_logTPM_graph
 
 ```
 
-Total Particulate Matter (TPM) is a significant negative predictor of seston OC when sites are combined (ln(y) = `r round(coef(logOC_logTPM_LM_sum)[1,1],digits=2)` `r round(coef(logOC_logTPM_LM_sum)[2,1],digits=3)` ln(x), *R*^2^ = `r  round(logOC_logTPM_LM_sum$r.squared,digits=2)`, *p* = `r round(coef(logOC_logTPM_LM_sum)[2,4],digits = 3)` (Figure \ref{TPM_OC_model}). 
+Total Particulate Matter (TPM) is a significant negative predictor of seston OC when sites are combined (ln(y) = `r round(coef(logOC_logTPM_LM_sum)[1,1],digits=2)` `r round(coef(logOC_logTPM_LM_sum)[2,1],digits=3)` ln(x), *R*^2^ = `r  round(logOC_logTPM_LM_sum$r.squared,digits=2)`, *p* = `r round(coef(logOC_logTPM_LM_sum)[2,4],digits = 3)`) (Figure \ref{TPM_OC_model}). 
 This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collect the same way regardless of the trial. 
 Bays have distinct TPM signatures that do not overlap (Figure \ref{TPM_OC_model}).
 Northern San Francisco Bay (San Rafael) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`), and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`).
-Newport Bay (Deanza and Shellmaker sites) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),3)` mg/L (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
+Newport Bay (Deanza and Shellmaker) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
 Northern San Francisco Bay (San Rafael) OC averaged `r round(mean(SR_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_OC_Ratio),2)`), and Morro Bay OC averaged `r round(mean(MB_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_OC_Ratio,2))`).
 Newport Bay (Deanza and Shellmaker) OC averaged `r round(mean(NP_combo_TPM_OC$Avg_OC_Ratio),3)` (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_OC_Ratio),2)`).
 
@@ -1112,7 +1112,7 @@ Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) +
   theme(legend.text = element_text(face = "italic")) +
   scale_fill_manual(values = Species_colors) +
   scale_y_continuous(breaks = seq(0, max(Bivalve_Den_data$Bivalve_den_m2), by = 500)) +
-  labs(y = expression("Individuals per m"^2))
+  labs(y = expression("Individuals m"^-2))
 Bivalve_Den_graph
 ```
 
@@ -1410,10 +1410,10 @@ NPD_species_DTW <- SR_NPD_biv_DTWm2 %>%
 Direct biomass data were only available for Deanza, which estimated `r round(NPD_total_DTW, 2)` g/m^2^ of bivalve dry tissue weight (DTW) (Figure \ref{Bivalve_Den_Biomass}). 
 *O. lurida* had the highest DTW with `r round(NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2],2)` g/m^2^, followed by *M. galloprovincialis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Mytilus galloprovincialis",2],)` g/m^2^), an unknown mussel (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Unknown mussel",2],2)` g/m^2^), *A. diegensis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Adula diegensis",2],2)` g/m^2^), and *M. senhousia* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Musculista senhousia",2],2)` g/m^2^).
 San Rafael survey data did not directly assess biomass, but did include shell length measurements which were used to estimate DTW of *O. lurida* (`r round(SR_total_DTW,3)` g/m^2^) from a model describing Deanza shell length and DTW (ln(y) = `r round(coef(OlyDTW_loglog_sum)[1,1],digits=2)` `r round(coef(OlyDTW_loglog_sum)[2,1],digits=3)`ln(x), R^2^ = `r round(OlyDTW_loglog_sum$r.squared,digits=2)`, *p* < 0.0001) (Figure \ref{NPD_Oly_DTW_SH_Trans}). 
-We estimated San Rafael had `r round(SR_species_DTW$total,2)` g/m^2^ of *O. lurida* (Figure \ref{Bivalve_Den_Biomass}).
+I estimated San Rafael had `r round(SR_species_DTW$total,2)` g/m^2^ of *O. lurida* (Figure \ref{Bivalve_Den_Biomass}).
 A direct comparison between site biomass to HCR was not possible with my limited biomass data. 
 
-```{r Bivalve_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Estimated biomass of \\textit{O. lurida} habitat at Newport Deanza and San Rafael sites. Data for Deanza was collected by the Zacherl lab (CSUF) in May 2018, the relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) from the Deanza 2018 survey was used to estimate DTW at San Rafael with shell length data collected by the Zabin lab (SERC) in November 2017. \\label{Bivalve_Den_Biomass}"}
+```{r Bivalve_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Estimated biomass of \\textit{O. lurida} habitat at Deanza and San Rafael sites. Data for Deanza was collected by the Zacherl lab (CSUF) in May 2018, the relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) from the survey was used to estimate DTW at San Rafael with shell length data collected by the Zabin lab (SERC) in November 2017. \\label{Bivalve_Den_Biomass}"}
 
 ####### Bar graph NPD Biomass / DTW by species
 Bivalve_Biomass_graph <- ggplot(SR_NPD_biv_DTWm2, aes(Site)) + 
@@ -1422,7 +1422,7 @@ Bivalve_Biomass_graph <- ggplot(SR_NPD_biv_DTWm2, aes(Site)) +
   scale_fill_manual(values = Species_colors) +
   theme(legend.text = element_text(face = "italic")) +
   #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
-  labs(y = expression("Dry Tissue Weight (g/m" ^2* ")"))
+  labs(y = expression("Dry Tissue Weight (g m" ^-2* ")"))
 ## Add total Biomass on top of bars
 Bivalve_Biomass_graph
 #bar_graphs <- plot_grid(Bivalve_Den_graph + theme(legend.position="none"),

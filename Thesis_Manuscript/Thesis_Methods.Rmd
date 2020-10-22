@@ -18,14 +18,14 @@ I selected four sites along the California coast to measure in situ filtration.
 The sites represent a range of constructed oyster habitats including shell bag reef, shell bed, and floating aquaculture lines.
 The San Francisco Living Shorelines Project is located in northern San Francisco Bay, California (37.964179, -122.487217, henceforth San Rafael), and contains *Ostrea lurida* reefs constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015; @EnvironmentalScienceAssociates2014].
 San Rafael consisted of a shell bag reef matrix with a 32 m x 10 m footprint with three rows of eight shell bag reefs constructed as *O. lurida* habitat [@EnvironmentalScienceAssociates2014]. 
-Each reef unit measured 2 m x 2 m x 1 m and was composed of four shell bag elements measuring 1 m x 1 m x 1 m. A shell bag was made of plastic mesh filled with clean, commercially-grown *Crassostrea gigas* shell. 
+Each reef unit measured 2 m x 2 m x 1 m and was composed of four shell bag elements measuring 1 m x 1 m x 1 m. A shell bag was made of plastic mesh filled with clean, commercially-grown *Crassostrea gigas* shell.
 The matrix was positioned approximately 200 m from shore on a mudflat at -0.3 m MLLW (Mean Low Lower Water) tidal elevation [@EnvironmentalScienceAssociates2014]. 
 
 The Upper Newport Bay Living Shorelines Project is located in Newport Bay, California and contains restored *O. lurida* beds. 
 It was constructed in May 2017 by Orange County Coast Keeper, and collaborators at CSU Fullerton and CSU Long Beach [@Wood2018]. 
-My research included two sites: Shellmaker (33.622097, -117.892399) and Deanza (33.620291, -117.897692)
-The oyster beds measure 20 m x 1 m x 0.25 m and are constructed with coconut coir bogs filled with clean commercially-grown dead *C. gigas* and *Mytilus galloprovincialis* mussel shell. 
-The beds are positioned approximately 30 m from shore on a mudflat at approximately -0.15 m MLLW [@Wood2018].
+My research included two sites: Shellmaker (33.622097, -117.892399) and Deanza (33.620291, -117.897692).
+The oyster beds measure 20 m x 1 m x 0.25 m and were constructed with coconut coir bogs filled with clean, commercially-grown *C. gigas* and *Mytilus galloprovincialis* mussel shell. 
+The beds were positioned approximately 30 m from shore on a mudflat at approximately -0.15 m MLLW [@Wood2018].
 
 The Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Morro Bay, California (35.334707, -120.844000, henceforth Morro Bay). 
 MBOC grows *C. gigas* in plastic mesh bags measuring about (80 cm x 50 cm) attached to floating lines that stretch across an area about 75 m x 75 m. 
@@ -34,11 +34,11 @@ The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float
 ## Experimental Setup
 In situ filtration methods used were adapted from Grizzle et al.'s (2008) upstream-downstream measurements of bivalve beds on the Atlantic coast.
 Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (henceforth Chl $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
-The sondes were hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and were hung at a height to align the sensors with the approximate height of the oyster habitat. 
-Prior to each filtration trial, water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and any interfering currents or eddies.
+The sondes were hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and were set at a height to align the sensors with the approximate height of the oyster habitat. 
+Prior to each filtration trial, water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and interfering currents or eddies.
 The sonde housings were positioned to measure an uninterrupted linear water flow across the oyster habitat based on the dye.
 Linear water flow assumes that the upstream instrument is measuring the same water as the downstream instrument.
-An electromagnetic meter (Marsh McBirney Flo Mate 2000) measured water velocity in the center of the habitat at the depth of the sensors during the beginning, middle, and end of each trial. 
+An electromagnetic meter (Marsh-McBirney Flo-Mate 2000) measured water velocity in the center of the habitat at the depth of the sensors during the beginning, middle, and end of each trial. 
 Depth measurements were recorded at each sonde housing at the beginning and end of the trial along with the distance between sondes.
 The sondes recorded measurements every 1 second, and trials lasted as long as field conditions were appropriate; anywhere from 5 and 30 minutes. 
 Control trials used the same set up, but the instruments were positioned over a bare mudflat adjacent to the oyster habitat.
@@ -47,7 +47,7 @@ Field work was conducted from February 2018 to June 2019 and measured 22 filtrat
 
 ## Chlorophyll $\alpha$ Corrections
 In addition to the filtration and control trials, two side-by-side trials were conducted before and after the experimental trial to record and correct any Chl $\alpha$ sensor differences.
-In the side-by-side trials, I placed the instruments adjacent to one another to compare the sensors' Chl $\alpha$ measurements in the same mass of water for approximately 10 minutes.  
+In the side-by-side trials, I placed the sondes adjacent to one another to compare the sensors' Chl $\alpha$ measurements in the same mass of water for approximately 10 minutes.
 The data and field notes were reviewed for extreme Chl $\alpha$ spikes caused by unnatural sediment plumes that would skew the average Chl $\alpha$.
 Extreme Chl $\alpha$ values were removed from the data.
 The average Chl $\alpha$ difference between sondes in the side-by-side trail was divided in half to get a correction term for filtration and control trial Chl $\alpha$ measurements.
@@ -56,20 +56,20 @@ The sonde with higher Chl $\alpha$ in the side-by-side trial was corrected in th
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.5\textwidth]{Fieldwork instruments and gear copy.jpg}
-  \caption{Two identical YSI 6600EDS water quality sondes were used to measure chlorophyll, temperature, salinity, and turbidity. The sondes were hung inside PVC housings to adjust the sensor depth in the water column. Water velocity measurements were taken with an Marsh McBirney Flo Mate 2000.}
+  \caption{Two identical YSI 6600EDS water quality sondes were used to measure chlorophyll $\alpha$, temperature, salinity, and turbidity. The sondes were hung inside PVC housings to adjust the sensor depth in the water column. Water velocity measurements were taken with an Marsh-McBirney Flo-Mate 2000. Photo taken at Deanza, Newport Bay, California.}
   \label{fig:fieldgear}
 \end{figure}
 
 ## Seston Content
-I determined seston Total Particulate Content (TPM), Particulate Inorganic Matter (PIM), Particulate Organic Matter (POM), and Organic content (OC) gravametrically.
+I determined seston total particulate matter (TPM), particulate inorganic matter (PIM), particulate organic matter (POM), and organic content (OC) gravametrically.
 I collecting water samples next to the study area during the filtration or control trial, and filtered the water through Whatman GF/F pre-wash and weighed filters in the field.
 The filters were stored on ice until they could be stored in a freezer. 
 Thawed filters were rinsed with a 0.5 M ammonium formate solution to remove salt. 
 Typically this step immediately precedes filtering [@Gray2018], but this was not possible to do in the field. 
 Filters were then dried in an 60&deg;C oven for 48 hours, and weighed to determine TPM (Equation \ref{Eq:TPM}). 
 Next, the dried filters were ashed at 450&deg;C for \( \geq 4 \) hours and weighed to determine PIM (Equation \ref{Eq:PIM}) and POM (Equation \ref{Eq:POM}). Seston OC is simply the ratio of POM to TPM.
-The protocol used by @Gray2018 calls for washed and ashed filters, however I only used washed filters. 
-I found that the weight difference between washed and ashed filters to washed filters averaged 0.5\% and corrected my samples accordingly.
+The protocol used by @Gray2018 calls for washed and ashed filters, however I used filters that were only washed. 
+I found the weight difference between washed and ashed filters to washed filters averaged 0.5\% and corrected my samples accordingly.
 
 \begin{equation}
 \label{Eq:TPM}
@@ -91,8 +91,8 @@ To calculate filtration I first checked the filtration and control trials' raw d
 Extreme spikes were cross referenced with field notes and removed if field notes corroborated a disturbance. 
 Next I paired upstream and downstream Chl $\alpha$ measurements. 
 I used average water velocity and sonde distance to estimate the time it took a parcle of water to travel from the upstream sonde to the downstream sonde. 
-The travel time was subtracted from downstream measurement time-stamps to pair with upstream sonde measurements; unpaired measurements were discarded. 
-Next, I calculated percent Chl $\alpha$ removal (Equation \ref{Eq:PrctChl} @Grizzle2008) and habitat clearance rate (Equation \ref{Eq:Lhrm2} @Milbrandt2015) using average Chl $\alpha$ values. 
+The travel time was subtracted from the timestamps of each downstream measurement to pair with upstream measurements; unpaired measurements were discarded. 
+Next, I calculated percent Chl $\alpha$ removal [Equation \ref{Eq:PrctChl}; @Grizzle2008] and habitat clearance rate [Equation \ref{Eq:Lhrm2}; @Milbrandt2015] using average Chl $\alpha$ values. 
 
 \begin{equation}
 \label{Eq:PrctChl}
@@ -108,34 +108,35 @@ $A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$
 
 ## Analysis
 
-All data wrangling and analysis were made in R 3.6.3 [@R; tidyverse R package @Wickham2019] and the graphs built in the ggplot2 package [Wickham2016]; the code is publicly available on Github [@Marks2020].
-Two field days are missing TPM and OC values from my data set, representing `r round((4/336)*100, digits = 0)`% of the data set. 
-Removing these incomplete observations is costly for my data set where I have a limited number of observations with a large number of variables. 
-Instead I used a semi-parametric imputation to estimate the missing values [missForest R package @Stekhoven2012].
-Next, I examined the signal-to-correction relationship between the Chl $\alpha$ difference in side-by-side trials compared to the corresponding experiment Chl $\alpha$ difference.
+All data wrangling and analysis were made in R 3.6.3 [@R; tidyverse R package @Wickham2019] and the graphs were built in the ggplot2 package [@Wickham2016]; the code is publicly available on Github [@Marks2020].
+Two field days from my data set are missing TPM and OC values, representing `r round((4/336)*100, digits = 0)`% of the data set. 
+I used a semi-parametric imputation to estimate the missing values [missForest R package @Stekhoven2012].
+Next, I examined the signal-to-correction relationship between side-by-side trial Chl $\alpha$ difference (correction) and corresponding experiment tiral Chl $\alpha$ difference (signal).
 This comparison showed if any instrument corrections obfuscate the experimental signal.
-I used the 95\% intervals of a linear model of the two variables to remove extreme values outside of the intervals.
+I used the 95\% confidence intervals of the signal-to-noise linear model to remove extreme values outside of the intervals.
 Because my data set is small, extreme values likely influenced my initial confidence intervals; therefore I created a second linear model with the extreme values removed and 98\% confidence intervals to identify any addition extreme values to remove from the analysis. 
 Three extreme observations were removed from the data set based on this signal-to-correction comparison (Figure \ref{Corr_to_signal_95CI_graph}).
+Importantly, note that one out of three extreme values eliminated corresponded with Chl $\alpha$ concentration near the sensor's detection limits (± 0.1 \\mu/L), the other two extreme values correspond with low Chl $\alpha$ concentrations (Table 1).
 
 To determine if there was a difference between control and filtration trials, I used a two-sample t-test not controlling for water quality and site parameters.
 To control for water quality and site parameters, I fit a random forest regression (including all filtration and control trials) to HCR from temperature, salinity, turbidity, TPM, OC, and site [randomForest R package @Liaw2002].
-Residuals from the random forest model adjusted data in a second two-sample t-test to control for the effects of water quality and site parameters were used to examine the difference between control and filtration trials.
+A second two-sample t-test comparing control and filtration trials was adjusted by the random forest model regression residuals, controling for the effects of water quality and site.
 
-To examine the relationship of water quality variables and site on HCR, I fitted a second Random Forest regression with only filtration trials [randomForest R package @Liaw2002].
-I chose to fit a random forest regression to all filtration trial HCRs over a multiple linear regression for several resasons. 
+To examine the relationship of water quality variables and site on HCR, I fit a second random forest regression that only included filtration trials [randomForest R package @Liaw2002].
+I chose to use a random forest regression over a multiple linear regression for several resasons. 
 First, random forest regressions are nonparametric models that learn nonlinearity relationships without explicitly modeling them [@Gromping2009].
-This works well for my data as previous research shows that temperature, salinity, and TPM had non-linear relationship with *O. lurida* and *C. gigas* clearance rates [@Gray2018].
+This works well for my data as previous research shows that temperature, salinity, and TPM have non-linear relationships with *O. lurida* and *C. gigas* clearance rates [@Gray2018].
 Second, random forest regressions work with missing data [@Stekhoven2012], and I had two trials with missing TPM and OC values because of a processing error. 
-Third, multiple linear regressions can extrapolate predicited values, whereas Random Forest regressions can not extrapolate outside the training data set [@Ellis2016; @Hengl2018]. 
-The Random Forest model I fit is a ensamble of 2,000 individual decision trees.
+A multiple linear regression would exclude the two missing trials that represent 10\% of my filtration trails.
+Third, multiple linear regressions can extrapolate predicited values, whereas random forest regressions can not extrapolate outside the training data set [@Ellis2016; @Hengl2018]. 
+The random forest model I fit is a ensamble of 2,000 individual decision trees.
 Each tree fits a random subset of the data and is prone to overfitting the training data.
-The final output (forest) is the average of the 2,000 individual trees, correcting for the individual tree weaknesses [i.e. emsamble learning @Sagi2018].
-Fourth, I had a large number of variables relative to observations which in a multiple linear regression would limit my degrees of freedom, while Random Forests work well with this 'wide' data structure [@Gromping2009].
-Lastly, using the same variables (temperature, salinity, turbidity, TPM, OC, and site) a random forest model fit HCRs better (*R*^2^ = 0.62) than a multiple linear regression (*R*^2^ = 0.43).
+The final output (forest) is the average of the 2,000 individual trees, which corrects for the individual trees' weaknesses [i.e. emsamble learning @Sagi2018].
+Fourth, I had a large number of variables relative to observations, limiting my degrees of freedom in a multiple linear regression, while random forests work well with this 'wide' data structure [@Gromping2009].
+Lastly, using the same variables (temperature, salinity, turbidity, TPM, OC, and site) a random forest model fit filtration trial HCRs better (*R*^2^ = 0.62) than a multiple linear regression (*R*^2^ = 0.43).
 
 The relationship between TPM and OC was transformed to a log-log linear model based on the R^2^ value.
-Finally the relationship between *O. lurida* shell length at Deanza and DTW was transformed to a log-log linear model based on the R^2^ value. 
+The relationship between *O. lurida* shell length at Deanza and DTW was transformed to a log-log linear model based on the R^2^ value. 
 All data corrections and statistical analyses were done in consultation with Dr. Kevin Nichols (CSUF Statistical Consulting Unit).
 
 ```{r Study_site_map, eval=FALSE, include=FALSE}
