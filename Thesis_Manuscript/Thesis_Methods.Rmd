@@ -137,7 +137,7 @@ Lastly, using the same variables (temperature, salinity, turbidity, TPM, OC, and
 
 The relationship between TPM and OC was transformed to a log-log linear model based on the R^2^ value.
 The relationship between *O. lurida* shell length at Deanza and DTW was transformed to a log-log linear model based on the R^2^ value. 
-All data corrections and statistical analyses were done in consultation with Dr. Kevin Nichols (CSUF Statistical Consulting Unit).
+All data corrections and statistical analyses were conducted in consultation with Dr. Kevin Nichols (CSUF Statistical Consulting Unit).
 
 ```{r Study_site_map, eval=FALSE, include=FALSE}
 ##### Code broken, https://stackoverflow.com/questions/62182238/error-in-st-normalize-sfcx-cx-range1-y-range1-x-range2-y-range2
