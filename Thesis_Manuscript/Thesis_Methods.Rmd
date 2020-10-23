@@ -24,10 +24,10 @@ The matrix was positioned approximately 200 m from shore on a mudflat at -0.3 m 
 The Upper Newport Bay Living Shorelines Project is located in Newport Bay, California and contains restored *O. lurida* beds. 
 It was constructed in May 2017 by Orange County Coast Keeper, and collaborators at CSU Fullerton and CSU Long Beach [@Wood2018]. 
 My research included two sites: Shellmaker (33.622097, -117.892399) and Deanza (33.620291, -117.897692).
-The oyster beds measure 20 m x 1 m x 0.25 m and were constructed with coconut coir bogs filled with clean, commercially-grown *C. gigas* and *Mytilus galloprovincialis* mussel shell. 
+The oyster beds measure 20 m x 1 m x 0.25 m and were constructed with coconut coir bags filled with clean, commercially-grown *C. gigas* and *Mytilus galloprovincialis* mussel shell. 
 The beds were positioned approximately 30 m from shore on a mudflat at approximately -0.15 m MLLW [@Wood2018].
 
-The Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Morro Bay, California (35.334707, -120.844000, henceforth Morro Bay). 
+Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Morro Bay, California (35.334707, -120.844000, henceforth Morro Bay). 
 MBOC grows *C. gigas* in plastic mesh bags measuring about (80 cm x 50 cm) attached to floating lines that stretch across an area about 75 m x 75 m. 
 The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
 
@@ -37,20 +37,22 @@ Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured
 The sondes were hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and were set at a height to align the sensors with the approximate height of the oyster habitat. 
 Prior to each filtration trial, water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and interfering currents or eddies.
 The sonde housings were positioned to measure an uninterrupted linear water flow across the oyster habitat based on the dye.
-Linear water flow assumes that the upstream instrument is measuring the same water as the downstream instrument.
+Linear water flow assumes that the upstream sonde is measuring the same water as the downstream sonde.
 An electromagnetic meter (Marsh-McBirney Flo-Mate 2000) measured water velocity in the center of the habitat at the depth of the sensors during the beginning, middle, and end of each trial. 
 Depth measurements were recorded at each sonde housing at the beginning and end of the trial along with the distance between sondes.
-The sondes recorded measurements every 1 second, and trials lasted as long as field conditions were appropriate; anywhere from 5 and 30 minutes. 
+The sondes recorded measurements every one second, and trials lasted as long as field conditions were appropriate; anywhere from five and 30 minutes. 
 Control trials used the same set up, but the instruments were positioned over a bare mudflat adjacent to the oyster habitat.
 Detailed notes of all field events and disturbances were recorded with a watch synced to the sondes' internal clocks.
 Field work was conducted from February 2018 to June 2019 and measured 22 filtration trials and 6 control trials.
 
 ## Chlorophyll $\alpha$ Corrections
-In addition to the filtration and control trials, two side-by-side trials were conducted before and after the experimental trial to record and correct any Chl $\alpha$ sensor differences.
-In the side-by-side trials, I placed the sondes adjacent to one another to compare the sensors' Chl $\alpha$ measurements in the same mass of water for approximately 10 minutes.
+
+Chl $\alpha$ is a plant pigment whose concentration is a proxy for phytoplankton and macro algae detritus consumed by filter-feeding bivalves and is commonly used to measure filtration [@Harsh1999; @Wasson2015; @Grizzle2006; @Grizzle2008; @Milbrandt2015].
+I compared Chl $\alpha$ sensors readings by conducting two side-by-side trials before and after experimental trials.
+In the side-by-side trials, I placed the sondes adjacent to one another to compare the sensors' Chl $\alpha$ concentration readings in the same mass of water for approximately 10 minutes.
 The data and field notes were reviewed for extreme Chl $\alpha$ spikes caused by unnatural sediment plumes that would skew the average Chl $\alpha$.
-Extreme Chl $\alpha$ values were removed from the data.
-The average Chl $\alpha$ difference between sondes in the side-by-side trail was divided in half to get a correction term for filtration and control trial Chl $\alpha$ measurements.
+Extreme Chl $\alpha$ concentrations were removed from the data.
+The average Chl $\alpha$ difference between sondes in the side-by-side trail was divided in half to produce a correction term for filtration and control trial Chl $\alpha$ concentrations.
 The sonde with higher Chl $\alpha$ in the side-by-side trial was corrected in the filtration trial by subtracting the correction term from Chl $\alpha$ measurements, and the lower sonde was corrected by adding the correction term.
 
 \begin{figure}[h]
@@ -89,10 +91,10 @@ POM (mg/L) = TPM (mg/L) - PIM (mg/L)
 ## Filtration Calculations
 To calculate filtration I first checked the filtration and control trials' raw data for extreme Chl $\alpha$ and turbidity spikes indicating disturbance.
 Extreme spikes were cross referenced with field notes and removed if field notes corroborated a disturbance. 
-Next I paired upstream and downstream Chl $\alpha$ measurements. 
+Next I paired upstream and downstream Chl $\alpha$ measurements by correcting for water travel time. 
 I used average water velocity and sonde distance to estimate the time it took a parcel of water to travel from the upstream sonde to the downstream sonde. 
 The travel time was subtracted from the time-stamps of each downstream measurement to pair with upstream measurements; unpaired measurements were discarded. 
-Next, I calculated percent Chl $\alpha$ removal [Equation \ref{Eq:PrctChl}; @Grizzle2008] and habitat clearance rate [Equation \ref{Eq:Lhrm2}; @Milbrandt2015] using average Chl $\alpha$ values. 
+Next, I calculated percent Chl $\alpha$ removal [Equation \ref{Eq:PrctChl}; @Grizzle2008] and habitat clearance rate [Equation \ref{Eq:Lhrm2}; @Milbrandt2015] using average Chl $\alpha$ concentrations. 
 
 \begin{equation}
 \label{Eq:PrctChl}
@@ -113,25 +115,23 @@ Two field days from my data set are missing TPM and OC values, representing `r r
 I used a semi-parametric imputation to estimate the missing values [missForest R package @Stekhoven2012].
 Next, I examined the signal-to-correction relationship between side-by-side trial Chl $\alpha$ difference (correction) and corresponding experiment trial Chl $\alpha$ difference (signal).
 This comparison showed if any instrument corrections obfuscate the experimental signal.
-I used the 95\% confidence intervals of the signal-to-noise linear model to remove extreme values outside of the intervals.
-Because my data set is small, extreme values likely influenced my initial confidence intervals; therefore I created a second linear model with the extreme values removed and 98\% confidence intervals to identify any addition extreme values to remove from the analysis. 
-Three extreme observations were removed from the data set based on this signal-to-correction comparison (Figure \ref{Corr_to_signal_95CI_graph}).
-Importantly, note that one out of three extreme values eliminated corresponded with Chl $\alpha$ concentration near the sensor's detection limits (± 0.1 \\mu/L), the other two extreme values correspond with low Chl $\alpha$ concentrations (Table 1).
+I used the 95\% confidence intervals of the signal-to-correction linear model to remove extreme values outside of the intervals.
+Because my data set is small, extreme values likely influenced my initial confidence intervals; therefore I created a second linear model with the extreme values removed and 98\% confidence intervals to identify addition extreme values to remove from the analysis. 
 
-To determine if there was a difference between control and filtration trials, I used a two-sample t-test not controlling for water quality and site parameters.
+To determine if there was a difference between control and filtration trials, I first used a two-sample t-test not controlling for water quality and site parameters.
 To control for water quality and site parameters, I fit a random forest regression (including all filtration and control trials) to HCR from temperature, salinity, turbidity, TPM, OC, and site [randomForest R package @Liaw2002].
 A second two-sample t-test comparing control and filtration trials was adjusted by the random forest model regression residuals, controlling for the effects of water quality and site.
 
 To examine the relationship of water quality variables and site on HCR, I fit a second random forest regression that only included filtration trials [randomForest R package @Liaw2002].
+The random forest model I fit is a ensemble of 2,000 individual decision trees.
+Each tree fits a random subset of the data and is prone to over-fitting the training data.
+The final output (forest) is the average of the 2,000 individual trees, which corrects for the individual trees' weaknesses [i.e. ensemble learning @Sagi2018].
 I chose to use a random forest regression over a multiple linear regression for several reasons. 
 First, random forest regressions are non-parametric models that learn non-linearity relationships without explicitly modeling them [@Gromping2009].
 This works well for my data as previous research shows that temperature, salinity, and TPM have non-linear relationships with *O. lurida* and *C. gigas* clearance rates [@Gray2018].
 Second, random forest regressions work with missing data [@Stekhoven2012], and I had two trials with missing TPM and OC values because of a processing error. 
 A multiple linear regression would exclude the two missing trials that represent 10\% of my filtration trails.
 Third, multiple linear regressions can extrapolate predicted values, whereas random forest regressions cannot extrapolate outside the training data set [@Ellis2016; @Hengl2018]. 
-The random forest model I fit is a ensemble of 2,000 individual decision trees.
-Each tree fits a random subset of the data and is prone to over-fitting the training data.
-The final output (forest) is the average of the 2,000 individual trees, which corrects for the individual trees' weaknesses [i.e. ensemble learning @Sagi2018].
 Fourth, I had a large number of variables relative to observations, limiting my degrees of freedom in a multiple linear regression, while random forests work well with this 'wide' data structure [@Gromping2009].
 Lastly, using the same variables (temperature, salinity, turbidity, TPM, OC, and site) a random forest model fit filtration trial HCRs better (*R*^2^ = 0.62) than a multiple linear regression (*R*^2^ = 0.43).
 
