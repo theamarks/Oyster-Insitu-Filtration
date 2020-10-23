@@ -4,6 +4,7 @@ title: IN SITU CLEARANCE RATES OF OLYMPIA OYSTER (*OSTREA LURIDA*) HABITAT AND P
 author: "Althea N. Marks"
 date: "9/17/2020"
 output:
+  word_document: default
   pdf_document:
     fig_caption: yes
     latex_engine: xelatex

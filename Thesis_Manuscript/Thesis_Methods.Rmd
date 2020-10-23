@@ -61,7 +61,7 @@ The sonde with higher Chl $\alpha$ in the side-by-side trial was corrected in th
 \end{figure}
 
 ## Seston Content
-I determined seston total particulate matter (TPM), particulate inorganic matter (PIM), particulate organic matter (POM), and organic content (OC) gravametrically.
+I determined seston total particulate matter (TPM), particulate inorganic matter (PIM), particulate organic matter (POM), and organic content (OC) gravimetrically.
 I collecting water samples next to the study area during the filtration or control trial, and filtered the water through Whatman GF/F pre-wash and weighed filters in the field.
 The filters were stored on ice until they could be stored in a freezer. 
 Thawed filters were rinsed with a 0.5 M ammonium formate solution to remove salt. 
@@ -90,8 +90,8 @@ POM (mg/L) = TPM (mg/L) - PIM (mg/L)
 To calculate filtration I first checked the filtration and control trials' raw data for extreme Chl $\alpha$ and turbidity spikes indicating disturbance.
 Extreme spikes were cross referenced with field notes and removed if field notes corroborated a disturbance. 
 Next I paired upstream and downstream Chl $\alpha$ measurements. 
-I used average water velocity and sonde distance to estimate the time it took a parcle of water to travel from the upstream sonde to the downstream sonde. 
-The travel time was subtracted from the timestamps of each downstream measurement to pair with upstream measurements; unpaired measurements were discarded. 
+I used average water velocity and sonde distance to estimate the time it took a parcel of water to travel from the upstream sonde to the downstream sonde. 
+The travel time was subtracted from the time-stamps of each downstream measurement to pair with upstream measurements; unpaired measurements were discarded. 
 Next, I calculated percent Chl $\alpha$ removal [Equation \ref{Eq:PrctChl}; @Grizzle2008] and habitat clearance rate [Equation \ref{Eq:Lhrm2}; @Milbrandt2015] using average Chl $\alpha$ values. 
 
 \begin{equation}
@@ -111,7 +111,7 @@ $A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$
 All data wrangling and analysis were made in R 3.6.3 [@R; tidyverse R package @Wickham2019] and the graphs were built in the ggplot2 package [@Wickham2016]; the code is publicly available on Github [@Marks2020].
 Two field days from my data set are missing TPM and OC values, representing `r round((4/336)*100, digits = 0)`% of the data set. 
 I used a semi-parametric imputation to estimate the missing values [missForest R package @Stekhoven2012].
-Next, I examined the signal-to-correction relationship between side-by-side trial Chl $\alpha$ difference (correction) and corresponding experiment tiral Chl $\alpha$ difference (signal).
+Next, I examined the signal-to-correction relationship between side-by-side trial Chl $\alpha$ difference (correction) and corresponding experiment trial Chl $\alpha$ difference (signal).
 This comparison showed if any instrument corrections obfuscate the experimental signal.
 I used the 95\% confidence intervals of the signal-to-noise linear model to remove extreme values outside of the intervals.
 Because my data set is small, extreme values likely influenced my initial confidence intervals; therefore I created a second linear model with the extreme values removed and 98\% confidence intervals to identify any addition extreme values to remove from the analysis. 
@@ -120,18 +120,18 @@ Importantly, note that one out of three extreme values eliminated corresponded w
 
 To determine if there was a difference between control and filtration trials, I used a two-sample t-test not controlling for water quality and site parameters.
 To control for water quality and site parameters, I fit a random forest regression (including all filtration and control trials) to HCR from temperature, salinity, turbidity, TPM, OC, and site [randomForest R package @Liaw2002].
-A second two-sample t-test comparing control and filtration trials was adjusted by the random forest model regression residuals, controling for the effects of water quality and site.
+A second two-sample t-test comparing control and filtration trials was adjusted by the random forest model regression residuals, controlling for the effects of water quality and site.
 
 To examine the relationship of water quality variables and site on HCR, I fit a second random forest regression that only included filtration trials [randomForest R package @Liaw2002].
-I chose to use a random forest regression over a multiple linear regression for several resasons. 
-First, random forest regressions are nonparametric models that learn nonlinearity relationships without explicitly modeling them [@Gromping2009].
+I chose to use a random forest regression over a multiple linear regression for several reasons. 
+First, random forest regressions are non-parametric models that learn non-linearity relationships without explicitly modeling them [@Gromping2009].
 This works well for my data as previous research shows that temperature, salinity, and TPM have non-linear relationships with *O. lurida* and *C. gigas* clearance rates [@Gray2018].
 Second, random forest regressions work with missing data [@Stekhoven2012], and I had two trials with missing TPM and OC values because of a processing error. 
 A multiple linear regression would exclude the two missing trials that represent 10\% of my filtration trails.
-Third, multiple linear regressions can extrapolate predicited values, whereas random forest regressions can not extrapolate outside the training data set [@Ellis2016; @Hengl2018]. 
-The random forest model I fit is a ensamble of 2,000 individual decision trees.
-Each tree fits a random subset of the data and is prone to overfitting the training data.
-The final output (forest) is the average of the 2,000 individual trees, which corrects for the individual trees' weaknesses [i.e. emsamble learning @Sagi2018].
+Third, multiple linear regressions can extrapolate predicted values, whereas random forest regressions cannot extrapolate outside the training data set [@Ellis2016; @Hengl2018]. 
+The random forest model I fit is a ensemble of 2,000 individual decision trees.
+Each tree fits a random subset of the data and is prone to over-fitting the training data.
+The final output (forest) is the average of the 2,000 individual trees, which corrects for the individual trees' weaknesses [i.e. ensemble learning @Sagi2018].
 Fourth, I had a large number of variables relative to observations, limiting my degrees of freedom in a multiple linear regression, while random forests work well with this 'wide' data structure [@Gromping2009].
 Lastly, using the same variables (temperature, salinity, turbidity, TPM, OC, and site) a random forest model fit filtration trial HCRs better (*R*^2^ = 0.62) than a multiple linear regression (*R*^2^ = 0.43).
 

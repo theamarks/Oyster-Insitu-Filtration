@@ -41,7 +41,7 @@ Estimating the filtration capacity of *O. lurida* habitat and *C. gigas* aquacul
 The models from this study provide important insights into *O. lurida* and *C. gigas* individual's feeding responses to specific conditions (temperature, salinity, turbidity, chlorophyll $\alpha$, total particulate matter (TPM), and organic content (OC)) but may not be appropriate for estimating whole-habitat filtration in the field [@Cranford2011; @Grizzle2018] because it does not incorporate habitat or environmental conditions.
 For example, non-oyster filter-feeders living in *O. lurida* habitat, or as fouling or benthic organisms in *C. gigas* aquaculture, contribute to the overall filtration capacity of the habitat [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014].
 These non-oyster filter-feeders that occupy oyster habitat have species-specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011; Gray2016; @Gedan2014], and the regional composition of this filter-feeding guild is likely to change along the NAPC, consequently creating unique filtration signatures for different *O. lurida* habitat and *C. gigas* aquaculture locations.
-In addition, clearance rates defined by biomass (DTW) are not particularly useful in assessing wheather restored *O. lurida* habitat is also restoring filtration functions; restoration practitioners are hesitant to sacrifice bivalves to measure biomass directly.
+In addition, clearance rates defined by biomass (DTW) are not particularly useful in assessing whether restored *O. lurida* habitat is also restoring filtration functions; restoration practitioners are hesitant to sacrifice bivalves to measure biomass directly.
 
 ## Whole-Habitat Measurements
 
