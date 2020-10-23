@@ -1246,7 +1246,7 @@ Oly_shell_DTW_NPD_Yaquina <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_
 plot(Oly_shell_DTW_NPD_Yaquina)
 ```
 
-```{r Oly_DTW_SH_outrmd_Graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%", fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. \\label{NPD_Oly_DTW_SH_Trans}"}
+```{r Oly_DTW_SH_outrmd_Graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%", fig.cap="The relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. \\label{NPD_Oly_DTW_SH_Trans}"}
 
 ### y ~ log(x) model ####
 # range of Shell length values
