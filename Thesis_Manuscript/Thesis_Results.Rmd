@@ -585,15 +585,15 @@ Filtration and control trials adjusted by the random forest model were not signi
 
 ## Habitat Clearance Rates 
 
-HCR at Ran Rafael averaged `r round(mean(SR_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$L_hr_m2),1)`) (Figure \ref{FR_Site_boxplot}), 
-at Morro Bay averaged `r round(mean(MB_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = to `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$L_hr_m2),1)`), 
-at Shellmaker averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`), 
-and at Deanza averaged `r round(mean(NPD_filter_sum$L_hr_m2),1)` Lhr^-1^m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`).
-Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, and `r round(MB_NC_sum$L_hr_m2,1)` Lhr^-1^m^2^ for San Rafael, and Morro Bay respectively, Shellmaker's control trial was removed from the analysis as an extreme value (Figure \ref{Corr_to_signal_95CI_graph}).
-Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` Lhr^-1^m^-2^ (*N* = `r nrow(NPD_NC_sum)`, *SD* = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
+HCR at Ran Rafael averaged `r round(mean(SR_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$L_hr_m2),1)`) (Figure \ref{FR_Site_boxplot}), 
+at Morro Bay averaged `r round(mean(MB_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = to `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$L_hr_m2),1)`), 
+at Shellmaker averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`), 
+and at Deanza averaged `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`).
+Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, and `r round(MB_NC_sum$L_hr_m2,1)` L hr^-1^ m^2^ for San Rafael, and Morro Bay respectively, Shellmaker's control trial was removed from the analysis as an extreme value (Figure \ref{Corr_to_signal_95CI_graph}).
+Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_NC_sum)`, *SD* = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
 Site did not significantly affect HCR as determined by a one-way ANOVA at a *p* < .05 level (*F*(3,16) = 0.29, *p* = 0.83) (Table 2).
 
-```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of the habitat clearance rate (HCR) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial, and triangles are the mean for the site. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
+```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial, and triangles are the mean for the site. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
 
 ## HCR averages by Site
 FR_Site <- Filter_only_outRmd_data %>% 
@@ -810,7 +810,7 @@ logOC_logTPM_LM_sum <- summary(logOC_logTPM_LM)
 str(logOC_logTPM_LM_sum)
 ```
 
-```{r TPM_OC_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.asp=0.618, fig.width=6, out.width="70%", warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are missing TPM data because of filter processing errors. \\label{TPM_OC_model}"}
+```{r TPM_OC_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.asp=0.618, fig.width=6, out.width="70%", warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are not included because of missing TPM data. \\label{TPM_OC_model}"}
 ############ Linear Model
 
 OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ratio )) +
@@ -1091,8 +1091,8 @@ NPD_species <- Bivalve_Den_data %>%
 In November 2017 the estimated bivalve density at San Rafael was `r SR_Den` individuals/m^2^, all bivalves were *Ostrea lurida* (Figure \ref{Bivalve_Den_Biomass}).
 Other bivalves were noted, but rare, and were not detected in sample bags (C. Zabin, unpublished data). 
 Morro Bay has an estimated `r MB_Den` *Crassostrea gigas* individuals/m^2^ (Morro Bay Oyster Company), personal field observations confirm the lack of bivalve fouling on the aquaculture lines.
-Shellmaker has an estimated `r NPSM_Den` individuals/m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals/m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals/m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals/m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals/m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals/m^2^).
-Deanza has an estimated `r NPD_Den` individuals/m^2^, composed of *M. senhousia* (`r NPD_species[NPD_species$Species=="Musculista senhousia",2]` individuals/m^2^), *A. diegensis* (`r NPD_species[NPD_species$Species=="Adula diegensis",2]` individuals/m^2^), *O. lurida* (`r NPD_species[NPD_species$Species=="Ostrea lurida",2]` individuals/m^2^), *M. galloprovincialis* (`r NPD_species[NPD_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^).
+Shellmaker has an estimated `r NPSM_Den` individuals/m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals/m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals/m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals/m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals/m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals/m^2^) (Figure \ref{Bivalve_Den_Biomass}.
+Deanza has an estimated `r NPD_Den` individuals/m^2^, composed of *M. senhousia* (`r NPD_species[NPD_species$Species=="Musculista senhousia",2]` individuals/m^2^), *A. diegensis* (`r NPD_species[NPD_species$Species=="Adula diegensis",2]` individuals/m^2^), *O. lurida* (`r NPD_species[NPD_species$Species=="Ostrea lurida",2]` individuals/m^2^), *M. galloprovincialis* (`r NPD_species[NPD_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^) (Figure \ref{Bivalve_Den_Biomass}.
 
 ```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Bivalve community density and composition for each study site. San Rafael data was collected November 2017 by the Zabin lab at SERC, Morro Bay was estimated by Morro Bay Oyster Company, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab at CSUF.  \\label{Bivalve_Den_Biomass}"}
 
