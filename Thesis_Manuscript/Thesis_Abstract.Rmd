@@ -12,14 +12,14 @@ indent: true
 
 # Abstract
 
-The Olympia oyster, *Ostrea lurida* is the focus of many restoration projects in North American Pacific Coast estuaries while the non-indigenous Pacific oyster, *Crassostrea gigas*, makes up the vast majority of oyster aquaculture along the same coast.
-This study investigates the filtration contributions of restored *O. lurida* habitat and *C. gigas* aquaculture in four California bays using a whole-habitat in situ method.
-Two water quality instruments collected upstream-downstream measurements of chlorophyll $\alpha$, temperature, salinity, and turbidity measurements to determine habitat clearance rates (HCR L hr^-1^m^-2^).
-In parallel, I collected ambient water samples to measure seston total particulate matter (TPM), and organic content (OC), and gathered existing bivalve density and biomass data when available.
-Twenty-eight trials were conducted at three *O. lurida* restoration sites and one *C. gigas* long-line aquaculture site in California from February 2018 to June 2019.
-Results indicate that restored *O. lurida* habitat and *C. gigas* aquaculture in different bays have similar HCRs, however HCRs were highly variable at each site and encompass previous bivalve HCR values.
-Random forest regression analysis found that temperature (22.5%) was the relatively most important variable to HCR, followed by turbidity (20.3%), TPM (19.2%), OC (17.6%), site (10.9%), and salinity (9.5%).
-To estimate the filtration functions of oyster habitat, measurements need to include all bivalve filter-feeders and natural hydrodynamics, considering these factors I found *O. lurida* habitat can restore substantial water clearance functions to California bays.
+The Olympia oyster, *Ostrea lurida* is the focus of many restoration projects in estuaries in the North American Pacific Coast, whearas the non-indigenous Pacific oyster, *Crassostrea gigas*, makes up the vast majority of oyster aquaculture in the region.
+My project investigated the filtration contributions of restored *O. lurida* habitat and *C. gigas* aquaculture in four California bays using a whole-habitat, *in situ* approach.
+I used two water quality instruments to collect upstream-downstream measurements of chlorophyll $\alpha$, temperature, salinity, and turbidity to estimate habitat clearance rates (HCR, L hr^-1^m^-2^).
+In parallel, I collected ambient water samples to estimate seston total particulate matter (TPM), and organic content (OC), and examined existing data on bivalve density and biomass.
+Twenty-two experimental trials and four control trials were conducted at three *O. lurida* restoration sites and one *C. gigas* long-line aquaculture site in California from February 2018 to June 2019.
+Restored *O. lurida* habitat and *C. gigas* aquaculture had qualitatively similar HCRs, however HCRs were highly variable within and among sites, though they were in the range of published HCR values for bivalves.
+Using random forest regression analysis, I found that temperature (22.5%) was relatively most important to HCR, followed by turbidity (20.3%), TPM (19.2%), OC (17.6%), site (10.9%), and salinity (9.5%).
+To estimate the filtration functions of oyster habitat, measurements need to include all bivalve filter-feeders and natural hydrodynamics. Considering these factors I found *O. lurida* habitat can help restore substantial water clearance functions in California bays.
 
 
 
