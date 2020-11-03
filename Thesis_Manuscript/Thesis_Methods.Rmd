@@ -14,36 +14,40 @@ indent: true
 # Methods
 
 ## Study Sites
-I selected four sites along the California coast to measure in situ filtration.
+I selected four sites along the California coast to measure *in situ* filtration.
 The sites represent a range of constructed oyster habitats including shell bag reef, shell bed, and floating aquaculture lines.
-The San Francisco Living Shorelines Project is located in northern San Francisco Bay, California (37.964179, -122.487217, henceforth San Rafael), and contains *Ostrea lurida* reefs constructed July - August 2012 by The Coastal Conservancy and collaborators [@Latta2015; @EnvironmentalScienceAssociates2014].
-San Rafael consisted of a shell bag reef matrix with a 32 m x 10 m footprint with three rows of eight shell bag reefs constructed as *O. lurida* habitat [@EnvironmentalScienceAssociates2014]. 
+The San Francisco Living Shorelines Project is located in northern San Francisco Bay, California (latitude, longitude: 37.964179, -122.487217; henceforth, San Rafael), and contains *Ostrea lurida* reefs constructed from July to August 2012 by The Coastal Conservancy and collaborators [@Latta2015; @EnvironmentalScienceAssociates2014].
+San Rafael consists of a shell-bag reef matrix with a 32 m x 10 m footprint with three rows of eight shell-bag reefs constructed as *O. lurida* habitat [@EnvironmentalScienceAssociates2014]. 
 Each reef unit measured 2 m x 2 m x 1 m and was composed of four shell bag elements measuring 1 m x 1 m x 1 m. A shell bag was made of plastic mesh filled with clean, commercially-grown *Crassostrea gigas* shell.
 The matrix was positioned approximately 200 m from shore on a mudflat at -0.3 m MLLW (Mean Low Lower Water) tidal elevation [@EnvironmentalScienceAssociates2014]. 
 
 The Upper Newport Bay Living Shorelines Project is located in Newport Bay, California and contains restored *O. lurida* beds. 
 It was constructed in May 2017 by Orange County Coast Keeper, and collaborators at CSU Fullerton and CSU Long Beach [@Wood2018]. 
-My research included two sites: Shellmaker (33.622097, -117.892399) and Deanza (33.620291, -117.897692).
+My research included two sites: Shellmaker (33.622097, -117.892399) and Deanza (33.620291, -117.897692), and are about 550 m apart.
 The oyster beds measure 20 m x 1 m x 0.25 m and were constructed with coconut coir bags filled with clean, commercially-grown *C. gigas* and *Mytilus galloprovincialis* mussel shell. 
 The beds were positioned approximately 30 m from shore on a mudflat at approximately -0.15 m MLLW [@Wood2018].
 
-Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Morro Bay, California (35.334707, -120.844000, henceforth Morro Bay). 
+Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Morro Bay, California (35.334707, -120.844000; henceforth, Morro Bay). 
 MBOC grows *C. gigas* in plastic mesh bags measuring about (80 cm x 50 cm) attached to floating lines that stretch across an area about 75 m x 75 m. 
 The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
 
 ## Experimental Setup
-In situ filtration methods used were adapted from Grizzle et al.'s (2008) upstream-downstream measurements of bivalve beds on the Atlantic coast.
-Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (henceforth Chl $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
-The sondes were hung inside of free standing PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and were set at a height to align the sensors with the approximate height of the oyster habitat. 
-Prior to each filtration trial, water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and interfering currents or eddies.
+*In situ* filtration methods were adapted from Grizzle et al.'s (2008) upstream-downstream measurements of bivalve beds on the North American Atlantic coast.
+Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (Chl $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
+The sondes were hung inside of freestanding PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and were set at a height to align the sensors with the approximate height of the oyster beds, reefs, or floating bags. 
+Prior to each filtration trial, water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and interfering currents or eddies and was recorded by a drone about 25 feet above the water. 
+Trials were conducted close to low tide on either the ebb or flood tide depending on how the water flow direction transected  the oyster habitat.
 The sonde housings were positioned to measure an uninterrupted linear water flow across the oyster habitat based on the dye.
 Linear water flow assumes that the upstream sonde is measuring the same water as the downstream sonde.
-An electromagnetic meter (Marsh-McBirney Flo-Mate 2000) measured water velocity in the center of the habitat at the depth of the sensors during the beginning, middle, and end of each trial. 
-Depth measurements were recorded at each sonde housing at the beginning and end of the trial along with the distance between sondes.
-The sondes recorded measurements every one second, and trials lasted as long as field conditions were appropriate; anywhere from five and 30 minutes. 
-Control trials used the same set up, but the instruments were positioned over a bare mudflat adjacent to the oyster habitat.
-Detailed notes of all field events and disturbances were recorded with a watch synced to the sondes' internal clocks.
-Field work was conducted from February 2018 to June 2019 and measured 22 filtration trials and 6 control trials.
+An electromagnetic meter (Marsh-McBirney Flo-Mate 2000) measured water velocity at the depth of the sensors at the beginning, middle, and end of each trial. 
+Water velocity measurements where taken at the downstream sonde position and in the middle of the transect, velocity was averaged across positions and time.
+Depth was determined by markings on the PVC sonde housings at the beginning and end of the trial, and distance between sondes was detrmined post-trial with a transect tape.
+The sondes recorded measurements every one second, and trials lasted as long as water flow direction was consistent; ranging from six and 40 minutes. 
+I took the mean of temperature, salinity, turbidity of the upstream sonde during the experimental trail for analyses, and the mean of Chl $\alpha$ at both upstream and downstream sondes for analyses. 
+To compare the clearance rates of surrounding mudflat habitat to restored *O. lurida* and *C. gigas* aquaculture, I conducted a control trial at each site.
+Control trials used the same experimental set up, except the instruments were positioned over the mudflat adjacent to the oyster habitat.
+Data corresponding with field distrubances was cut from the time series 
+Field work was conducted from February 2018 to June 2019 and measured 22 oyster habitat filtration trials and six control mudflat trials.
 
 ## Chlorophyll $\alpha$ Corrections
 
