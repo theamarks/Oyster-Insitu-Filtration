@@ -206,10 +206,11 @@ applyManualCorrections =  function(aTimeSeriesFile, aFileName, aManualCorrection
       # get the list of experiments 
       all_exp = unique(aTimeSeriesFile$Experiment)
       
-      if(one_correction$Experiment == ""|is.na(one_correction$Experiment)) # if Experiment is left blank or contains NA
+      # if Experiment is left blank or contains NA
+      if(one_correction$Experiment == ""|is.na(one_correction$Experiment)) 
       {
-        experiment_to_correct = all_exp[!(all_exp %in% c("sbs_before", "sbs_after"))] # Then experiments besides sbs are corrected (i.e. Neg Control 1, 2 ,3)
-        
+        # Then experiments besides sbs are corrected (i.e. Neg Control 1, 2 ,3)
+        experiment_to_correct = all_exp[!(all_exp %in% c("sbs_before", "sbs_after"))] 
       } else {
         
         experiment_to_correct = one_correction$Experiment # otherwise experiment entered is selected for correction
