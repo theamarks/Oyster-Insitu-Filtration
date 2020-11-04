@@ -137,6 +137,11 @@ for(file in 1 : length(all_files))
   fwrite(one_file, file.path(output_dir_manual_corrections, file_name))
   
 ######################################################################
+##CHange negative Chl values to zero (AM - 2020_11_4) - below detection limit
+###################################################################### 
+  one_file = neg_chl_to_zero(one_file, file_name)
+  
+######################################################################
 ##Step 6) Apply sbs corrections 
 ######################################################################
   
