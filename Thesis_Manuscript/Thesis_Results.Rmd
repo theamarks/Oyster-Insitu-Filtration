@@ -225,6 +225,8 @@ find_outlier <- function(data){
 
 # Results
 
+Twenty-eight experimental trials were conducted, 
+
 Three extreme observations were removed from the data set based on the signal-to-correction comparison (Figure \ref{Corr_to_signal_95CI_graph}).
 One of three extreme values eliminated corresponded with a Chl $\alpha$ concentration near the sensor's detection limits (± 0.1 \\mu/L), the other two extreme values correspond with low Chl $\alpha$ concentrations (Table 1).
 
@@ -259,6 +261,7 @@ Corr_chl_diff_data <- full_join(filter_diff_tpaired, sbs_corr_NoAbs, by = "File_
 # Missing data from MB_2019_6_5 and MB_2019_6_4 - filtration trial not long enough for water to travel from upstream to downstream - not included in other analyses either
 
 Corr_chl_diff_data %<>%
+  filter(!Site == "San Diego") %>% 
   mutate(chl_filter_up_uncorr = ifelse(sbs_chl_up > sbs_chl_down, 
                                        filter_chl_up + Correction_Factor, # reverse sbs correction 
                                        filter_chl_up - Correction_Factor),
@@ -270,9 +273,9 @@ Corr_chl_diff_data %<>%
                                   File_Name == "Insitu_Filter_NPSM_2019_6_9.csv", 
                                paste(Site, "\n", Date, "\n", Experiment), NA))
 
-Corr_chl_diff_data$dummie = 1:32
+Corr_chl_diff_data$dummie = 1:27
 
-#Corr_chl_diff_data[c(9,21,23),] # Look at problem data points
+#Corr_chl_diff_data[c(9,19,21),] # Look at problem data points
 
 ### Confidence intervals
 model.temp = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data)
@@ -290,7 +293,7 @@ Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_c
   xlim(-3,3) + # even axes
   ylim(-3,3) +
   xlab(expression("Side-by-side Chl" ~ alpha ~"Difference")) +
-  ylab(expression("Experiment Chl" ~ alpha ~ "Difference (Velocity Paired)")) +
+  ylab(expression("Experiment Chl" ~ alpha ~ "Difference")) +
   geom_abline(slope = 1) + # 1-1 reference line
   #annotate("text", x = -2.5, y = 2.75, label = "A") +
   geom_line(data = data.frame(y.seq), aes(x = fit, y = lwr), linetype = "dashed", color = "red") +
@@ -305,7 +308,7 @@ print(Corr_Chl_diff_graph)
 #plot_grid(Corr_Chl_diff_graph, labels = c("A"))
 
 ### Remove two problem data points - remove their influence on confidence intervals
-Corr_chl_diff_data1 = Corr_chl_diff_data[-c(21,23),]
+Corr_chl_diff_data1 = Corr_chl_diff_data[-c(21,19),]
 
 Corr_chl_diff_data1 %<>%
   mutate(graph_labels = ifelse(File_Name == "Insitu_Filter_NPD_2019_4_17.csv",
