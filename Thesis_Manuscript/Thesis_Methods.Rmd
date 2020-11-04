@@ -138,7 +138,6 @@ This works well for my data as previous research suggests that temperature, sali
 Second, random forest regressions work with missing data [@Stekhoven2012], and I had two trials with missing TPM and OC values because of a processing error. 
 A multiple linear regression would exclude the two missing trials.
 Third, I had a large number of variables relative to observations, limiting my degrees of freedom in a multiple linear regression framework, while random forests regressions work well with this 'wide' data structure [@Gromping2009].
-Lastly, using the same variables (temperature, salinity, turbidity, TPM, OC, and site) a random forest model fit filtration trial HCRs better (*R*^2^ = 0.62) than a multiple linear regression (*R*^2^ = 0.43).
 
 The relationship between TPM and OC was transformed to a log-log linear model based on the R^2^ value.
 The relationship between *O. lurida* shell length at Deanza and DTW was transformed to a log-log linear model based on the R^2^ value. 
