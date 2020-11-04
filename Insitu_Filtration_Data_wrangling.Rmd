@@ -139,7 +139,7 @@ for(file in 1 : length(all_files))
 ######################################################################
 ##CHange negative Chl values to zero (AM - 2020_11_4) - below detection limit
 ###################################################################### 
-  one_file = neg_chl_to_zero(one_file, file_name)
+  one_file = neg_chl_to_zero(one_file)
   
 ######################################################################
 ##Step 6) Apply sbs corrections 
