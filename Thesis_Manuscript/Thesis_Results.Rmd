@@ -275,6 +275,10 @@ Corr_chl_diff_data %<>%
 
 Corr_chl_diff_data$dummie = 1:27
 
+# Explore if values are outliers (+-2.2 SD) based on correction:signal relationship 
+Corr_chl_diff_data$singal_corr = Corr_chl_diff_data$correction_noabs / Corr_chl_diff_data$filter_chl_diff
+Corr_chl_diff_data$outlier = find_outlier(Corr_chl_diff_data$singal_corr)
+
 #Corr_chl_diff_data[c(9,19,21),] # Look at problem data points
 
 ### Confidence intervals
