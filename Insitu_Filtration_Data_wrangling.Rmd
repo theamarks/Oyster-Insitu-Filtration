@@ -139,7 +139,8 @@ for(file in 1 : length(all_files))
 ######################################################################
 ##CHange negative Chl values to zero (AM - 2020_11_4) - below detection limit
 ###################################################################### 
-  one_file = neg_chl_to_zero(one_file)
+  # Changes HCR to 17,700 L/hr/m^2 this date still needs to be removed
+  # one_file = neg_chl_to_zero(one_file)
   
 ######################################################################
 ##Step 6) Apply sbs corrections 
