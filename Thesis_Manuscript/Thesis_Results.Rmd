@@ -135,6 +135,10 @@ NPSM_filter_sum <- Filter_only_outRmd_data %>%
 NPSM_NC_sum <- Control_only_data %>% 
   filter(Site %in% c("Shellmaker")) 
 
+##### Single out NPD 2019_4_17 for stats reporting
+NPD_2019_4_17 <- read_csv("output/4_Filtration_Calculations/Insitu_Filter_NPD_2019_4_17.csv")
+NPD_2019_4_17 %<>% filter(Experiment == "Filtration") 
+
 # Filtration trials only - exclude Negative controls & Percent Chl removed greater than 0
 ### Important Note ## When Percent Chl removed is positive, so is L/hr/m^2 and vice visa. 
 # Filtering by pcnt_Chl_rmvd effectively filters both values the same, so further analysis 
@@ -220,6 +224,9 @@ find_outlier <- function(data){
   outlier <- ifelse((data < (average - 2.2 * stdev) | (data > (average + 2.2 * stdev))),
          TRUE, FALSE)
 }
+
+out_HCR_test <- Filtration_only_data %>% 
+  mutate(outlier = find_outlier(L_hr_m2))
 ```
 
 
@@ -227,8 +234,7 @@ find_outlier <- function(data){
 
 Twenty-eight experimental trials were conducted, 
 
-Three extreme observations were removed from the data set based on the signal-to-correction comparison (Figure \ref{Corr_to_signal_95CI_graph}).
-One of three extreme values eliminated corresponded with a Chl $\alpha$ concentration near the sensor's detection limits (± 0.1 \\mu/L), the other two extreme values correspond with low Chl $\alpha$ concentrations (Table 1).
+A single filtration trial at Deanza (2019-4-17; Table 1) was removed because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 \\mu/L). 
 
 ## Percent Chlorophyll $\alpha$ Removal
 
@@ -237,7 +243,7 @@ Filtration trials at Morro Bay averaged `r round(mean(MB_filter_sum$pcnt_Chl_rmv
 At Deanza, Chl $\alpha$ removal averaged `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and during three consecutive control trials averaged `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removal (*N* = `r nrow(NPD_NC_sum)`, *SD* =  `r round(sd(NPD_NC_sum$pcnt_Chl_rmvd))`).
 Shellmaker averaged `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% Chl $\alpha$ removal (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was removed from analysis as an extreme value (Figure \ref{Corr_to_signal_95CI_graph}).
 
-```{r Correction_to_Signal_95CI_graph, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= 'default', out.width="50%", fig.show="hold", fig.asp=1, fig.width=4, message=FALSE, warning=FALSE,  fig.cap= "The relationship between side-by-side trial chlorophyll $\\alpha$ difference (correction) and filtration trial chlorophyll $\\alpha$ difference (signal). The solid black line is a 1-1 relationship, the dashed red lines are confidence intervals of the signal-to-correction relationship. Extreme values were identified with 95\\% confidence interval and were removed from the linear model and further analyses (left). Confidence intervals were recalculated to 98\\% to identify additional extreme values from analyses (right). \\label{Corr_to_signal_95CI_graph}"}
+```{r Correction_to_Signal_95CI_graph, eval=FALSE, fig.align='default', fig.asp=1, fig.cap="The relationship between side-by-side trial chlorophyll $\\alpha$ difference (correction) and filtration trial chlorophyll $\\alpha$ difference (signal). The solid black line is a 1-1 relationship, fig.keep='all', fig.show="hold", fig.width=4, message=FALSE, warning=FALSE, dev='pdf', include=FALSE, out.width="50%"}
 
 ##### Althea's Chl correction x Filtration diff Graph ###########
 ## Correction data & OG Chl values
@@ -583,6 +589,13 @@ mlr = lm(clr~Site+Temp+Salinity+Turbidity+TPM+OC,data=test2)
 summary(mlr)
 ```
 
+```{r HCR_Quantile_Regression}
+library(quantreg)
+# default tau or quantile is 0.5
+HCR_rq <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio,
+           data = Filtration_only_data)
+summary(HCR_rq)
+```
 
 ## Oyster Habitat vs. Control 
 
