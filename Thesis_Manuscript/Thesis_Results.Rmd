@@ -232,8 +232,11 @@ out_HCR_test <- Filtration_only_data %>%
 
 # Results
 
-Twenty-five experimental trials were included in the analyses; 21 filtration trials and four control trials.
+Twenty-five experimental trials, across the four study sites, were included in the analyses; 21 filtration trials and four control trials.
 A single filtration trial at Deanza (2019-4-17; Table 1) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 \\mu/L). 
+Filtration trials across sites were not distributed equally (Table 1), Deanza had more than twice the amount filtratrion trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4).
+Each of the four sites had a single control.
+
 
 ## Percent Chlorophyll $\alpha$ Removal
 
@@ -242,116 +245,7 @@ Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(
 At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removal during the control trial.
 Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was `r round(mean(NPSM_NC_sum$pcnt_Chl_rmvd),1)` \%.
 
-```{r Correction_to_Signal_95CI_graph, eval=FALSE, fig.align='default', fig.asp=1, fig.cap="The relationship between side-by-side trial chlorophyll $\\alpha$ difference (correction) and filtration trial chlorophyll $\\alpha$ difference (signal). The solid black line is a 1-1 relationship, fig.keep='all', fig.show="hold", fig.width=4, message=FALSE, warning=FALSE, dev='pdf', include=FALSE, out.width="50%"}
 
-##### Althea's Chl correction x Filtration diff Graph ###########
-## Correction data & OG Chl values
-#Sbs_correction_data 
-sbs_corr_NoAbs <- Sbs_correction_data %>% 
-  dplyr::select(File_Name, Sonde_Up, Sonde_Down, G_Avg_Chl, H_Avg_Chl, Correction_Factor) %>% 
-  mutate(correction_noabs = ifelse(Sonde_Up == "G", G_Avg_Chl - H_Avg_Chl, H_Avg_Chl - G_Avg_Chl),
-         sbs_chl_up = ifelse(Sonde_Up == "G", G_Avg_Chl, H_Avg_Chl),
-         sbs_chl_down = ifelse(Sonde_Down == "G", G_Avg_Chl, H_Avg_Chl)) %>% 
-  dplyr::select(-c(Sonde_Up, Sonde_Down))
-
-sbs_correction_summary <- read_csv("output/6_Sbs_Corrections_Summary/sbs_correction_summary.csv")
-filtration_summary <- read_csv("output/4_Filtration_Calculations/Filtration_Summary/filtration_summary.csv")
-
-filter_diff_tpaired <- filtration_summary %>% 
-  dplyr::select(File_Name, Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
-  rename(filter_chl_up = Chl_ug_L_Up,
-         filter_chl_down = Chl_ug_L_Down)
-
-Corr_chl_diff_data <- full_join(filter_diff_tpaired, sbs_corr_NoAbs, by = "File_Name")
-# Missing data from MB_2019_6_5 and MB_2019_6_4 - filtration trial not long enough for water to travel from upstream to downstream - not included in other analyses either
-
-Corr_chl_diff_data %<>%
-  filter(!Site == "San Diego") %>% 
-  mutate(chl_filter_up_uncorr = ifelse(sbs_chl_up > sbs_chl_down, 
-                                       filter_chl_up + Correction_Factor, # reverse sbs correction 
-                                       filter_chl_up - Correction_Factor),
-         chl_filter_down_uncorr = ifelse(sbs_chl_down > sbs_chl_up, 
-                                         filter_chl_down + Correction_Factor, 
-                                         filter_chl_down - Correction_Factor),
-         filter_chl_diff = chl_filter_up_uncorr - chl_filter_down_uncorr,
-         graph_labels = ifelse( File_Name == "Insitu_Filter_NPSM_2019_5_22.csv" | 
-                                  File_Name == "Insitu_Filter_NPSM_2019_6_9.csv", 
-                               paste(Site, "\n", Date, "\n", Experiment), NA))
-
-Corr_chl_diff_data$dummie = 1:27
-
-# Explore if values are outliers (+-2.2 SD) based on correction:signal relationship 
-Corr_chl_diff_data$singal_corr = Corr_chl_diff_data$correction_noabs / Corr_chl_diff_data$filter_chl_diff
-Corr_chl_diff_data$outlier = find_outlier(Corr_chl_diff_data$singal_corr)
-
-#Corr_chl_diff_data[c(9,19,21),] # Look at problem data points
-
-### Confidence intervals
-model.temp = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data)
-x.seq = seq(-5,5,by=.005)
-y.seq = predict(model.temp,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.95)
-#low.bound = y.seq[,2]
-#high.bound = y.seq[,3]
-#plot(Corr_chl_diff_data$correction_noabs,Corr_chl_diff_data$filter_chl_diff)
-#lines(x.seq,low.bound,lty=2,col=2)
-#lines(x.seq,high.bound,lty=2,col=2)
-
-Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_chl_diff)) +
-  geom_point() +
-  theme_classic() + 
-  xlim(-3,3) + # even axes
-  ylim(-3,3) +
-  xlab(expression("Side-by-side Chl" ~ alpha ~"Difference")) +
-  ylab(expression("Experiment Chl" ~ alpha ~ "Difference")) +
-  geom_abline(slope = 1) + # 1-1 reference line
-  #annotate("text", x = -2.5, y = 2.75, label = "A") +
-  geom_line(data = data.frame(y.seq), aes(x = fit, y = lwr), linetype = "dashed", color = "red") +
-  geom_line(data = data.frame(y.seq), aes(x = fit, y = upr), linetype = "dashed", color = "red") +
-  #geom_text(aes(x=correction_noabs + .12,label=dummie)) 
-  #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
-  #geom_label(aes(label = graph_labels))
-  ggrepel::geom_label_repel(aes(label = graph_labels), point.padding = 0.9, na.rm = T,
-                            nudge_y = c(-1.2,-0.75),
-                            nudge_x = c(-0.5,0.75))
-print(Corr_Chl_diff_graph)
-#plot_grid(Corr_Chl_diff_graph, labels = c("A"))
-
-### Remove two problem data points - remove their influence on confidence intervals
-Corr_chl_diff_data1 = Corr_chl_diff_data[-c(21,19),]
-
-Corr_chl_diff_data1 %<>%
-  mutate(graph_labels = ifelse(File_Name == "Insitu_Filter_NPD_2019_4_17.csv",
-                               paste(Site, "\n", Date, "\n", Experiment), NA))
-
-
-model.temp1 = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data1)
-x.seq1 = seq(-5,5,by=.005)
-y.seq1 = predict(model.temp1,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.98)
-#low.bound1 = y.seq1[,2]
-#high.bound1 = y.seq1[,3]
-#plot(Corr_chl_diff_data1$correction_noabs,Corr_chl_diff_data1$filter_chl_diff)
-#lines(x.seq1,low.bound1,lty=2,col=2)
-#lines(x.seq1,high.bound1,lty=2,col=2)
-
-Corr_Chl_diff_graph1 <- ggplot(Corr_chl_diff_data1, aes(correction_noabs, filter_chl_diff)) +
-  geom_point() +
-  theme_classic() + 
-  xlim(-3,3) + # even axes
-  ylim(-3,3) +
-  xlab(expression("Side-by-side Chl" ~ alpha ~"Difference")) +
-  ylab(expression("Experiment Chl" ~ alpha ~ "Difference (Velocity Paired)")) +
-  geom_abline(slope = 1) + # 1-1 reference line
-  geom_line(data = data.frame(y.seq1), aes(x = fit, y = lwr), linetype = "dashed", color = "red") +
-  geom_line(data = data.frame(y.seq1), aes(x = fit, y = upr), linetype = "dashed", color = "red") +
-  #geom_text(aes(x=correction_noabs + .12,label=dummie)) 
-  #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
-  #geom_label(aes(label = graph_labels))
-  ggrepel::geom_label_repel(aes(label = graph_labels), point.padding = 0.9, na.rm = T,
-                            nudge_y = c(-1),
-                            nudge_x = c(0.4))
-print(Corr_Chl_diff_graph1)
-# plot_grid(Corr_Chl_diff_graph1, labels = c("B"))
-```
 
 ```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). Each data point is the average value from a single filtration trial. Extreme values excluded from analysis are not shown. \\label{ChlRmd_Site_boxplot}"}
 
@@ -1704,7 +1598,116 @@ ols_regress(Oly_TWW2_DTW_LM)
 #plot(NPD_bivalve_outrmd_graph)
 ```
 
+```{r Correction_to_Signal_95CI_graph, eval=FALSE, fig.align='default', fig.asp=1, fig.cap="The relationship between side-by-side trial chlorophyll $\\alpha$ difference (correction) and filtration trial chlorophyll $\\alpha$ difference (signal). The solid black line is a 1-1 relationship, fig.keep='all', fig.show="hold", fig.width=4, message=FALSE, warning=FALSE, dev='pdf', include=FALSE, out.width="50%"}
 
+##### Althea's Chl correction x Filtration diff Graph ###########
+## Correction data & OG Chl values
+#Sbs_correction_data 
+sbs_corr_NoAbs <- Sbs_correction_data %>% 
+  dplyr::select(File_Name, Sonde_Up, Sonde_Down, G_Avg_Chl, H_Avg_Chl, Correction_Factor) %>% 
+  mutate(correction_noabs = ifelse(Sonde_Up == "G", G_Avg_Chl - H_Avg_Chl, H_Avg_Chl - G_Avg_Chl),
+         sbs_chl_up = ifelse(Sonde_Up == "G", G_Avg_Chl, H_Avg_Chl),
+         sbs_chl_down = ifelse(Sonde_Down == "G", G_Avg_Chl, H_Avg_Chl)) %>% 
+  dplyr::select(-c(Sonde_Up, Sonde_Down))
+
+sbs_correction_summary <- read_csv("output/6_Sbs_Corrections_Summary/sbs_correction_summary.csv")
+filtration_summary <- read_csv("output/4_Filtration_Calculations/Filtration_Summary/filtration_summary.csv")
+
+filter_diff_tpaired <- filtration_summary %>% 
+  dplyr::select(File_Name, Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
+  rename(filter_chl_up = Chl_ug_L_Up,
+         filter_chl_down = Chl_ug_L_Down)
+
+Corr_chl_diff_data <- full_join(filter_diff_tpaired, sbs_corr_NoAbs, by = "File_Name")
+# Missing data from MB_2019_6_5 and MB_2019_6_4 - filtration trial not long enough for water to travel from upstream to downstream - not included in other analyses either
+
+Corr_chl_diff_data %<>%
+  filter(!Site == "San Diego") %>% 
+  mutate(chl_filter_up_uncorr = ifelse(sbs_chl_up > sbs_chl_down, 
+                                       filter_chl_up + Correction_Factor, # reverse sbs correction 
+                                       filter_chl_up - Correction_Factor),
+         chl_filter_down_uncorr = ifelse(sbs_chl_down > sbs_chl_up, 
+                                         filter_chl_down + Correction_Factor, 
+                                         filter_chl_down - Correction_Factor),
+         filter_chl_diff = chl_filter_up_uncorr - chl_filter_down_uncorr,
+         graph_labels = ifelse( File_Name == "Insitu_Filter_NPSM_2019_5_22.csv" | 
+                                  File_Name == "Insitu_Filter_NPSM_2019_6_9.csv", 
+                               paste(Site, "\n", Date, "\n", Experiment), NA))
+
+Corr_chl_diff_data$dummie = 1:27
+
+# Explore if values are outliers (+-2.2 SD) based on correction:signal relationship 
+Corr_chl_diff_data$singal_corr = Corr_chl_diff_data$correction_noabs / Corr_chl_diff_data$filter_chl_diff
+Corr_chl_diff_data$outlier = find_outlier(Corr_chl_diff_data$singal_corr)
+
+#Corr_chl_diff_data[c(9,19,21),] # Look at problem data points
+
+### Confidence intervals
+model.temp = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data)
+x.seq = seq(-5,5,by=.005)
+y.seq = predict(model.temp,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.95)
+#low.bound = y.seq[,2]
+#high.bound = y.seq[,3]
+#plot(Corr_chl_diff_data$correction_noabs,Corr_chl_diff_data$filter_chl_diff)
+#lines(x.seq,low.bound,lty=2,col=2)
+#lines(x.seq,high.bound,lty=2,col=2)
+
+Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_chl_diff)) +
+  geom_point() +
+  theme_classic() + 
+  xlim(-3,3) + # even axes
+  ylim(-3,3) +
+  xlab(expression("Side-by-side Chl" ~ alpha ~"Difference")) +
+  ylab(expression("Experiment Chl" ~ alpha ~ "Difference")) +
+  geom_abline(slope = 1) + # 1-1 reference line
+  #annotate("text", x = -2.5, y = 2.75, label = "A") +
+  geom_line(data = data.frame(y.seq), aes(x = fit, y = lwr), linetype = "dashed", color = "red") +
+  geom_line(data = data.frame(y.seq), aes(x = fit, y = upr), linetype = "dashed", color = "red") +
+  #geom_text(aes(x=correction_noabs + .12,label=dummie)) 
+  #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
+  #geom_label(aes(label = graph_labels))
+  ggrepel::geom_label_repel(aes(label = graph_labels), point.padding = 0.9, na.rm = T,
+                            nudge_y = c(-1.2,-0.75),
+                            nudge_x = c(-0.5,0.75))
+print(Corr_Chl_diff_graph)
+#plot_grid(Corr_Chl_diff_graph, labels = c("A"))
+
+### Remove two problem data points - remove their influence on confidence intervals
+Corr_chl_diff_data1 = Corr_chl_diff_data[-c(21,19),]
+
+Corr_chl_diff_data1 %<>%
+  mutate(graph_labels = ifelse(File_Name == "Insitu_Filter_NPD_2019_4_17.csv",
+                               paste(Site, "\n", Date, "\n", Experiment), NA))
+
+
+model.temp1 = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data1)
+x.seq1 = seq(-5,5,by=.005)
+y.seq1 = predict(model.temp1,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.98)
+#low.bound1 = y.seq1[,2]
+#high.bound1 = y.seq1[,3]
+#plot(Corr_chl_diff_data1$correction_noabs,Corr_chl_diff_data1$filter_chl_diff)
+#lines(x.seq1,low.bound1,lty=2,col=2)
+#lines(x.seq1,high.bound1,lty=2,col=2)
+
+Corr_Chl_diff_graph1 <- ggplot(Corr_chl_diff_data1, aes(correction_noabs, filter_chl_diff)) +
+  geom_point() +
+  theme_classic() + 
+  xlim(-3,3) + # even axes
+  ylim(-3,3) +
+  xlab(expression("Side-by-side Chl" ~ alpha ~"Difference")) +
+  ylab(expression("Experiment Chl" ~ alpha ~ "Difference (Velocity Paired)")) +
+  geom_abline(slope = 1) + # 1-1 reference line
+  geom_line(data = data.frame(y.seq1), aes(x = fit, y = lwr), linetype = "dashed", color = "red") +
+  geom_line(data = data.frame(y.seq1), aes(x = fit, y = upr), linetype = "dashed", color = "red") +
+  #geom_text(aes(x=correction_noabs + .12,label=dummie)) 
+  #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
+  #geom_label(aes(label = graph_labels))
+  ggrepel::geom_label_repel(aes(label = graph_labels), point.padding = 0.9, na.rm = T,
+                            nudge_y = c(-1),
+                            nudge_x = c(0.4))
+print(Corr_Chl_diff_graph1)
+# plot_grid(Corr_Chl_diff_graph1, labels = c("B"))
+```
 
 
 ```{r Bar_Graphs_up_vs_down,  include=FALSE}
