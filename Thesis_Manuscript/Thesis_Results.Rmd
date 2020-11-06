@@ -99,12 +99,11 @@ Filtration_only_data <- Master_analysis_table %>%
 
 # Negative Control Trials only 
 Control_only_data <- Master_analysis_table %>% 
-  filter(grepl("Neg*", Master_analysis_table$Experiment),
-         abs(pcnt_Chl_rmvd) < 50)
+  filter(grepl("Neg*", Master_analysis_table$Experiment))
 
-# Filtration trials with Outliers removed - same syntax used by Dr. Nichols
+# Filtration only - remove trials with Chl a within sensor detection limit (+- 0.1ug/L)
 Filter_only_outRmd_data <- Filtration_only_data %>% 
-  filter(abs(pcnt_Chl_rmvd) < 50)
+  filter(round(Chl_ug_L_Up,2) > 0.1 | round(Chl_ug_L_Up,2) < -0.1)
 
 ################# Values for Results text #####
 # SR filtration trial data
@@ -233,16 +232,15 @@ out_HCR_test <- Filtration_only_data %>%
 
 # Results
 
-Twenty-eight experimental trials were conducted, 
-
-A single filtration trial at Deanza (2019-4-17; Table 1) was removed because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 \\mu/L). 
+Twenty-five experimental trials were included in the analyses; 21 filtration trials and four control trials.
+A single filtration trial at Deanza (2019-4-17; Table 1) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 \\mu/L). 
 
 ## Percent Chlorophyll $\alpha$ Removal
 
-Percent Chl $\alpha$ removal at the San Rafael site averaged `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}) and was `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
-Filtration trials at Morro Bay averaged `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% Chl $\alpha$ removal (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and measured `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
-At Deanza, Chl $\alpha$ removal averaged `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and during three consecutive control trials averaged `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removal (*N* = `r nrow(NPD_NC_sum)`, *SD* =  `r round(sd(NPD_NC_sum$pcnt_Chl_rmvd))`).
-Shellmaker averaged `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% Chl $\alpha$ removal (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was removed from analysis as an extreme value (Figure \ref{Corr_to_signal_95CI_graph}).
+The mean percent Chl $\alpha$ removal at the San Rafael site was `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}) and was `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
+Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
+At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removal during the control trial.
+Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was `r round(mean(NPSM_NC_sum$pcnt_Chl_rmvd),1)` \%.
 
 ```{r Correction_to_Signal_95CI_graph, eval=FALSE, fig.align='default', fig.asp=1, fig.cap="The relationship between side-by-side trial chlorophyll $\\alpha$ difference (correction) and filtration trial chlorophyll $\\alpha$ difference (signal). The solid black line is a 1-1 relationship, fig.keep='all', fig.show="hold", fig.width=4, message=FALSE, warning=FALSE, dev='pdf', include=FALSE, out.width="50%"}
 
