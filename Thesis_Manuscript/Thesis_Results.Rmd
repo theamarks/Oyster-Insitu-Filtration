@@ -590,11 +590,72 @@ summary(mlr)
 ```
 
 ```{r HCR_Quantile_Regression}
+#create model variables
+attach(Filtration_only_data)
+qr_x <- cbind(Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, Avg_OC_Ratio, Site)
+summary(qr_x)
+qr_y <- cbind(L_hr_m2)
+summary(qr_y)
+
+## OLS Model
+HCR_lm <- lm(qr_y ~ qr_x)
+summary(HCR_lm)
+hist(Filtration_only_data$L_hr_m2)
+# Look at linear model assumptions
+# Doesn't look good with this data
+par(mfrow=c(2,2))
+plot(HCR_lm)
+
+## Quantile Regression
 library(quantreg)
-# default tau or quantile is 0.5
-HCR_rq <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio,
+# 25TH QUANTILE
+QR_HCR_25 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site, 
+                tau = 0.25, data = Filtration_only_data)
+summary(QR_HCR_25)
+# 50TH QUANTILE
+QR_HCR_50 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site, 
+                tau = 0.5, data = Filtration_only_data)
+summary(QR_HCR_50)
+# 75TH QUANTILE
+QR_HCR_75 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site,
+                data = Filtration_only_data)
+summary(QR_HCR_75)
+# 90TH QUANTILE
+QR_HCR_90 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site,
+                tau = 0.90, data = Filtration_only_data)
+summary(QR_HCR_90)
+
+# ANOVA to see if models are different
+anova(QR_HCR_25,QR_HCR_75)
+anova(QR_HCR_25,QR_HCR_90)
+
+# Plot all
+qr_all <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site,
+             tau = seq(0.05,0.95, by = 0.05),
+             na.action = na.omit,
+             data = Filtration_only_data)
+summary(qr_all)
+par(mfrow=c(18,2))
+plot(qr_all)
+plot.rqs(summary(qr_all)) # why aren't two red dashed CI displaying?
+
+# ggplot Quantile regression
+q3 <- c(0.25, 0.5, 0.75)
+q1 <- seq(0.05, 0.95, by = 0.05)
+gg_qplot <- ggplot(Filtration_only_data, aes(Temp_C_Up, L_hr_m2)) +
+  geom_point() +
+  geom_quantile(quantiles = q1)
+gg_qplot 
+
+# Simulaneous quantile regression
+HCR_rq <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site,
+             tau = c(0.25, 0.5, 0.75, 0.9),
            data = Filtration_only_data)
 summary(HCR_rq)
+par(mfrow=c(2,2))
+plot(HCR_rq)
+
+
 ```
 
 ## Oyster Habitat vs. Control 
