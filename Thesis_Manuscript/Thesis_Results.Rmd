@@ -8,6 +8,7 @@ header-includes:
 - \usepackage{booktabs}
 - \usepackage{makecell}
 - \usepackage{gensymb}
+- \usepackage{textcomp}
 - \usepackage{pdfpages}
 - \usepackage{caption}
 output: 
@@ -641,20 +642,34 @@ plot.rqs(summary(qr_all)) # why aren't two red dashed CI displaying?
 
 # ggplot Quantile regression
 q3 <- c(0.25, 0.5, 0.75)
+q4 <- c(0.25, 0.5, 0.75, 0.95)
 q1 <- seq(0.05, 0.95, by = 0.05)
-gg_qplot <- ggplot(Filtration_only_data, aes(Temp_C_Up, L_hr_m2)) +
+
+# Temperature plot
+qrplot_temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, L_hr_m2)) +
   geom_point() +
-  geom_quantile(quantiles = q1)
-gg_qplot 
-
-# Simulaneous quantile regression
-HCR_rq <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site,
-             tau = c(0.25, 0.5, 0.75, 0.9),
-           data = Filtration_only_data)
-summary(HCR_rq)
-par(mfrow=c(2,2))
-plot(HCR_rq)
-
+  geom_quantile(quantiles = q4)
+qrplot_temp 
+# Salinity plot
+qrplot_sal <- ggplot(Filtration_only_data, aes(Sal_ppt_Up, L_hr_m2)) +
+  geom_point() +
+  geom_quantile(quantiles = q4)
+qrplot_sal
+# Turbidity plot
+qrplot_turb <- ggplot(Filtration_only_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
+  geom_point() +
+  geom_quantile(quantiles = q4)
+qrplot_turb
+# TPM plot
+qrplot_tpm <- ggplot(Filtration_only_data, aes(Avg_TPM_mg_L, L_hr_m2)) +
+  geom_point() +
+  geom_quantile(quantiles = q4)
+qrplot_tpm
+# OC plot
+qrplot_oc <- ggplot(Filtration_only_data, aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_point() +
+  geom_quantile(quantiles = q4)
+qrplot_oc
 
 ```
 
@@ -750,11 +765,12 @@ Final_table <- Master_analysis_table %>%
                 d_bw_sondes_m, avg_m_sec) %>% 
  dplyr::arrange(Site, Date)
 
+
 # arrange by site latitude
 Final_table <- arrange(transform(Final_table, Site = factor(Site,levels = site_by_lat_abv)), Site)
 
-data_removed <- Final_table[c(13, 15, 19),] # name excluded data
-data_analysis <- Final_table[-c(13, 15, 19),] # remove excluded analysis data points
+data_removed <- Final_table[19,] # name excluded data
+data_analysis <- Final_table[-19,] # remove excluded analysis data points
 
 Latex_table_data <- rbind(data_analysis, data_removed) # add excluded data back in at bottom 
 
@@ -767,13 +783,13 @@ colnames(Latex_table_data) <- c( "\\multicolumn{1}{p{1cm}}{\\centering Site}",
                             "\\multicolumn{1}{p{1cm}}{\\centering Trial}",
                             "\\multicolumn{1}{p{1cm}}{\\centering Tide}",
                            "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{rmd} \\\ (\\%)}",
-                           "\\multicolumn{1}{p{1cm}}{\\centering HCR \\\ (L/hr/m^2)}",
+                           "\\multicolumn{1}{p{1cm}}{\\centering HCR \\\ (L/hr/$m^{2}$)}",
                             "\\multicolumn{1}{p{1cm}}{\\centering Temp \\\ (\\si{\\degree}C)}",
                             "\\multicolumn{1}{p{1cm}}{\\centering Sal \\\ (ppt)} ", 
                             "\\multicolumn{1}{p{1cm}}{\\centering Turb \\\ (NTU)}",
                             "\\multicolumn{1}{p{1cm}}{\\centering TPM \\\ (mg/L)}", 
                             "\\multicolumn{1}{p{1cm}}{\\centering OC \\\ (ratio)}", 
-                            "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{up} \\\ (\\mu g/L)}", 
+                            "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{up} \\\ ({\textmu} g/L)}", 
                            "\\multicolumn{1}{p{1cm}}{\\centering Depth \\\ (m)}",
                            "\\multicolumn{1}{p{1cm}}{\\centering Dist \\\ (m)}",
                            "\\multicolumn{1}{p{1cm}}{\\centering Vel \\\ (m/s)}")
@@ -809,7 +825,7 @@ print.xtable(sumtable_latex,
 ```
 
 
-\includepdf[pagecommand={},noautoscale = true]{Summary_Table_2020_10_8.pdf}
+\includepdf[pagecommand={},noautoscale = true]{Summary_Table_2020_11_5.pdf}
 
 \captionsetup[table]{labelformat=empty}
 
