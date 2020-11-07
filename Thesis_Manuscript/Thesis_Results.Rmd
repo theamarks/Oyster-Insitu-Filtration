@@ -65,6 +65,7 @@ library(ISLR) # Dataset in Intro to statistical learning
 library(knitr)
 library(tinytex) # LaTeX conversion package
 library(broom) # tidy() function to convert t.test to dataframe
+library(agricolae) # post-hoc Tukey test
 
 # source functions 
 source("./functions.R")
@@ -234,35 +235,80 @@ out_HCR_test <- Filtration_only_data %>%
 ```
 
 ```{r Site WQ ANOVA}
-## Temperature
+#########################
+###### Temperature 
 hist(site_data_outrmd$Temp_C_Up)
 site_temp_aov <- aov(Temp_C_Up ~ Site, data = site_data_outrmd)
+summary(site_temp_aov)
 broom::tidy(site_temp_aov) # put ANOVA model into tibble to extract individual values
-# significant site differences
+# Post-Hoc Tukey test
+tukey_temp <- TukeyHSD(site_temp_aov)
+tukey_temp
+plot(tukey_temp)
 
-## Salinity
+#Honestly Significant Difference test
+hds_temp <- HSD.test(site_temp_aov, trt = "Site")
+hds_temp
+
+#########################
+####### Salinity
 hist(site_data_outrmd$Sal_ppt_Up)
 site_sal_aov <- aov(Sal_ppt_Up ~ Site, data = site_data_outrmd)
 broom::tidy(site_sal_aov)
-# significant site differences
 
-## Turbidity
+# Post-Hoc Tukey test
+tukey_sal <- TukeyHSD(site_sal_aov)
+tukey_sal
+plot(tukey_sal)
+
+#Honestly Significant Difference test
+hds_sal <- HSD.test(site_sal_aov, trt = "Site")
+hds_sal
+
+###########################
+######### Turbidity
 hist(site_data_outrmd$Turbidity_NTU_Up)
 site_turb_aov <- aov(Turbidity_NTU_Up ~ Site, data = site_data_outrmd)
 broom::tidy(site_turb_aov)
-# significant site differences
 
-## TPM
+# Post-Hoc Tukey test
+tukey_turb <- TukeyHSD(site_turb_aov)
+tukey_turb
+plot(tukey_turb)
+
+#Honestly Significant Difference test
+hds_turb <- HSD.test(site_turb_aov, trt = "Site")
+hds_turb
+
+########################
+####### TPM
 hist(site_data_outrmd$Avg_TPM_mg_L)
 site_TPM_aov <- aov(Avg_TPM_mg_L ~ Site, data = site_data_outrmd)
 broom::tidy(site_TPM_aov)
-# sig site differences
 
-## OC
+# Post-Hoc Tukey test
+tukey_tpm <- TukeyHSD(site_TPM_aov)
+tukey_tpm
+plot(tukey_tpm)
+
+#Honestly Significant Difference test
+hds_tpm <- HSD.test(site_TPM_aov, trt = "Site")
+hds_tpm
+
+#####################
+####### OC
 hist(site_data_outrmd$Avg_OC_Ratio)
 site_OC_aov <- aov(Avg_OC_Ratio ~ Site, data = site_data_outrmd)
 broom::tidy(site_OC_aov)
-# sig site differences
+
+# Post-Hoc Tukey test
+tukey_oc <- TukeyHSD(site_OC_aov)
+tukey_oc
+plot(tukey_oc)
+
+#Honestly Significant Difference test
+hds_oc <- HSD.test(site_OC_aov, trt = "Site")
+hds_oc
 ```
 
 # Results
@@ -271,7 +317,7 @@ Twenty-five experimental trials, across the four study sites, were included in t
 A single filtration trial at Deanza (2019-4-17; Table 1) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 \\mu/L). 
 Filtration trials across sites were not distributed equally (Table 1), Deanza had more than twice the amount filtratrion trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4).
 Each of the four sites had a single control.
-Water quality conditions varied among bays 
+Water quality conditions varied among bays
 
 ## Percent Chlorophyll $\alpha$ Removal
 
