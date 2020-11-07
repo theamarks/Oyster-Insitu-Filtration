@@ -93,6 +93,10 @@ site_by_lat_abv <- c("SR", "MB", "NPSM", "NPD")
 # transform Site variable to factor and arange by Latitude
 Master_analysis_table <- arrange(transform(Master_analysis_table, Site = factor(Site,levels = site_by_lat)), Site)
 
+# All Trials, NPD 2019_4_17 removed - below Chl detection limit
+site_data_outrmd <- Master_analysis_table %>% 
+  filter(round(Chl_ug_L_Up,2) > 0.1 | round(Chl_ug_L_Up,2) < -0.1)
+
  # Filtration trials only - exclude Negative controls
 Filtration_only_data <- Master_analysis_table %>% 
   filter(Experiment %in% c("Filtration"))
@@ -229,6 +233,33 @@ out_HCR_test <- Filtration_only_data %>%
   mutate(outlier = find_outlier(L_hr_m2))
 ```
 
+```{r Site WQ ANOVA}
+
+#hist(site_data_outrmd$Temp_C_Up)
+site_temp_aov <- aov(Temp_C_Up ~ Site, data = site_data_outrmd)
+summary(site_temp_aov)
+# significant site differences
+
+#hist(site_data_outrmd$Sal_ppt_Up)
+site_sal_aov <- aov(Sal_ppt_Up ~ Site, data = site_data_outrmd)
+summary(site_sal_aov)
+# significant site differences
+
+#hist(site_data_outrmd$Turbidity_NTU_Up)
+site_turb_aov <- aov(Turbidity_NTU_Up ~ Site, data = site_data_outrmd)
+summary(site_turb_aov)
+# significant site differences
+
+#hist(site_data_outrmd$Avg_TPM_mg_L)
+site_TPM_aov <- aov(Avg_TPM_mg_L ~ Site, data = site_data_outrmd)
+summary(site_TPM_aov)
+# sig site differences
+
+#hist(site_data_outrmd$Avg_OC_Ratio)
+site_OC_aov <- aov(Avg_OC_Ratio ~ Site, data = site_data_outrmd)
+summary(site_OC_aov)
+# sig site differences
+```
 
 # Results
 
@@ -236,7 +267,7 @@ Twenty-five experimental trials, across the four study sites, were included in t
 A single filtration trial at Deanza (2019-4-17; Table 1) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 \\mu/L). 
 Filtration trials across sites were not distributed equally (Table 1), Deanza had more than twice the amount filtratrion trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4).
 Each of the four sites had a single control.
-
+Water quality conditions varied among bays 
 
 ## Percent Chlorophyll $\alpha$ Removal
 
@@ -481,7 +512,7 @@ mlr = lm(clr~Site+Temp+Salinity+Turbidity+TPM+OC,data=test2)
 summary(mlr)
 ```
 
-```{r HCR_Quantile_Regression}
+```{r HCR_Quantile_Regression, eval=FALSE, include=FALSE}
 #create model variables
 attach(Filtration_only_data)
 qr_x <- cbind(Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, Avg_OC_Ratio, Site)
@@ -687,7 +718,7 @@ colnames(Latex_table_data) <- c( "\\multicolumn{1}{p{1cm}}{\\centering Site}",
 
 # create xtable
 sumtable_latex <- xtable(Latex_table_data, 
-                         caption = "Whole-habitat in situ filtration and control trials across four California sites. Water quality values are upstream instrument averages. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. The three observations separated at the bottom are extreme values removed from the analysis.",
+                         caption = "Details of Whole-habitat In Situ Filtration and Control Trials Across Four California Sites. All Values are Means from the Entire Trial. The Trial Separated at the Bottom is within the Chlorophyll  Sensor’s Error and was Removed from the Analysis. Dashes Denote Missing Values.",
                          label = "tb:summary",
                          align = "lllllrrrrrrrrrrr",
                          type = "latex")
@@ -719,39 +750,59 @@ print.xtable(sumtable_latex,
 
 \captionsetup[table]{labelformat=empty}
 
-```{r Site Summary Table}
+```{r Site Summary Table, eval=FALSE, include=FALSE}
 Site_Sum <- Final_table %>% 
   filter(!Date == "2019-04-17") %>% 
   dplyr::group_by(Site) %>% 
-  dplyr::summarize(Temp = paste0(round(mean(na.omit(Temp_C_Up)),2),
-                                 ' (SD = ', 
+  dplyr::summarize(Chl = paste0(round(mean(na.omit(Chl_ug_L_Up)),1),
+                                ' (SD ', 
+                                 round(sd(na.omit(Chl_ug_L_Up)),2), 
+                                 ')'),
+                  Temp = paste0(round(mean(na.omit(Temp_C_Up)),2),
+                                 ' (SD ', 
                                  round(sd(na.omit(Temp_C_Up)),2), 
                                  ')'),
                    Sal = paste0(round(mean(na.omit(Sal_ppt_Up)),1),
-                                ' (SD = ', 
+                                ' (SD ', 
                                  round(sd(na.omit(Sal_ppt_Up)),1), 
                                  ')'),
                    Turb = paste0(round(mean(na.omit(Turbidity_NTU_Up)),1),
-                                 ' (SD = ', 
+                                 ' (SD ', 
                                  round(sd(na.omit(Turbidity_NTU_Up)),1), 
                                  ')'),
                    TPM = paste0(round(mean(na.omit(Avg_TPM_mg_L)),2), 
-                                ' (SD = ', 
+                                ' (SD ', 
                                  round(sd(na.omit(Avg_TPM_mg_L)),2), 
                                  ')'),
                    OC = paste0(round(mean(na.omit(Avg_OC_Ratio)),2),
-                               ' (SD = ', 
+                               ' (SD ', 
                                  round(sd(na.omit(Avg_OC_Ratio)),2), 
                                  ')'))
 
-site_sum_table <- cbind(Site_Sum, 
-                        tibble(Lat = c(37.964179, 35.334707, 33.622097, 33.620291),
-                        Long = c(-122.487217, -120.844000, -117.892399, -117.897692),
-                        Months = c("July, Nov", "July, May, June", "May, June", "Oct, April, May, June")
-                        ))
+#site_sum_table <- cbind(Site_Sum, 
+ #                       tibble(Lat = c(37.964179, 35.334707, 33.622097, 33.620291),
+  #                      Long = c(-122.487217, -120.844000, -117.892399, -117.897692)#,
+                        #Months = c("July, Nov", "July, May, June", "May, June", "Oct, April, May, June")
+   #                     ))
 
-site_sum_table %<>% 
-  dplyr::select(Site, Lat, Long, Temp, Sal, Turb, TPM, OC, Months) %>% 
+Site_Sum %<>% 
+  dplyr::select(Site, Chl, Temp, Sal, Turb, TPM, OC)
+  
+site_sum_xtable <- xtable(Site_Sum, 
+                         caption = "Summary of Environmental Conditions at Each Study Site.",
+                         label = "tb:site",
+                         align = "llllllll",
+                         type = "latex")
+
+print.xtable(site_sum_xtable, 
+      booktabs=TRUE, 
+      caption.placement="top", 
+      NA.string = NA, 
+      sanitize.colnames.function=function(x){x},
+      comment = F,
+      include.rownames = FALSE,
+      timestamp = NULL,
+      size = "\\fontsize{10pt}{10pt}\\selectfont") # font size / line spacing 
 
 ```
 
@@ -1632,7 +1683,7 @@ ols_regress(Oly_TWW2_DTW_LM)
 #plot(NPD_bivalve_outrmd_graph)
 ```
 
-```{r Correction_to_Signal_95CI_graph, eval=FALSE, fig.align='default', fig.asp=1, fig.cap="The relationship between side-by-side trial chlorophyll $\\alpha$ difference (correction) and filtration trial chlorophyll $\\alpha$ difference (signal). The solid black line is a 1-1 relationship, fig.keep='all', fig.show="hold", fig.width=4, message=FALSE, warning=FALSE, dev='pdf', include=FALSE, out.width="50%"}
+```{r Correction_to_Signal_95CI_graph, eval=FALSE, fig.align='default', fig.asp=1, fig.cap="The relationship between side-by-side trial chlorophyll $\\alpha$ difference (correction) and filtration trial chlorophyll $\\alpha$ difference (signal). The solid black line is a 1-1 relationship", fig.keep='all', fig.show="hold", fig.width=4, message=FALSE, warning=FALSE, dev='pdf', include=FALSE, out.width="50%"}
 
 ##### Althea's Chl correction x Filtration diff Graph ###########
 ## Correction data & OG Chl values
