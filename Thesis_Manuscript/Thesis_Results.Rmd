@@ -234,30 +234,34 @@ out_HCR_test <- Filtration_only_data %>%
 ```
 
 ```{r Site WQ ANOVA}
-
-#hist(site_data_outrmd$Temp_C_Up)
+## Temperature
+hist(site_data_outrmd$Temp_C_Up)
 site_temp_aov <- aov(Temp_C_Up ~ Site, data = site_data_outrmd)
-summary(site_temp_aov)
+broom::tidy(site_temp_aov) # put ANOVA model into tibble to extract individual values
 # significant site differences
 
-#hist(site_data_outrmd$Sal_ppt_Up)
+## Salinity
+hist(site_data_outrmd$Sal_ppt_Up)
 site_sal_aov <- aov(Sal_ppt_Up ~ Site, data = site_data_outrmd)
-summary(site_sal_aov)
+broom::tidy(site_sal_aov)
 # significant site differences
 
-#hist(site_data_outrmd$Turbidity_NTU_Up)
+## Turbidity
+hist(site_data_outrmd$Turbidity_NTU_Up)
 site_turb_aov <- aov(Turbidity_NTU_Up ~ Site, data = site_data_outrmd)
-summary(site_turb_aov)
+broom::tidy(site_turb_aov)
 # significant site differences
 
-#hist(site_data_outrmd$Avg_TPM_mg_L)
+## TPM
+hist(site_data_outrmd$Avg_TPM_mg_L)
 site_TPM_aov <- aov(Avg_TPM_mg_L ~ Site, data = site_data_outrmd)
-summary(site_TPM_aov)
+broom::tidy(site_TPM_aov)
 # sig site differences
 
-#hist(site_data_outrmd$Avg_OC_Ratio)
+## OC
+hist(site_data_outrmd$Avg_OC_Ratio)
 site_OC_aov <- aov(Avg_OC_Ratio ~ Site, data = site_data_outrmd)
-summary(site_OC_aov)
+broom::tidy(site_OC_aov)
 # sig site differences
 ```
 
