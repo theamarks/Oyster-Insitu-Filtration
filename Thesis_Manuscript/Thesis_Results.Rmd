@@ -316,6 +316,24 @@ plot(tukey_sal)
 hds_sal <- HSD.test(site_sal_aov, trt = "Site")
 hds_sal
 
+Sal_box <- ggplot(site_data_outrmd, aes(Site, Sal_ppt_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = "Upstream Salinity ppt") +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% filter(Site == "San Rafael"))$Sal_ppt_Up) + 0.5, label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% filter(Site == "Morro Bay"))$Sal_ppt_Up) + 0.5, label = "b") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% filter(Site == "Shellmaker"))$Sal_ppt_Up) + 0.5, label = "b") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% filter(Site == "Deanza"))$Sal_ppt_Up) + 0.5, label = "b") 
+plot(Sal_box)
+
 ###########################
 ######### Turbidity
 hist(site_data_outrmd$Turbidity_NTU_Up)
@@ -330,6 +348,28 @@ plot(tukey_turb)
 #Honestly Significant Difference test
 hds_turb <- HSD.test(site_turb_aov, trt = "Site")
 hds_turb
+
+Turb_box <- ggplot(site_data_outrmd, aes(Site, Turbidity_NTU_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = "Upstream Turbidity NTU") +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% filter(Site == "San Rafael"))$Turbidity_NTU_Up) + 2, 
+           label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% filter(Site == "Morro Bay"))$Turbidity_NTU_Up) + 2, 
+           label = "b") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% filter(Site == "Shellmaker"))$Turbidity_NTU_Up) + 2, 
+           label = "c") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% filter(Site == "Deanza"))$Turbidity_NTU_Up) + 2, 
+           label = "c") 
+plot(Turb_box)
 
 ########################
 ####### TPM
