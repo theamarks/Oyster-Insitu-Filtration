@@ -808,7 +808,19 @@ Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, and `r round(MB_NC_sum$L
 Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_NC_sum)`, *SD* = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
 Site did not significantly affect HCR as determined by a one-way ANOVA at a *p* < .05 level (*F*(3,16) = 0.29, *p* = 0.83) (Table 2).
 
-```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial, and triangles are the mean for the site. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
+```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Letters are post-hoc Tukey honestly significant difference results, and triangles are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
+
+HCR_site_aov <- aov(L_hr_m2 ~ Site, data = Filter_only_outRmd_data)
+#summary(HCR_site_aov)
+HCR_aov_values <- broom::tidy(HCR_site_aov)
+
+# Post-Hoc Tukey test
+tukey_HCR <- TukeyHSD(HCR_site_aov)
+#tukey_HCR
+#plot(tukey_HCR)
+#Honestly Significant Difference test
+hds_HCR <- HSD.test(HCR_site_aov, trt = "Site")
+#hds_HCR
 
 ## HCR averages by Site
 FR_Site <- Filter_only_outRmd_data %>% 
@@ -820,14 +832,25 @@ FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
-  geom_point(data = FR_Site, aes(Site, avg_L_hr_m2),
+  # geom_point(data = FR_Site, aes(Site, avg_L_hr_m2),
              size = 2, shape = 17) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   #stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
-       y = Hab_FR_Label)
-  #ylim(-2500, 1300)
+       y = Hab_FR_Label) +
+  annotate("text", "San Rafael", 
+           max((Filter_only_outRmd_data %>% 
+                  filter(Site == "San Rafael"))$L_hr_m2) + 200, label = "a") +
+  annotate("text", "Morro Bay", 
+           max((Filter_only_outRmd_data %>% 
+                  filter(Site == "Morro Bay"))$L_hr_m2) + 200, label = "a") +
+  annotate("text", "Shellmaker", 
+           max((Filter_only_outRmd_data %>% 
+                  filter(Site == "Shellmaker"))$L_hr_m2) + 200, label = "a") +
+  annotate("text", "Deanza", 
+           max((Filter_only_outRmd_data %>% 
+                  filter(Site == "Deanza"))$L_hr_m2) + 200, label = "a")
 plot(FR_box) 
 
 # Example data for DZ to try ANOVA by site HCR
