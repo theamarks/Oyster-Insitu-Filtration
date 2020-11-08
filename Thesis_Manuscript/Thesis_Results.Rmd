@@ -231,48 +231,6 @@ find_outlier <- function(data){
          TRUE, FALSE)
 }
 
-## function to label Tukey HSD results to graph
-give_hsd_space <- function(df, WQ){
-  space <- df %>% 
-    group_by(Site) %>% 
-    dplyr::summarize(V1 = max(fivenum(WQ)) + 0.2)
-}
-
-generate_label_df <- function(HSD, flev, df, WQ){
- # Extract labels and factor levels from Tukey post-hoc 
- Tukey.levels <- HSD[[flev]][,4]
- Tukey.labels <- multcompLetters(Tukey.levels)['Letters']
- plot.labels <- names(Tukey.labels[['Letters']])
-
- # Get highest quantile for Tukey's 5 number summary and add a bit of space to buffer between    
- # upper quantile and label placement
-    boxplot.df <- give_hsd_space(df, WQ)
-
- # Create a data frame out of the factor levels and Tukey's homogenous group letters
-  plot.levels <- data.frame(plot.labels, labels = Tukey.labels[['Letters']],
-     stringsAsFactors = FALSE)
-
- # Merge it with the labels
-   labels.df <- merge(plot.levels, boxplot.df, by.x = 'plot.labels', by.y = flev, sort = FALSE)
-
-return(labels.df)
-}
-
-my_fun <- function(HDS, df, wq){
-    # plot.labels <- as_tibble(unique(df$Site))
-    labels <- HDS$groups["groups"]
-    y_position <- df %>% 
-      group_by(Site) %>% 
-      dplyr::summarize(y_pos = max(wq))
-    graph_data <- cbind(plot.labels,labels,y_position)
-  return(graph_data)
-}
-
-p <- as_tibble(unique(site_data_outrmd$Site))
-labels <- hds_chl$groups["groups"]
-test <- site_data_outrmd %>% 
-  group_by(Site) %>% 
-  dplyr::summarize(y_pos = max(Chl_ug_L_Up))
 ```
 
 ```{r Site WQ ANOVA}
