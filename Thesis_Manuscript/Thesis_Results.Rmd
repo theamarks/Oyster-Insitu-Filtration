@@ -457,7 +457,7 @@ At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_r
 Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was `r round(mean(NPSM_NC_sum$pcnt_Chl_rmvd),1)` \%.
 
 
-```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). Each data point is the average value from a single filtration trial. Extreme values excluded from analysis are not shown. \\label{ChlRmd_Site_boxplot}"}
+```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Letters are site differences from a one-way ANOVA with Tukey's HSD, and diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). Each data point is the average value from a single filtration trial. \\label{ChlRmd_Site_boxplot}"}
 
 Chlrmd_site_aov <- aov(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data)
 #summary(HCR_site_aov)
@@ -1000,6 +1000,8 @@ print.xtable(sumtable_latex,
 \captionsetup[table]{labelformat=empty}
 
 ```{r Site Summary Table, eval=FALSE, include=FALSE}
+
+#### Redundant with Site WQ graphs
 Site_Sum <- Final_table %>% 
   filter(!Date == "2019-04-17") %>% 
   dplyr::group_by(Site) %>% 
