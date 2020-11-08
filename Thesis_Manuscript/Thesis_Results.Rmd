@@ -446,8 +446,8 @@ Twenty-five experimental trials, across the four study sites, were included in t
 A single filtration trial at Deanza (2019-4-17; Table 1) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 $\mu$/L). 
 Filtration trials across sites were not distributed equally (Table 1), Deanza had more than twice the amount filtratrion trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4), and each site had a single control.
 Ambient water quality varied within and among sites (Figure \ref{Site_WQ_boxplot}). 
-Chl $\alpha$, was significantly different between sites as determined by one-way ANOVA at a *p* < 0.05 (*F*(`r chl_aov_values[[1,2]]`, `r chl_aov_values[[2,2]]`) = `r round(chl_aov_values[[1,5]],2)`, *p* = `r round(chl_aov_values[[1,6]],2)`), along with salinity (*F*(`r sal_aov_values[[1,2]]`, `r sal_aov_values[[2,2]]`) = `r round(sal_aov_values[[1,5]],2)`, *p* < 0.001), turbidity (*F*(`r turb_aov_values[[1,2]]`, `r turb_aov_values[[2,2]]`) = `r round(turb_aov_values[[1,5]],2)`, *p* < 0.001), TPM (*F*(`r TPM_aov_values[[1,2]]`, `r TPM_aov_values[[2,2]]`) = `r round(TPM_aov_values[[1,5]],2)`, *p* = < 0.001), and OC (*F*(`r OC_aov_values[[1,2]]`, `r OC_aov_values[[2,2]]`) = `r round(OC_aov_values[[1,5]],2)`, *p* = `r round(OC_aov_values[[1,6]],2)`).
-Temperature was not different between sites (*F*(`r temp_aov_values[[1,2]]`, `r temp_aov_values[[2,2]]`) = `r round(temp_aov_values[[1,5]],2)`, *p* > 0.05)).
+Chl $\alpha$, was significantly different between sites as determined by one-way ANOVA at a *p* < 0.05 (*F*(`r chl_aov_values[[1,2]]`, `r chl_aov_values[[2,2]]`) = `r round(chl_aov_values[[1,5]],2)`, *p* = `r round(chl_aov_values[[1,6]],2)`), along with salinity (*F*(`r sal_aov_values[[1,2]]`, `r sal_aov_values[[2,2]]`) = `r round(sal_aov_values[[1,5]],2)`, *p* < 0.001), turbidity (*F*(`r turb_aov_values[[1,2]]`, `r turb_aov_values[[2,2]]`) = `r round(turb_aov_values[[1,5]],2)`, *p* < 0.001), TPM (*F*(`r TPM_aov_values[[1,2]]`, `r TPM_aov_values[[2,2]]`) = `r round(TPM_aov_values[[1,5]],2)`, *p* = < 0.001), and OC (*F*(`r OC_aov_values[[1,2]]`, `r OC_aov_values[[2,2]]`) = `r round(OC_aov_values[[1,5]],2)`, *p* = `r round(OC_aov_values[[1,6]],2)`) (Figure \ref{Site_WQ_boxplot}).
+Temperature was not different between sites (*F*(`r temp_aov_values[[1,2]]`, `r temp_aov_values[[2,2]]`) = `r round(temp_aov_values[[1,5]],2)`, *p* > 0.05) (Figure \ref{Site_WQ_boxplot}).
 
 ## Percent Chlorophyll $\alpha$ Removal
 
@@ -694,7 +694,7 @@ summary(mlr)
 
 ```{r HCR_Quantile_Regression, eval=FALSE, include=FALSE}
 #create model variables
-attach(Filtration_only_data)
+attach(Filter_only_outRmd_data)
 qr_x <- cbind(Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, Avg_OC_Ratio, Site)
 summary(qr_x)
 qr_y <- cbind(L_hr_m2)
@@ -703,7 +703,7 @@ summary(qr_y)
 ## OLS Model
 HCR_lm <- lm(qr_y ~ qr_x)
 summary(HCR_lm)
-hist(Filtration_only_data$L_hr_m2)
+hist(Filter_only_outRmd_data$L_hr_m2)
 # Look at linear model assumptions
 # Doesn't look good with this data
 par(mfrow=c(2,2))
@@ -713,19 +713,19 @@ plot(HCR_lm)
 library(quantreg)
 # 25TH QUANTILE
 QR_HCR_25 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site, 
-                tau = 0.25, data = Filtration_only_data)
+                tau = 0.25, data = Filter_only_outRmd_data)
 summary(QR_HCR_25)
 # 50TH QUANTILE
 QR_HCR_50 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site, 
-                tau = 0.5, data = Filtration_only_data)
+                tau = 0.5, data = Filter_only_outRmd_data)
 summary(QR_HCR_50)
 # 75TH QUANTILE
 QR_HCR_75 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site,
-                data = Filtration_only_data)
+                data = Filter_only_outRmd_data)
 summary(QR_HCR_75)
 # 90TH QUANTILE
 QR_HCR_90 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site,
-                tau = 0.90, data = Filtration_only_data)
+                tau = 0.90, data = Filter_only_outRmd_data)
 summary(QR_HCR_90)
 
 # ANOVA to see if models are different
@@ -736,7 +736,7 @@ anova(QR_HCR_25,QR_HCR_90)
 qr_all <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site,
              tau = seq(0.05,0.95, by = 0.05),
              na.action = na.omit,
-             data = Filtration_only_data)
+             data = Filter_only_outRmd_data)
 summary(qr_all)
 par(mfrow=c(18,2))
 plot(qr_all)
@@ -748,31 +748,48 @@ q4 <- c(0.25, 0.5, 0.75, 0.95)
 q1 <- seq(0.05, 0.95, by = 0.05)
 
 # Temperature plot
-qrplot_temp <- ggplot(Filtration_only_data, aes(Temp_C_Up, L_hr_m2)) +
-  geom_point() +
-  geom_quantile(quantiles = q4)
+qrplot_temp <- ggplot(Filter_only_outRmd_data, aes(Temp_C_Up, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  theme_classic() +
+  guides(color=FALSE) +
+  scale_color_manual(values = Site_colors) +
+  geom_quantile(quantiles = q4, color = 'grey50')
 qrplot_temp 
 # Salinity plot
-qrplot_sal <- ggplot(Filtration_only_data, aes(Sal_ppt_Up, L_hr_m2)) +
-  geom_point() +
-  geom_quantile(quantiles = q4)
+qrplot_sal <- ggplot(Filter_only_outRmd_data, aes(Sal_ppt_Up, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  theme_classic() +
+  guides(color=FALSE) +
+  scale_color_manual(values = Site_colors) +
+  geom_quantile(quantiles = q4, color = 'grey50')
 qrplot_sal
 # Turbidity plot
-qrplot_turb <- ggplot(Filtration_only_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
-  geom_point() +
-  geom_quantile(quantiles = q4)
+qrplot_turb <- ggplot(Filter_only_outRmd_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  theme_classic() +
+  guides(color=FALSE) +
+  scale_color_manual(values = Site_colors) +
+  geom_quantile(quantiles = q4, color = 'grey50')
 qrplot_turb
 # TPM plot
-qrplot_tpm <- ggplot(Filtration_only_data, aes(Avg_TPM_mg_L, L_hr_m2)) +
-  geom_point() +
-  geom_quantile(quantiles = q4)
+qrplot_tpm <- ggplot(Filter_only_outRmd_data, aes(Avg_TPM_mg_L, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  theme_classic() +
+  guides(color=FALSE) +
+  scale_color_manual(values = Site_colors) +
+  geom_quantile(quantiles = q4, color = 'grey50')
 qrplot_tpm
 # OC plot
-qrplot_oc <- ggplot(Filtration_only_data, aes(Avg_OC_Ratio, L_hr_m2)) +
-  geom_point() +
-  geom_quantile(quantiles = q4)
+qrplot_oc <- ggplot(Filter_only_outRmd_data, aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  theme_classic() +
+  guides(color=FALSE) +
+  scale_color_manual(values = Site_colors) +
+  geom_quantile(quantiles = q4, color = 'grey50')
 qrplot_oc
 
+
+grid.arrange(qrplot_temp, qrplot_sal, qrplot_turb, qrplot_tpm, qrplot_oc, nrow = 3)
 ```
 
 ## Oyster Habitat vs. Control 
