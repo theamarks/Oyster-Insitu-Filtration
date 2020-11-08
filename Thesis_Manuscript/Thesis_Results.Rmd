@@ -236,7 +236,6 @@ give_hsd_space <- function(df, WQ){
   space <- df %>% 
     group_by(Site) %>% 
     dplyr::summarize(V1 = max(fivenum(WQ)) + 0.2)
-  return(space)
 }
 
 generate_label_df <- function(HSD, flev, df, WQ){
@@ -259,7 +258,21 @@ generate_label_df <- function(HSD, flev, df, WQ){
 return(labels.df)
 }
 
+my_fun <- function(HDS, df, wq){
+    # plot.labels <- as_tibble(unique(df$Site))
+    labels <- HDS$groups["groups"]
+    y_position <- df %>% 
+      group_by(Site) %>% 
+      dplyr::summarize(y_pos = max(wq))
+    graph_data <- cbind(plot.labels,labels,y_position)
+  return(graph_data)
+}
 
+p <- as_tibble(unique(site_data_outrmd$Site))
+labels <- hds_chl$groups["groups"]
+test <- site_data_outrmd %>% 
+  group_by(Site) %>% 
+  dplyr::summarize(y_pos = max(Chl_ug_L_Up))
 ```
 
 ```{r Site WQ ANOVA}
