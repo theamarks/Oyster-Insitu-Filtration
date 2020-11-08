@@ -252,7 +252,7 @@ hds_chl <- HSD.test(site_chl_aov, trt = "Site")
 Chl_box <- ggplot(site_data_outrmd, aes(Site, Chl_ug_L_Up)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
@@ -284,7 +284,7 @@ hds_temp <- HSD.test(site_temp_aov, trt = "Site")
 Temp_box <- ggplot(site_data_outrmd, aes(Site, Temp_C_Up)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
@@ -316,7 +316,7 @@ hds_sal <- HSD.test(site_sal_aov, trt = "Site")
 Sal_box <- ggplot(site_data_outrmd, aes(Site, Sal_ppt_Up)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
@@ -348,7 +348,7 @@ hds_turb <- HSD.test(site_turb_aov, trt = "Site")
 Turb_box <- ggplot(site_data_outrmd, aes(Site, Turbidity_NTU_Up)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
@@ -384,7 +384,7 @@ hds_tpm <- HSD.test(site_TPM_aov, trt = "Site")
 Tpm_box <- ggplot(site_data_outrmd, aes(Site, Avg_TPM_mg_L)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
@@ -419,7 +419,7 @@ hds_oc <- HSD.test(site_OC_aov, trt = "Site")
 OC_box <- ggplot(site_data_outrmd, aes(Site, Avg_OC_Ratio)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
@@ -459,16 +459,45 @@ Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_
 
 ```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). Each data point is the average value from a single filtration trial. Extreme values excluded from analysis are not shown. \\label{ChlRmd_Site_boxplot}"}
 
+Chlrmd_site_aov <- aov(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data)
+#summary(HCR_site_aov)
+Chlrmd_aov_values <- broom::tidy(Chlrmd_site_aov)
+
+# Post-Hoc Tukey test
+tukey_Chlrmd <- TukeyHSD(Chlrmd_site_aov)
+#tukey_Chlrmd
+#plot(tukey_Chlrmd)
+#Honestly Significant Difference test
+hds_Chlrmd <- HSD.test(Chlrmd_site_aov, trt = "Site")
+#hds_Chlrmd
+
+## HCR averages by Site
+Chlrmd_Site <- Filter_only_outRmd_data %>% 
+  group_by(Site) %>% 
+  summarize(avg_Chlrmd= mean(pcnt_Chl_rmvd))
+
 Chl_Rmd_box <- ggplot(Filter_only_outRmd_data, aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+   geom_point(data = Chlrmd_Site, aes(Site, avg_Chlrmd),
+             size = 2, shape = 18) +
   scale_fill_manual(values = Site_colors) +
-  #scale_y_continuous(labels = percent) +
   theme_classic() +
-  #stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
-       y = Prt_Chl_Label) 
+       y = Prt_Chl_Label) +
+   annotate("text", "San Rafael", 
+           max((Filter_only_outRmd_data %>% 
+                  filter(Site == "San Rafael"))$pcnt_Chl_rmvd) + 4, label = "a") +
+   annotate("text", "Morro Bay", 
+           max((Filter_only_outRmd_data %>% 
+                  filter(Site == "Morro Bay"))$pcnt_Chl_rmvd) + 4, label = "a") +
+   annotate("text", "Shellmaker", 
+           max((Filter_only_outRmd_data %>% 
+                  filter(Site == "Shellmaker"))$pcnt_Chl_rmvd) + 4, label = "a") +
+   annotate("text", "Deanza", 
+           max((Filter_only_outRmd_data %>% 
+                  filter(Site == "Deanza"))$pcnt_Chl_rmvd) + 4, label = "a")
 plot(Chl_Rmd_box)
 
 ####### Don't include - doesn't match analysis data
@@ -808,7 +837,7 @@ Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, and `r round(MB_NC_sum$L
 Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_NC_sum)`, *SD* = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
 Site did not significantly affect HCR as determined by a one-way ANOVA at a *p* < .05 level (*F*(3,16) = 0.29, *p* = 0.83) (Table 2).
 
-```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Letters are post-hoc Tukey honestly significant difference results, and triangles are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
+```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Letters are post-hoc Tukey honestly significant difference results, and diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
 
 HCR_site_aov <- aov(L_hr_m2 ~ Site, data = Filter_only_outRmd_data)
 #summary(HCR_site_aov)
@@ -832,8 +861,8 @@ FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
-  # geom_point(data = FR_Site, aes(Site, avg_L_hr_m2),
-             size = 2, shape = 17) +
+   geom_point(data = FR_Site, aes(Site, avg_L_hr_m2),
+             size = 2, shape = 18) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   #stat_summary(fun.data = n_mean_stats, geom = "text") +
