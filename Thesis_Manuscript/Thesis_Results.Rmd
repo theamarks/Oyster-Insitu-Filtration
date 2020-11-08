@@ -233,13 +233,13 @@ find_outlier <- function(data){
 
 ```
 
-```{r Site WQ ANOVA, fig.width=7, fig.asp=1.3, fig.cap="Box plots of ambient (upstream) water quality variables from filtration and control trials. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Companyaquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
+```{r Site WQ ANOVA, fig.width=7, fig.asp=1.3, fig.cap="Box plots of ambient (upstream) water quality variables from filtration and control trials. Letters indicate post-hoc Tukey results among sites. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Companyaqu (aqculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
 #########################
 ###### Chlorphyll
 #hist(site_data_outrmd$Chl_ug_L_Up)
 site_chl_aov <- aov(Chl_ug_L_Up ~ Site, data = site_data_outrmd)
 #summary(site_chl_aov)
-#broom::tidy(site_chl_aov) # put ANOVA model into tibble to extract individual values
+chl_aov_values <- broom::tidy(site_chl_aov) # put ANOVA model into tibble to extract individual values
 # Post-Hoc Tukey test
 tukey_chl <- TukeyHSD(site_chl_aov, ordered = FALSE, conf.level = 0.95)
 #tukey_chl
@@ -256,7 +256,7 @@ Chl_box <- ggplot(site_data_outrmd, aes(Site, Chl_ug_L_Up)) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
-       y = expression(paste("Upstream Chlorophyll ",alpha))) +
+       y = expression(paste("Upstream Chlorophyll ",alpha, " ", mu,"g/L"))) +
   annotate("text", "San Rafael", 
            max((site_data_outrmd %>% filter(Site == "San Rafael"))$Chl_ug_L_Up) + 0.5, label = "a") +
   annotate("text", "Morro Bay", 
@@ -271,7 +271,7 @@ Chl_box <- ggplot(site_data_outrmd, aes(Site, Chl_ug_L_Up)) +
 #hist(site_data_outrmd$Temp_C_Up)
 site_temp_aov <- aov(Temp_C_Up ~ Site, data = site_data_outrmd)
 #summary(site_temp_aov)
-#broom::tidy(site_temp_aov) # put ANOVA model into tibble to extract individual values
+temp_aov_values <- broom::tidy(site_temp_aov) # put ANOVA model into tibble to extract individual values
 # Post-Hoc Tukey test
 tukey_temp <- TukeyHSD(site_temp_aov)
 #tukey_temp
@@ -302,7 +302,7 @@ Temp_box <- ggplot(site_data_outrmd, aes(Site, Temp_C_Up)) +
 ####### Salinity
 #hist(site_data_outrmd$Sal_ppt_Up)
 site_sal_aov <- aov(Sal_ppt_Up ~ Site, data = site_data_outrmd)
-#broom::tidy(site_sal_aov)
+sal_aov_values <- broom::tidy(site_sal_aov)
 
 # Post-Hoc Tukey test
 tukey_sal <- TukeyHSD(site_sal_aov)
@@ -334,7 +334,7 @@ Sal_box <- ggplot(site_data_outrmd, aes(Site, Sal_ppt_Up)) +
 ######### Turbidity
 #hist(site_data_outrmd$Turbidity_NTU_Up)
 site_turb_aov <- aov(Turbidity_NTU_Up ~ Site, data = site_data_outrmd)
-#broom::tidy(site_turb_aov)
+turb_aov_values <- broom::tidy(site_turb_aov)
 
 # Post-Hoc Tukey test
 tukey_turb <- TukeyHSD(site_turb_aov)
@@ -370,7 +370,7 @@ Turb_box <- ggplot(site_data_outrmd, aes(Site, Turbidity_NTU_Up)) +
 ####### TPM
 #hist(site_data_outrmd$Avg_TPM_mg_L)
 site_TPM_aov <- aov(Avg_TPM_mg_L ~ Site, data = site_data_outrmd)
-#broom::tidy(site_TPM_aov)
+TPM_aov_values <- broom::tidy(site_TPM_aov)
 
 # Post-Hoc Tukey test
 tukey_tpm <- TukeyHSD(site_TPM_aov)
@@ -406,7 +406,7 @@ Tpm_box <- ggplot(site_data_outrmd, aes(Site, Avg_TPM_mg_L)) +
 ####### OC
 #hist(site_data_outrmd$Avg_OC_Ratio)
 site_OC_aov <- aov(Avg_OC_Ratio ~ Site, data = site_data_outrmd)
-#broom::tidy(site_OC_aov)
+OC_aov_values <- broom::tidy(site_OC_aov)
 
 # Post-Hoc Tukey test
 tukey_oc <- TukeyHSD(site_OC_aov)
@@ -445,8 +445,9 @@ grid.arrange(Chl_box, Temp_box, Sal_box, Turb_box, Tpm_box, OC_box, nrow=3)
 Twenty-five experimental trials, across the four study sites, were included in the analyses; 21 filtration trials and four control trials.
 A single filtration trial at Deanza (2019-4-17; Table 1) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 $\mu$/L). 
 Filtration trials across sites were not distributed equally (Table 1), Deanza had more than twice the amount filtratrion trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4), and each site had a single control.
-
-
+Ambient water quality varied within and among sites (Figure \ref{Site_WQ_boxplot}). 
+Chl $\alpha$, was significantly different between sites as determined by one-way ANOVA at a *p* < 0.05 (*F*(`r chl_aov_values[[1,2]]`, `r chl_aov_values[[2,2]]`) = `r round(chl_aov_values[[1,5]],2)`, *p* = `r round(chl_aov_values[[1,6]],2)`), along with salinity (*F*(`r sal_aov_values[[1,2]]`, `r sal_aov_values[[2,2]]`) = `r round(sal_aov_values[[1,5]],2)`, *p* < 0.001), turbidity (*F*(`r turb_aov_values[[1,2]]`, `r turb_aov_values[[2,2]]`) = `r round(turb_aov_values[[1,5]],2)`, *p* < 0.001), TPM (*F*(`r TPM_aov_values[[1,2]]`, `r TPM_aov_values[[2,2]]`) = `r round(TPM_aov_values[[1,5]],2)`, *p* = < 0.001), and OC (*F*(`r OC_aov_values[[1,2]]`, `r OC_aov_values[[2,2]]`) = `r round(OC_aov_values[[1,5]],2)`, *p* = `r round(OC_aov_values[[1,6]],2)`).
+Temperature was not different between sites (*F*(`r temp_aov_values[[1,2]]`, `r temp_aov_values[[2,2]]`) = `r round(temp_aov_values[[1,5]],2)`, *p* > 0.05)).
 
 ## Percent Chlorophyll $\alpha$ Removal
 
