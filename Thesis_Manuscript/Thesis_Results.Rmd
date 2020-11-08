@@ -257,8 +257,14 @@ Chl_box <- ggplot(site_data_outrmd, aes(Site, Chl_ug_L_Up)) +
   theme_classic() +
   labs(x = 'Site',
        y = expression(paste("Upstream Chlorophyll ",alpha))) +
-  geom_text(data = generate_label_df(tukey_chl, "Site", site_data_outrmd, Chl_ug_L_Up), 
-            aes(x = plot.labels, y = V1, label = labels))
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% filter(Site == "San Rafael"))$Chl_ug_L_Up) + 0.5, label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% filter(Site == "Morro Bay"))$Chl_ug_L_Up) + 0.5, label = "ab") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% filter(Site == "Shellmaker"))$Chl_ug_L_Up) + 0.5, label = "b") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% filter(Site == "Deanza"))$Chl_ug_L_Up) + 0.5, label = "ab") 
 plot(Chl_box)
 
 
