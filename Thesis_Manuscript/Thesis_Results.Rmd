@@ -239,8 +239,7 @@ give_hsd_space <- function(df, WQ){
   return(space)
 }
 
-
-generate_label_df <- function(HSD, flev, d){
+generate_label_df <- function(HSD, flev, df, WQ){
  # Extract labels and factor levels from Tukey post-hoc 
  Tukey.levels <- HSD[[flev]][,4]
  Tukey.labels <- multcompLetters(Tukey.levels)['Letters']
@@ -248,7 +247,7 @@ generate_label_df <- function(HSD, flev, d){
 
  # Get highest quantile for Tukey's 5 number summary and add a bit of space to buffer between    
  # upper quantile and label placement
-    boxplot.df <- plyr::ddply(d, flev, function (x) max(fivenum(x$y)) + 0.2)
+    boxplot.df <- give_hsd_space(df, WQ)
 
  # Create a data frame out of the factor levels and Tukey's homogenous group letters
   plot.levels <- data.frame(plot.labels, labels = Tukey.labels[['Letters']],
@@ -287,7 +286,7 @@ Chl_box <- ggplot(site_data_outrmd, aes(Site, Chl_ug_L_Up)) +
   theme_classic() +
   labs(x = 'Site',
        y = expression(paste("Upstream Chlorophyll ",alpha))) +
-  geom_text(data = generate_label_df(tukey_chl, 'Site', Chl_ug_L_Up), 
+  geom_text(data = generate_label_df(tukey_chl, "Site", site_data_outrmd, Chl_ug_L_Up), 
             aes(x = plot.labels, y = V1, label = labels))
 plot(Chl_box)
 
