@@ -283,6 +283,24 @@ plot(tukey_temp)
 hds_temp <- HSD.test(site_temp_aov, trt = "Site")
 hds_temp
 
+Temp_box <- ggplot(site_data_outrmd, aes(Site, Temp_C_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = expression(paste("Upstream Temperature ",degree, "C"))) +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% filter(Site == "San Rafael"))$Temp_C_Up) + 0.5, label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% filter(Site == "Morro Bay"))$Temp_C_Up) + 0.5, label = "a") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% filter(Site == "Shellmaker"))$Temp_C_Up) + 0.5, label = "a") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% filter(Site == "Deanza"))$Temp_C_Up) + 0.5, label = "a") 
+plot(Temp_box)
+
 #########################
 ####### Salinity
 hist(site_data_outrmd$Sal_ppt_Up)
