@@ -386,6 +386,28 @@ plot(tukey_tpm)
 hds_tpm <- HSD.test(site_TPM_aov, trt = "Site")
 hds_tpm
 
+Tpm_box <- ggplot(site_data_outrmd, aes(Site, Avg_TPM_mg_L)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = expression(paste("Upstream Total Particulate Matter ",mu, "g/L"))) +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Avg_TPM_mg_L) + 5, label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% 
+                  na.omit() %>% filter(Site == "Morro Bay"))$Avg_TPM_mg_L) + 5, label = "b") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Avg_TPM_mg_L) + 5, label = "b") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% 
+                  na.omit() %>% filter(Site == "Deanza"))$Avg_TPM_mg_L) + 5, label = "b") 
+plot(Tpm_box)
+
 #####################
 ####### OC
 hist(site_data_outrmd$Avg_OC_Ratio)
@@ -396,10 +418,32 @@ broom::tidy(site_OC_aov)
 tukey_oc <- TukeyHSD(site_OC_aov)
 tukey_oc
 plot(tukey_oc)
-
 #Honestly Significant Difference test
 hds_oc <- HSD.test(site_OC_aov, trt = "Site")
 hds_oc
+
+OC_box <- ggplot(site_data_outrmd, aes(Site, Avg_OC_Ratio)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = "Upstream Organic Content Ratio ") +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Avg_OC_Ratio) + 0.025, label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% 
+                  na.omit() %>% filter(Site == "Morro Bay"))$Avg_OC_Ratio) + 0.025, label = "b") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Avg_OC_Ratio) + 0.025, label = "ab") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% 
+                  na.omit() %>% filter(Site == "Deanza"))$Avg_OC_Ratio) + 0.025, label = "b") 
+plot(OC_box)
+
 ```
 
 # Results
