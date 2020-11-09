@@ -572,8 +572,30 @@ colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity
 ## Thea Notes ###
 ## Shellmaker 06-09 Neg Control - floating algae mats caused me to reposition instruments after ~10 mins into Neg Control trial. Looks like sediments never settled afterward. Huge spikes in Chl afterwards that even cutting out is suspect. Avg depth and distance b/w sondes are wrong If I just use the first part of the neg control. Going to change values in Insitu_Filter_Veolcity_All_Data.csv - will reduce clearance rate b/c reduced water volume. 
 
-#############  Mud vs Oyster - Filtraiton vs Control (unadjusted)
-test1 = test[abs(test$Chl.removal) < 50,] # remove extreme values (NPSM 2020_6_9, NPSM 2020_5_22, NPD 2020_4_17)
+#############  Mud vs Oyster - Filtraiton vs Control (unadjusted) #########################
+# remove extreme values (NPSM 2020_6_9, NPSM 2020_5_22, NPD 2020_4_17)
+test1 = test[abs(test$Chl.removal) < 50,] 
+#check_filter_dist <- test1 %>% 
+#  filter(Experiment %in% c("Filtration"))
+#hist(check_filter_dist$Clearance) # Looks more normal than just removing NPD_2020_4_17)
+#summary(check_filter_dist$Clearance)
+
+### Alternative value removal
+# remove one single trial (NPD_2020_4_17) avg Chlup at sensor detection limit (+- 0.1 ug/L)
+test1 = test %>% 
+  dplyr::filter(round(Chl.up,2) > 0.1 | round(Chl.up,2) < -0.1)
+# check distribution of Control trials
+check_control_dist <- test %>% 
+  filter(Experiment %in% c("Neg Control 1"))
+hist(check_control_dist$Clearance)
+summary(check_control_dist$Clearance) # mean and median not close... prob not normally distributed
+# check distribution of Filtration trials
+check_filter_dist <- test %>% 
+  filter(Experiment %in% c("Filtration"))
+hist(check_filter_dist$Clearance)
+summary(check_filter_dist$Clearance) # also not close... doesn't look normal with extreme values
+
+##### T-test Compare Control vs Filtration trials
 exp = test1[test1$Experiment=="Filtration",] # separate Filtraiton trials
 control = test1[test1$Experiment!="Filtration",] # separate negative control trials
 t_test <- t.test(exp$Clearance,control$Clearance,alternative="greater") # single sided t-test?
@@ -617,7 +639,7 @@ TPM_rel_import <- (Var_import_df1[[4,2]] / sum_import1) * 100
 Sal_rel_import <- (Var_import_df1[[5,2]] / sum_import1) *100
 Site_rel_import <- (Var_import_df1[[6,2]] / sum_import1) *100
 
-######## Adjust values - Random Forest model - compare Mud flat to Oyster habitat. 
+######## Adjust values - Random Forest model - compare Mud flat to Oyster habitat. ###############
 y.adj = res + mean(test1$Clearance) # take residuals (diff between data and model - what the model doesn't account for (oysters)) and add to the mean response (same for data and model?). This gives me response with the effects of all variables accounted for. 
 y.adj.experiment = y.adj[test1$Experiment=="Filtration"]
 y.adj.control = y.adj[test1$Experiment!="Filtration"]
@@ -1069,6 +1091,9 @@ FR_Site_alldata <- Filter_only_outRmd_data %>%
 ## ANOVA HCR ~ Site
 model <- lm(L_hr_m2 ~ Site, data = FR_Site_alldata)
 aov.model <- anova(model)
+#summary(aov.model)
+
+## Create ANOVA results table in LaTeX
 aov.xt <- xtable(aov.model,
                        caption = 'Table 2: One-way ANOVA of the effect of site on habitat clearance rate (HCR L hr\\textsuperscript{-1} m\\textsuperscript{-2})')
 colnames(aov.xt) <- c("df", "Sum Sq", "Mean Sq", "\\textit{F} value", "\\textit{p} value")
