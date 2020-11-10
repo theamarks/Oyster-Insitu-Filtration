@@ -551,11 +551,8 @@ ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
 #For imputation we are doing a non parametric random forest imputation.  See missForest documentation for details/references.  
 #Stekhoven, D.J. and Buehlmann, P. (2012), "missForest - nonparametric missing value imputation for mixed-type data', Bioinformatics, 28(1) 2012, 112-118, doi: 10.1093/bioinformatics/btr597
 
-#install.packages('missForest')
-#install.packages('rpart')
-#install.packages('randomForest')
-#install.packages('adabag')
 
+# Import data
 Analysis_data <- Master_analysis_table %>% 
     mutate(Date = mdy(Date),
          L_hr_m2 = round(L_hr_m2),
@@ -575,7 +572,7 @@ Analysis_data <- Master_analysis_table %>%
           pcnt_Chl_rmvd, L_hr_m2) %>% 
  dplyr::arrange(Site, Date)
   
-
+# packages needed for imputation and randomforest regression
 library(missForest)
 library(rpart)
 library(randomForest)
@@ -585,8 +582,8 @@ library(adabag)
 temp1 = Analysis_data[,c(1,2,3)] # temporarily remove data labels for imputation
 temp2 = missForest(Analysis_data[,-c(1,2,3)])$ximp # Imputation of missing values
 test = cbind(temp1,temp2) # bing back data labels 
-
-dim(Analysis_data[,-c(1,2,3)]) # dimensions of data with labels removed (data only) 28 x 12 = 336 data cells
+# dimensions of data with labels removed (data only) 28 x 12 = 336 data cells
+dim(Analysis_data[,-c(1,2,3)]) 
 num_NA_values <- sum(is.na(Analysis_data)) # 4 missing values
 
 colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity",
@@ -599,16 +596,21 @@ colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity
 ## Thea Notes ###
 ## Shellmaker 06-09 Neg Control - floating algae mats caused me to reposition instruments after ~10 mins into Neg Control trial. Looks like sediments never settled afterward. Huge spikes in Chl afterwards that even cutting out is suspect. Avg depth and distance b/w sondes are wrong If I just use the first part of the neg control. Going to change values in Insitu_Filter_Veolcity_All_Data.csv - will reduce clearance rate b/c reduced water volume. 
 
+###############################################
 #############  Mud vs Oyster - Filtraiton vs Control (unadjusted) #########################
-# remove extreme values (NPSM 2020_6_9, NPSM 2020_5_22, NPD 2020_4_17)
-test1 = test[abs(test$Chl.removal) < 50,] 
+
+### Make a Choice - Two ways to treat extreme values
+
+### 1) remove extreme values (NPSM 2020_6_9, NPSM 2020_5_22, NPD 2020_4_17)
+### Committee did not like this approach. Stick to domain knowlege for removal, don't mix 
+# Confidence intervals and domain knowlege. Could compare outputs later.
+#test1 = test[abs(test$Chl.removal) < 50,] 
 #check_filter_dist <- test1 %>% 
 #  filter(Experiment %in% c("Filtration"))
 #hist(check_filter_dist$Clearance) # Looks more normal than just removing NPD_2020_4_17)
 #summary(check_filter_dist$Clearance)
 
-### Alternative value removal
-# remove one single trial (NPD_2020_4_17) avg Chlup at sensor detection limit (+- 0.1 ug/L)
+### 2) Domain knowlege - remove one single trial (NPD_2020_4_17) avg Chlup at sensor detection limit (+- 0.1 ug/L)
 test1 = test %>% 
   dplyr::filter(round(Chl.up,2) > 0.1 | round(Chl.up,2) < -0.1)
 # check distribution of Control trials
@@ -634,7 +636,7 @@ t_test_df <- (nrow(exp) - nrow(control)) - 2
 ### t-test results - AM #####
 # Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`t_test_df`) = t-value = `filter_control_ttest$statistic`, p < `filter_control_ttest$p.value`).
 
-######## Descriptive Filtration (as a function WQ) --> RANDOM FOREST MODEL- control for WQ & Site
+######## RANDOM FOREST MODEL- control for WQ & Site
 model.rf = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,
                         data=test1, # use data with extreme values removed 
                         ntree=100,
@@ -646,7 +648,6 @@ y.hat = predict(model.rf,newdata=test1) # model predicted values
 res = test1$Clearance - y.hat # residuals - difference between measured values and model predicted values 
 r.sq = (var(test1$Clearance) - var(res))/var(test1$Clearance)
 r.sq # r squared value for random forest model
-#r.sq  is about 66.3% (yay)
 
 ### Random Forest variable importance
 Var_import1 <- importance(model.rf)
@@ -980,7 +981,7 @@ grid.arrange(arrangeGrob(qrplot_temp, qrplot_sal, qrplot_turb, qrplot_tpm, qrplo
 ## Oyster Habitat vs. Control 
 
 Habitat clearance rates (HCR) in filtration trials were not significantly different than in negative controls (two-sample *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, *p* = `r round(filter_control_ttest$p.value, digits = 2)`).
-The random forest model that included all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 1)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%).
+The random forest model that included all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 1)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r format(round(Turb_rel_import, 1), nsmall = 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r format(round(Sal_rel_import, 1), nsmall = 1)`\%), and site (`r round(Site_rel_import, 1)`\%).
 Filtration and control trials adjusted by the random forest model were not significantly different (two-sample *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`); however, my limited sample size and variable clearance rates are expected to inhibit statistical signal detection.
 
 ## Habitat Clearance Rates 
