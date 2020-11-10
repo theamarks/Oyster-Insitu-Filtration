@@ -760,83 +760,81 @@ hist(Filter_only_outRmd_data$L_hr_m2)
 par(mfrow=c(2,2))
 plot(HCR_lm)
 
-## Quantile Regression
-library(quantreg)
-# 25TH QUANTILE
-QR_HCR_25 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site, 
-                tau = 0.25, data = Filter_only_outRmd_data)
-summary(QR_HCR_25)
-# 50TH QUANTILE
-QR_HCR_50 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site, 
-                tau = 0.5, data = Filter_only_outRmd_data)
-summary(QR_HCR_50)
-# 75TH QUANTILE
-QR_HCR_75 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site,
-                data = Filter_only_outRmd_data)
-summary(QR_HCR_75)
-# 90TH QUANTILE
-QR_HCR_90 <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site,
-                tau = 0.90, data = Filter_only_outRmd_data)
-summary(QR_HCR_90)
+########### Quantile Regression ###############
+## Bivariate comparisons only, not doing multivariate in this study (Talked with Ted Grosholz)
+library(quantreg) # Quantile Rregression package
 
-# ANOVA to see if models are different
-anova(QR_HCR_25,QR_HCR_75)
-anova(QR_HCR_25,QR_HCR_90)
-
-# Plot all
-qr_all <- rq(L_hr_m2 ~ Temp_C_Up + Sal_ppt_Up + Turbidity_NTU_Up + Avg_TPM_mg_L + Avg_OC_Ratio + Site,
+#### Look at change over most Quantiles
+qr_temp <- rq(L_hr_m2 ~ Temp_C_Up,
              tau = seq(0.05,0.95, by = 0.05),
              na.action = na.omit,
              data = Filter_only_outRmd_data)
-summary(qr_all)
-par(mfrow=c(18,2))
-plot(qr_all)
-plot.rqs(summary(qr_all)) # why aren't two red dashed CI displaying?
+summary(qr_temp)
+plot(qr_temp)
 
-# ggplot Quantile regression
-q3 <- c(0.25, 0.5, 0.75)
-q4 <- c(0.25, 0.5, 0.75, 0.95)
-q1 <- seq(0.05, 0.95, by = 0.05)
+## Looking at .5 and .9 quantiles of Habitat Clearance Rates - Filtration most likely on
+qr_5_9_temp <- rq(L_hr_m2 ~ Temp_C_Up,
+                tau = c(0.5,0.9),
+                data = Filter_only_outRmd_data)
+
+# Check results
+sumQRtemp <- summary(qr_5_9_temp, se = "boot", R = 1000)
+sumQRtemp
 
 # Temperature plot
+# if statements choose linetype - solid (significant) or dashed (not significant)
 qrplot_temp <- ggplot(Filter_only_outRmd_data, aes(Temp_C_Up, L_hr_m2)) +
   geom_point(aes(color = Site)) +
+  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2), # gray line indicating mean of HCR
+             linetype = "dashed", 
+             color = "gray50") +
   theme_classic() +
   guides(color=FALSE) +
   scale_color_manual(values = Site_colors) +
-  geom_quantile(quantiles = q4, color = 'grey50')
-qrplot_temp 
+  {if(sumQRtemp[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRtemp[[1]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
+  {if(sumQRtemp[[1]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
+  {if(sumQRtemp[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRtemp[[2]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
+  {if(sumQRtemp[[2]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
+
 # Salinity plot
 qrplot_sal <- ggplot(Filter_only_outRmd_data, aes(Sal_ppt_Up, L_hr_m2)) +
   geom_point(aes(color = Site)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
   theme_classic() +
   guides(color=FALSE) +
   scale_color_manual(values = Site_colors) +
-  geom_quantile(quantiles = q4, color = 'grey50')
+  geom_quantile(quantiles = q5_q9, color = 'grey50')
 qrplot_sal
 # Turbidity plot
 qrplot_turb <- ggplot(Filter_only_outRmd_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
   geom_point(aes(color = Site)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
   theme_classic() +
   guides(color=FALSE) +
   scale_color_manual(values = Site_colors) +
-  geom_quantile(quantiles = q4, color = 'grey50')
+  geom_quantile(quantiles = q5_q9, color = 'grey50')
 qrplot_turb
 # TPM plot
 qrplot_tpm <- ggplot(Filter_only_outRmd_data, aes(Avg_TPM_mg_L, L_hr_m2)) +
   geom_point(aes(color = Site)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
   theme_classic() +
   guides(color=FALSE) +
   scale_color_manual(values = Site_colors) +
-  geom_quantile(quantiles = q4, color = 'grey50')
+  geom_quantile(quantiles = q5_q9, color = 'grey50')
 qrplot_tpm
 # OC plot
 qrplot_oc <- ggplot(Filter_only_outRmd_data, aes(Avg_OC_Ratio, L_hr_m2)) +
   geom_point(aes(color = Site)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
   theme_classic() +
   guides(color=FALSE) +
   scale_color_manual(values = Site_colors) +
-  geom_quantile(quantiles = q4, color = 'grey50')
+  geom_quantile(quantiles = q5_q9, color = 'grey50')
 qrplot_oc
 
 
