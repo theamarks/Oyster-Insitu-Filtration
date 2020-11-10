@@ -235,38 +235,7 @@ find_outlier <- function(data){
 
 ```
 
-```{r Site WQ ANOVA, fig.width=7, fig.asp=1.3, fig.cap="Box plots of ambient (upstream) water quality variables from filtration and control trials. Letters indicate post-hoc Tukey results among sites. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Companyaqu (aqculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
-#########################
-###### Chlorphyll
-#hist(site_data_outrmd$Chl_ug_L_Up)
-site_chl_aov <- aov(Chl_ug_L_Up ~ Site, data = site_data_outrmd)
-#summary(site_chl_aov)
-chl_aov_values <- broom::tidy(site_chl_aov) # put ANOVA model into tibble to extract individual values
-# Post-Hoc Tukey test
-tukey_chl <- TukeyHSD(site_chl_aov, ordered = FALSE, conf.level = 0.95)
-#tukey_chl
-#plot(tukey_chl)
-
-#Honestly Significant Difference test
-hds_chl <- HSD.test(site_chl_aov, trt = "Site")
-#hds_chl
-
-Chl_box <- ggplot(site_data_outrmd, aes(Site, Chl_ug_L_Up)) +
-  geom_boxplot(color = Site_colors) + 
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = 'Site',
-       y = expression(paste("Upstream Chlorophyll ",alpha, " ", mu,"g/L"))) +
-  annotate("text", "San Rafael", 
-           max((site_data_outrmd %>% filter(Site == "San Rafael"))$Chl_ug_L_Up) + 0.5, label = "a") +
-  annotate("text", "Morro Bay", 
-           max((site_data_outrmd %>% filter(Site == "Morro Bay"))$Chl_ug_L_Up) + 0.5, label = "ab") +
-  annotate("text", "Shellmaker", 
-           max((site_data_outrmd %>% filter(Site == "Shellmaker"))$Chl_ug_L_Up) + 0.5, label = "b") +
-  annotate("text", "Deanza", 
-           max((site_data_outrmd %>% filter(Site == "Deanza"))$Chl_ug_L_Up) + 0.5, label = "ab") 
+```{r Site WQ ANOVA, fig.width=7, fig.asp=1.2, fig.cap="Box plots of ambient (upstream) A) temperature, B) salinity, C) turbidity, D) total particulate matter, E) organic content, and F) Chlorophyll $\\alpha$ from filtration and control trials. Lower case letters indicate post-hoc Tukey results among sites. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Companyaqu (aqculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
 
 #########################
 ###### Temperature 
@@ -290,15 +259,20 @@ Temp_box <- ggplot(site_data_outrmd, aes(Site, Temp_C_Up)) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
-       y = expression(paste("Upstream Temperature ",degree, "C"))) +
+       y = expression(paste("Upstream Temperature (",degree, "C)")),
+       title = "A)") +
   annotate("text", "San Rafael", 
-           max((site_data_outrmd %>% filter(Site == "San Rafael"))$Temp_C_Up) + 0.5, label = "a") +
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Temp_C_Up) + 0.5, label = "a") +
   annotate("text", "Morro Bay", 
-           max((site_data_outrmd %>% filter(Site == "Morro Bay"))$Temp_C_Up) + 0.5, label = "a") +
+           max((site_data_outrmd %>% 
+                  filter(Site == "Morro Bay"))$Temp_C_Up) + 0.5, label = "a") +
   annotate("text", "Shellmaker", 
-           max((site_data_outrmd %>% filter(Site == "Shellmaker"))$Temp_C_Up) + 0.5, label = "a") +
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Temp_C_Up) + 0.5, label = "a") +
   annotate("text", "Deanza", 
-           max((site_data_outrmd %>% filter(Site == "Deanza"))$Temp_C_Up) + 0.5, label = "a") 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Deanza"))$Temp_C_Up) + 0.5, label = "a") 
 
 #########################
 ####### Salinity
@@ -322,15 +296,20 @@ Sal_box <- ggplot(site_data_outrmd, aes(Site, Sal_ppt_Up)) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
-       y = "Upstream Salinity ppt") +
+       y = "Upstream Salinity (ppt)",
+       title = "B)") +
   annotate("text", "San Rafael", 
-           max((site_data_outrmd %>% filter(Site == "San Rafael"))$Sal_ppt_Up) + 0.5, label = "a") +
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Sal_ppt_Up) + 0.5, label = "a") +
   annotate("text", "Morro Bay", 
-           max((site_data_outrmd %>% filter(Site == "Morro Bay"))$Sal_ppt_Up) + 0.5, label = "b") +
+           max((site_data_outrmd %>% 
+                  filter(Site == "Morro Bay"))$Sal_ppt_Up) + 0.5, label = "b") +
   annotate("text", "Shellmaker", 
-           max((site_data_outrmd %>% filter(Site == "Shellmaker"))$Sal_ppt_Up) + 0.5, label = "b") +
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Sal_ppt_Up) + 0.5, label = "b") +
   annotate("text", "Deanza", 
-           max((site_data_outrmd %>% filter(Site == "Deanza"))$Sal_ppt_Up) + 0.5, label = "b") 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Deanza"))$Sal_ppt_Up) + 0.5, label = "b") 
 
 ###########################
 ######### Turbidity
@@ -354,18 +333,23 @@ Turb_box <- ggplot(site_data_outrmd, aes(Site, Turbidity_NTU_Up)) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
-       y = "Upstream Turbidity NTU") +
+       y = "Upstream Turbidity (NTU)",
+       title = "C)") +
   annotate("text", "San Rafael", 
-           max((site_data_outrmd %>% filter(Site == "San Rafael"))$Turbidity_NTU_Up) + 2, 
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Turbidity_NTU_Up) + 2, 
            label = "a") +
   annotate("text", "Morro Bay", 
-           max((site_data_outrmd %>% filter(Site == "Morro Bay"))$Turbidity_NTU_Up) + 2, 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Morro Bay"))$Turbidity_NTU_Up) + 2, 
            label = "b") +
   annotate("text", "Shellmaker", 
-           max((site_data_outrmd %>% filter(Site == "Shellmaker"))$Turbidity_NTU_Up) + 2, 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Turbidity_NTU_Up) + 2, 
            label = "c") +
   annotate("text", "Deanza", 
-           max((site_data_outrmd %>% filter(Site == "Deanza"))$Turbidity_NTU_Up) + 2, 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Deanza"))$Turbidity_NTU_Up) + 2, 
            label = "c") 
 
 ########################
@@ -390,7 +374,8 @@ Tpm_box <- ggplot(site_data_outrmd, aes(Site, Avg_TPM_mg_L)) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
-       y = expression(paste("Upstream Total Particulate Matter ",mu, "g/L"))) +
+       y = expression(paste("Upstream Total Particulate Matter (",mu, "g/L)")),
+       title = "D)") +
   annotate("text", "San Rafael", 
            max((site_data_outrmd %>% 
                   filter(Site == "San Rafael"))$Avg_TPM_mg_L) + 5, label = "a") +
@@ -425,21 +410,61 @@ OC_box <- ggplot(site_data_outrmd, aes(Site, Avg_OC_Ratio)) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
-       y = "Upstream Organic Content Ratio ") +
+       y = "Upstream Organic Content (Ratio)",
+       title = "E)") +
   annotate("text", "San Rafael", 
            max((site_data_outrmd %>% 
                   filter(Site == "San Rafael"))$Avg_OC_Ratio) + 0.025, label = "a") +
   annotate("text", "Morro Bay", 
            max((site_data_outrmd %>% 
-                  na.omit() %>% filter(Site == "Morro Bay"))$Avg_OC_Ratio) + 0.025, label = "b") +
+                  na.omit() %>% 
+                  filter(Site == "Morro Bay"))$Avg_OC_Ratio) + 0.025, label = "b") +
   annotate("text", "Shellmaker", 
            max((site_data_outrmd %>% 
                   filter(Site == "Shellmaker"))$Avg_OC_Ratio) + 0.025, label = "ab") +
   annotate("text", "Deanza", 
            max((site_data_outrmd %>% 
-                  na.omit() %>% filter(Site == "Deanza"))$Avg_OC_Ratio) + 0.025, label = "b") 
+                  na.omit() %>% 
+                  filter(Site == "Deanza"))$Avg_OC_Ratio) + 0.025, label = "b") 
 
-grid.arrange(Chl_box, Temp_box, Sal_box, Turb_box, Tpm_box, OC_box, nrow=3)
+#########################
+###### Chlorphyll
+#hist(site_data_outrmd$Chl_ug_L_Up)
+site_chl_aov <- aov(Chl_ug_L_Up ~ Site, data = site_data_outrmd)
+#summary(site_chl_aov)
+chl_aov_values <- broom::tidy(site_chl_aov) # put ANOVA model into tibble to extract individual values
+# Post-Hoc Tukey test
+tukey_chl <- TukeyHSD(site_chl_aov, ordered = FALSE, conf.level = 0.95)
+#tukey_chl
+#plot(tukey_chl)
+
+#Honestly Significant Difference test
+hds_chl <- HSD.test(site_chl_aov, trt = "Site")
+#hds_chl
+
+Chl_box <- ggplot(site_data_outrmd, aes(Site, Chl_ug_L_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = expression(paste("Upstream Chlorophyll ",alpha, " (", mu,"g/L)")),
+       title = "F)") +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Chl_ug_L_Up) + 0.5, label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Morro Bay"))$Chl_ug_L_Up) + 0.5, label = "ab") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Chl_ug_L_Up) + 0.5, label = "b") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Deanza"))$Chl_ug_L_Up) + 0.5, label = "ab")
+
+grid.arrange(Temp_box, Sal_box, Turb_box, Tpm_box, OC_box, Chl_box,nrow=3)
 ```
 
 # Results
@@ -745,7 +770,7 @@ mlr = lm(clr~Site+Temp+Salinity+Turbidity+TPM+OC,data=test2)
 summary(mlr)
 ```
 
-```{r HCR_Quantile_Regression, fig.width=7, fig.asp=1.3, warning=F, message = F, fig.cap="Water quality variables relationships with habitat clearance rate (HCR). For all oyster habitat filtration trials, quantile regression with $\\tau$ = 0.5 and $\\tau$ = 0.9 was used to test wheather HCR changed with A) temperature, B) salinity, C) turbidity, D) total particulate matter, E) organic content; slopes that are not significantly different from zero are indicated by red dashed lines. Dotted gray lines are the mean value of HCR. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Companyaqu (aqculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Quantile_Reg}"}
+```{r HCR_Quantile_Regression, fig.width=7, fig.asp=1.2, warning=F, message = F, fig.cap="Water quality variables relationships with habitat clearance rate (HCR). For all oyster habitat filtration trials, quantile regression with $\\tau$ = 0.5 and $\\tau$ = 0.9 was used to test wheather HCR changed with A) temperature, B) salinity, C) turbidity, D) total particulate matter, or E) organic content; slopes that are not significantly different from zero are indicated by red dashed lines. Dotted gray lines are the mean value of HCR. \\label{Quantile_Reg}"}
 #create model variables
 attach(Filter_only_outRmd_data)
 qr_x <- cbind(Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, Avg_OC_Ratio, Site)
