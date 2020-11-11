@@ -698,10 +698,15 @@ t_test_adj
 t_test_adj_df <- (length(y.adj.experiment) + length(y.adj.control)) - 2 
 
 ########### Power analysis - sensitivity power analysis 
-# one way to estimate Cohen’s d
-# d = effect size = abs(mean(sample1) - mean(sample2)) / root mean square standard deviation
-d_adj_test1 <- {abs(mean(y.adj.experiment) - mean(y.adj.control)) / 
-  sqrt((sd(y.adj.experiment)^2 + sd(y.adj.control)^2) / 2)}
+# estimate s per Cohen --> d (effect size) = mean(x1) - mean(x2) / s
+# formulas from Cohen (1988) on Wikipedia
+d_adj_test1 <- {
+  (mean(y.adj.experiment) - mean(y.adj.control)) / 
+  (sqrt(
+    ((length(y.adj.experiment) - 1)*sd(y.adj.experiment)^2 + 
+       (length(y.adj.control) - 1)*sd(y.adj.control)^2) / 
+         (length(y.adj.experiment) + length(y.adj.control) - 2))
+   ) }
 
 # power analysis for "t-test (two samples with unequal n)"
 adj_test1_power <- pwr.t2n.test(d = d_adj_test1, 
@@ -1017,12 +1022,12 @@ grid.arrange(arrangeGrob(qrplot_temp, qrplot_sal, qrplot_turb, qrplot_tpm, qrplo
 ## Oyster Habitat vs. Control 
 
 Habitat clearance rates (HCR) in filtration trials (*N* = `r nrow(exp)`) were not significantly different than in control trials (*N* = `r nrow(control)`) (two-sample, one-tail *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, *p* = `r round(filter_control_ttest$p.value, digits = 2)`). 
-A statistical power analysis determind that the effect size between filtration and control trial HCR was large (*ES* = `r round(test1_power$d, 2)`), per Cohen's (1988) criteria, and there was little power (`r round(test1_power$power,2)`) to detect a statistical signal with my relatively small sample size.
+A statistical power analysis determind that the effect size between filtration and control trial HCR was very large (*ES* = `r round(test1_power$d, 2)`), per the criteria in @Sawilowsky2009a, and there was little power (`r round(test1_power$power,2)`) to detect a statistical signal.
 A random forest model including all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 1)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r format(round(Turb_rel_import, 1), nsmall = 1)`\%), TPM (`r format(round(TPM_rel_import, 1), nsmall =1)`\%), salinity (`r format(round(Sal_rel_import, 1), nsmall = 1)`\%), and site (`r format(round(Site_rel_import, 1), nsmall =1)`\%).
 The residuals of this random forest model were used to adjust HCR values to account for water quality variables and site. 
 Adjusted HCR between filtration and control trials were not significantly different (two-sample, one-tail *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`).
-A second statistical power analysis determined that the effect size of adjusted HCRs between filtration and control trials was greater (*ES* = `r round(adj_test1_power$d,2 )`) than the unadjusted t-test along with more power (`r round(adj_test1_power$power, 2)`).
-Despite non-significant comparisons between control and filtration trials, statistical power anlaysis indicate that my limited sample size is inhibiting statistical inference of a large effect size of oyster habitat HCRs compared to mudflat controls.
+A second statistical power analysis determined that the effect size of adjusted HCRs between filtration and control trials was still very large (*ES* = `r round(adj_test1_power$d,2 )`) and with more power (`r round(adj_test1_power$power, 2)`) than the unadjusted HCR t-test.
+Despite non-significant results between control and filtration trials, statistical power anlaysis indicate that my limited sample size is inhibiting statistical inference of a very large effect size of filtration trial HCRs compared to control HCRs.
 
 ## Habitat Clearance Rates 
 
@@ -1040,6 +1045,7 @@ OC ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRoc[[1]]$coefficients[2,2],2)`, *
 
 ```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Letters are post-hoc Tukey honestly significant difference results, and diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
 
+#### one-way ANOVA -- HCR by Site
 HCR_site_aov <- aov(L_hr_m2 ~ Site, data = Filter_only_outRmd_data)
 #summary(HCR_site_aov)
 HCR_aov_values <- broom::tidy(HCR_site_aov)
@@ -1055,7 +1061,12 @@ hds_HCR <- HSD.test(HCR_site_aov, trt = "Site")
 ## HCR averages by Site
 FR_Site <- Filter_only_outRmd_data %>% 
   group_by(Site) %>% 
-  summarize(avg_L_hr_m2 = mean(L_hr_m2))
+  summarize(avg_L_hr_m2 = mean(L_hr_m2),
+            SD = sd(L_hr_m2),
+            n_samples = length(L_hr_m2))
+
+
+
 
 ### Filtration by site (Filtration Trials only)
 FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
