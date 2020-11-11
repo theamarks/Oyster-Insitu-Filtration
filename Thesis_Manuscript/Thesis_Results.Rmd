@@ -624,7 +624,7 @@ check_filter_dist <- test1 %>%
 hist(check_filter_dist$Clearance, breaks = 50)
 summary(check_filter_dist$Clearance) # also not close... doesn't look normal with extreme values
 
-##### T-test Compare Control vs Filtration trials
+########### T-test Compare Control vs Filtration trials
 exp = test1[test1$Experiment=="Filtration",] # separate Filtraiton trials
 control = test1[test1$Experiment!="Filtration",] # separate negative control trials
 # Two-sample / independent t-test , single / one-sided 
@@ -634,10 +634,22 @@ filter_control_ttest <- broom::tidy(t_test)
 filter_control_ttest
 # Degrees of freedom two-sample t-test
 t_test_df <- (nrow(exp) + nrow(control)) - 2 
-### t-test results - AM #####
-# Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`t_test_df`) = t-value = `filter_control_ttest$statistic`, p < `filter_control_ttest$p.value`).
 
-######## RANDOM FOREST MODEL- control for WQ & Site
+########### Power analysis - sensitivity power analysis 
+library(pwr)
+# d = effect size = abs(mean(sample1) - mean(sample2)) / root mean square standard deviation
+d_test1 <- {abs(mean(exp$Clearance) - mean(control$Clearance)) / 
+  sqrt((sd(exp$Clearance)^2 + sd(control$Clearance)^2) / 2)}
+
+# power analysis for "t-test (two samples with unequal n)"
+test1_power <- pwr.t2n.test(d = d_test1, 
+                            n1 = nrow(exp), 
+                            n2 = nrow(control),
+                            sig.level = 0.05,
+                            power = NULL, # solve for this
+                            alternative = "greater")
+
+########## RANDOM FOREST MODEL- control for WQ & Site
 model.rf = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,
                         data=test1, # use data with extreme values removed 
                         ntree=100,
@@ -669,14 +681,15 @@ Sal_rel_import <- (Var_import_df1[[5,2]] / sum_import1) *100
 Site_rel_import <- (Var_import_df1[[6,2]] / sum_import1) *100
 
 ######## Adjust values - Random Forest model - compare Mud flat to Oyster habitat. ###############
-y.adj = res + mean(test1$Clearance) # take residuals (diff between data and model - what the model doesn't account for (oysters)) and add to the mean response (same for data and model?). This gives me response with the effects of all variables accounted for. 
+# take residuals (diff between data and model - what the model doesn't account for (oysters)) and add to the mean response (same for data and model?). This gives me response with the effects of all variables accounted for. 
+y.adj = res + mean(test1$Clearance) 
 y.adj.experiment = y.adj[test1$Experiment=="Filtration"]
 y.adj.control = y.adj[test1$Experiment!="Filtration"]
 t.test(y.adj.experiment,y.adj.control,alternative="greater")
 t_test_adj <- broom::tidy(t.test(y.adj.experiment,y.adj.control,alternative="greater"))
 t_test_adj
 # Degrees of freedom two-sample t-test
-t_test_adj_df <- (length(y.adj.experiment) - length(y.adj.control)) - 2 
+t_test_adj_df <- (length(y.adj.experiment) + length(y.adj.control)) - 2 
 
 ### Example tree ######
 #model.tree = rpart(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,method="anova",control=rpart.control(minsplit=2,cp=0.05),data=test1)
@@ -981,9 +994,10 @@ grid.arrange(arrangeGrob(qrplot_temp, qrplot_sal, qrplot_turb, qrplot_tpm, qrplo
 
 ## Oyster Habitat vs. Control 
 
-Habitat clearance rates (HCR) in filtration trials were not significantly different than in negative controls (two-sample *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, *p* = `r round(filter_control_ttest$p.value, digits = 2)`).
-A random forest model that included all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 1)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r format(round(Turb_rel_import, 1), nsmall = 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r format(round(Sal_rel_import, 1), nsmall = 1)`\%), and site (`r round(Site_rel_import, 1)`\%).
-Filtration and control trials adjusted by the random forest model were not significantly different (two-sample, one-tail *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`); however, my limited sample size and variable clearance rates are expected to inhibit statistical signal detection.
+Habitat clearance rates (HCR) in filtration trials (*N* = `r nrow(exp)`) were not significantly different than in control trials (*N* = `r nrow(control)`) (two-sample, one-tail *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, *p* = `r round(filter_control_ttest$p.value, digits = 2)`).
+A random forest model including all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 1)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r format(round(Turb_rel_import, 1), nsmall = 1)`\%), TPM (`r format(round(TPM_rel_import, 1), nsmall =1)`\%), salinity (`r format(round(Sal_rel_import, 1), nsmall = 1)`\%), and site (`r format(round(Site_rel_import, 1), nsmall =1)`\%).
+The residuals of this random forest model were used to adjust HCR values to account for water quality variables and site. 
+Adjusted HCR between filtration and control trials were not significantly different (two-sample, one-tail *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`); however, my limited sample size and variable clearance rates are expected to inhibit statistical signal detection.
 
 ## Habitat Clearance Rates 
 
