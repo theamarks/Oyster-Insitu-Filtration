@@ -1219,64 +1219,6 @@ print.xtable(sumtable_latex,
 
 \captionsetup[table]{labelformat=empty}
 
-```{r Site Summary Table, eval=FALSE, include=FALSE}
-
-#### Redundant with Site WQ graphs
-Site_Sum <- Final_table %>% 
-  filter(!Date == "2019-04-17") %>% 
-  dplyr::group_by(Site) %>% 
-  dplyr::summarize(Chl = paste0(round(mean(na.omit(Chl_ug_L_Up)),1),
-                                ' (SD ', 
-                                 round(sd(na.omit(Chl_ug_L_Up)),2), 
-                                 ')'),
-                  Temp = paste0(round(mean(na.omit(Temp_C_Up)),2),
-                                 ' (SD ', 
-                                 round(sd(na.omit(Temp_C_Up)),2), 
-                                 ')'),
-                   Sal = paste0(round(mean(na.omit(Sal_ppt_Up)),1),
-                                ' (SD ', 
-                                 round(sd(na.omit(Sal_ppt_Up)),1), 
-                                 ')'),
-                   Turb = paste0(round(mean(na.omit(Turbidity_NTU_Up)),1),
-                                 ' (SD ', 
-                                 round(sd(na.omit(Turbidity_NTU_Up)),1), 
-                                 ')'),
-                   TPM = paste0(round(mean(na.omit(Avg_TPM_mg_L)),2), 
-                                ' (SD ', 
-                                 round(sd(na.omit(Avg_TPM_mg_L)),2), 
-                                 ')'),
-                   OC = paste0(round(mean(na.omit(Avg_OC_Ratio)),2),
-                               ' (SD ', 
-                                 round(sd(na.omit(Avg_OC_Ratio)),2), 
-                                 ')'))
-
-#site_sum_table <- cbind(Site_Sum, 
- #                       tibble(Lat = c(37.964179, 35.334707, 33.622097, 33.620291),
-  #                      Long = c(-122.487217, -120.844000, -117.892399, -117.897692)#,
-                        #Months = c("July, Nov", "July, May, June", "May, June", "Oct, April, May, June")
-   #                     ))
-
-Site_Sum %<>% 
-  dplyr::select(Site, Chl, Temp, Sal, Turb, TPM, OC)
-  
-site_sum_xtable <- xtable(Site_Sum, 
-                         caption = "Summary of Environmental Conditions at Each Study Site.",
-                         label = "tb:site",
-                         align = "llllllll",
-                         type = "latex")
-
-print.xtable(site_sum_xtable, 
-      booktabs=TRUE, 
-      caption.placement="top", 
-      NA.string = NA, 
-      sanitize.colnames.function=function(x){x},
-      comment = F,
-      include.rownames = FALSE,
-      timestamp = NULL,
-      size = "\\fontsize{10pt}{10pt}\\selectfont") # font size / line spacing 
-
-```
-
 ```{r HCR_Site_ANOVA, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, results='asis'}
 
 ## ANOVA Data
