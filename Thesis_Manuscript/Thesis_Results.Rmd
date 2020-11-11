@@ -485,7 +485,7 @@ At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_r
 Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was `r round(mean(NPSM_NC_sum$pcnt_Chl_rmvd),1)` \%.
 
 
-```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Letters are site differences from a one-way ANOVA with Tukey's HSD, and diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). Each data point is the average value from a single filtration trial. \\label{ChlRmd_Site_boxplot}"}
+```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial. Letters are site differences from a one-way ANOVA and post-hoc Tukey's HSD, diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{ChlRmd_Site_boxplot}"}
 
 Chlrmd_site_aov <- aov(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data)
 #summary(HCR_site_aov)
@@ -1037,13 +1037,13 @@ at Shellmaker averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^
 and at Deanza averaged `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`) (Figure \ref{FR_Site_boxplot}).
 Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, `r round(NPSM_NC_sum$L_hr_m2,1)`, and `r round(NPD_NC_sum$L_hr_m2,1)` L hr^-1^ m^2^ for San Rafael, and Morro Bay, Shellmaker, and Deanza control trials respectfully.
 HCR for filtration trials did not differ significantly among sites (one-way ANOVA, (*F*(3,16) = 0.29, *p* = 0.83).
-Individual water quality variables did not have a significant correlation with HCR at 0.5 and 0.9 quantiles: temperature ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtemp[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtemp[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[2]]$coefficients[2,4],2)`), salinity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRsal[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRsal[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[2]]$coefficients[2,4],2)`),
+Individual water quality variables did not significantly correlate with HCR at 0.5 and 0.9 quantiles: temperature ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtemp[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtemp[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[2]]$coefficients[2,4],2)`), salinity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRsal[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRsal[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[2]]$coefficients[2,4],2)`),
 turbidity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRturb[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRturb[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[2]]$coefficients[2,4],2)`),
 TPM ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtpm[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtpm[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[2]]$coefficients[2,4],2)`),
 OC ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRoc[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRoc[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRoc[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRoc[[2]]$coefficients[2,4],2)`) (Figure \ref{Quantile_Reg}).
 
 
-```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Letters are post-hoc Tukey honestly significant difference results, and diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
+```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial. Letters are site differences from a one-way ANOVA and post-hoc Tukey's HSD, diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
 
 #### one-way ANOVA -- HCR by Site
 HCR_site_aov <- aov(L_hr_m2 ~ Site, data = Filter_only_outRmd_data)
@@ -1060,6 +1060,14 @@ hds_HCR <- HSD.test(HCR_site_aov, trt = "Site")
 
 ## HCR averages by Site
 FR_Site <- Filter_only_outRmd_data %>% 
+  group_by(Site) %>% 
+  summarize(avg_L_hr_m2 = mean(L_hr_m2),
+            SD = sd(L_hr_m2),
+            n_samples = length(L_hr_m2))
+
+# test if shellmaker extreme value was removed. SD is approxamtely equal among sites
+x <- Filter_only_outRmd_data %>% 
+  filter(L_hr_m2 > -1000) %>% 
   group_by(Site) %>% 
   summarize(avg_L_hr_m2 = mean(L_hr_m2),
             SD = sd(L_hr_m2),
