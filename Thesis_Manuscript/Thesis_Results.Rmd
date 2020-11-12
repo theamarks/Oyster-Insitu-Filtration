@@ -1589,13 +1589,13 @@ NPD_species <- Bivalve_Den_data %>%
   
 ```
 
-In November 2017 the estimated bivalve density at San Rafael was `r SR_Den` individuals/m^2^, all bivalves were *Ostrea lurida* (Figure \ref{Bivalve_Den_Biomass}).
-Other bivalves were noted, but rare, and were not detected in sample bags (C. Zabin, unpublished data). 
-Morro Bay has an estimated `r MB_Den` *Crassostrea gigas* individuals/m^2^ (Morro Bay Oyster Company), personal field observations confirm the lack of bivalve fouling on the aquaculture lines.
-Shellmaker has an estimated `r NPSM_Den` individuals/m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals/m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals/m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals/m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals/m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals/m^2^) (Figure \ref{Bivalve_Den_Biomass}.
-Deanza has an estimated `r NPD_Den` individuals/m^2^, composed of *M. senhousia* (`r NPD_species[NPD_species$Species=="Musculista senhousia",2]` individuals/m^2^), *A. diegensis* (`r NPD_species[NPD_species$Species=="Adula diegensis",2]` individuals/m^2^), *O. lurida* (`r NPD_species[NPD_species$Species=="Ostrea lurida",2]` individuals/m^2^), *M. galloprovincialis* (`r NPD_species[NPD_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^) (Figure \ref{Bivalve_Den_Biomass}.
+In November 2017 the estimated bivalve density at San Rafael was `r SR_Den` individuals/m^2^, all of which were *Ostrea lurida* (Figure \ref{Bivalve_Den_Biomass}).
+Other bivalves were noted, but were rare, and were not detected in sample bags (C. Zabin, unpublished data). 
+Morro Bay has an estimated `r MB_Den` *Crassostrea gigas* individuals/m^2^ in the summer of 2018 (Morro Bay Oyster Company); personal field observations confirm the lack of bivalve fouling on the aquaculture lines.
+In May 2018, Shellmaker had an estimated `r NPSM_Den` individuals/m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals/m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals/m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals/m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals/m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals/m^2^) (Figure \ref{Bivalve_Den_Biomass}.
+Deanza had an estimated `r NPD_Den` individuals/m^2^ in May 2018, and was composed of *M. senhousia* (`r NPD_species[NPD_species$Species=="Musculista senhousia",2]` individuals/m^2^), *A. diegensis* (`r NPD_species[NPD_species$Species=="Adula diegensis",2]` individuals/m^2^), *O. lurida* (`r NPD_species[NPD_species$Species=="Ostrea lurida",2]` individuals/m^2^), *M. galloprovincialis* (`r NPD_species[NPD_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^) (Figure \ref{Bivalve_Den_Biomass}.
 
-```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Bivalve community density and composition for each study site. San Rafael data was collected November 2017 by the Zabin lab at SERC, Morro Bay was estimated by Morro Bay Oyster Company, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab at CSUF.  \\label{Bivalve_Den_Biomass}"}
+```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Bivalve community density and composition for each study site. San Rafael data were collected November 2017 by the Zabin lab at SERC, Morro Bay was estimated by Morro Bay Oyster Company in 2018, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab at CSUF.  \\label{Bivalve_Den_Biomass}"}
 
 #unique(Bivalve_Den_data$Species) # list each individual bivalve species
 # Assign species to specific color
@@ -1621,133 +1621,7 @@ Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) +
 Bivalve_Den_graph
 ```
 
-```{r Gray_OlyDTW_SL, include=FALSE}
-
-Gray_Oly_Data <- fread(file.path('./Data/bivalve_density_community', "MattGray_2011_2013_Olurida_allometric_data.csv"))
-colnames(Gray_Oly_Data) <- c("ID", "Date", "species", "length_mm", "shell_tissue_g", "vial_weight", "Vial_wet_oyster", "Tissue_weight_g", "vial_dry_oyster", "tissue_dry_weight_g")
-Gray_Oly_Data %<>% 
-  mutate(species = ifelse(species %in% "O. lurida", "Ostrea lurida", "Pattern Not FOund"),
-         Site = "Yaquina")
-
-Gray_Oly_SL_DTW <- Gray_Oly_Data %>% 
-  dplyr::select(Date, Site, species, length_mm, tissue_dry_weight_g)
-
-```
-
-```{r NPD_Oly_DTW_SL_combine_Gray_data, include=FALSE}
-# Remove outlier and negative DTW value
-NPD_oly_outRmd <- NPD_oly %>%
-  mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
-  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
-
-NPD_Oly_SL_DTW <- NPD_oly_outRmd %>% 
-  mutate(Date = excavation_date) %>% 
-  dplyr::select(Date, Site, species, length_mm, tissue_dry_weight_g)
-
-Oly_combo_DTW_SL <- full_join(NPD_Oly_SL_DTW,Gray_Oly_SL_DTW) %>% 
-  mutate(legend = case_when(Site == "Deanza" & species == "Ostrea lurida" ~ "Deanza",
-                            Site == "Yaquina" & species == "Ostrea lurida" ~ "Yaquina"))
-
-Oly_combo_DTW_SL$legend <- fct_relevel(Oly_combo_DTW_SL$legend, "Yaquina", "Deanza")
-
-### Data file for Dr. Nichols
-#Data_For_Kevin <- Oly_combo_DTW_SL %>% 
- # dplyr::select(Site, length_mm, tissue_dry_weight_g)
-#fwrite(Data_For_Kevin, file = "Marks_Data_DTW_SL_Newport_Yaquina.csv")
-```
-
-```{r Compare_NPD_DTW_SL_transformations, include=FALSE}
-####### Linear 
-Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
-summary(Oly_DTW_lm)
-# R^2: 0.4914
-
-######### linear - log
-Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
-summary(Oly_LogxDTW_lm)
-# R^2: 0.4289
-
-###### Log - linear
-Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
-Oly_logDTW_lm_sum <- summary(Oly_LogDTW_lm)
-coef(Oly_logDTW_lm_sum)
-# R^2: 0.6772
-str(Oly_logDTW_lm_sum) ## displays all values in summary
-
-####### Polynomial
-Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
-summary(Oly_DTW2_lm)
-# R^2: 0.5042
-
-###### Log - Log
-## This model has a better fit than log(y) ~ x
-Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
-OlyDTW_loglog_sum <- summary(Oly_LogDTW_logSH_lm)
-# R^2: 0.7299
-# Residuals should be close to 0
-#https://boostedml.com/2019/06/linear-regression-in-r-interpreting-summarylm.html
-# Q1 and Q3 should have similar magnitude
-#### Boxplot of residuals
-boxplot(Oly_LogDTW_logSH_lm[['residuals']],main='Boxplot: Residuals',ylab='residual value')
-
-summary(Oly_LogDTW_logSH_lm) # residuals median should be close to 0? 
-coef(Oly_LogDTW_logSH_lm) # The intercept tells us that when all the features are at 0
-confint(Oly_LogDTW_logSH_lm) # confidence interval
-residuals(Oly_LogDTW_logSH_lm) # residuals of each data point entered into model
-
-
-par(mfrow=c(2,2))
-plot(Oly_LogDTW_logSH_lm)
-# Leverage Statistics - plots index of parameter elements against their leverage on the model
-# plot(hatvalues(Oly_LogDTW_logSH_lm)) 
-# identifies the index of the largest element of a vector
-# which.max(hatvalues(Oly_LogDTW_logSH_lm))
-
-# show the available object attributes
-str(Oly_LogDTW_logSH_lm)
-```
-
-
-```{r Oly_DTW_SH_outlier_rmd, include=F, fig.keep = 'all', dev = 'pdf', warning=F, message=F, fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) at two locations, Newport Bay, California (Zacherl unpublished data) and Yaquina Bay, Oregon (Gray unpublished data). The Newport Bay data was collected at the Deanza restoration site and outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
-
-Site_Shapes <- c("Deanza" = 16,
-                 "Yaquina" = 3)
-
-######## Graph with Deanza and Yaquina DTW x Shell length
-# Combine legend --> https://gist.github.com/mps9506/39b70aec30ab1322f7ecd6b21f04120e#file-testplot-r-L96
-Oly_shell_DTW_NPD_Yaquina <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_weight_g)) +
-  geom_point(aes(color = legend, shape = legend)) +
-  #geom_smooth(se = F, color = 'grey50') + # method=lm, formula = x_y_formula, level = 0.95, color = 'grey50') +
-  scale_color_manual(labels = c("Yaquina Bay, OR", 
-                                "Deanza, Newport Bay, CA"),
-                     values = c("Yaquina" = "#9986A5",
-                                "Deanza" = "#9986A5"),
-                     na.translate = TRUE, drop = FALSE) + 
-  scale_shape_manual(labels = c("Yaquina Bay, OR", 
-                                "Deanza, Newport Bay, CA"),
-                     values = c("Yaquina" = 3,
-                                "Deanza" = 16),
-                     na.translate = TRUE, drop = FALSE) + 
-  theme_classic() +
-  theme(legend.box.background = element_rect(colour = "black"),
-        legend.justification = c(0, 1), 
-        legend.position = c(0.1, 0.95),
-        legend.title = element_blank()) +
-  ylim(0,1)+
-  labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)') 
- # ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-  #             formula = x_y_formula,
-   #            parse = TRUE,
-    #           label.x = "right",
-     #          label.y = "bottom") 
-  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-   #                    aes(label = sprintf("%i observations", stat(count))))
-
-plot(Oly_shell_DTW_NPD_Yaquina)
-```
-
-```{r Oly_DTW_SH_outrmd_Graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%", fig.cap="The relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. \\label{NPD_Oly_DTW_SH_Trans}"}
+```{r Oly_DTW_SH_outrmd_Graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%", fig.cap="The relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) at the Deanza restoration site in Newport Bay, California. \\label{NPD_Oly_DTW_SH_Trans}"}
 
 ### y ~ log(x) model ####
 # range of Shell length values
@@ -1916,7 +1790,7 @@ Direct biomass data were only available for Deanza, which estimated `r round(NPD
 *O. lurida* had the highest DTW with `r round(NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2],2)` g/m^2^, followed by *M. galloprovincialis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Mytilus galloprovincialis",2],)` g/m^2^), an unknown mussel (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Unknown mussel",2],2)` g/m^2^), *A. diegensis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Adula diegensis",2],2)` g/m^2^), and *M. senhousia* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Musculista senhousia",2],2)` g/m^2^) (Figure \ref{Bivalve_Den_Biomass}).
 San Rafael survey data did not directly assess biomass, but did include *O. lurida* shell length measurements which I used to estimate DTW (Figure \ref{Bivalve_Den_Biomass}) with a model describing Deanza shell length and DTW (ln(y) = `r round(coef(OlyDTW_loglog_sum)[1,1],digits=2)` `r round(coef(OlyDTW_loglog_sum)[2,1],digits=3)`ln(x), R^2^ = `r round(OlyDTW_loglog_sum$r.squared,digits=2)`, *p* < 0.0001) (Figure \ref{NPD_Oly_DTW_SH_Trans}). 
 I estimated San Rafael had `r round(SR_species_DTW$total,2)` g/m^2^ of *O. lurida* (Figure \ref{Bivalve_Den_Biomass}).
-A direct comparison between site biomass to HCR was not possible with my limited biomass data. 
+A direct comparison between site biomass to HCR was not possible with my limited biomass and shell length data. 
 
 ```{r Bivalve_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Estimated biomass of \\textit{O. lurida} habitat at Deanza and San Rafael sites. Data for Deanza was collected by the Zacherl lab (CSUF) in May 2018, the relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) from the survey was used to estimate DTW at San Rafael with shell length data collected by the Zabin lab (SERC) in November 2017. \\label{Bivalve_Den_Biomass}"}
 
@@ -1944,31 +1818,138 @@ Bivalve_Biomass_graph
 ### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
 ```
 
-```{r Research_Comparison, include=FALSE}
-FR_Site # Average HCR by site
-NPD_Oly_HCR = FR_Site[[4,2]] # NPD average HCR l hr-1 m-2
-NPD_Oly_Bio = NPD_species_DTW[[4,2]] # NPD Oly DTW (g m-2)
-Gray_Oly_dry_CR = 0.78 # (l hr-1 g-1) Gray dry season Oly avg CR
-
-NPD_CR_est = NPD_Oly_Bio*Gray_Oly_dry_CR
-NPD_CR_est # adjust my NPD HCR by Oly biomass to compare to Gray CR
 
 
-Avg_WQ <- Filter_only_outRmd_data %>% 
-  group_by(Site) %>% 
-  na.omit() %>% 
-  summarize(avg_OC = mean(Avg_OC_Ratio),
-            avg_Temp = mean(Temp_C_Up))
-
-Gray_Oly_CR <- (-0.96) + (2.49*Avg_WQ[[4,2]]) + (0.06*Avg_WQ[[4,3]])
-NPD_HCR_est = Gray_Oly_CR * NPD_Oly_Bio
-
-```
 
 ```{r EXTRA ANALYSIS CODE, eval=FALSE, include=FALSE}
 \/ \/ \/ THIS IS ALL EXTRA EXPLORATORY ANALYSIS NOT USED BELOW THIS POINT \/ \/ \/
 ```
 
+```{r Gray_OlyDTW_SL, include=FALSE}
+########### Gray DTW 
+Gray_Oly_Data <- fread(file.path('./Data/bivalve_density_community', "MattGray_2011_2013_Olurida_allometric_data.csv"))
+colnames(Gray_Oly_Data) <- c("ID", "Date", "species", "length_mm", "shell_tissue_g", "vial_weight", "Vial_wet_oyster", "Tissue_weight_g", "vial_dry_oyster", "tissue_dry_weight_g")
+Gray_Oly_Data %<>% 
+  mutate(species = ifelse(species %in% "O. lurida", "Ostrea lurida", "Pattern Not FOund"),
+         Site = "Yaquina")
+
+Gray_Oly_SL_DTW <- Gray_Oly_Data %>% 
+  dplyr::select(Date, Site, species, length_mm, tissue_dry_weight_g)
+
+```
+
+```{r NPD_Oly_DTW_SL_combine_Gray_data, include=FALSE}
+# Remove outlier and negative DTW value
+NPD_oly_outRmd <- NPD_oly %>%
+  mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
+  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
+
+NPD_Oly_SL_DTW <- NPD_oly_outRmd %>% 
+  mutate(Date = excavation_date) %>% 
+  dplyr::select(Date, Site, species, length_mm, tissue_dry_weight_g)
+
+Oly_combo_DTW_SL <- full_join(NPD_Oly_SL_DTW,Gray_Oly_SL_DTW) %>% 
+  mutate(legend = case_when(Site == "Deanza" & species == "Ostrea lurida" ~ "Deanza",
+                            Site == "Yaquina" & species == "Ostrea lurida" ~ "Yaquina"))
+
+Oly_combo_DTW_SL$legend <- fct_relevel(Oly_combo_DTW_SL$legend, "Yaquina", "Deanza")
+
+### Data file for Dr. Nichols
+#Data_For_Kevin <- Oly_combo_DTW_SL %>% 
+ # dplyr::select(Site, length_mm, tissue_dry_weight_g)
+#fwrite(Data_For_Kevin, file = "Marks_Data_DTW_SL_Newport_Yaquina.csv")
+```
+
+```{r Compare_NPD_DTW_SL_transformations, include=FALSE}
+####### Linear 
+Oly_DTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ length_mm)
+summary(Oly_DTW_lm)
+# R^2: 0.4914
+
+######### linear - log
+Oly_LogxDTW_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ log(length_mm))
+summary(Oly_LogxDTW_lm)
+# R^2: 0.4289
+
+###### Log - linear
+Oly_LogDTW_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ length_mm)
+Oly_logDTW_lm_sum <- summary(Oly_LogDTW_lm)
+coef(Oly_logDTW_lm_sum)
+# R^2: 0.6772
+str(Oly_logDTW_lm_sum) ## displays all values in summary
+
+####### Polynomial
+Oly_DTW2_lm <- lm(data = NPD_oly_outRmd, tissue_dry_weight_g ~ poly(length_mm, degree = 2, raw = T))
+summary(Oly_DTW2_lm)
+# R^2: 0.5042
+
+###### Log - Log
+## This model has a better fit than log(y) ~ x
+Oly_LogDTW_logSH_lm <- lm(data = NPD_oly_outRmd, log(tissue_dry_weight_g) ~ log(length_mm))
+OlyDTW_loglog_sum <- summary(Oly_LogDTW_logSH_lm)
+# R^2: 0.7299
+# Residuals should be close to 0
+#https://boostedml.com/2019/06/linear-regression-in-r-interpreting-summarylm.html
+# Q1 and Q3 should have similar magnitude
+#### Boxplot of residuals
+boxplot(Oly_LogDTW_logSH_lm[['residuals']],main='Boxplot: Residuals',ylab='residual value')
+
+summary(Oly_LogDTW_logSH_lm) # residuals median should be close to 0? 
+coef(Oly_LogDTW_logSH_lm) # The intercept tells us that when all the features are at 0
+confint(Oly_LogDTW_logSH_lm) # confidence interval
+residuals(Oly_LogDTW_logSH_lm) # residuals of each data point entered into model
+
+
+par(mfrow=c(2,2))
+plot(Oly_LogDTW_logSH_lm)
+# Leverage Statistics - plots index of parameter elements against their leverage on the model
+# plot(hatvalues(Oly_LogDTW_logSH_lm)) 
+# identifies the index of the largest element of a vector
+# which.max(hatvalues(Oly_LogDTW_logSH_lm))
+
+# show the available object attributes
+str(Oly_LogDTW_logSH_lm)
+```
+
+
+```{r Oly_DTW_SH_outlier_rmd, include=F, fig.keep = 'all', dev = 'pdf', warning=F, message=F, fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) at two locations, Newport Bay, California (Zacherl unpublished data) and Yaquina Bay, Oregon (Gray unpublished data). The Newport Bay data was collected at the Deanza restoration site and outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
+
+Site_Shapes <- c("Deanza" = 16,
+                 "Yaquina" = 3)
+
+######## Graph with Deanza and Yaquina DTW x Shell length
+# Combine legend --> https://gist.github.com/mps9506/39b70aec30ab1322f7ecd6b21f04120e#file-testplot-r-L96
+Oly_shell_DTW_NPD_Yaquina <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_weight_g)) +
+  geom_point(aes(color = legend, shape = legend)) +
+  #geom_smooth(se = F, color = 'grey50') + # method=lm, formula = x_y_formula, level = 0.95, color = 'grey50') +
+  scale_color_manual(labels = c("Yaquina Bay, OR", 
+                                "Deanza, Newport Bay, CA"),
+                     values = c("Yaquina" = "#9986A5",
+                                "Deanza" = "#9986A5"),
+                     na.translate = TRUE, drop = FALSE) + 
+  scale_shape_manual(labels = c("Yaquina Bay, OR", 
+                                "Deanza, Newport Bay, CA"),
+                     values = c("Yaquina" = 3,
+                                "Deanza" = 16),
+                     na.translate = TRUE, drop = FALSE) + 
+  theme_classic() +
+  theme(legend.box.background = element_rect(colour = "black"),
+        legend.justification = c(0, 1), 
+        legend.position = c(0.1, 0.95),
+        legend.title = element_blank()) +
+  ylim(0,1)+
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)') 
+ # ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+  #             formula = x_y_formula,
+   #            parse = TRUE,
+    #           label.x = "right",
+     #          label.y = "bottom") 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
+
+plot(Oly_shell_DTW_NPD_Yaquina)
+```
 ```{r Oly_TWW_DTW_outRmd, eval=FALSE, fig.align="default", fig.asp=0.618, fig.cap="The relationship between \\*O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, fig.keep='all', fig.width=8, message=FALSE, warning=FALSE, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW=0.0044*TWW - 0.043). \\label{Oly_TWW_DTW_outRmd}", dev='pdf', include=FALSE}
 
 ######### NPD Oly TWW DTW Graphs - Not using 
