@@ -100,24 +100,24 @@ This similarity may be an artifact of the patchy and high relief habitat at San 
 Given the similar tidal and hydrodynamic conditions within each site, my results still show highly variable HCRs within each site (Figure \ref{FR_Site_boxplot}).
 My HCRs across all sites ranged from `r round(min(Filter_only_outRmd_data$L_hr_m2))` to `r round(max(Filter_only_outRmd_data$L_hr_m2))` L hr^-1^m^-2^ (Table 1), which encompasses the HCR range of previous studies.
 @Milbrandt2015 used similar upstream-downstream *in situ* methods on restored bivalve beds in Florida and reported a range of habitat clearance rates from -26 to 157 L hr^-1^m^-2^.
-Approximately `r round((nrow(Filter_only_outRmd_data %>% filter(L_hr_m2 > 157)) / nrow(Filter_only_outRmd_data)) * 100)` percent of my trials exceed their largest value (Table 1).
-@Jones2011a found the HCRs of infaunal cockles in New Zealand to be between 20 and 420 L hr^-1^m^-2^, where 8\% of my HCR values exceed these values (Table 1).
+Approximately `r round((nrow(Filter_only_outRmd_data %>% filter(L_hr_m2 > 157)) / nrow(Filter_only_outRmd_data)) * 100)`\% of my HCR estimates exceed their largest positive value (Table 1).
+@Jones2011a found the HCRs of infaunal cockles in New Zealand to be between 20 and 420 L hr^-1^m^-2^, where `r round((nrow(Filter_only_outRmd_data %>% filter(L_hr_m2 > 420)) / nrow(Filter_only_outRmd_data)) * 100)`\% of my HCR values exceed their largest positive value (Table 1).
 High variability is well documented in field filtration measurements even in short periods of time [@Grizzle2008, reviewed by @Cranford2011], and in bivalves feeding on natural seston over short and long periods of time [reviewed by @Cranford2011].
 In addition, HCR variation could be the result of measuring hundreds to thousands of bivalves (Figure \ref{Bivalve_Den_Biomass}). 
 Individual feeding behavior can be highly variable in short time periods [@Newell2005], and even under favorable conditions, a substantial portion of individual bivalves may not actively feed or feed at a reduced capacity [@Dolmer2000; @Saurel2007]
 
-I found that temperature was the most important parameter (23%) in predicting HCRs with my random forest model (*R*^2^ = 0.64), aligning with previous bivalve feeding studies.
+I found that temperature was the most important variable (23%) in predicting HCRs with my random forest model (*R*^2^ = 0.64), aligning with previous bivalve feeding studies.
 Temperature affects bivalve physiology and water viscosity [reviewed in @Cranford2011; @Bayne2017] and is found to be a highly predictive variable in bivalve feeding models [@ZuErmgassen2013d; @Moody2020a; @Gray2018; reviewed in @Cranford2011]. 
 After temperature, variables relating to seston quantity and quality were reasonably important in predicting HCRs (turbidity 21.5%, TPM 21.2%, and OC 13.2%), also aligning with previous research [@Gray2018; @Moody2020a; reviewed in @Cranford2011]
 
 ## Conclusions
 
-My results provide the first snapshot habitat clearance rates of oyster habitats in California, and shows that in situ upstream-downstream methods can detect filtration signals in this application.
+My results provide the first snapshot of habitat clearance rates of oyster habitats in California, and shows that *in situ* upstream-downstream methods can detect filtration signals in this application.
 Restored *O. lurida* habitat and *C. gigas* long-line aquaculture in California may clear similar amounts of water per unit area when compared in realistic biological and environmental conditions.
 @Gray2019a also found that the filtration functions of *O. lurida* may be greater than previously thought when complex environmental conditions were accounted for.
 Furthermore, overall filtration functions of *O. lurida* habitat may continue to be underestimated, unless a whole-habitat perspective is taken; future filtration function measurements should incorporate the filtration contributions of other filter-feeders residing on foundation oyster habitat.
 *O. lurida* restoration efforts on the North American Pacific coast aim to increase abundances of this foundation species and its purported filtration functions. 
-My research represents the first direct measurements of restored *O. lurida* habitat filtration functions, and although highly variable, it shows that restored *O. lurida* habitat is a valuable contributor to filtration functions within California bays.
+My research represents the first direct measurements of restored *O. lurida* habitat filtration functions, and although highly variable, they show that restored *O. lurida* habitat is a valuable contributor to filtration functions within California bays.
 
 
 ```{r Extra_Text, eval=FALSE, include=FALSE}
