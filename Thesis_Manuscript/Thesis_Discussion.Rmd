@@ -11,6 +11,30 @@ output:
 indent: true
 ---
 
+```{r Data_reference_setup, include=FALSE}
+library(knitr)
+library(data.table)
+library(magrittr)
+library(tidyverse)
+knitr::opts_knit$set(root.dir = normalizePath('../')) # set working directory to project level
+
+All_data <- fread(file.path('../output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
+
+##################### Data #########################################
+# Remove San Diego filtration trial - not applicable to this analysis - different experimental set up
+Master_analysis_table <- All_data %>% 
+  filter(!Site %in% c("San Diego")) %>% 
+  filter(round(Chl_ug_L_Up,2) > 0.1 | round(Chl_ug_L_Up,2) < -0.1)
+
+ # Filtration trials only - exclude Negative controls
+Filter_only_outRmd_data <- Master_analysis_table %>% 
+  filter(Experiment %in% c("Filtration"))
+
+# Negative Control Trials only 
+Control_only_data <- Master_analysis_table %>% 
+  filter(grepl("Neg*", Master_analysis_table$Experiment))
+```
+
 # Discussion 
 
 To date, no studies have incorporated the effects of other bivalve filter-feeders and true environmental conditions on the filtration functions of Olympia oyster (*Ostrea lurida*) habitat.
@@ -33,47 +57,50 @@ Two important points emerge from the difference between these estimates: 1) Filt
 
 The filtration contributions of non-oyster bivalves is best contextualized by biomass (g DTW m^-2^).
 Biomass is an important metric that is proportional to shell length which is in turn proportional to gill size and thus bivalve pumping rate [@Cranford2011].
-However, biomass is time consuming to measure directly and requires bivalve collection, sacrifice, cleaning, separation from the shell, oven drying, and weighing. 
-Many restoration practitioners may not wish to sacrifice bivalves from a restored habitat or have the resources to process the samples to better estimate filtration functions of the habitat. 
+However, biomass is time consuming to measure directly and requires bivalve collection, sacrifice, removing tissue from the shell, oven drying, and weighing. 
+Many restoration practitioners may not wish to sacrifice bivalves from a restored habitat or do not have the resources to process samples to measure biomass. 
+This leaves a substancial knowedge gap for better understanding the filtration functions that restored *O. lurida* habitat may provide, and making direct comparisons to previous research findings.
 Future studies will benefit from a suite of models that predict species-specific bivalve biomass from shell length measurements, allowing monitoring efforts to measure bivalve shell length without disturbing the habitat to estimate habitat filter feeders.
 Here, I presented a highly predictive allometric model to estimate *O. lurida* biomass from shell length based on data from Newport Bay, CA (Figure \ref{NPD_Oly_DTW_SH_Trans}) that can be used in future southern California studies.
 Allometric relationships may vary regionally [@Ross2006], necessitating more studies from other locations.
 
 ## Environmental Conditions
 
-Gray & Langdon's [-@Gray2018] *O. lurida* in situ clearance rate model was conducted in a flow-through chamber and may not be directly applicable to estimating oyster habitat filtration functions without incorporating hydrodynamics [@Gray2019a].
-The in situ upstream-downstream method employed in my study inherently included natural hydrodynamic conditions formed by the interaction between the physical characteristics of oyster habitat and water flow dynamics that dictate food availability and quality to filter-feeders.
+Gray & Langdon's [-@Gray2018] *O. lurida* *in situ* clearance rate model was conducted in a flow-through chamber and may not be directly applicable to estimating oyster habitat filtration functions without incorporating hydrodynamics [@Gray2019a].
+The *in situ* upstream-downstream method employed in my study inherently included natural hydrodynamic conditions formed by the interaction between the physical characteristics of oyster habitat and water flow dynamics that dictate food availability and quality to filter-feeders.
 Hydrodynamics interact with aquatic ecosystems from large bay-wide scales to small-scale plankton interactions, and are not easy to simulate [@Sanford1997].
 Bivalves living in restored *O. lurida* habitat create a rough surface that produces drag and breaks up the water flow momentum [@Dame2012; @VanDuren2006].
 This basic interaction dissipates upward creating a velocity gradient from the bottom (lower velocity) into the water column (higher velocity) known as the boundary layer [@Dame2012].
 The boundary layer is important to bivalve filter-feeders because this is where they access water column seston for feeding [@Muschenheim1987], and why I positioned my instruments at approximately the height of the oyster habitat [@Grizzle2006].
 The height of the boundary layer can be affected by the arrangement of bivalves and flow speed [@Lim2020], and mostly consists of turbulent flow in natural, rough environments like bivalve beds [@Dame2012; @Styles2015].
 Turbulent flow within the boundary layer increases interaction and mixing with the larger water current, thus influencing particle flux [@Muschenheim1987], and is generally characteristic of natural water bodies even in low velocity scenarios [@Sanford1997].
-My measurements show at least one negative HCR trial at each site (Figure \ref{FR_Site_boxplot}); a result of higher Chl $\alpha$ concentrations downstream than Chl $\alpha$ concentrations upstream.
+My measurements show at least one trial with negative HCR at each site (Figure \ref{FR_Site_boxplot}); a result of higher Chl $\alpha$ concentrations downstream than Chl $\alpha$ concentrations upstream.
 This likely indicates that sediments were re-suspended over the habitat, and does not necessarily suggest a lack of filter-feeding, but instead that the filter-feeding signal was clouded by the net sediment transport [@Grizzle2008; @Wheat2013; @Milbrandt2015]. 
+~ Talk about negative values in control trials ~
 High water velocity can re-suspend sediments; @Dame1985 found that water velocity above 15 cm/s re-suspended particles in a flume, and @Widdows1998 found that in high density mussel beds water velocity above 20-25 cm/s started to erode sediments.
 My water velocity measurements ranged from 2-20 cm/s (Table 1), but velocities 15 cm/s and higher did not correlate with negative HCR values. 
 Negative HCRs may also result because smaller, lighter, organic materials are re-suspended at lower water velocities than inorganic sediments [see @Muschenheim1987; @Wheat2013], and detected by Chl $\alpha$ sensors.
 
 Water flow velocity and depth constrained my field days and deployment duration, resulting in filtration function snapshots.
-Shallow water depth relative to the amount of bivalves ensures that bivalves have a greater influence on water column properties [@Wheat2013] and high water velocities can re-suspend sediments into the water column [@Dame1985; @Widdows1998; @Harsh1999].
+Bivalve filter-feeding has a greater influence on water column when the water is shallow, whereas the filtration signal can be drowned out in deeper water [@Wheat2013]. 
+High water velocities can re-suspend sediments into the water column [@Dame1985; @Widdows1998; @Harsh1999] and also cloud the detection of filtration signals.
 Although my measurements do not represent a comprehensive picture of filtration function across tidal and hydrodynamic conditions, they do represent filtration function at similar tidal and hydrodynamic conditions within each site (e.g. tide, depth, velocity in Table 1).
 Water depth and hydrodynamics may partial explain the similar HCRs between Morro Bay *C. gigas* aquaculture and restored *O. lurida* habitat.
 Morro Bay consisted of floating lines of grow bags that rose from the sediment surface with increasing water depth.
 This floating action may have disturbed bottom sediments, diluting the filtration signal, and created a 'moving target' for the water quality sondes.
-The water quality sensors were positioned at the height of the bivalves, but at Morro Bay this height gradually increased with the flood tide, and sensors may have partly missed the filtration signal creating a lower HCR than expected for *C. gigas* aquaculture.
+The water quality sensors were positioned at the height of the bivalves, but at Morro Bay this height gradually increased with the flood tide, and sensors may have partly missed the filtration signal, creating a lower HCR than expected for *C. gigas* aquaculture.
 Floating or off-bottom *C. gigas* aquaculture may not provide the same biochemical filtration function as *O. lurida* beds because, depending on the water depth, biodeposits are not always deposited on the sediment surface and made available to other benthic organisms; although this filtration function is not directly quantified through HCRs.
 In addition, Morro Bay and San Rafael were not continuous habitat like Deanza and Shellmaker, and contained intermixed mudflat and bivalve habitat.
 This patchy habitat may have caused eddies, where water is retained longer than the average water flow, physically removing seston (i.e. Chl $\alpha$) from the main water flow measured by the downstream instrument.
 Chl $\alpha$ retention in eddies could be conflated as bivalve filtration.
-This is especially possible at San Rafael where the *O. lurida* habitat consisted of an array of 2 m x 2 m shell bag reefs each with a 1 m relief above the sediment. 
-Considering the extremely low *O. lurida* biomass at San Rafael compared to Deanza, one would not expect San Rafael to have a similar range of HCRs (Table 1, 2). 
+This is especially possible at San Rafael, where the *O. lurida* habitat consisted of an array of 2 m x 2 m shell bag reefs each with a 1 m relief above the sediment. 
+Considering the extremely low *O. lurida* biomass at San Rafael compared to Deanza, one would not expect San Rafael to have a similar range of HCRs (Figure \ref{FR_Site_boxplot}). 
 This similarity may be an artifact of the patchy and high relief habitat at San Rafael creating seston sinks on the leeward side of the reef structures.
 
 Given the similar tidal and hydrodynamic conditions within each site, my results still show highly variable HCRs within each site (Figure \ref{FR_Site_boxplot}).
-My HCRs across all sites ranged from -242 to 845 L hr^-1^m^-2^ (Table 1), which encompasses the HCR range of previous studies.
-@Milbrandt2015 used similar upstream-downstream in situ methods on restored bivalve beds in Florida and reported a range of habitat clearance rates from -26 to 157 L hr^-1^m^-2^.
-Forty percent of my trials exceed their largest value (Table 1).
+My HCRs across all sites ranged from `r round(min(Filter_only_outRmd_data$L_hr_m2))` to `r round(max(Filter_only_outRmd_data$L_hr_m2))` L hr^-1^m^-2^ (Table 1), which encompasses the HCR range of previous studies.
+@Milbrandt2015 used similar upstream-downstream *in situ* methods on restored bivalve beds in Florida and reported a range of habitat clearance rates from -26 to 157 L hr^-1^m^-2^.
+Approximately `r round((nrow(Filter_only_outRmd_data %>% filter(L_hr_m2 > 157)) / nrow(Filter_only_outRmd_data)) * 100)` percent of my trials exceed their largest value (Table 1).
 @Jones2011a found the HCRs of infaunal cockles in New Zealand to be between 20 and 420 L hr^-1^m^-2^, where 8\% of my HCR values exceed these values (Table 1).
 High variability is well documented in field filtration measurements even in short periods of time [@Grizzle2008, reviewed by @Cranford2011], and in bivalves feeding on natural seston over short and long periods of time [reviewed by @Cranford2011].
 In addition, HCR variation could be the result of measuring hundreds to thousands of bivalves (Figure \ref{Bivalve_Den_Biomass}). 
