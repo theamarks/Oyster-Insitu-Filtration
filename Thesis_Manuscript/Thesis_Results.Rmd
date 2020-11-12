@@ -1037,7 +1037,7 @@ at Shellmaker averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^
 and at Deanza averaged `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`) (Figure \ref{FR_Site_boxplot}).
 Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, `r round(NPSM_NC_sum$L_hr_m2,1)`, and `r round(NPD_NC_sum$L_hr_m2,1)` L hr^-1^ m^2^ for San Rafael, and Morro Bay, Shellmaker, and Deanza control trials respectfully.
 HCR for filtration trials did not differ significantly among sites (one-way ANOVA, (*F*(3,16) = 0.29, *p* = 0.83).
-Individual water quality variables did not significantly correlate with HCR at 0.5 and 0.9 quantiles: temperature ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtemp[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtemp[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[2]]$coefficients[2,4],2)`), salinity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRsal[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRsal[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[2]]$coefficients[2,4],2)`),
+Individual water quality variables did not significantly relate with HCR at 0.5 and 0.9 quantiles: temperature ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtemp[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtemp[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[2]]$coefficients[2,4],2)`), salinity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRsal[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRsal[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[2]]$coefficients[2,4],2)`),
 turbidity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRturb[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRturb[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[2]]$coefficients[2,4],2)`),
 TPM ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtpm[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtpm[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[2]]$coefficients[2,4],2)`),
 OC ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRoc[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRoc[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRoc[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRoc[[2]]$coefficients[2,4],2)`) (Figure \ref{Quantile_Reg}).
@@ -1250,9 +1250,9 @@ print(aov.xt,
 ```
 
 
-## Variables Affecting HCR
+## Variables Affecting HCR in Filtration Trials
 
-The random forest model using only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
+A random forest model containing only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
 
 ```{r TPM_OC_Values, include=FALSE}
 TPM_OC_Values <- Master_analysis_table %>% 
@@ -1301,9 +1301,9 @@ str(logOC_logTPM_LM_sum)
 ```
 
 ```{r TPM_OC_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.asp=0.618, fig.width=6, out.width="70%", warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are not included because of missing TPM data. \\label{TPM_OC_model}"}
-############ Linear Model
 
-OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ratio )) +
+## Linear Model
+OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ratio, group = Site)) +
   geom_smooth(method = lm, se = F, color = 'grey50') +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
@@ -1319,6 +1319,17 @@ OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ra
                parse = TRUE,
                label.x = "right",
                label.y = "top")
+
+## ANCOVA - https://towardsdatascience.com/doing-and-reporting-your-first-anova-and-ancova-in-r-1d820940f2ef
+library(car)
+ancova_2 <- aov(Avg_OC_Ratio ~ Site + Avg_TPM_mg_L, data = Avg_TPM_summary_table)
+Anova(ancova_2, type = "III") # summary() uses type I error, no good
+# can also use summary.lm()
+summary.lm(ancova_2)
+# Post-hoc Tukey Honestly Significant Difference test
+hsd_ancova <- HSD.test(ancova_2, trt = "Site")
+
+
 
 ############ Y ~ log(x)
 # create range of values to predict with model
@@ -1385,9 +1396,9 @@ logOC_logTPM_graph
 
 ```
 
-Total Particulate Matter (TPM) is a significant negative predictor of seston OC when sites are combined (ln(y) = `r round(coef(logOC_logTPM_LM_sum)[1,1],digits=2)` `r round(coef(logOC_logTPM_LM_sum)[2,1],digits=3)` ln(x), *R*^2^ = `r  round(logOC_logTPM_LM_sum$r.squared,digits=2)`, *p* = `r round(coef(logOC_logTPM_LM_sum)[2,4],digits = 3)`) (Figure \ref{TPM_OC_model}). 
-This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collect the same way regardless of the trial. 
-Bays have distinct TPM signatures that do not overlap (Figure \ref{TPM_OC_model}).
+Total Particulate Matter (TPM) is a significantly related to seston OC when sites are combined  (Figure \ref{TPM_OC_model}). 
+This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collected the same way regardless of the trial. 
+Bays seem to have distinct TPM signatures that do not overlap (Figure \ref{TPM_OC_model}).
 Northern San Francisco Bay (San Rafael) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`), and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`).
 Newport Bay (Deanza and Shellmaker) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
 Northern San Francisco Bay (San Rafael) OC averaged `r round(mean(SR_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_OC_Ratio),2)`), and Morro Bay OC averaged `r round(mean(MB_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_OC_Ratio,2))`).
