@@ -469,10 +469,10 @@ Temperature was not different between sites (*F*(`r temp_aov_values[[1,2]]`, `r 
 
 ## Percent Chlorophyll $\alpha$ Removal
 
-The mean percent Chl $\alpha$ removal at the San Rafael site was `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}) and was `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
+The mean percent Chl $\alpha$ removal at the San Rafael site was `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}) and was `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial (Table 1). 
 Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
 At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removal during the control trial.
-Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was `r round(mean(NPSM_NC_sum$pcnt_Chl_rmvd),1)` \%.
+Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was `r round(mean(NPSM_NC_sum$pcnt_Chl_rmvd),1)` \% (Table 1).
 
 ```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial and diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{ChlRmd_Site_boxplot}"}
 
@@ -502,19 +502,8 @@ Chl_Rmd_box <- ggplot(Filter_only_outRmd_data, aes(Site, pcnt_Chl_rmvd)) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
-       y = Prt_Chl_Label) +
-   annotate("text", "San Rafael", 
-           max((Filter_only_outRmd_data %>% 
-                  filter(Site == "San Rafael"))$pcnt_Chl_rmvd) + 4, label = "a") +
-   annotate("text", "Morro Bay", 
-           max((Filter_only_outRmd_data %>% 
-                  filter(Site == "Morro Bay"))$pcnt_Chl_rmvd) + 4, label = "a") +
-   annotate("text", "Shellmaker", 
-           max((Filter_only_outRmd_data %>% 
-                  filter(Site == "Shellmaker"))$pcnt_Chl_rmvd) + 4, label = "a") +
-   annotate("text", "Deanza", 
-           max((Filter_only_outRmd_data %>% 
-                  filter(Site == "Deanza"))$pcnt_Chl_rmvd) + 4, label = "a")
+       y = Prt_Chl_Label)
+
 plot(Chl_Rmd_box)
 
 ####### Don't include - doesn't match analysis data
@@ -809,7 +798,8 @@ The residuals of this random forest model were used to adjust HCR values to acco
 Adjusted HCR between filtration and control trials were not significantly different (two-sample, one-tail *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`).
 A second statistical power analysis determined that the effect size of adjusted HCRs between filtration and control trials was still very large (*ES* = `r round(adj_test1_power$d,2 )`) and with more power (`r round(adj_test1_power$power, 2)`) than the unadjusted HCR t-test.
 Despite non-significant results between control and filtration trials, statistical power anlaysis indicate that my limited sample size is inhibiting statistical inference of a very large effect size of filtration trial HCRs compared to control HCRs.
-```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial. Letters are site differences from a one-way ANOVA and post-hoc Tukey's HSD, diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
+
+```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial and diamonds are site means. HCR was not statistically different between sites (one-way ANOVA). Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
 
 ## HCR averages by Site
 FR_Site <- Filter_only_outRmd_data %>% 
@@ -1113,7 +1103,8 @@ at Morro Bay averaged `r round(mean(MB_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*
 at Shellmaker averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`), 
 and at Deanza averaged `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`) (Figure \ref{FR_Site_boxplot}).
 Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, `r round(NPSM_NC_sum$L_hr_m2,1)`, and `r round(NPD_NC_sum$L_hr_m2,1)` L hr^-1^ m^2^ for San Rafael, and Morro Bay, Shellmaker, and Deanza control trials respectfully.
-HCR for filtration trials did not differ significantly among sites (one-way ANOVA, (*F*(`r HCR_aov_values[[1,2]]`, `r HCR_aov_values[[2,2]]`) = `r round(HCR_aov_values[[1,5]],2)`, *p* = `r round(HCR_aov_values[[1,6]],2)`).
+HCR for filtration trials did not differ significantly among sites (one-way ANOVA, *F*(`r HCR_aov_values[[1,2]]`, `r HCR_aov_values[[2,2]]`) = `r round(HCR_aov_values[[1,5]],2)`, *p* = `r round(HCR_aov_values[[1,6]],2)`).
+A statistical power analysis determined that the effect size between site and HCR in a one-way ANOVA was very small (*ES* = `r round(HCR_site_power$f, 2)`) [@Sawilowsky2009a] with little power (`r round(HCR_site_power$power, 2)`) to detect statistically significant differences.
 Individual water quality variables did not significantly relate with HCR at 0.5 and 0.9 quantiles: temperature ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtemp[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtemp[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[2]]$coefficients[2,4],2)`), salinity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRsal[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRsal[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[2]]$coefficients[2,4],2)`),
 turbidity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRturb[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRturb[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[2]]$coefficients[2,4],2)`),
 TPM ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtpm[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtpm[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[2]]$coefficients[2,4],2)`),
