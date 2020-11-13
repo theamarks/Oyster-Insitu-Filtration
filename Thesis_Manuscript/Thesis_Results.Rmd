@@ -1035,6 +1035,13 @@ OC ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRoc[[1]]$coefficients[2,2],2)`, *
 
 ```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial. Letters are site differences from a one-way ANOVA and post-hoc Tukey's HSD, diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
 
+## HCR averages by Site
+FR_Site <- Filter_only_outRmd_data %>% 
+  group_by(Site) %>% 
+  summarize(avg_L_hr_m2 = mean(L_hr_m2),
+            SD = sd(L_hr_m2),
+            n_samples = length(L_hr_m2))
+
 #### one-way ANOVA -- HCR by Site
 HCR_site_aov <- aov(L_hr_m2 ~ Site, data = Filter_only_outRmd_data)
 #summary(HCR_site_aov)
@@ -1048,12 +1055,19 @@ tukey_HCR <- TukeyHSD(HCR_site_aov)
 hds_HCR <- HSD.test(HCR_site_aov, trt = "Site")
 #hds_HCR
 
-## HCR averages by Site
-FR_Site <- Filter_only_outRmd_data %>% 
-  group_by(Site) %>% 
-  summarize(avg_L_hr_m2 = mean(L_hr_m2),
-            SD = sd(L_hr_m2),
-            n_samples = length(L_hr_m2))
+########### Power analysis - sensitivity power analysis 
+# one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
+d_HCR_site <- { HCR_aov_values[[1,3]] / (HCR_aov_values[[1,3]] + HCR_aov_values[[2,3]]) }
+
+# power analysis for "balanced one-way analysis of variance tests"
+# For now Ted says to use the mean of the different sample sizes
+HCR_site_power <- pwr.anova.test(f = d_HCR_site, 
+                                 k = 4,
+                                 n = mean(FR_Site$n_samples), 
+                                 sig.level = 0.05,
+                                 power = NULL) # solve for this
+
+
 
 # test if shellmaker extreme value was removed. SD is approxamtely equal among sites
 x <- Filter_only_outRmd_data %>% 
