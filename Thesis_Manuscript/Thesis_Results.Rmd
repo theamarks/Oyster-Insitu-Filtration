@@ -474,7 +474,6 @@ Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(
 At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removal during the control trial.
 Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was `r round(mean(NPSM_NC_sum$pcnt_Chl_rmvd),1)` \%.
 
-
 ```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial and diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{ChlRmd_Site_boxplot}"}
 
 Chlrmd_site_aov <- aov(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data)
@@ -531,7 +530,6 @@ ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
 #plot(ChlRmd_pos_box)
 
 ```
-
 
 ```{r Random_Forest_DrNichols, include=FALSE}
 ##################### Estimate missing values (Imputation) ##########################
@@ -802,6 +800,105 @@ mlr = lm(clr~Site+Temp+Salinity+Turbidity+TPM+OC,data=test2)
 summary(mlr)
 ```
 
+## Oyster Habitat vs. Control 
+
+Habitat clearance rates (HCR) in filtration trials (*N* = `r nrow(exp)`) were not significantly different than in control trials (*N* = `r nrow(control)`) (two-sample, one-tail *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, *p* = `r round(filter_control_ttest$p.value, digits = 2)`). 
+A statistical power analysis determind that the effect size between filtration and control trial HCR was very large (*ES* = `r round(test1_power$d, 2)`), per the criteria in @Sawilowsky2009a, and there was little power (`r round(test1_power$power,2)`) to detect a statistical signal.
+A random forest model including all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 1)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r format(round(Turb_rel_import, 1), nsmall = 1)`\%), TPM (`r format(round(TPM_rel_import, 1), nsmall =1)`\%), salinity (`r format(round(Sal_rel_import, 1), nsmall = 1)`\%), and site (`r format(round(Site_rel_import, 1), nsmall =1)`\%).
+The residuals of this random forest model were used to adjust HCR values to account for water quality variables and site. 
+Adjusted HCR between filtration and control trials were not significantly different (two-sample, one-tail *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`).
+A second statistical power analysis determined that the effect size of adjusted HCRs between filtration and control trials was still very large (*ES* = `r round(adj_test1_power$d,2 )`) and with more power (`r round(adj_test1_power$power, 2)`) than the unadjusted HCR t-test.
+Despite non-significant results between control and filtration trials, statistical power anlaysis indicate that my limited sample size is inhibiting statistical inference of a very large effect size of filtration trial HCRs compared to control HCRs.
+```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial. Letters are site differences from a one-way ANOVA and post-hoc Tukey's HSD, diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
+
+## HCR averages by Site
+FR_Site <- Filter_only_outRmd_data %>% 
+  group_by(Site) %>% 
+  summarize(avg_L_hr_m2 = mean(L_hr_m2),
+            SD = sd(L_hr_m2),
+            n_samples = length(L_hr_m2))
+
+#### one-way ANOVA -- HCR by Site
+HCR_site_aov <- aov(L_hr_m2 ~ Site, data = Filter_only_outRmd_data)
+#summary(HCR_site_aov)
+HCR_aov_values <- broom::tidy(HCR_site_aov)
+
+# Post-Hoc Tukey test
+tukey_HCR <- TukeyHSD(HCR_site_aov)
+#tukey_HCR
+#plot(tukey_HCR)
+#Honestly Significant Difference test
+hds_HCR <- HSD.test(HCR_site_aov, trt = "Site")
+#hds_HCR
+
+########### Power analysis - sensitivity power analysis 
+# one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
+d_HCR_site <- { HCR_aov_values[[1,3]] / (HCR_aov_values[[1,3]] + HCR_aov_values[[2,3]]) }
+
+# power analysis for "balanced one-way analysis of variance tests"
+# For now Ted says to use the mean of the different sample sizes
+HCR_site_power <- pwr.anova.test(f = d_HCR_site, 
+                                 k = 4,
+                                 n = mean(FR_Site$n_samples), 
+                                 sig.level = 0.05,
+                                 power = NULL) # solve for this
+
+# test if shellmaker extreme value was removed. SD is approxamtely equal among sites
+x <- Filter_only_outRmd_data %>% 
+  filter(L_hr_m2 > -1000) %>% 
+  group_by(Site) %>% 
+  summarize(avg_L_hr_m2 = mean(L_hr_m2),
+            SD = sd(L_hr_m2),
+            n_samples = length(L_hr_m2))
+
+
+
+
+### Filtration by site (Filtration Trials only)
+FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
+  geom_boxplot(color = Site_colors) +
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+   geom_point(data = FR_Site, aes(Site, avg_L_hr_m2),
+             size = 2, shape = 18) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  #stat_summary(fun.data = n_mean_stats, geom = "text") +
+  labs(x = 'Site',
+       y = Hab_FR_Label)
+ # annotate("text", "San Rafael", 
+  #         max((Filter_only_outRmd_data %>% 
+   #               filter(Site == "San Rafael"))$L_hr_m2) + 200, label = "a") +
+  #annotate("text", "Morro Bay", 
+   #        max((Filter_only_outRmd_data %>% 
+    #              filter(Site == "Morro Bay"))$L_hr_m2) + 200, label = "a") +
+#  annotate("text", "Shellmaker", 
+ #          max((Filter_only_outRmd_data %>% 
+  #                filter(Site == "Shellmaker"))$L_hr_m2) + 200, label = "a") +
+#  annotate("text", "Deanza", 
+ #          max((Filter_only_outRmd_data %>% 
+  #                filter(Site == "Deanza"))$L_hr_m2) + 200, label = "a")
+plot(FR_box) 
+
+# Example data for DZ to try ANOVA by site HCR
+#fwrite(Filter_only_outRmd_data, "Filter_data_HCR_ForDZ.csv")
+
+# Don't include ######
+#### Doesn't make sense to exclue negative values if everything is going into model.
+
+FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
+  geom_boxplot(color = Site_colors) +
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  stat_summary(fun.data = n_mean_stats, geom = "text") +
+  labs(x = 'Site',
+       y = Hab_FR_Label)
+
+#plot(FR_pos_box)
+```
+
 ```{r HCR_Quantile_Regression, fig.width=7, fig.asp=1.2, warning=F, message = F, fig.cap="Water quality variables relationships with habitat clearance rate (HCR). For all oyster habitat filtration trials, quantile regression with $\\tau$ = 0.5 and $\\tau$ = 0.9 was used to test wheather HCR changed with A) temperature, B) salinity, C) turbidity, D) total particulate matter, or E) organic content; slopes that are not significantly different from zero are indicated by red dashed lines. Dotted gray lines are the mean value of HCR. \\label{Quantile_Reg}"}
 #create model variables
 attach(Filter_only_outRmd_data)
@@ -1009,16 +1106,6 @@ grid.arrange(arrangeGrob(qrplot_temp, qrplot_sal, qrplot_turb, qrplot_tpm, qrplo
                                           gp = gpar(fontsize = 12))))
 ```
 
-## Oyster Habitat vs. Control 
-
-Habitat clearance rates (HCR) in filtration trials (*N* = `r nrow(exp)`) were not significantly different than in control trials (*N* = `r nrow(control)`) (two-sample, one-tail *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, *p* = `r round(filter_control_ttest$p.value, digits = 2)`). 
-A statistical power analysis determind that the effect size between filtration and control trial HCR was very large (*ES* = `r round(test1_power$d, 2)`), per the criteria in @Sawilowsky2009a, and there was little power (`r round(test1_power$power,2)`) to detect a statistical signal.
-A random forest model including all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 1)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r format(round(Turb_rel_import, 1), nsmall = 1)`\%), TPM (`r format(round(TPM_rel_import, 1), nsmall =1)`\%), salinity (`r format(round(Sal_rel_import, 1), nsmall = 1)`\%), and site (`r format(round(Site_rel_import, 1), nsmall =1)`\%).
-The residuals of this random forest model were used to adjust HCR values to account for water quality variables and site. 
-Adjusted HCR between filtration and control trials were not significantly different (two-sample, one-tail *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`).
-A second statistical power analysis determined that the effect size of adjusted HCRs between filtration and control trials was still very large (*ES* = `r round(adj_test1_power$d,2 )`) and with more power (`r round(adj_test1_power$power, 2)`) than the unadjusted HCR t-test.
-Despite non-significant results between control and filtration trials, statistical power anlaysis indicate that my limited sample size is inhibiting statistical inference of a very large effect size of filtration trial HCRs compared to control HCRs.
-
 ## Habitat Clearance Rates 
 
 HCR at Ran Rafael averaged `r round(mean(SR_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$L_hr_m2),1)`), 
@@ -1031,100 +1118,6 @@ Individual water quality variables did not significantly relate with HCR at 0.5 
 turbidity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRturb[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRturb[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[2]]$coefficients[2,4],2)`),
 TPM ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtpm[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtpm[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[2]]$coefficients[2,4],2)`),
 OC ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRoc[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRoc[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRoc[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRoc[[2]]$coefficients[2,4],2)`) (Figure \ref{Quantile_Reg}).
-
-
-```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial. Letters are site differences from a one-way ANOVA and post-hoc Tukey's HSD, diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
-
-## HCR averages by Site
-FR_Site <- Filter_only_outRmd_data %>% 
-  group_by(Site) %>% 
-  summarize(avg_L_hr_m2 = mean(L_hr_m2),
-            SD = sd(L_hr_m2),
-            n_samples = length(L_hr_m2))
-
-#### one-way ANOVA -- HCR by Site
-HCR_site_aov <- aov(L_hr_m2 ~ Site, data = Filter_only_outRmd_data)
-#summary(HCR_site_aov)
-HCR_aov_values <- broom::tidy(HCR_site_aov)
-
-# Post-Hoc Tukey test
-tukey_HCR <- TukeyHSD(HCR_site_aov)
-#tukey_HCR
-#plot(tukey_HCR)
-#Honestly Significant Difference test
-hds_HCR <- HSD.test(HCR_site_aov, trt = "Site")
-#hds_HCR
-
-########### Power analysis - sensitivity power analysis 
-# one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
-d_HCR_site <- { HCR_aov_values[[1,3]] / (HCR_aov_values[[1,3]] + HCR_aov_values[[2,3]]) }
-
-# power analysis for "balanced one-way analysis of variance tests"
-# For now Ted says to use the mean of the different sample sizes
-HCR_site_power <- pwr.anova.test(f = d_HCR_site, 
-                                 k = 4,
-                                 n = mean(FR_Site$n_samples), 
-                                 sig.level = 0.05,
-                                 power = NULL) # solve for this
-
-
-
-# test if shellmaker extreme value was removed. SD is approxamtely equal among sites
-x <- Filter_only_outRmd_data %>% 
-  filter(L_hr_m2 > -1000) %>% 
-  group_by(Site) %>% 
-  summarize(avg_L_hr_m2 = mean(L_hr_m2),
-            SD = sd(L_hr_m2),
-            n_samples = length(L_hr_m2))
-
-
-
-
-### Filtration by site (Filtration Trials only)
-FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
-  geom_boxplot(color = Site_colors) +
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
-   geom_point(data = FR_Site, aes(Site, avg_L_hr_m2),
-             size = 2, shape = 18) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  #stat_summary(fun.data = n_mean_stats, geom = "text") +
-  labs(x = 'Site',
-       y = Hab_FR_Label)
- # annotate("text", "San Rafael", 
-  #         max((Filter_only_outRmd_data %>% 
-   #               filter(Site == "San Rafael"))$L_hr_m2) + 200, label = "a") +
-  #annotate("text", "Morro Bay", 
-   #        max((Filter_only_outRmd_data %>% 
-    #              filter(Site == "Morro Bay"))$L_hr_m2) + 200, label = "a") +
-#  annotate("text", "Shellmaker", 
- #          max((Filter_only_outRmd_data %>% 
-  #                filter(Site == "Shellmaker"))$L_hr_m2) + 200, label = "a") +
-#  annotate("text", "Deanza", 
- #          max((Filter_only_outRmd_data %>% 
-  #                filter(Site == "Deanza"))$L_hr_m2) + 200, label = "a")
-plot(FR_box) 
-
-# Example data for DZ to try ANOVA by site HCR
-#fwrite(Filter_only_outRmd_data, "Filter_data_HCR_ForDZ.csv")
-
-# Don't include ######
-#### Doesn't make sense to exclue negative values if everything is going into model.
-
-FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
-  geom_boxplot(color = Site_colors) +
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  stat_summary(fun.data = n_mean_stats, geom = "text") +
-  labs(x = 'Site',
-       y = Hab_FR_Label)
-
-#plot(FR_pos_box)
-```
-
 
 ```{r Final_Summary_table, eval=FALSE, include=FALSE, results='asis'}
 
@@ -1222,37 +1215,6 @@ print.xtable(sumtable_latex,
 \includepdf[pagecommand={},noautoscale = true]{Summary_Table_2020_11_5.pdf}
 
 \captionsetup[table]{labelformat=empty}
-
-```{r HCR_Site_ANOVA, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, results='asis'}
-
-## ANOVA Data
-FR_Site_alldata <- Filter_only_outRmd_data %>% 
-  dplyr::select(Date, Site, L_hr_m2)
-
-## Check Normality assumption - looks ok..
-# hist(FR_Site_alldata$L_hr_m2)
-
-## ANOVA HCR ~ Site
-model <- lm(L_hr_m2 ~ Site, data = FR_Site_alldata)
-aov.model <- anova(model)
-#summary(aov.model)
-
-## Create ANOVA results table in LaTeX
-aov.xt <- xtable(aov.model,
-                       caption = 'Table 2: One-way ANOVA of the effect of site on habitat clearance rate (HCR L hr\\textsuperscript{-1} m\\textsuperscript{-2})')
-colnames(aov.xt) <- c("df", "Sum Sq", "Mean Sq", "\\textit{F} value", "\\textit{p} value")
-print(aov.xt,
-      type="latex",
-      booktabs = T,
-      caption.placement = 'top',
-      sanitize.colnames.function=function(x){x},
-      comment = F,
-      timestamp = NULL,
-      label=anovasum)
-
-
-```
-
 
 ## Variables Affecting HCR in Filtration Trials
 
@@ -1908,6 +1870,11 @@ Bivalve_Biomass_graph
 
 ### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
 ```
+
+
+
+
+
 
 
 
