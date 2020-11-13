@@ -816,14 +816,15 @@ Adjusted HCR between filtration and control trials were not significantly differ
 A second statistical power analysis determined that the effect size of adjusted HCRs between filtration and control trials was still very large (*ES* = `r round(adj_test1_power$d,2 )`) and with more power (`r round(adj_test1_power$power, 2)`) than the unadjusted HCR t-test.
 Despite non-significant results between control and filtration trials, statistical power analysis indicate that my limited sample size is inhibiting statistical inference of a very large effect size of filtration trial HCRs compared to control HCRs.
 
-```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial and diamonds are site means. HCR was not statistically different between sites (one-way ANOVA). Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
+```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", fig.width=6,  message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial and diamonds are site means. HCR was not statistically different between sites (one-way ANOVA). Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
 
 ## HCR averages by Site
 FR_Site <- Filter_only_outRmd_data %>% 
   group_by(Site) %>% 
   summarize(avg_L_hr_m2 = mean(L_hr_m2),
             SD = sd(L_hr_m2),
-            n_samples = length(L_hr_m2))
+            n_samples = length(L_hr_m2),
+            med = median(L_hr_m2))
 
 #### one-way ANOVA -- HCR by Site
 HCR_site_aov <- aov(L_hr_m2 ~ Site, data = Filter_only_outRmd_data)
@@ -858,9 +859,6 @@ x <- Filter_only_outRmd_data %>%
             SD = sd(L_hr_m2),
             n_samples = length(L_hr_m2))
 
-
-
-
 ### Filtration by site (Filtration Trials only)
 FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
@@ -873,37 +871,62 @@ FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
   #stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Hab_FR_Label)
- # annotate("text", "San Rafael", 
-  #         max((Filter_only_outRmd_data %>% 
-   #               filter(Site == "San Rafael"))$L_hr_m2) + 200, label = "a") +
-  #annotate("text", "Morro Bay", 
-   #        max((Filter_only_outRmd_data %>% 
-    #              filter(Site == "Morro Bay"))$L_hr_m2) + 200, label = "a") +
-#  annotate("text", "Shellmaker", 
- #          max((Filter_only_outRmd_data %>% 
-  #                filter(Site == "Shellmaker"))$L_hr_m2) + 200, label = "a") +
-#  annotate("text", "Deanza", 
- #          max((Filter_only_outRmd_data %>% 
-  #                filter(Site == "Deanza"))$L_hr_m2) + 200, label = "a")
+
 plot(FR_box) 
 
-# Example data for DZ to try ANOVA by site HCR
-#fwrite(Filter_only_outRmd_data, "Filter_data_HCR_ForDZ.csv")
+#### HCR by Site with .5 quantile ###########
+# select within each stie
+SR_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "San Rafael",
+         L_hr_m2 > FR_Site[[1,5]])
 
-# Don't include ######
-#### Doesn't make sense to exclue negative values if everything is going into model.
+MB_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "Morro Bay",
+         L_hr_m2 > FR_Site[[2,5]])
 
-FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
-  geom_boxplot(color = Site_colors) +
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+NPSM_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "Shellmaker",
+         L_hr_m2 > FR_Site[[3,5]])
+
+NPD_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "Deanza",
+         L_hr_m2 > FR_Site[[4,5]])
+# combine each site's .5 quantile data together
+Site_HCR_50quant <- rbind(SR_50quant, MB_50quant, NPSM_50quant, NPD_50quant)
+
+HCR50_sum <- Site_HCR_50quant %>% 
+  group_by(Site) %>% 
+  summarize(avg_L_hr_m2 = mean(L_hr_m2),
+            SD = sd(L_hr_m2),
+            n_samples = length(L_hr_m2),
+            med = median(L_hr_m2))
+
+HCR_50quant_box <- ggplot((Site_HCR_50quant), aes(Site, L_hr_m2)) +
+  geom_point(aes(fill = Site), shape = 21, show.legend = FALSE) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
-  stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Hab_FR_Label)
 
-#plot(FR_pos_box)
+#plot(HCR_50quant_box)
+
+####### one-way ANOVA -- HCR by Site
+HCR50_site_aov <- aov(L_hr_m2 ~ Site, data = Site_HCR_50quant)
+#summary(HCR_site_aov)
+HCR50_aov_values <- broom::tidy(HCR50_site_aov)
+
+########### Power analysis - sensitivity power analysis 
+# one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
+d_HCR50_site <- { HCR50_aov_values[[1,3]] / (HCR50_aov_values[[1,3]] + HCR50_aov_values[[2,3]]) }
+
+# power analysis for "balanced one-way analysis of variance tests"
+# For now Ted says to use the mean of the different sample sizes
+HCR50_site_power <- pwr.anova.test(f = d_HCR50_site, 
+                                 k = 4,
+                                 n = mean(HCR50_sum$n_samples), 
+                                 sig.level = 0.05,
+                                 power = NULL) # solve for this
+
 ```
 
 ```{r HCR_Quantile_Regression, fig.width=7, fig.asp=1.2, warning=F, message = F, fig.cap="Water quality variables relationships with habitat clearance rate (HCR). For all oyster habitat filtration trials, quantile regression with $\\tau$ = 0.5 and $\\tau$ = 0.9 was used to test wheather HCR changed with A) temperature, B) salinity, C) turbidity, D) total particulate matter, or E) organic content; slopes that are not significantly different from zero are indicated by red dashed lines. Dotted gray lines are the mean value of HCR. \\label{Quantile_Reg}"}
@@ -1120,8 +1143,11 @@ at Morro Bay averaged `r round(mean(MB_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*
 at Shellmaker averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`), 
 and at Deanza averaged `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`) (Figure \ref{FR_Site_boxplot}).
 Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, `r round(NPSM_NC_sum$L_hr_m2,1)`, and `r round(NPD_NC_sum$L_hr_m2,1)` L hr^-1^ m^2^ for San Rafael, and Morro Bay, Shellmaker, and Deanza control trials respectfully.
-HCR for filtration trials did not differ significantly among sites (one-way ANOVA, *F*(`r HCR_aov_values[[1,2]]`, `r HCR_aov_values[[2,2]]`) = `r round(HCR_aov_values[[1,5]],2)`, *p* = `r round(HCR_aov_values[[1,6]],2)`).
+HCR for filtration trials did not differ significantly between sites (one-way ANOVA, *F*(`r HCR_aov_values[[1,2]]`, `r HCR_aov_values[[2,2]]`) = `r round(HCR_aov_values[[1,5]],2)`, *p* = `r round(HCR_aov_values[[1,6]],2)`).
 A statistical power analysis determined that the effect size between site and HCR in a one-way ANOVA was very small (*ES* = `r round(HCR_site_power$f, 2)`) [@Sawilowsky2009a] with little power (`r round(HCR_site_power$power, 2)`) to detect statistically significant differences.
+The upper 0.5 quantile of HCR at each site, representing the top filtration performance within each site, did not differ between sites (one-way ANOVA, *F*(`r HCR50_aov_values[[1,2]]`, `r HCR50_aov_values[[2,2]]`) = `r round(HCR50_aov_values[[1,5]],2)`, *p* = `r round(HCR50_aov_values[[1,6]],2)`).
+~~ Power
+
 Individual water quality variables did not significantly relate with HCR at 0.5 and 0.9 quantiles: temperature ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtemp[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtemp[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[2]]$coefficients[2,4],2)`), salinity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRsal[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRsal[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[2]]$coefficients[2,4],2)`),
 turbidity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRturb[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRturb[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[2]]$coefficients[2,4],2)`),
 TPM ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtpm[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtpm[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[2]]$coefficients[2,4],2)`),
