@@ -236,7 +236,7 @@ find_outlier <- function(data){
 
 ```
 
-```{r Site WQ ANOVA, fig.width=7, fig.asp=1.2, fig.cap="Box plots of ambient (upstream) A) temperature, B) salinity, C) turbidity, D) total particulate matter, E) organic content, and F) chlorophyll $\\alpha$ from filtration and control trials. Lower case letters indicate post-hoc Tukey results among sites. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company, aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
+```{r Site WQ ANOVA, fig.width=7, fig.asp=1.2, fig.cap="Box plots of ambient (upstream) A) temperature, B) salinity, C) turbidity, D) total particulate matter, E) organic content, and F) chlorophyll $\\alpha$ from filtration and control trials. One-way ANOVAs compared the difference between water quality variables and site. Significantly different results were grouped by a post-hoc Tukey's HSD; significantly different sites do not share a common letter, and non-significant differences share letters. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company, aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
 
 #########################
 ###### Temperature 
@@ -289,16 +289,16 @@ Sal_box <- ggplot(site_data_outrmd, aes(Site, Sal_ppt_Up)) +
        title = "B)") +
   annotate("text", "San Rafael", 
            max((site_data_outrmd %>% 
-                  filter(Site == "San Rafael"))$Sal_ppt_Up) + 1, label = "a") +
+                  filter(Site == "San Rafael"))$Sal_ppt_Up) + 0.75, label = "a") +
   annotate("text", "Morro Bay", 
            max((site_data_outrmd %>% 
-                  filter(Site == "Morro Bay"))$Sal_ppt_Up) + 0.5, label = "b") +
+                  filter(Site == "Morro Bay"))$Sal_ppt_Up) + 0.75, label = "b") +
   annotate("text", "Shellmaker", 
            max((site_data_outrmd %>% 
-                  filter(Site == "Shellmaker"))$Sal_ppt_Up) + 0.5, label = "b") +
+                  filter(Site == "Shellmaker"))$Sal_ppt_Up) + 0.75, label = "b") +
   annotate("text", "Deanza", 
            max((site_data_outrmd %>% 
-                  filter(Site == "Deanza"))$Sal_ppt_Up) + 0.5, label = "b") 
+                  filter(Site == "Deanza"))$Sal_ppt_Up) + 0.75, label = "b") 
 
 ###########################
 ######### Turbidity
@@ -367,16 +367,18 @@ Tpm_box <- ggplot(site_data_outrmd, aes(Site, Avg_TPM_mg_L)) +
        title = "D)") +
   annotate("text", "San Rafael", 
            max((site_data_outrmd %>% 
-                  filter(Site == "San Rafael"))$Avg_TPM_mg_L) + 5, label = "a") +
+                  filter(Site == "San Rafael"))$Avg_TPM_mg_L) + 10, label = "a") +
   annotate("text", "Morro Bay", 
            max((site_data_outrmd %>% 
-                  na.omit() %>% filter(Site == "Morro Bay"))$Avg_TPM_mg_L) + 5, label = "b") +
+                  na.omit() %>% 
+                  filter(Site == "Morro Bay"))$Avg_TPM_mg_L) + 10, label = "b") +
   annotate("text", "Shellmaker", 
            max((site_data_outrmd %>% 
-                  filter(Site == "Shellmaker"))$Avg_TPM_mg_L) + 5, label = "b") +
+                  filter(Site == "Shellmaker"))$Avg_TPM_mg_L) + 10, label = "b") +
   annotate("text", "Deanza", 
            max((site_data_outrmd %>% 
-                  na.omit() %>% filter(Site == "Deanza"))$Avg_TPM_mg_L) + 5, label = "b") 
+                  na.omit() %>% 
+                  filter(Site == "Deanza"))$Avg_TPM_mg_L) + 10, label = "b") 
 
 #####################
 ####### OC
@@ -473,7 +475,7 @@ At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_r
 Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was `r round(mean(NPSM_NC_sum$pcnt_Chl_rmvd),1)` \%.
 
 
-```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial. Letters are site differences from a one-way ANOVA and post-hoc Tukey's HSD, diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{ChlRmd_Site_boxplot}"}
+```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial and diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{ChlRmd_Site_boxplot}"}
 
 Chlrmd_site_aov <- aov(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data)
 #summary(HCR_site_aov)
@@ -1075,19 +1077,19 @@ FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
   theme_classic() +
   #stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
-       y = Hab_FR_Label) +
-  annotate("text", "San Rafael", 
-           max((Filter_only_outRmd_data %>% 
-                  filter(Site == "San Rafael"))$L_hr_m2) + 200, label = "a") +
-  annotate("text", "Morro Bay", 
-           max((Filter_only_outRmd_data %>% 
-                  filter(Site == "Morro Bay"))$L_hr_m2) + 200, label = "a") +
-  annotate("text", "Shellmaker", 
-           max((Filter_only_outRmd_data %>% 
-                  filter(Site == "Shellmaker"))$L_hr_m2) + 200, label = "a") +
-  annotate("text", "Deanza", 
-           max((Filter_only_outRmd_data %>% 
-                  filter(Site == "Deanza"))$L_hr_m2) + 200, label = "a")
+       y = Hab_FR_Label)
+ # annotate("text", "San Rafael", 
+  #         max((Filter_only_outRmd_data %>% 
+   #               filter(Site == "San Rafael"))$L_hr_m2) + 200, label = "a") +
+  #annotate("text", "Morro Bay", 
+   #        max((Filter_only_outRmd_data %>% 
+    #              filter(Site == "Morro Bay"))$L_hr_m2) + 200, label = "a") +
+#  annotate("text", "Shellmaker", 
+ #          max((Filter_only_outRmd_data %>% 
+  #                filter(Site == "Shellmaker"))$L_hr_m2) + 200, label = "a") +
+#  annotate("text", "Deanza", 
+ #          max((Filter_only_outRmd_data %>% 
+  #                filter(Site == "Deanza"))$L_hr_m2) + 200, label = "a")
 plot(FR_box) 
 
 # Example data for DZ to try ANOVA by site HCR
@@ -1288,7 +1290,7 @@ logOC_logTPM_LM_sum <- summary(logOC_logTPM_LM)
 str(logOC_logTPM_LM_sum)
 ```
 
-```{r TPM_OC_graphs, echo=FALSE, fig.align="center", fig.asp=0.618, fig.cap="The, fig.keep='all', fig.width=6, message=FALSE, warning=FALSE, dev='pdf', out.width="70%"}
+```{r TPM_OC_graphs, echo=FALSE, fig.align="center", fig.asp=0.618, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across sites and all trials. Two trials are not included because of missing TPM data. \\label{TPM_OC_model}", fig.keep='all', fig.width=6, message=FALSE, warning=FALSE, dev='pdf', out.width="70%"}
 
 ## Linear Model
 OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ratio, group = Site)) +
