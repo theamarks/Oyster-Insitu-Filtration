@@ -17,10 +17,10 @@ indent: true
 In estuaries along the North American Pacific coast (NAPC), the Olympia oyster, *Ostrea lurida*, is a foundation species that autogeneously creates complex three-dimensional habitat [@Dayton1972].
 The shells of living and dead oysters provide habitat for a variety of invertebrates [@Kimbro2006; @Ramsey2012; @Rodney2006; @Boyer2017], nursery, refuge, and foraging habitat for fishes [@Coen2007; @Peterson2003; @Stunz2010], and foraging habitat for birds [@Galtsoff1929; @Boyer2017].
 *O. lurida* and other bivalves that recruit to oyster habitat are suspension feeders that remove particulate matter (seston) from the water column and deposit mucus-bound feces and pseudofeces (i.e. biodeposits) on the sediment surface [@Elsey1935; @Baird1989; @Dame1999; @Kellogg2013].
-This feeding behavior contributes to three critical ecosystem functions, nutrient sequestration, trophic energy transfer, and filtration services that improve water clarity.
+This feeding behavior contributes to three critical ecosystem functions, nutrient sequestration, trophic energy transfer, and water clarification.
 Most of the seston particulate organic matter (POM) is ingested by bivalves for growth and maintenance.
 Nutrients incorporated into bivalve shells can be sequestered long-term [@Kellogg2013] when buried in sediments [@Hu2011], and likely serve as a sink for anthropogenically produced nutrients [@Martinetto2006; @Carmichael2012].
-Bivalve feeding is an important biochemical pathway, linking the water column to the benthos, that transfers energy to higher trophic levels [@Rodney2006; @Kautsky1987]. 
+Bivalve feeding is an important biochemical pathway, linking the water column to the benthos, that transfers energy to higher trophic levels [@Rodney2006; @Kautsky1987] and supplies nutrients to benthic seagrasses [@Peterson1999].
 Bivalve biodeposits can have higher organic and nitrogen content than particles settling out of the water column [@Kautsky1987; @Muschenheim1987], providing high quality food for deposit feeders and subsequently feeding omnivores and carnivores including fish [@Rodney2006].
 Lastly, seston removal via bivalve filter feeding increases water clarity [@Newell2004b; @Grizzle2008; @Grizzle2018] and, thus, the amount of photosynthetically available radiation reaching benthic primary producers, such as seagrasses [@Newell2004b] and microalgae [@Newell2002].
 
