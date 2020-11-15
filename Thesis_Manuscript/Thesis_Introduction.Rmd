@@ -55,14 +55,14 @@ The complex biological and physical characteristics of oyster habitat highlight 
 Whole-habitat *in situ* filtration measurements have several distinct advantages over single-species measurements.
 First, *in situ* measurements include the contributions of the entire filter-feeding guild.
 Next, individual bivalve feeding variation is aggregated with a higher precision in *in situ* measurements than filtration rates derived from individual bivlave feeding trials [@Jones2011a; @Iglesias1998; @Cranford2011].
-Studies that exclude individuals that are not filtering (closed valves) artificially inflate filtration models and overestimate filtration when extrapolated to the population level [@Cranford2011; @Harsh1999]; this may partly explain why many field studies find lower filtration rates than laboratory studies [@Newell2005; @Grizzle2008; @Cranford2011]. 
+Filtration studies often exclude individuals that are not filtering (closed valves), and artificially inflate filtration models and overestimate filtration when extrapolated to the population level [@Cranford2011; @Harsh1999]; this may partly explain why many field studies find lower filtration rates than laboratory studies [@Newell2005; @Grizzle2008; @Cranford2011]. 
 Lastly, bivalve feeding responses to natural water flow dynamics along with spatial and seasonal changes in seston composition are inherently included in whole-habitat *in situ* measurements. 
 
 Water flow dynamics in the field are highly variable [@Wilson-Ormond1997] due to the interaction of tidal prisms and the physical characteristics of bays and estuaries [@Dame2012].
-Whereas the direct effects of water velocity on bivalve filter-feeding is unclear [@Grizzle1992; @Cranford1998; also see review in @Judge1992], water depth and velocity affect water column mixing and sediment re-suspension [@Widdows1998], and thus, food availability for benthic filter-feeders.
+Whereas the direct effects of water velocity on bivalve filter-feeding is unclear [@Grizzle1992; @Cranford1998; also see review in @Judge1992], water velocity and depth affect water column mixing and sediment re-suspension [@Widdows1998], and thus, food availability for benthic filter-feeders.
 The quantity, particle size, and organic content (OC) of seston available can affect filter-feeders' feeding behavior [@Gray2018; @Gray2019; @Cranford1999; @Newell2005; @Velasco2005; @Moody2020a; @Moody2020].
 Natural seston is composed of phytoplankton [@Navarro1995], zooplankton [@Lehane2006; @Trottet2008], macroalgae detritus [@Page1997; @Kwak1997; @Gilbane2006], bacteria [@Newell1989], and inorganic sediments [@Wilson-Ormond1997; @Gray2018].
-Although @Gray2018 used ambient sea water from Yaquina Bay, Oregon in their *in situ* experiment across seasons, seston also changes spatially and temporally due to tides, wind, bathometry, and proximity to benthic organisms [@Navarro1995; @Muschenheim1987; @Ashley1988; @Moody2020a], limiting their findings to bays with similar seston profiles.  
+Although @Gray2018 used ambient sea water from Yaquina Bay, Oregon in their *in situ* experiments across seasons, seston also changes spatially and temporally due to tides, wind, bathometry, and proximity to benthic organisms [@Navarro1995; @Muschenheim1987; @Ashley1988; @Moody2020a], limiting their findings to bays with similar seston profiles.  
 @Cranford2011 conducted a meta-analysis of 133 bivalve clearance rate studies and found highly variable short-term fluctuations in clearance rates, as well as intermittent feeding cessation, when bivalves were fed with natural seston.
 This illustrates bivalves' highly variable feeding responses to natural conditions, further making the case that whole-habitat *in situ* measurements are needed for ecologically and environmentally realistic filtration estimates of *O. lurida* habitat and *C. gigas* aquaculture. 
 
@@ -70,10 +70,9 @@ This illustrates bivalves' highly variable feeding responses to natural conditio
 
 Here, I assessed the contributions of restored *O. lurida* habitat and *C. gigas* aquaculture to estuary filtration functions in California, as a function of natural water quality conditions and filter feeder communities, which are expected to vary among locations.
 My research questions were:
-1) Are oyster habitat filtration signals detectable compared to adjacent mud flat habitat using methods based on @Grizzle2008?
-2) How do the habitat clearance rates (HCRs) of restored *O. lurida* habitat compare to *C. gigas* aquaculture?
+1) Do oyster habitat habitat clearance rates (HCR) differ from adjacent mudflat habitat HCR?
+2) How do the HCRs of restored *O. lurida* habitat compare to *C. gigas* aquaculture?
 3) What biotic and abiotic factors are important in estimating HCR?
-4) How do filter feeder density, community composition, and biomass affect oyster habitat HCR?
-5) Is there a predictable allometric relationship between *O. lurida* shell length and dry tissue weight, allowing for accurate estimates of DTW without sacrificing restored oysters?
+4) Is there a predictable allometric relationship between *O. lurida* shell length and dry tissue weight, allowing for accurate estimates of DTW without sacrificing restored oysters?
 
 \newpage
