@@ -464,7 +464,7 @@ Ambient water quality during filtration trials varied within and among sites (Fi
 Chl $\alpha$ was significantly different between sites as determined by one-way ANOVA at a *p* < 0.05 (*F*(`r chl_aov_values[[1,2]]`, `r chl_aov_values[[2,2]]`) = `r round(chl_aov_values[[1,5]],2)`, *p* = `r round(chl_aov_values[[1,6]],2)`), along with salinity (*F*(`r sal_aov_values[[1,2]]`, `r sal_aov_values[[2,2]]`) = `r round(sal_aov_values[[1,5]],2)`, *p* < 0.001), turbidity (*F*(`r turb_aov_values[[1,2]]`, `r turb_aov_values[[2,2]]`) = `r round(turb_aov_values[[1,5]],2)`, *p* < 0.001), TPM (*F*(`r TPM_aov_values[[1,2]]`, `r TPM_aov_values[[2,2]]`) = `r round(TPM_aov_values[[1,5]],2)`, *p* = < 0.001), and OC (*F*(`r OC_aov_values[[1,2]]`, `r OC_aov_values[[2,2]]`) = `r round(OC_aov_values[[1,5]],2)`, *p* = `r round(OC_aov_values[[1,6]],2)`) (Figure \ref{Site_WQ_boxplot}).
 Temperature was not different between sites (*F*(`r temp_aov_values[[1,2]]`, `r temp_aov_values[[2,2]]`) = `r round(temp_aov_values[[1,5]],2)`, *p* > 0.05) (Figure \ref{Site_WQ_boxplot}).
 
-```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial and diamonds are site means. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{ChlRmd_Site_boxplot}"}
+```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{ChlRmd_Site_boxplot}"}
 
 ### Chl removed summary - filtration trials only
 Chlrmd_Site <- Filter_only_outRmd_data %>% 
@@ -501,8 +501,6 @@ Chl_Rmd_box <- ggplot(Filter_only_outRmd_data, aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
-   geom_point(data = Chlrmd_Site, aes(Site, avg_Chlrmd),
-             size = 2, shape = 18) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
   labs(x = 'Site',
@@ -813,7 +811,7 @@ Adjusted HCR between filtration and control trials were not significantly differ
 A statistical power analysis determined that the effect size of adjusted HCRs between filtration and control trials was still very large (*ES* = `r round(adj_test1_power$d,2 )`) and with more power (`r round(adj_test1_power$power, 2)`) than the unadjusted HCR t-test.
 Despite non-significant results between control and filtration trials, statistical power analysis indicate that my limited sample size is inhibiting statistical inference of a very large effect size between oyster habitat HCRs relative to mudflat control HCRs.
 
-```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", fig.width=6,  message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial and diamonds are site means. HCR was not statistically different between sites (one-way ANOVA). Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
+```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", fig.width=6,  message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial. HCR was not statistically different between sites (one-way ANOVA). Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
 
 ## HCR averages by Site
 FR_Site <- Filter_only_outRmd_data %>% 
