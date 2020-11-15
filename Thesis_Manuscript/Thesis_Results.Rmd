@@ -485,6 +485,11 @@ tukey_Chlrmd <- TukeyHSD(Chlrmd_site_aov)
 hds_Chlrmd <- HSD.test(Chlrmd_site_aov, trt = "Site")
 #hds_Chlrmd
 
+#### exteme Shellmaker may violate ANOVA equal variance assumption
+## more suited for Kruskal-Wallis
+KW_Chlrmd_site <- broom::tidy(kruskal.test(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data))
+
+
 ########### Power analysis - sensitivity power analysis 
 # one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
 d_Chlrmd_site <- {Chlrmd_aov_values[[1,3]] / (Chlrmd_aov_values[[1,3]] + Chlrmd_aov_values[[2,3]]) }
@@ -528,8 +533,7 @@ The mean percent Chl $\alpha$ removal at the San Rafael site was `r round(mean(S
 Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
 At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removal during the control trial.
 Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was `r round(mean(NPSM_NC_sum$pcnt_Chl_rmvd),1)` \% (Table 1).
-Chl $\alpha$ removal in filtration trials did not differ significantly between sites (one-way ANOVA, *F*(`r Chlrmd_aov_values[[1,2]]`, `r Chlrmd_aov_values[[2,2]]`) = `r round(Chlrmd_aov_values[[1,5]],2)`, *p* = `r round(Chlrmd_aov_values[[1,6]],2)`).
-A power analysis of this one-way ANOVA determined that effect size between site and Chl $\alpha$ removal is very small (*ES* = `r format(round(Chlrmd_site_power$f, 2), nsmall = 2)`), per the criteria in @Sawilowsky2009a, with little statistical power (`r round(Chlrmd_site_power$power,2)`).
+Chl $\alpha$ removal in filtration trials did not differ significantly between sites (one-way Kruskal-Wallis, *p* = `r round(KW_Chlrmd_site$p.value,2)`).
 
 
 ```{r Random_Forest_DrNichols, include=FALSE}
@@ -808,7 +812,7 @@ A statistical power analysis determined that the effect size between filtration 
 A random forest model including all filtration and control trials HCR (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 1)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r format(round(Turb_rel_import, 1), nsmall = 1)`\%), TPM (`r format(round(TPM_rel_import, 1), nsmall =1)`\%), salinity (`r format(round(Sal_rel_import, 1), nsmall = 1)`\%), and site (`r format(round(Site_rel_import, 1), nsmall =1)`\%).
 The residuals of this random forest regression adjusted HCR values to account for water quality variables and site. 
 Adjusted HCR between filtration and control trials were not significantly different (two-sample, one-tail *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`).
-A statistical power analysis determined that the effect size of adjusted HCRs between filtration and control trials was still very large (*ES* = `r round(adj_test1_power$d,2 )`) and with more power (`r round(adj_test1_power$power, 2)`) than the unadjusted HCR t-test.
+A statistical power analysis determined that the effect size of adjusted HCRs between filtration and control trials was still very large (*ES* = `r round(adj_test1_power$d,2 )`), per the criteria in @Sawilowsky2009a, and with more power (`r round(adj_test1_power$power, 2)`) than the unadjusted HCR t-test.
 Despite non-significant results between control and filtration trials, statistical power analysis indicate that my limited sample size is inhibiting statistical inference of a very large effect size between oyster habitat HCRs relative to mudflat control HCRs.
 
 ```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", fig.width=6,  message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial. HCR was not statistically different between sites (one-way ANOVA). Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
