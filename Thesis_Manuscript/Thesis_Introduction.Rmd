@@ -19,7 +19,7 @@ The shells of living and dead oysters provide habitat for a variety of invertebr
 *O. lurida* and other bivalves that recruit to oyster habitat are suspension feeders that remove particulate matter (seston) from the water column and deposit mucus-bound feces and pseudofeces (i.e. biodeposits) on the sediment surface [@Elsey1935; @Baird1989; @Dame1999; @Kellogg2013].
 This feeding behavior contributes to three critical ecosystem functions, nutrient sequestration, trophic energy transfer, and water clarification.
 Most of the seston particulate organic matter (POM) is ingested by bivalves for growth and maintenance.
-Nutrients incorporated into bivalve shells can be sequestered long-term [@Kellogg2013] when buried in sediments [@Hu2011], and likely serve as a sink for anthropogenically produced nutrients [@Martinetto2006; @Carmichael2012].
+Nutrients incorporated into bivalve shells can be sequestered long-term [@Kellogg2013] when buried in sediments [@Hu2011], and likely serve as a sink for anthropologically produced nutrients [@Martinetto2006; @Carmichael2012].
 Bivalve feeding is an important biochemical pathway, linking the water column to the benthos, that transfers energy to higher trophic levels [@Rodney2006; @Kautsky1987] and supplies nutrients to benthic seagrasses [@Peterson1999].
 Bivalve biodeposits can have higher organic and nitrogen content than particles settling out of the water column [@Kautsky1987; @Muschenheim1987], providing high quality food for deposit feeders and subsequently feeding omnivores and carnivores including fish [@Rodney2006].
 Lastly, seston removal via bivalve filter feeding increases water clarity [@Newell2004b; @Grizzle2008; @Grizzle2018] and, thus, the amount of photosynthetically available radiation reaching benthic primary producers, such as seagrasses [@Newell2004b] and microalgae [@Newell2002].
@@ -27,8 +27,8 @@ Lastly, seston removal via bivalve filter feeding increases water clarity [@Newe
 At a regional scale, the capacity of *O. lurida*'s filtration functions was diminished when *O. lurida* populations were decimated in the late 1800s and early 1900s by destructive fishing practices [@Kirby2004], introduction of non-native species [@Bonnot1935], pollution, and excessive sedimentation [@Gilbert1917; @Lotze2006; @Nelson1909].
 Currently, *O. lurida* populations are less than 10% of historical abundance in parts of the Pacific Northwest, and to less than 1% in the rest of its geographic range [@Beck2011; @ZuErmgassen2012].
 The extreme reduction of native *O. lurida* abundances and, therefore, the important estuarine habitat *O. lurida* creates, is likely coupled with the loss of water filtration functions. 
-Restoring filtration functions is a component of the impetus behind native *O. lurida* restoration and living shoreline projects efforts along the West Coast, in concert with habitat provision and sediment stabalization [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a].
-*O. lurida* restoration often occcurs on mudflats that have their own filtration functions driven by epibenthic bivalves.
+Restoring filtration functions is a component of the impetus behind native *O. lurida* restoration and living shoreline projects efforts along the West Coast, in concert with habitat provision and sediment stabilization [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a].
+*O. lurida* restoration often occurs on mudflats that have their own filtration functions driven by epibenthic bivalves.
 
 Dwindling *O. lurida* harvests led to the cultivation of the Japanese oyster, *Crassostrea gigas*, [@Beattie1982] in the Salish Sea in the early 1920s [@Quayle1988], and in California in 1928 [@Conte1982].
 *C. gigas* now accounts for the overwhelming majority of commercial oyster harvest on the NAPC [@Beattie1982; @Pauley1988], and has established feral populations outside of aquaculture operations in the Salish Sea [@Quayle1988], Willipa Bay, Washington [@Kincaid1968], and southern California [@Crooks2015a; @Polson2009; @Tronske2018].
@@ -36,8 +36,8 @@ Dwindling *O. lurida* harvests led to the cultivation of the Japanese oyster, *C
 Ecosystem filtration functions (e.g. nutrient sequestration, sediment enrichment, and water clarification) and habitat quality in NAPC estuaries may differ between native *O. lurida* habitat and cultivated *C. gigas* aquaculture [@Ruesink2006; reviewed by @Ruesink2005].
 
 ***Not sure about this add***
-For instance, *C. gigas* has a higher partical capture efficiency presumably because of its smaller gill ostea than *O. lurida* [@Elsey1935; @Gray2018; @Gray2016].
-In addition, depending on the *C. gigas* aquaculture opperation, aquculture is maintained as a monoculture, whereas *O. lurida* habitat recruits other bivavle filter feeders, possibly providing aggregate filtration funcitons.
+For instance, *C. gigas* has a higher partial capture efficiency presumably because of its smaller gill ostea than *O. lurida* [@Elsey1935; @Gray2018; @Gray2016].
+In addition, depending on the *C. gigas* aquaculture operation, aquaculture is maintained as a monoculture, whereas *O. lurida* habitat recruits other bivalve filter feeders, possibly providing aggregate filtration functions.
 
 ## Single-species Research
 
@@ -54,7 +54,7 @@ In addition, clearance rates calculated based on biomass are not particularly us
 The complex biological and physical characteristics of oyster habitat highlight the need for *in situ*, whole-habitat filtration measurements [@Grizzle2008; @Grizzle2018; @Gedan2014; @Byers2014] specific to the habitat.
 Whole-habitat *in situ* filtration measurements have several distinct advantages over single-species measurements.
 First, *in situ* measurements include the contributions of the entire filter-feeding guild.
-Next, individual bivalve feeding variation is aggregated with a higher precision in *in situ* measurements than filtration rates derived from individual bivlave feeding trials [@Jones2011a; @Iglesias1998; @Cranford2011].
+Next, individual bivalve feeding variation is aggregated with a higher precision in *in situ* measurements than filtration rates derived from individual bivalve feeding trials [@Jones2011a; @Iglesias1998; @Cranford2011].
 Filtration studies often exclude individuals that are not filtering (closed valves), and artificially inflate filtration models and overestimate filtration when extrapolated to the population level [@Cranford2011; @Harsh1999]; this may partly explain why many field studies find lower filtration rates than laboratory studies [@Newell2005; @Grizzle2008; @Cranford2011]. 
 Lastly, bivalve feeding responses to natural water flow dynamics along with spatial and seasonal changes in seston composition are inherently included in whole-habitat *in situ* measurements. 
 
