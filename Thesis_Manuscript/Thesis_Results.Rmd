@@ -1496,7 +1496,7 @@ TPM_OC_bysite_graph <- grid.arrange(TPM_OC_SR, TPM_OC_MB, TPM_OC_NPSM, TPM_OC_De
 # plot(TPM_OC_bysite_graph)
 ```
 
-## Filter-Feeding Community
+## Filter Feeding Community
 
 ```{r Oly_DTW_Shell_length_setup, include=FALSE}
 ############ Olympia DTW and Shell Length #####################
@@ -1610,13 +1610,13 @@ NPD_species <- Bivalve_Den_data %>%
   
 ```
 
-In November 2017 the estimated bivalve density at San Rafael was `r SR_Den` individuals/m^2^, all of which were *Ostrea lurida* (Figure \ref{Bivalve_Den_Biomass}).
+In November 2017 the estimated bivalve density at San Rafael was `r SR_Den` individuals/m^2^, all of which were *Ostrea lurida* (Figure \ref{Bivalve_Den}).
 Other bivalves were noted, but were rare, and were not detected in sample bags (C. Zabin, unpublished data). 
 Morro Bay has an estimated `r MB_Den` *Crassostrea gigas* individuals/m^2^ in the summer of 2018 (Morro Bay Oyster Company); personal field observations confirm the lack of bivalve fouling on the aquaculture lines.
-In May 2018, Shellmaker had an estimated `r NPSM_Den` individuals/m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals/m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals/m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals/m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals/m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals/m^2^) (Figure \ref{Bivalve_Den_Biomass}.
-Deanza had an estimated `r NPD_Den` individuals/m^2^ in May 2018, and was composed of *M. senhousia* (`r NPD_species[NPD_species$Species=="Musculista senhousia",2]` individuals/m^2^), *A. diegensis* (`r NPD_species[NPD_species$Species=="Adula diegensis",2]` individuals/m^2^), *O. lurida* (`r NPD_species[NPD_species$Species=="Ostrea lurida",2]` individuals/m^2^), *M. galloprovincialis* (`r NPD_species[NPD_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^) (Figure \ref{Bivalve_Den_Biomass}.
+In May 2018, Shellmaker had an estimated `r NPSM_Den` individuals/m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals/m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals/m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals/m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals/m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals/m^2^) (Figure \ref{Bivalve_Den}.
+Deanza had an estimated `r NPD_Den` individuals/m^2^ in May 2018, and was composed of *M. senhousia* (`r NPD_species[NPD_species$Species=="Musculista senhousia",2]` individuals/m^2^), *A. diegensis* (`r NPD_species[NPD_species$Species=="Adula diegensis",2]` individuals/m^2^), *O. lurida* (`r NPD_species[NPD_species$Species=="Ostrea lurida",2]` individuals/m^2^), *M. galloprovincialis* (`r NPD_species[NPD_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^) (Figure \ref{Bivalve_Den}).
 
-```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Bivalve community density and composition for each study site. San Rafael data were collected November 2017 by the Zabin lab at SERC, Morro Bay was estimated by Morro Bay Oyster Company in 2018, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab at CSUF.  \\label{Bivalve_Den_Biomass}"}
+```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Bivalve community density and composition for each study site. San Rafael data were collected November 2017 by the Zabin lab at SERC, Morro Bay was estimated by Morro Bay Oyster Company in 2018, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab at CSUF.  \\label{Bivalve_Den}"}
 
 #unique(Bivalve_Den_data$Species) # list each individual bivalve species
 # Assign species to specific color
@@ -1728,6 +1728,108 @@ plot(Oly_LogDTW_logSH_lm)
 str(Oly_LogDTW_logSH_lm)
 ```
 
+
+```{r Bivalve_biomass_setup, include=FALSE}
+######### Biomass by Site ############################
+# excavation quadrat area m^2 (0.25 x 0.25m)
+NP_excavation_quad_area = 0.0625
+# calculate DTW / m^2 / species 
+NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>% 
+  group_by(excavation_sample, species) %>% 
+  summarize(mean_DTW = mean(tissue_dry_weight_g)) %>% # show the average DTW for each species within each excav sample
+  ungroup() %>% # undo previous grouping by excavation_sample and species
+  group_by(species) %>% # new grouping by species to determine the average DTW by species across all quads
+  summarize(mean_DTW_m2 = mean(mean_DTW/NP_excavation_quad_area)) %>% 
+  mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
+  rename(Species = species) # rename column with capital case
+
+################### Biomass by species San Rafael ####################
+# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
+SR_Density_directory = "./Data/bivalve_density_community"
+SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
+
+######## Predict SR DTW with shell length #########
+## Predict with log-log model (best fit)
+predict_DTW_loglog <- function(data){
+  exp(predict(Oly_LogDTW_logSH_lm, newdata = data.frame(length_mm = data$length_mm))) 
+  # exp() converts log value, predict needs data.frame input
+  # does predict() include error term inherently in lm()
+}
+
+SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
+  mutate(DTW_g = predict_DTW_loglog(SR_Oly_Shelllength_data)) %>%  # predict Oly Dry tissue weight with length_mm
+  group_by(Site, bag_number) %>% 
+  summarize(DTW_bag = mean(DTW_g)) # average DTW per sample bag
+
+Oly_italic <- expression(italic("Ostrea lurida"))
+
+SR_Oly_DTW_data2 <- SR_Oly_DTW_data %>% 
+  ungroup() %>% 
+  group_by(Site) %>% # regroup by site
+  summarize(DTW_bag_avg = mean(DTW_bag)) %>% # average DTW across sample bags
+  mutate(mean_DTW_m2 = DTW_bag_avg * 18,
+         Species = "Ostrea lurida") # sample bag is 1/3 the size of regular shell bag. There are 6 full size bags on the 
+# top of the reef unit at San Rafael. The units are 1 x 1 x 1m, so the top area of the reef is 1m^2. (3 * 6 = the amount in 1m^2)
+
+SR_Oly_DTW_data3 <- SR_Oly_DTW_data2 %>% 
+  dplyr::select(-(DTW_bag_avg)) # remove DTW_bag_avg 
+SR_Oly_DTW_data4 <- data.frame(SR_Oly_DTW_data3) # convert wierd mess of types into a data.frame
+
+SR_NPD_biv_DTWm2 <- rbind(SR_Oly_DTW_data4, NPD_biv_DTW_m2)
+# SR total and species total DTW values 
+SR_total_DTW <- SR_NPD_biv_DTWm2 %>% 
+  filter(Site == "San Rafael") %>% 
+  summarise(total = sum(mean_DTW_m2))
+
+SR_species_DTW <- SR_NPD_biv_DTWm2 %>% 
+  filter(Site == "San Rafael") %>%
+  group_by(Species) %>% 
+  summarise(total = sum(mean_DTW_m2))
+# Deanza total and species totoal DTW values
+NPD_total_DTW <- SR_NPD_biv_DTWm2 %>% 
+  filter(Site == "Deanza") %>% 
+  summarise(total = sum(mean_DTW_m2))
+
+NPD_species_DTW <- SR_NPD_biv_DTWm2 %>% 
+  filter(Site == "Deanza") %>%
+  group_by(Species) %>% 
+  summarise(total = sum(mean_DTW_m2))
+
+```
+
+
+Direct biomass data were only available for Deanza, which estimated `r round(NPD_total_DTW, 2)` g/m^2^ of bivalve dry tissue weight (DTW) (Figure \ref{Bivalve_DTW_Biomass}). 
+*O. lurida* had the highest DTW with `r round(NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2],2)` g/m^2^, followed by *M. galloprovincialis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Mytilus galloprovincialis",2],)` g/m^2^), an unknown *Modiolus* sp. (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Unknown mussel",2],2)` g/m^2^), *A. diegensis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Adula diegensis",2],2)` g/m^2^), and *M. senhousia* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Musculista senhousia",2],2)` g/m^2^) (Figure \ref{Bivalve_DTW_Biomass}).
+San Rafael surveys did not directly measure biomass, but did include *O. lurida* shell length measurements which I used to estimate DTW (Figure \ref{Bivalve_Den_Biomass}) with a model describing the relationship between *O. lurida* shell length and DTW at Deanza (ln(y) = `r round(coef(OlyDTW_loglog_sum)[1,1],digits=2)` `r round(coef(OlyDTW_loglog_sum)[2,1],digits=3)`ln(x), R^2^ = `r round(OlyDTW_loglog_sum$r.squared,digits=2)`, *p* < 0.0001) (Figure \ref{NPD_Oly_DTW_SH_Trans}). 
+I estimated San Rafael had `r round(SR_species_DTW$total,2)` g/m^2^ of *O. lurida* (Figure \ref{Bivalve_DTW_Biomass}).
+A direct comparison between site biomass to HCR was not possible with my limited biomass and shell length data. 
+
+```{r Bivalve_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Estimated biomass of \\textit{O. lurida} habitat at Deanza and San Rafael sites. Data for Deanza was collected by the Zacherl lab (CSUF) in May 2018, the relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) from the survey was used to estimate DTW at San Rafael with shell length data collected by the Zabin lab (SERC) in November 2017. \\label{Bivalve_DTW_Biomass}"}
+
+####### Bar graph NPD Biomass / DTW by species
+Bivalve_Biomass_graph <- ggplot(SR_NPD_biv_DTWm2, aes(Site)) + 
+  geom_col(aes(x = Site, y = mean_DTW_m2, fill = Species)) +
+  theme_classic() +
+  scale_fill_manual(values = Species_colors) +
+  theme(legend.text = element_text(face = "italic")) +
+  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
+  labs(y = expression("Dry Tissue Weight (g m" ^-2* ")"))
+## Add total Biomass on top of bars
+Bivalve_Biomass_graph
+#bar_graphs <- plot_grid(Bivalve_Den_graph + theme(legend.position="none"),
+ #                       Bivalve_Biomass_graph + theme(legend.position="none"),
+  #                      align = 'vh',
+   #                     labels = c("A", "B"),
+    #                    hjust = -1,
+     #                   nrow = 1)
+#legend_b <- get_legend(Bivalve_Den_graph + theme(legend.box.margin = margin(0, 0, 0, 12)))
+#bar_graph_1legend <- plot_grid(bar_graphs, legend_b, rel_widths = c(3, .4))
+# How do I move legend inside of plot area? This method uses cowplot
+#bar_graph_1legend
+
+### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
+```
+
 ```{r Oly_DTW_SH_outrmd_Graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%", fig.cap="The relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) at the Deanza restoration site in Newport Bay, California. \\label{NPD_Oly_DTW_SH_Trans}"}
 
 ### y ~ log(x) model ####
@@ -1824,112 +1926,6 @@ Oly_SH_DTW2_graph <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g))
 #plot(OlySH_DTW_Trans_graphs)
 
 ```
-
-```{r Bivalve_biomass_setup, include=FALSE}
-######### Biomass by Site ############################
-# excavation quadrat area m^2 (0.25 x 0.25m)
-NP_excavation_quad_area = 0.0625
-# calculate DTW / m^2 / species 
-NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>% 
-  group_by(excavation_sample, species) %>% 
-  summarize(mean_DTW = mean(tissue_dry_weight_g)) %>% # show the average DTW for each species within each excav sample
-  ungroup() %>% # undo previous grouping by excavation_sample and species
-  group_by(species) %>% # new grouping by species to determine the average DTW by species across all quads
-  summarize(mean_DTW_m2 = mean(mean_DTW/NP_excavation_quad_area)) %>% 
-  mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
-  rename(Species = species) # rename column with capital case
-
-################### Biomass by species San Rafael ####################
-# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
-SR_Density_directory = "./Data/bivalve_density_community"
-SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
-
-######## Predict SR DTW with shell length #########
-## Predict with log-log model (best fit)
-predict_DTW_loglog <- function(data){
-  exp(predict(Oly_LogDTW_logSH_lm, newdata = data.frame(length_mm = data$length_mm))) 
-  # exp() converts log value, predict needs data.frame input
-  # does predict() include error term inherently in lm()
-}
-
-SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
-  mutate(DTW_g = predict_DTW_loglog(SR_Oly_Shelllength_data)) %>%  # predict Oly Dry tissue weight with length_mm
-  group_by(Site, bag_number) %>% 
-  summarize(DTW_bag = mean(DTW_g)) # average DTW per sample bag
-
-Oly_italic <- expression(italic("Ostrea lurida"))
-
-SR_Oly_DTW_data2 <- SR_Oly_DTW_data %>% 
-  ungroup() %>% 
-  group_by(Site) %>% # regroup by site
-  summarize(DTW_bag_avg = mean(DTW_bag)) %>% # average DTW across sample bags
-  mutate(mean_DTW_m2 = DTW_bag_avg * 18,
-         Species = "Ostrea lurida") # sample bag is 1/3 the size of regular shell bag. There are 6 full size bags on the 
-# top of the reef unit at San Rafael. The units are 1 x 1 x 1m, so the top area of the reef is 1m^2. (3 * 6 = the amount in 1m^2)
-
-SR_Oly_DTW_data3 <- SR_Oly_DTW_data2 %>% 
-  dplyr::select(-(DTW_bag_avg)) # remove DTW_bag_avg 
-SR_Oly_DTW_data4 <- data.frame(SR_Oly_DTW_data3) # convert wierd mess of types into a data.frame
-
-SR_NPD_biv_DTWm2 <- rbind(SR_Oly_DTW_data4, NPD_biv_DTW_m2)
-# SR total and species total DTW values 
-SR_total_DTW <- SR_NPD_biv_DTWm2 %>% 
-  filter(Site == "San Rafael") %>% 
-  summarise(total = sum(mean_DTW_m2))
-
-SR_species_DTW <- SR_NPD_biv_DTWm2 %>% 
-  filter(Site == "San Rafael") %>%
-  group_by(Species) %>% 
-  summarise(total = sum(mean_DTW_m2))
-# Deanza total and species totoal DTW values
-NPD_total_DTW <- SR_NPD_biv_DTWm2 %>% 
-  filter(Site == "Deanza") %>% 
-  summarise(total = sum(mean_DTW_m2))
-
-NPD_species_DTW <- SR_NPD_biv_DTWm2 %>% 
-  filter(Site == "Deanza") %>%
-  group_by(Species) %>% 
-  summarise(total = sum(mean_DTW_m2))
-
-```
-
-
-Direct biomass data were only available for Deanza, which estimated `r round(NPD_total_DTW, 2)` g/m^2^ of bivalve dry tissue weight (DTW) (Figure \ref{Bivalve_Den_Biomass}). 
-*O. lurida* had the highest DTW with `r round(NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2],2)` g/m^2^, followed by *M. galloprovincialis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Mytilus galloprovincialis",2],)` g/m^2^), an unknown mussel (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Unknown mussel",2],2)` g/m^2^), *A. diegensis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Adula diegensis",2],2)` g/m^2^), and *M. senhousia* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Musculista senhousia",2],2)` g/m^2^) (Figure \ref{Bivalve_Den_Biomass}).
-San Rafael survey data did not directly assess biomass, but did include *O. lurida* shell length measurements which I used to estimate DTW (Figure \ref{Bivalve_Den_Biomass}) with a model describing Deanza shell length and DTW (ln(y) = `r round(coef(OlyDTW_loglog_sum)[1,1],digits=2)` `r round(coef(OlyDTW_loglog_sum)[2,1],digits=3)`ln(x), R^2^ = `r round(OlyDTW_loglog_sum$r.squared,digits=2)`, *p* < 0.0001) (Figure \ref{NPD_Oly_DTW_SH_Trans}). 
-I estimated San Rafael had `r round(SR_species_DTW$total,2)` g/m^2^ of *O. lurida* (Figure \ref{Bivalve_Den_Biomass}).
-A direct comparison between site biomass to HCR was not possible with my limited biomass and shell length data. 
-
-```{r Bivalve_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Estimated biomass of \\textit{O. lurida} habitat at Deanza and San Rafael sites. Data for Deanza was collected by the Zacherl lab (CSUF) in May 2018, the relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) from the survey was used to estimate DTW at San Rafael with shell length data collected by the Zabin lab (SERC) in November 2017. \\label{Bivalve_Den_Biomass}"}
-
-####### Bar graph NPD Biomass / DTW by species
-Bivalve_Biomass_graph <- ggplot(SR_NPD_biv_DTWm2, aes(Site)) + 
-  geom_col(aes(x = Site, y = mean_DTW_m2, fill = Species)) +
-  theme_classic() +
-  scale_fill_manual(values = Species_colors) +
-  theme(legend.text = element_text(face = "italic")) +
-  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
-  labs(y = expression("Dry Tissue Weight (g m" ^-2* ")"))
-## Add total Biomass on top of bars
-Bivalve_Biomass_graph
-#bar_graphs <- plot_grid(Bivalve_Den_graph + theme(legend.position="none"),
- #                       Bivalve_Biomass_graph + theme(legend.position="none"),
-  #                      align = 'vh',
-   #                     labels = c("A", "B"),
-    #                    hjust = -1,
-     #                   nrow = 1)
-#legend_b <- get_legend(Bivalve_Den_graph + theme(legend.box.margin = margin(0, 0, 0, 12)))
-#bar_graph_1legend <- plot_grid(bar_graphs, legend_b, rel_widths = c(3, .4))
-# How do I move legend inside of plot area? This method uses cowplot
-#bar_graph_1legend
-
-### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
-```
-
-
-
-
-
 
 
 
