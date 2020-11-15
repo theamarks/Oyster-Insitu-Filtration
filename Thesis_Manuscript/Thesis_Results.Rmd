@@ -860,14 +860,17 @@ x <- Filter_only_outRmd_data %>%
 ####### Try Kruskal- Wallis one-way analysis of variance 
 ## non-parametric equvilant to one-way ANOVA
 # Assumtions 1) continuous response variable 2) Independent groups 3) Distributions have similar shapes
-hist(Filter_only_outRmd_data$L_hr_m2, breaks = 25)
+
+#hist(Filter_only_outRmd_data$L_hr_m2, breaks = 25)
+
 # Similar distributions? - I think so
-hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "San Rafael",L_hr_m2], breaks = 25)
-hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Morro Bay",L_hr_m2], breaks = 25)
-hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Shellmaker",L_hr_m2], breaks = 25)
-hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Deanza",L_hr_m2], breaks = 25)
+#hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "San Rafael",L_hr_m2], breaks = 25)
+#hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Morro Bay",L_hr_m2], breaks = 25)
+#hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Shellmaker",L_hr_m2], breaks = 25)
+#hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Deanza",L_hr_m2], breaks = 25)
+
 # check data is grouped / ordered by site
-levels(Filter_only_outRmd_data$Site)
+#levels(Filter_only_outRmd_data$Site)
 
 # K-W test - tidy converts to clean dataframe
 KW_HCR_site <- broom::tidy(kruskal.test(L_hr_m2 ~ Site, data = Filter_only_outRmd_data))
@@ -1158,7 +1161,7 @@ Mean HCR at San Rafael was `r round(mean(SR_filter_sum$L_hr_m2),1)` L hr^-1^ m^-
 `r round(mean(NPSM_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`) at Shellmaker, 
 and `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`) at Deanza (Figure \ref{FR_Site_boxplot}).
 Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, `r round(NPSM_NC_sum$L_hr_m2,1)`, and `r round(NPD_NC_sum$L_hr_m2,1)` L hr^-1^ m^2^ at San Rafael, Morro Bay, Shellmaker, and Deanza respectfully.
-HCR for filtration trials did not differ significantly between sites (one-way ANOVA, *F*(`r HCR_aov_values[[1,2]]`, `r HCR_aov_values[[2,2]]`) = `r round(HCR_aov_values[[1,5]],2)`, *p* = `r round(HCR_aov_values[[1,6]],2)`).
+HCR for filtration trials did not differ significantly between sites, see figure \ref{FR_Site_boxplot} (Kruskal-Wallis, *p* = `r round(KW_HCR_site$p.value,2)`).
 A statistical power analysis determined that the effect size between site and HCR in a one-way ANOVA was very small (*ES* = `r round(HCR_site_power$f, 2)`) [@Sawilowsky2009a] with little power (`r round(HCR_site_power$power, 2)`) to detect statistically significant differences.
 The upper 0.5 quantile of HCR at each site, representing the top filtration performance within each site, did not differ between sites (one-way ANOVA, *F*(`r HCR50_aov_values[[1,2]]`, `r HCR50_aov_values[[2,2]]`) = `r round(HCR50_aov_values[[1,5]],2)`, *p* = `r round(HCR50_aov_values[[1,6]],2)`).
 This comparison between site and HCR had low power (`r round(HCR50_site_power$power,2)`) and very small effect size (`r round(HCR50_site_power$f,2)`) [@Sawilowsky2009a].
