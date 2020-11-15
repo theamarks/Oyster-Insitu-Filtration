@@ -99,10 +99,10 @@ POM (mg/L) = TPM (mg/L) - PIM (mg/L)
 \end{equation}
 
 ## Filtration Calculations
-I paired upstream and downstream Chl $\alpha$ measurements in the experiment and control trials to determine how Chl $\alpha$ concentrations changed over the habitat.
-I used average water velocity and sonde distance to estimate the time it took a parcel of water to travel from the upstream sonde to the downstream sonde. 
-The travel time was subtracted from the time-stamps of each downstream measurement to pair with upstream measurements; unpaired measurements were discarded. 
-Next, I calculated percent Chl $\alpha$ removal [$Chl_{rmd}$, Equation \ref{Eq:PrctChl}; @Grizzle2008] and habitat clearance rate [Equation \ref{Eq:Lhrm2}; @Milbrandt2015] using average Chl $\alpha$ concentrations. 
+I paired upstream and downstream Chl $\alpha$ measurements in the experiment and control trials to determine how Chl $\alpha$ concentrations changed across the habitat.
+I used mean water velocity and sonde distance to estimate the time it took a parcel of water to travel from the upstream sonde to the downstream sonde. 
+The travel time was subtracted from the time-stamps of each downstream Chl $\alpha$ measurement to pair with upstream Chl $\alpha$ measurements; unpaired measurements were discarded. 
+Next, I calculated percent Chl $\alpha$ removal [$Chl_{rmd}$, Equation \ref{Eq:PrctChl}; @Grizzle2008] and habitat clearance rate [HCR, Equation \ref{Eq:Lhrm2}; @Milbrandt2015] using average Chl $\alpha$ concentrations. 
 
 \begin{equation}
 \label{Eq:PrctChl}
@@ -114,7 +114,7 @@ Chl_{rmd} = \frac{Chl_{up} - Chl_{down}}{Chl_{up}} \times 100
 HCR (Lhr^{-1}m^2) = \frac{A_{Xsec} \times V \times 1000}{A_{habitat}} \times \frac{Chl_{up} - Chl_{down}}{Chl_{up}}
 \end{equation}
 
-$A_{Xsec}$ is the cross-sectional area of the water column (water depth $\times$ assumed 1 m width), *V* is the average water velocity (m/hr), $A_{habitat}$ is the area being measured (distance between the instruments $\times$ assumed 1 m width), $Chl_{up}$ is the upstream Chl $\alpha$ concentration, and $Chl_{down}$ is the downstream Chl $\alpha$ concentration.
+$A_{Xsec}$ is the cross-sectional area of the water column (mean water depth $\times$ assumed 1 m width), *V* is the mean water velocity (m/hr), $A_{habitat}$ is the area being measured (distance between the instruments $\times$ assumed 1 m width), $Chl_{up}$ is the mean upstream Chl $\alpha$ concentration, and $Chl_{down}$ is the mean downstream Chl $\alpha$ concentration.
 
 ## Analysis
 
