@@ -27,21 +27,26 @@ Lastly, seston removal via bivalve filter feeding increases water clarity [@Newe
 At a regional scale, the capacity of *O. lurida*'s filtration functions was diminished when *O. lurida* populations were decimated in the late 1800s and early 1900s by destructive fishing practices [@Kirby2004], introduction of non-native species [@Bonnot1935], pollution, and excessive sedimentation [@Gilbert1917; @Lotze2006; @Nelson1909].
 Currently, *O. lurida* populations are less than 10% of historical abundance in parts of the Pacific Northwest, and to less than 1% in the rest of its geographic range [@Beck2011; @ZuErmgassen2012].
 The extreme reduction of native *O. lurida* abundances and, therefore, the important estuarine habitat *O. lurida* creates, is likely coupled with the loss of water filtration functions. 
-Restoring these ecosystem functions is part of the impetus behind native *O. lurida* restoration efforts along the West Coast [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a]. 
+Restoring filtration functions is a component of the impetus behind native *O. lurida* restoration and living shoreline projects efforts along the West Coast, in concert with habitat provision and sediment stabalization [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a].
+*O. lurida* restoration often occcurs on mudflats that have their own filtration functions driven by epibenthic bivalves.
 
 Dwindling *O. lurida* harvests led to the cultivation of the Japanese oyster, *Crassostrea gigas*, [@Beattie1982] in the Salish Sea in the early 1920s [@Quayle1988], and in California in 1928 [@Conte1982].
 *C. gigas* now accounts for the overwhelming majority of commercial oyster harvest on the NAPC [@Beattie1982; @Pauley1988], and has established feral populations outside of aquaculture operations in the Salish Sea [@Quayle1988], Willipa Bay, Washington [@Kincaid1968], and southern California [@Crooks2015a; @Polson2009; @Tronske2018].
 *C. gigas* is a large, fast growing oyster with higher filtration rates than *O. lurida* per unit dry tissue weight (DTW) [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019], and can exert top-down control of seston at aquaculture densities [@Wheat2013].
-Ecosystem filtration functions (e.g. habitat quality, nutrient sequestration, sediment enrichment, and water clarity) in NAPC estuaries may differ between native *O. lurida* habitat and cultivated *C. gigas* aquaculture [@Ruesink2006; reviewed by @Ruesink2005].
+Ecosystem filtration functions (e.g. nutrient sequestration, sediment enrichment, and water clarification) and habitat quality in NAPC estuaries may differ between native *O. lurida* habitat and cultivated *C. gigas* aquaculture [@Ruesink2006; reviewed by @Ruesink2005].
+
+***Not sure about this add***
+For instance, *C. gigas* has a higher partical capture efficiency presumably because of its smaller gill ostea than *O. lurida* [@Elsey1935; @Gray2018; @Gray2016].
+In addition, depending on the *C. gigas* aquaculture opperation, aquculture is maintained as a monoculture, whereas *O. lurida* habitat recruits other bivavle filter feeders, possibly providing aggregate filtration funcitons.
 
 ## Single-species Research
 
 Estimating the filtration capacity of *O. lurida* habitat and *C. gigas* aquaculture currently relies on a handful of single-species studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a] and a single field aquaculture study [@Wheat2013].
 @Gray2018 estimated the clearance rates of *O. lurida* and *C. gigas* under a range of laboratory and seasonal *in situ* conditions using the biodeposition method [@Hawkins1996].
 These models provide important insights into the feeding responses of individual *O. lurida* and *C. gigas* to specific conditions (temperature, salinity, turbidity, chlorophyll $\alpha$, total particulate matter (TPM), and organic content (OC)), but may not be appropriate for estimating whole-habitat clearance rates in the field [@Cranford2011; @Grizzle2018] because it does not incorporate local habitat or environmental conditions.
-For example, non-oyster filter-feeders living in *O. lurida* habitat, or as fouling or benthic organisms in *C. gigas* aquaculture, contribute to the overall filtration capacity of the habitat [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014].
-These non-oyster filter-feeders that occupy oyster habitat have species-specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011; Gray2016; @Gedan2014]. 
-The regional composition of this filter-feeding guild is likely to change along the NAPC, consequently creating unique filtration signatures for different *O. lurida* habitat and *C. gigas* aquaculture locations.
+For example, non-oyster filter-feeders living in *O. lurida* habitat, contribute to the overall filtration capacity of the habitat [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014].
+These non-oyster filter-feeders that occupy oyster habitat have species-specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011; @Gray2016; @Gedan2014]. 
+The regional composition of this filter-feeding guild is likely to change along the NAPC, consequently creating unique filtration signatures for different *O. lurida* habitat.
 In addition, clearance rates calculated based on biomass are not particularly useful in assessing whether restored *O. lurida* habitat is also restoring filtration functions; restoration practitioners are hesitant to sacrifice bivalves to measure biomass directly.
 
 ## Whole-Habitat Measurements
