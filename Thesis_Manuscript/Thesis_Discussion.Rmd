@@ -120,12 +120,11 @@ After temperature, variables relating to seston quantity and quality were reason
 
 ## Conclusions
 
-My results provide the first snapshot of habitat clearance rates of oyster habitats in California, and shows that *in situ* upstream-downstream methods can detect filtration signals in this application.
-Restored *O. lurida* habitat and *C. gigas* long-line aquaculture in California may clear similar amounts of water per unit area when compared in realistic biological and environmental conditions.
+My results provide the first snapshot of habitat clearance rates of oyster habitats in California, and shows that restored *O. lurida* habitat and *C. gigas* long-line aquaculture in California may clear similar amounts of water per unit area when compared in realistic biological and environmental conditions.
 @Gray2019a also found that the filtration functions of *O. lurida* may be greater than previously thought when complex environmental conditions were accounted for.
 Furthermore, overall filtration functions of *O. lurida* habitat may continue to be underestimated, unless a whole-habitat perspective is taken; future filtration function measurements should incorporate the filtration contributions of other filter feeders residing on foundation oyster habitat.
-*O. lurida* restoration efforts on the North American Pacific coast aim to increase abundances of this foundation species and its purported filtration functions. 
-My research represents the first direct measurements of restored *O. lurida* habitat filtration functions, and although highly variable, they show that restored *O. lurida* habitat is a valuable contributor to filtration functions within California bays.
+*O. lurida* restoration efforts on the North American Pacific coast aim to increase abundances of this foundation species and its purported filtration functions that may result from biological or physical removal mechanisms.
+My research represents the first direct measurements of restored *O. lurida* habitat filtration functions, and although highly variable, they show that restored *O. lurida* habitat is a valuable contributor to filtration functions within California bays, comparable with *C. gigas* aquaculture.
 
 
 ```{r Extra_Text, eval=FALSE, include=FALSE}
