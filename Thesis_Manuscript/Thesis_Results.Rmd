@@ -837,22 +837,6 @@ tukey_HCR <- TukeyHSD(HCR_site_aov)
 hds_HCR <- HSD.test(HCR_site_aov, trt = "Site")
 #hds_HCR
 
-### Test extreme value removal
-extreme_test <- Filter_only_outRmd_data %>% 
-  filter(!abs(L_hr_m2) > 2000)
-
-ext_test_sum <- extreme_test %>%
-  group_by(Site) %>% 
-  summarize(avg_HCR = mean(L_hr_m2),
-            SD = sd(L_hr_m2),
-            n_samples = length(L_hr_m2),
-            median = median(L_hr_m2),
-            varience = var(L_hr_m2))
-  
-
-HCR_site_aov_noext <- aov(L_hr_m2 ~ Site, data = extreme_test)
-#summary(HCR_site_aov_noext)
-
 ########### Power analysis - sensitivity power analysis 
 # one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
 d_HCR_site <- { HCR_aov_values[[1,3]] / (HCR_aov_values[[1,3]] + HCR_aov_values[[2,3]]) }
