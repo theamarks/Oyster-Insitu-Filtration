@@ -119,16 +119,14 @@ $A_{Xsec}$ is the cross-sectional area of the water column (mean water depth $\t
 ## Analysis
 
 All data wrangling and analysis was conducted R 3.6.3 [@R; tidyverse R package; @Wickham2019] and plotted using the ggplot2 package [@Wickham2016]; the code is publicly available on Github [@Marks2020].
-Two field days (Morro Bay 2019-05-18 and Deanza 2018-10-25; Table 1) from my data set are missing TPM and OC values, representing `r round((4/336)*100, digits = 0)`% of these values.
+Two field days (Morro Bay 2019-05-18 and Deanza 2018-10-25; Table 1) from my data set are missing TPM and OC values.
 I used a semi-parametric imputation to estimate the missing values [missForest R package; @Stekhoven2012].
-Next, I examined the signal-to-correction relationship between side-by-side trial Chl $\alpha$ difference (correction) and corresponding experiment trial Chl $\alpha$ difference (signal).
-This comparison showed if any instrument corrections obfuscated the experimental signal.
-I used the 95\% confidence intervals of the signal-to-correction linear model to remove extreme values outside of the intervals.
-Because my data set was small, extreme values likely influenced my initial confidence intervals; therefore I created a second linear model with the extreme values removed and 98\% confidence intervals to identify additional extreme values to remove from the analysis.
+Differences in temperature, salinity, turbidity, and Chl $\alpha$ between and among sites was investigated using a one-way ANOVA and post-hoc Tukey honestly significant difference (HSD) on significantly results.
+Percent Chl removal between and among sites was also examined using a one-way ANOVA and post-hoc Tukey HSD were applicable.
 
-To determine if there was a difference between control and filtration trial HCR, I first used a two-sample t-test.
-To examine the effects of water quality and site variables, I fit a random forest regression (including all filtration and control trials) to HCR including temperature, salinity, turbidity, TPM, OC, and site [randomForest R package @Liaw2002].
-A second two-sample t-test comparing control and filtration trials was adjusted by the random forest model regression residuals, controlling for the effects of water quality and site.
+To determine if there was a difference between mudflat control and oyster habitat  filtration trial HCR, I first used a two-sample, single-tail, t-test.
+To examine the effects of water quality (i.e. temperature, salinity, turbidity, TPM, OC) and site variables, I fit a random forest regression (including all filtration and control trials) to HCR with temperature, salinity, turbidity, TPM, OC, and site as predictor variables [randomForest R package @Liaw2002].
+Control and filtration HCR was adjusted by the residuals of the random forest regression to control for the effects of water quality and site and was compared by a second two-sample, single-tail, t-test. 
 
 To examine the effect of water quality variables and site on HCR, I fit a second random forest regression that only included filtration trials [randomForest R package; @Liaw2002].
 The random forest model I fit is a ensemble of 2,000 individual decision trees.
