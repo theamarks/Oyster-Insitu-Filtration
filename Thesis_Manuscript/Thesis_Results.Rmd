@@ -869,8 +869,8 @@ hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Deanza",L_hr_m2], 
 # check data is grouped / ordered by site
 levels(Filter_only_outRmd_data$Site)
 
-# K-W test
-KW_HCR_site <- kruskal.test(L_hr_m2 ~ Site, data = Filter_only_outRmd_data)
+# K-W test - tidy converts to clean dataframe
+KW_HCR_site <- broom::tidy(kruskal.test(L_hr_m2 ~ Site, data = Filter_only_outRmd_data))
 
 # Significant results can then use VVV pairwise comparison between groups
 # pairwise.wilcox.test(PlantGrowth$weight, PlantGrowth$group, p.adjust.method = "BH")
