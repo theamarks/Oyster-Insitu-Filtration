@@ -21,9 +21,8 @@ Twenty-two experimental trials and four control mudflat trials were conducted fr
 Mean HCR at *O. lurida* restoration sites were 166 L hr^-1^ m^-2^ (*SD* = 255) at San Rafael, -464 L hr^-1^ m^-2^ (*SD* = 1420) at Shellmaker, and 105 L hr^-1^ m^-2^ (*SD* = 251) at Deanza, while the *C. gigas* aquaculture site at Morro Bay was 10.3 L hr^-1^ m^-2^ (*SD* = 257).
 HCRs were highly variable within and among sites, and not significantly different. 
 Using random forest regression analysis, I found that temperature (23.1%) was relatively most important to HCR, followed by turbidity (20.6%), TPM (16.8%), OC (16.6%), site (15.1%), and salinity (7.8%).
-The contributions of all bivalve filter feeders and natural hydrodynmaics are inherently included the in whole-habitat *in situ* measurements in this study. 
-My research indicates that *O. lurida* habitat may restore substantial filtration functions in California bays.
-
+The contributions of all bivalve filter feeders and natural hydrodynmaics are inherently included in whole-habitat *in situ* measurements in this study. 
+My research indicates that the field filtration performance of *O. lurida* habitat and *C. gigas* aquaculture are similar in California bays.
 
 
 
