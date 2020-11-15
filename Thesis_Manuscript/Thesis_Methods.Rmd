@@ -30,7 +30,7 @@ The beds were positioned approximately 30 m from shore on a mudflat at approxima
 
 Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Morro Bay, California (35.334707, -120.844000; henceforth, Morro Bay). 
 MBOC grows *C. gigas* in plastic mesh bags measuring about (80 cm x 55 cm) attached to floating lines that stretch across an area about 75 m x 75 m. 
-The oysters grown in the bags are apptoximately five to 8 cm in length.
+The oysters grown in the bags are approximately five to 8 cm in length.
 The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
 
 ## Experimental Setup
@@ -43,12 +43,12 @@ The sonde housings were positioned to measure an uninterrupted linear water flow
 Linear water flow assumes that the upstream sonde is measuring the same water as the downstream sonde.
 An electromagnetic meter (Marsh-McBirney Flo-Mate 2000) measured water velocity at the depth of the sensors at the beginning, middle, and end of each trial. 
 Water velocity measurements where taken at the downstream sonde position and in the middle of the transect, velocity was averaged across positions and time.
-Mean depth was determined by markings on the PVC sonde housings at the beginning and end of the trial, and distance between sondes was detrmined post-trial with a transect tape.
+Mean depth was determined by markings on the PVC sonde housings at the beginning and end of the trial, and distance between sondes was determined post-trial with a transect tape.
 The sondes recorded measurements every one second, and trials lasted as long as water flow direction was consistent; ranging from six and 40 minutes. 
 I took the mean of temperature, salinity, turbidity of the upstream sonde during the filtration trial for analyses, and the mean of Chl $\alpha$ at both upstream and downstream sondes for analyses. 
 To compare the clearance rates of surrounding mudflat habitat to restored *O. lurida* and *C. gigas* aquaculture, I conducted a mudflat control trial at each site.
 Control trials used the same experimental set up, except the instruments were positioned over the mudflat adjacent to the oyster habitat.
-Data corresponding with field distrubances was cut from the time series.
+Data corresponding with field disturbances was cut from the time series.
 Field work was conducted from February 2018 to June 2019 and measured 22 oyster habitat filtration trials and six control mudflat trials.
 
 ## Chlorophyll $\alpha$ Corrections
