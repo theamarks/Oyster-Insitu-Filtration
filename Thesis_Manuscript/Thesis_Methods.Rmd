@@ -127,6 +127,9 @@ Percent Chl removal between and among sites was also examined using a one-way AN
 To determine if there was a difference between mudflat control and oyster habitat  filtration trial HCR, I first used a two-sample, single-tail, t-test.
 To examine the effects of water quality (i.e. temperature, salinity, turbidity, TPM, OC) and site variables, I fit a random forest regression (including all filtration and control trials) to HCR with temperature, salinity, turbidity, TPM, OC, and site as predictor variables [randomForest R package @Liaw2002].
 Control and filtration HCR was adjusted by the residuals of the random forest regression to control for the effects of water quality and site and was compared by a second two-sample, single-tail, t-test. 
+The effect of site on filtration trial HCR was examined using a one-way ANOVA. 
+Another one-way ANOVA examined the top 0.5 quartile of data at each site to determine if the top HCR performance differed between and among sites. 
+A quartile analysis ($\tau$ = 0.5, 0.9) was used to see if water quality variables had differential relationships with HCR.
 
 To examine the effect of water quality variables and site on HCR, I fit a second random forest regression that only included filtration trials [randomForest R package; @Liaw2002].
 The random forest model I fit is a ensemble of 2,000 individual decision trees.
