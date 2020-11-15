@@ -58,14 +58,15 @@ According to Gray & Langdon's [-@Gray2018] all-season model and the biomass of *
 In my study, the mean HCR at Deanza was 105 L hr^-1^m^-2^, two orders of magnitude higher than the single-species estimate made by @Gray2018's all-season model. 
 Two important points emerge from the difference between these estimates: 1) Filtration function estimates need to incorporate the contributions of other bivalve filter-feeders, otherwise habitat-level estimates of filtration functions may be largely underestimated; 2) Using a model derived from Yaquina Bay, Oregon oysters and field conditions may not represent environmental conditions in California bays, which underscores the need for local measurements in order to accurately estimate filtration functions.
 
-## Bivalve Filter-Feeding Community
+## Bivalve Filter Feeding Community
 
 The filtration contributions of non-oyster bivalves is best contextualized by biomass (g DTW m^-2^).
 Biomass is an important metric that is proportional to shell length which is in turn proportional to gill size and thus bivalve pumping rate [@Cranford2011].
+Thus, bivlave species biomass represents the proportional contribution that a species makes to the overall HCR.
 However, biomass is time consuming to measure directly and requires bivalve collection, sacrifice, removing tissue from the shell, oven drying, and weighing. 
 Many restoration practitioners may not wish to sacrifice bivalves from a restored habitat or do not have the resources to process samples to measure biomass. 
-This leaves a substancial knowedge gap for better understanding the filtration functions that restored *O. lurida* habitat may provide, and making direct comparisons to previous research findings.
-Future studies will benefit from a suite of models that predict species-specific bivalve biomass from shell length measurements, allowing monitoring efforts to measure bivalve shell length without disturbing the habitat to estimate habitat filter feeders.
+This leaves a substancial knowedge gap for better understanding the effects of bivalve community composition on restored *O. lurida* habitat filtration fuctions, and making direct comparisons to previous research findings.
+Future studies will benefit from a suite of models that predict species-specific bivalve biomass from shell length measurements, allowing monitoring efforts to measure bivalve shell length without disturbing the habitat to estimate filter feeders biomass.
 Here, I presented a highly predictive allometric model to estimate *O. lurida* biomass from shell length based on data from Newport Bay, CA (Figure \ref{NPD_Oly_DTW_SH_Trans}) that can be used in future southern California studies.
 Allometric relationships may vary regionally [@Ross2006], necessitating more studies from other locations.
 
