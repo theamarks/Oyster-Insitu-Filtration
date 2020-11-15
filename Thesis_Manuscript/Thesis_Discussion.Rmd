@@ -42,16 +42,21 @@ My results indicate that the habitat clearance rates (HCR) of *Crassostrea gigas
 These findings suggest that previously measured differences in clearance rates between *O. lurida* and *C. gigas* [@Gray2018] may not accurately reflect ecosystem filtration functions of *O. lurida* restoration and *C. gigas* aquaculture because they do not take into account that *O. lurida* is a foundation species that filters alongside other bivalves in dynamic environmental conditions. 
 
 Estimates of filtration functions of restored *O. lurida* habitats are currently made with single-species models [@ZuErmgassen2016; @Gray2019a; @ZuErmgassen2013c]. 
-*O. lurida* are smaller and less robust filter-feeders per unit biomass than *C. gigas* [@Gray2018; @ZuErmgassen2013c].
+*O. lurida* are smaller and less robust filter-feeders per unit biomass than *C. gigas* [@Gray2018; @ZuErmgassen2013c] and have larger gill ostea thought to be less effective at capturing smaller diameter particles [@Elsey1935, @Gray2016].
 Maximum clearance rates of *C. gigas* are almost twice that of *O. lurida* under laboratory conditions [@Gray2018]. 
 These physiological differences have called into question the filtration functions that restored *O. lurida*  habitat can provide to Pacific coast bays and estuaries [@ZuErmgassen2013c].
-In contrast, in the spatially-explicit hydrodynamic model in @Gray2019a, *O. lurida*'s filtration function could be an order of magnitude larger than estimated by @Gray2018's single-species model depending upon seasonality and hydrodynamics in Yaquina Bay, Oregon.
+Based on single-species clearance rate studies, on would expect *C. gigas* aquaculture to outperform *O. lurida* restoration in filtration functions.
+I found evidence that *in situ* HCRs between native oyster restoration and introduced oyster aquaculture are likely more similar than estimated by previous studies.
+Although my study only includes a single *C. gigas* aquaculture site, three *O. lurida* restoration sites in two bays north and south of Morro Bay set up a comparison fairly robust to restoration site differences, albeit not perfect.
+My evidence is generated from limited data, however, power analysis of HCR by site further points to a very small effect size and corroborates my findings that *C. gigas* aquaculture in no way "stands out" from *O. lurida* restoration.
+Furthermore, *O. lurida*'s filtration functions on a bay-wide spatial scale may dramatically increase when spatially-explicity hydrodynamics are accounted for [@Gray2019a].
+
 Clearance rates are typically expressed as a function of dry tissue weight (DTW), consequently a direct comparison between @Gray2018's results and my measured HCRs is only possible at the two sites (Deanza and San Rafael) where I can estimate clearance rates as a function of estimated biomass (DTW).
 @Gray2018 measured *O. lurida* clearance rates that averaged 0.78 L hr^-1^g^-1^ in the dry season and 0.19 L hr^-1^g^-1^ in the wet season in Yaquina Bay, Oregon. 
 *C. gigas* averaged 0.95 L hr^-1^g^-1^ in the dry season and 1.06 L hr^-1^g^-1^ in the wet season in the same location, whereas @Wheat2013 found that *C. gigas* grown on long-lines in Willipa Bay, Washington cleared 0.73 L hr^-1^g^-1^ (0.24 SE).
-According to Gray & Langdon's [-@Gray2018] all-season model and the biomass of *O. lurida* at Deanza (1.36 g DTW m^-2^), Deanza's HCR should be 1.13 L hr^-1^m^-2^ using average OC and temperature from my Deanza trials.
+According to Gray & Langdon's [-@Gray2018] all-season model and the biomass of *O. lurida* at Deanza (1.36 g DTW m^-2^), Deanza's HCR should be 1.13 L hr^-1^m^-2^ using mean OC and temperature from my Deanza trials.
 In my study, the mean HCR at Deanza was 105 L hr^-1^m^-2^, two orders of magnitude higher than the single-species estimate made by @Gray2018's all-season model. 
-Two important points emerge from the difference between these estimates: 1) Filtration function estimates need to incorporate the contributions of other bivalve filter-feeders, otherwise habitat-level estimates of filtration functions may be massively underestimated; 2) Using a model derived from Yaquina Bay, Oregon oysters and field conditions may not represent environmental conditions in California bays, which underscores the need for local measurements in order to accurately estimate filtration functions.
+Two important points emerge from the difference between these estimates: 1) Filtration function estimates need to incorporate the contributions of other bivalve filter-feeders, otherwise habitat-level estimates of filtration functions may be largely underestimated; 2) Using a model derived from Yaquina Bay, Oregon oysters and field conditions may not represent environmental conditions in California bays, which underscores the need for local measurements in order to accurately estimate filtration functions.
 
 ## Bivalve Filter-Feeding Community
 
