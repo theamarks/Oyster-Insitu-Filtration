@@ -851,7 +851,7 @@ ext_test_sum <- extreme_test %>%
   
 
 HCR_site_aov_noext <- aov(L_hr_m2 ~ Site, data = extreme_test)
-summary(HCR_site_aov_noext)
+#summary(HCR_site_aov_noext)
 
 ########### Power analysis - sensitivity power analysis 
 # one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
