@@ -135,15 +135,13 @@ To examine the effect of water quality variables and site on HCR, I fit a second
 The random forest model I fit is a ensemble of 2,000 individual decision trees.
 Each tree fits a random subset of the data and is prone to over-fitting.
 The final output (forest) is the average of the 2,000 individual trees, which corrects for the individual trees' weaknesses [i.e. ensemble learning, @Sagi2018].
-I chose to use a random forest regression over a multiple linear regression for several reasons. 
+I chose to use a random forest regression for several reasons. 
 First, random forest regressions are non-parametric models that learn non-linearity relationships without explicitly modeling them [@Gromping2009].
 This works well for my data as previous research suggests that temperature, salinity, and TPM have non-linear relationships with *O. lurida* and *C. gigas* clearance rates [@Gray2018].
 Second, random forest regressions work with missing data [@Stekhoven2012], and I had two trials with missing TPM and OC values because of a processing error. 
-A multiple linear regression would exclude the two missing trials.
-Third, I had a large number of variables relative to observations, limiting my degrees of freedom in a multiple linear regression framework, while random forests regressions work well with this 'wide' data structure [@Gromping2009].
+Third, I had a large number of variables relative to observations, random forests regressions work well with this 'wide' data structure [@Gromping2009].
 
-The relationship between TPM and OC was transformed to a log-log linear model based on the R^2^ value.
-The relationship between *O. lurida* shell length at Deanza and DTW was transformed to a log-log linear model based on the R^2^ value. 
+The relationship between TPM and OC was estimated using a linear model, as well as the relationship between *O. lurida* shell length at Deanza and DTW.
 All data corrections and statistical analyses were conducted in consultation with Dr. Kevin Nichols (CSUF Statistical Consulting Unit).
 
 ```{r Study_site_map, eval=FALSE, include=FALSE}
