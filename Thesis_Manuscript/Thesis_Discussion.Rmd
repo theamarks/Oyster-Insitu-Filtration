@@ -42,11 +42,11 @@ My results indicate that the habitat clearance rates (HCR) of *Crassostrea gigas
 These findings suggest that previously measured differences in clearance rates between *O. lurida* and *C. gigas* [@Gray2018] may not accurately reflect ecosystem filtration functions of *O. lurida* restoration and *C. gigas* aquaculture because they do not take into account that *O. lurida* is a foundation species that filters alongside other bivalves in dynamic environmental conditions. 
 
 Estimates of filtration functions of restored *O. lurida* habitats are currently made with single-species models [@ZuErmgassen2016; @Gray2019a; @ZuErmgassen2013c]. 
-*O. lurida* are smaller and less robust filter feeders per unit biomass than *C. gigas* [@Gray2018; @ZuErmgassen2013c] and have larger gill ostea thought to be less effective at capturing smaller diameter particles [@Elsey1935, @Gray2016].
+*O. lurida* are smaller and less robust filter feeders per unit biomass than *C. gigas* [@Gray2018; @ZuErmgassen2013c] and have larger gill ostea thought to be less effective at capturing smaller diameter particles [@Elsey1935; @Gray2016].
 Maximum clearance rates of *C. gigas* are almost twice that of *O. lurida* under laboratory conditions [@Gray2018]. 
 These physiological differences have called into question the filtration functions that restored *O. lurida*  habitat can provide to Pacific coast bays and estuaries [@ZuErmgassen2013c].
-Based on single-species clearance rate studies, on would expect *C. gigas* aquaculture to outperform *O. lurida* restoration in filtration functions.
-I found evidence that *in situ* HCRs between native oyster restoration and introduced oyster aquaculture are likely more similar than estimated by previous studies.
+Based on single-species clearance rate studies, one would expect *C. gigas* aquaculture to outperform *O. lurida* restoration in filtration functions.
+I found evidence that *in situ* HCRs between native oyster restoration and introduced oyster aquaculture are likely more similar than estimated by previous studies (Figure \ref{FR_Site_boxplot}.
 Although my study only includes a single *C. gigas* aquaculture site, three *O. lurida* restoration sites in two bays north and south of Morro Bay set up a comparison fairly robust to restoration site differences, albeit not perfect.
 My evidence is generated from limited data, however, power analysis of HCR by site further points to a very small effect size and corroborates my findings that *C. gigas* aquaculture in no way "stands out" from *O. lurida* restoration.
 Furthermore, *O. lurida*'s filtration functions on a bay-wide spatial scale may dramatically increase when spatially-explicitly hydrodynamics are accounted for [@Gray2019a].
@@ -111,7 +111,7 @@ My HCRs across all sites ranged from `r round(min(Filter_only_outRmd_data$L_hr_m
 Approximately `r round((nrow(Filter_only_outRmd_data %>% filter(L_hr_m2 > 157)) / nrow(Filter_only_outRmd_data)) * 100)`\% of my HCR estimates exceed their largest positive value (Table 1).
 @Jones2011a found the HCRs of infaunal cockles in New Zealand to be between 20 and 420 L hr^-1^m^-2^, where `r round((nrow(Filter_only_outRmd_data %>% filter(L_hr_m2 > 420)) / nrow(Filter_only_outRmd_data)) * 100)`\% of my HCR values exceed their largest positive value (Table 1).
 High variability is well documented in field filtration measurements even in short periods of time [@Grizzle2008; reviewed by @Cranford2011], and in bivalves feeding on natural seston over short and long periods of time [reviewed by @Cranford2011].
-In addition, HCR variation could be the result of measuring hundreds to thousands of bivalves (Figure \ref{Bivalve_Den_Biomass}). 
+In addition, HCR variation could be the result of measuring hundreds to thousands of bivalves (Figure \ref{Bivalve_Den}). 
 Individual feeding behavior can be highly variable in short time periods [@Newell2005], and even under favorable conditions, a substantial portion of individual bivalves may not actively feed or feed at a reduced capacity [@Dolmer2000; @Saurel2007]
 
 I found that temperature was the most important variable (23.1%) in predicting HCRs with my random forest model (*R*^2^ = 0.64), aligning with previous bivalve feeding studies.
