@@ -14,11 +14,12 @@ indent: true
 # Methods
 
 ## Study Sites
-I selected four sites along the California coast to measure *in situ* filtration.
-The sites represent a range of constructed oyster habitats including shell bag reef, shell bed, and floating aquaculture lines.
+I selected four sites along the California coast to measure *in situ* filtration clearance rates that represent filtration function.
+The sites represent a range of constructed oyster habitats including shell bag reef, shell bed, and floating aquaculture long-lines.
 The San Francisco Living Shorelines Project is located in northern San Francisco Bay, California (latitude, longitude: 37.964179, -122.487217; henceforth, San Rafael), and contains *Ostrea lurida* reefs constructed from July to August 2012 by The Coastal Conservancy and collaborators [@Latta2015; @EnvironmentalScienceAssociates2014].
-San Rafael consists of a shell-bag reef matrix with a 32 m x 10 m footprint with three rows of eight shell-bag reefs constructed as *O. lurida* habitat [@EnvironmentalScienceAssociates2014]. 
-Each reef unit measured 2 m x 2 m x 1 m and was composed of four shell bag elements measuring 1 m x 1 m x 1 m. A shell bag was made of plastic mesh filled with clean, commercially-grown *Crassostrea gigas* shell.
+San Rafael consists of a shell bag reef matrix with a 32 m x 10 m footprint with three rows of eight shell bag reefs constructed as *O. lurida* habitat [@EnvironmentalScienceAssociates2014]. 
+Each reef unit measured 2 m x 2 m x 1 m and was composed of four shell bag elements measuring 1 m x 1 m x 1 m. 
+A shell bag was made of plastic mesh filled with clean, commercially-grown *Crassostrea gigas* shell.
 The matrix was positioned approximately 200 m from shore on a mudflat at -0.3 m MLLW (Mean Low Lower Water) tidal elevation [@EnvironmentalScienceAssociates2014]. 
 
 The Upper Newport Bay Living Shorelines Project is located in Newport Bay, California and contains restored *O. lurida* beds. 
@@ -28,12 +29,13 @@ The oyster beds measure 20 m x 1 m x 0.25 m and were constructed with coconut co
 The beds were positioned approximately 30 m from shore on a mudflat at approximately -0.15 m MLLW [@Wood2018].
 
 Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Morro Bay, California (35.334707, -120.844000; henceforth, Morro Bay). 
-MBOC grows *C. gigas* in plastic mesh bags measuring about (80 cm x 50 cm) attached to floating lines that stretch across an area about 75 m x 75 m. 
+MBOC grows *C. gigas* in plastic mesh bags measuring about (80 cm x 55 cm) attached to floating lines that stretch across an area about 75 m x 75 m. 
+The oysters grown in the bags are apptoximately five to 8 cm in length.
 The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
 
 ## Experimental Setup
-*In situ* filtration methods were adapted from Grizzle et al.'s (2008) upstream-downstream measurements of bivalve beds on the North American Atlantic coast.
-Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (Chl $\alpha$), temperature, salinity, and turbidity from positions upstream and downstream of the oyster habitat. 
+*In situ* filtration methods were adapted from Grizzle et al.'s (2006, 2008) upstream-downstream measurements of bivalve beds on the North American Atlantic coast.
+Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (Chl $\alpha$, flurometer), temperature, salinity (automatically calculated from conductivity/temperature sensor), and turbidity (optical sensor) from positions upstream and downstream of the oyster habitat. 
 The sondes were hung inside of freestanding PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and were set at a height to align the sensors with the approximate height of the oyster beds, reefs, or floating bags. 
 Prior to each filtration trial, water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and interfering currents or eddies and was recorded by a drone about 25 feet above the water. 
 Trials were conducted close to low tide on either the ebb or flood tide depending on how the water flow direction transected  the oyster habitat.
@@ -41,12 +43,12 @@ The sonde housings were positioned to measure an uninterrupted linear water flow
 Linear water flow assumes that the upstream sonde is measuring the same water as the downstream sonde.
 An electromagnetic meter (Marsh-McBirney Flo-Mate 2000) measured water velocity at the depth of the sensors at the beginning, middle, and end of each trial. 
 Water velocity measurements where taken at the downstream sonde position and in the middle of the transect, velocity was averaged across positions and time.
-Depth was determined by markings on the PVC sonde housings at the beginning and end of the trial, and distance between sondes was detrmined post-trial with a transect tape.
+Mean depth was determined by markings on the PVC sonde housings at the beginning and end of the trial, and distance between sondes was detrmined post-trial with a transect tape.
 The sondes recorded measurements every one second, and trials lasted as long as water flow direction was consistent; ranging from six and 40 minutes. 
-I took the mean of temperature, salinity, turbidity of the upstream sonde during the filtration trail for analyses, and the mean of Chl $\alpha$ at both upstream and downstream sondes for analyses. 
-To compare the clearance rates of surrounding mudflat habitat to restored *O. lurida* and *C. gigas* aquaculture, I conducted a control trial at each site.
+I took the mean of temperature, salinity, turbidity of the upstream sonde during the filtration trial for analyses, and the mean of Chl $\alpha$ at both upstream and downstream sondes for analyses. 
+To compare the clearance rates of surrounding mudflat habitat to restored *O. lurida* and *C. gigas* aquaculture, I conducted a mudflat control trial at each site.
 Control trials used the same experimental set up, except the instruments were positioned over the mudflat adjacent to the oyster habitat.
-Data corresponding with field distrubances was cut from the time series 
+Data corresponding with field distrubances was cut from the time series.
 Field work was conducted from February 2018 to June 2019 and measured 22 oyster habitat filtration trials and six control mudflat trials.
 
 ## Chlorophyll $\alpha$ Corrections
@@ -54,7 +56,7 @@ Field work was conducted from February 2018 to June 2019 and measured 22 oyster 
 Chl $\alpha$ is a photosynthetic pigment whose concentration is a proxy for phytoplankton and macroalgal detritus consumed by filter-feeding bivalves, and is commonly used to measure filtration [@Harsh1999; @Wasson2015; @Grizzle2006; @Grizzle2008; @Milbrandt2015].
 I compared Chl $\alpha$ sensors readings by conducting two side-by-side trials before and after filtration and control trials.
 In the side-by-side trials, I placed the sondes adjacent to one another to compare the sensors' Chl $\alpha$ concentration readings in the same mass of water for approximately 10 minutes.
-All data, in filtration, control, and side-by-side trails, was reviewed for extreme Chl $\alpha$ and turbidity spikes indicating disturbances to the trail. 
+All data, in filtration, control, and side-by-side trials, was reviewed for extreme Chl $\alpha$ and turbidity spikes indicating disturbances to the trial. 
 If extreme Chl $\alpha$ and turbidity values were corroborated by field notes, the time period was removed from the trial.
 Next, I corrected mean Chl $\alpha$ values in the filtration and control trials with the mean Chl $\alpha$ difference from the corresponding side-by-side trials.
 The mean difference between sondes in combined side-by-side trials was divided in half to produce a correction term.
@@ -77,9 +79,9 @@ Filters were then dried in an oven at 60&deg;C for 48 hours, and weighed to dete
 Next, the dried filters were ashed at 450&deg;C for \( \geq 4 \) hours and weighed to determine PIM (Equation \ref{Eq:PIM}) and POM (Equation \ref{Eq:POM}). 
 Seston OC is simply the ratio of POM to TPM.
 @Gray2018 used washed and ashed filters; however, the filters I used that were only washed. 
-The mean weight difference between ashed filters and washed only filters was 0.5\%, which I used to corrected the filter pre-weights (Equation \ref{Eq:TPM}, \ref{Eq:PIM}).
-In addition, control filters were run with every sampling batch, distilled water was filtered, and the filter was stored and processed the same as samples.
-The difference between the pre-weight of the control filters and the dried and ashed weight of the control filters represented processing contamination; I used this difference to correct filter dry and ashed weights.
+The mean weight difference between ashed filters and washed only filters was 0.5\%, which I used to corrected the filter pre-weights in Equation \ref{Eq:TPM}, \ref{Eq:PIM}.
+In addition, control filters, filtered with distilled water, were stored and processed with every sampling batch.
+The TPM and PIM of control filters represented processing contamination within each sample batch, and I used these values to correct sample TPM and PIM within each batch.
 
 \begin{equation}
 \label{Eq:TPM}
