@@ -6,7 +6,6 @@ header-includes:
 - \doublespacing
 indent: yes
 output:
-  word_document: default
   pdf_document:
     fig_caption: yes
 ---
