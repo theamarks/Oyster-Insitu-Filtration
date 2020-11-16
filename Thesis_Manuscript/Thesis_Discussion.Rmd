@@ -47,7 +47,7 @@ Maximum clearance rates of *C. gigas* are almost twice that of *O. lurida* under
 These physiological differences have called into question the filtration functions that restored *O. lurida*  habitat can provide to Pacific coast bays and estuaries [@ZuErmgassen2013c].
 Based on single-species clearance rate studies, one would expect *C. gigas* aquaculture to outperform *O. lurida* restoration in filtration functions.
 I found evidence that *in situ* HCRs between native oyster restoration and introduced oyster aquaculture are likely more similar than estimated by previous studies (Figure \ref{FR_Site_boxplot}).
-Although my study only includes a single *C. gigas* aquaculture site, the use of three *O. lurida* restoration sites in two bays north and south of Morro Bay set up a comparison with fairly robust inferential strength, albeit limited to the partiular contexts of the selected sites.
+Although my study only includes a single *C. gigas* aquaculture site, the use of three *O. lurida* restoration sites in two bays north and south of Morro Bay set up a comparison with fairly robust inferential strength, albeit limited to the particular contexts of the selected sites.
 While my evidence is generated from limited data, the power analysis of HCR by site further points to a very small effect size and corroborates my findings that at least this particular *C. gigas* aquaculture setup does not "stand out" from *O. lurida* restoration.
 Furthermore, *O. lurida*'s filtration functions on a bay-wide spatial scale may dramatically increase when spatially-explicitly hydrodynamics are accounted for [@Gray2019a].
 
