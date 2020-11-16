@@ -245,7 +245,7 @@ find_outlier <- function(data){
 
 ```
 
-```{r Site WQ ANOVA, fig.width=7, fig.asp=1.2, fig.cap="Box plots of ambient (upstream) A) temperature, B) salinity, C) turbidity, D) total particulate matter, E) organic content, and F) chlorophyll $\\alpha$ from filtration trials. One-way ANOVAs compared the difference between water quality variables and site. Significantly different results were grouped by a post-hoc Tukey's HSD; significantly different sites do not share a common letter, and non-significant differences share letters. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company, aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
+```{r Site WQ ANOVA, fig.width=7, fig.asp=1.2, fig.cap="Box plots of ambient (upstream) A) temperature, B) salinity, C) turbidity, D) total particulate matter, E) organic content, and F) chlorophyll $\\alpha$ from filtration trials. One-way ANOVAs compared the difference between water quality variables and site. Significantly different results were grouped by a post-hoc Tukey's HSD; significantly different sites do not share a common letter, and non-significant differences share letters. Site effects on OC were significant, and a Newman-Keuls post-hoc analysis determined a significant difference between San Rafael and Deanza undetected by Tukey's HSD. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company, aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
 
 #########################
 ###### Temperature 
@@ -392,16 +392,19 @@ Tpm_box <- ggplot(Filter_only_outRmd_data, aes(Site, Avg_TPM_mg_L)) +
 #####################
 ####### OC
 #hist(site_data_outrmd$Avg_OC_Ratio)
-site_OC_aov <- aov(Avg_OC_Ratio ~ Site, data = Filter_only_outRmd_data)
+site_OC_aov <- aov(Avg_OC_Ratio ~ Site, data = Filter_only_outRmd_data %>% na.omit())
 OC_aov_values <- broom::tidy(site_OC_aov)
 
 # Post-Hoc Tukey test
 tukey_oc <- TukeyHSD(site_OC_aov)
-#tukey_oc
-#plot(tukey_oc)
+
 #Honestly Significant Difference test
 hds_oc <- HSD.test(site_OC_aov, trt = "Site")
-#hds_oc
+# Not not showing differences between sites
+
+# Less conservative Post-hoc analysis - Newman-keuls (also good for simple group structure)
+library(DescTools)
+NK_oc <- PostHocTest(site_OC_aov, method = "newmankeuls", conf.level = 0.95)
 
 OC_box <- ggplot(Filter_only_outRmd_data, aes(Site, Avg_OC_Ratio)) +
   geom_boxplot(color = Site_colors) + 
@@ -411,21 +414,7 @@ OC_box <- ggplot(Filter_only_outRmd_data, aes(Site, Avg_OC_Ratio)) +
   theme_classic() +
   labs(x = 'Site',
        y = "Organic Content (Ratio)",
-       title = "E)") +
-  annotate("text", "San Rafael", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "San Rafael"))$Avg_OC_Ratio) + 0.025, label = "ab") +
-  annotate("text", "Morro Bay", 
-           max((site_data_outrmd %>% 
-                  na.omit() %>% 
-                  filter(Site == "Morro Bay"))$Avg_OC_Ratio) + 0.025, label = "a") +
-  annotate("text", "Shellmaker", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "Shellmaker"))$Avg_OC_Ratio) + 0.025, label = "ab") +
-  annotate("text", "Deanza", 
-           max((site_data_outrmd %>% 
-                  na.omit() %>% 
-                  filter(Site == "Deanza"))$Avg_OC_Ratio) + 0.025, label = "a") 
+       title = "E)")
 
 #########################
 ###### Chlorphyll
@@ -461,8 +450,10 @@ Twenty-five experimental trials, across the four study sites, were included in t
 A single filtration trial at Deanza (2019-4-17; Table 1) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 $\mu$g/L). 
 Filtration trials across sites were not distributed equally (Table 1), Deanza had more than twice the amount filtration trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4), while each site had a single control.
 Ambient water quality during filtration trials varied within and among sites (Figure \ref{Site_WQ_boxplot}). 
-Chl $\alpha$ was significantly different between sites as determined by one-way ANOVA at a *p* < 0.05 (*F*(`r chl_aov_values[[1,2]]`, `r chl_aov_values[[2,2]]`) = `r round(chl_aov_values[[1,5]],2)`, *p* = `r round(chl_aov_values[[1,6]],2)`), along with salinity (*F*(`r sal_aov_values[[1,2]]`, `r sal_aov_values[[2,2]]`) = `r round(sal_aov_values[[1,5]],2)`, *p* < 0.001), turbidity (*F*(`r turb_aov_values[[1,2]]`, `r turb_aov_values[[2,2]]`) = `r round(turb_aov_values[[1,5]],2)`, *p* < 0.001), TPM (*F*(`r TPM_aov_values[[1,2]]`, `r TPM_aov_values[[2,2]]`) = `r round(TPM_aov_values[[1,5]],2)`, *p* = < 0.001), and OC (*F*(`r OC_aov_values[[1,2]]`, `r OC_aov_values[[2,2]]`) = `r round(OC_aov_values[[1,5]],2)`, *p* = `r round(OC_aov_values[[1,6]],2)`) (Figure \ref{Site_WQ_boxplot}).
-Temperature was not different between sites (*F*(`r temp_aov_values[[1,2]]`, `r temp_aov_values[[2,2]]`) = `r round(temp_aov_values[[1,5]],2)`, *p* > 0.05) (Figure \ref{Site_WQ_boxplot}).
+Salinity was significantly different among sites as determined by a one-way ANOVA at a *p* < 0.05 (*F*(`r sal_aov_values[[1,2]]`, `r sal_aov_values[[2,2]]`) = `r round(sal_aov_values[[1,5]],2)`, *p* < 0.001), along with turbidity (*F*(`r turb_aov_values[[1,2]]`, `r turb_aov_values[[2,2]]`) = `r round(turb_aov_values[[1,5]],2)`, *p* < 0.001), and TPM (*F*(`r TPM_aov_values[[1,2]]`, `r TPM_aov_values[[2,2]]`) = `r round(TPM_aov_values[[1,5]],2)`, *p* = < 0.001) (Figure \ref{Site_WQ_boxplot}).  
+Temperature (*F*(`r temp_aov_values[[1,2]]`, `r temp_aov_values[[2,2]]`) = `r round(temp_aov_values[[1,5]],2)`, *p* = `r format(round(temp_aov_values[[1,6]],2), nsmall = 2)`), and Chl $\alpha$ (*F*(`r chl_aov_values[[1,2]]`, `r chl_aov_values[[2,2]]`) = `r round(chl_aov_values[[1,5]],2)`, *p* = `r round(chl_aov_values[[1,6]],2)`) were not different among sites (Figure \ref{Site_WQ_boxplot}).
+OC was significant among sites OC (*F*(`r OC_aov_values[[1,2]]`, `r OC_aov_values[[2,2]]`) = `r round(OC_aov_values[[1,5]],2)`, *p* = `r round(OC_aov_values[[1,6]],2)`), but the post-hoc Tukey HSD did not reveal significant differences among sites. 
+Therefore, I use a less conservative post-hoc analysis, the Kewman-Keuls method, and found that OC was significantly different between Shellmaker and Deanza (*p* = `r round(NK_oc$Site[[3,4]],2)`).
 
 ```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are listed in Table 1. Each data point is an the mean of a single filtration trial. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{ChlRmd_Site_boxplot}"}
 
