@@ -35,7 +35,7 @@ The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float
 
 ## Experimental Setup
 *In situ* filtration methods were adapted from Grizzle et al.'s (2006, 2008) upstream-downstream measurements of bivalve beds on the North American Atlantic coast.
-Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (Chl $\alpha$, flurometer), temperature, salinity (automatically calculated from conductivity/temperature sensor), and turbidity (optical sensor) from positions upstream and downstream of the oyster habitat. 
+Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (Chl $\alpha$, fluorometer), temperature, salinity (automatically calculated from conductivity/temperature sensor), and turbidity (optical sensor) from positions upstream and downstream of the oyster habitat. 
 The sondes were hung inside of freestanding PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and were set at a height to align the sensors with the approximate height of the oyster beds, reefs, or floating bags. 
 Prior to each filtration trial, water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and interfering currents or eddies and was recorded by a drone about 25 feet above the water. 
 Trials were conducted close to low tide on either the ebb or flood tide depending on how the water flow direction transected  the oyster habitat.
@@ -128,8 +128,8 @@ To determine if there was a difference between mudflat control and oyster habita
 To account for the effects of water quality (i.e. temperature, salinity, turbidity, TPM, OC) and site variables, I fit a random forest regression (including all filtration and control trials) to HCR with temperature, salinity, turbidity, TPM, OC, and site as predictor variables [randomForest R package @Liaw2002].
 Control and filtration HCR were adjusted by the residuals of the random forest regression to control for the effects of water quality and site and were compared by a second two-sample, single-tail, t-test. 
 The effect of site on filtration trial HCR was examined using a Kruskal-Wallis analysis.
-Another Kruskal-Wallis analysis examined the top 0.5 quartile of data at each site to determine if the top HCR performance differed among sites. 
-A quartile analysis ($\tau$ = 0.5, 0.9) was used to see if water quality variables had differential relationships with HCR.
+Another Kruskal-Wallis analysis examined the top 0.5 quantile of data at each site to determine if the top HCR performance differed among sites. 
+A quantile analysis ($\tau$ = 0.5, 0.9) was used to see if water quality variables had differential relationships with HCR.
 
 To examine the effect of water quality variables and site on HCR, I fit a second random forest regression that only included filtration trials [randomForest R package; @Liaw2002].
 The random forest model I fit is an ensemble of 2,000 individual decision trees.
