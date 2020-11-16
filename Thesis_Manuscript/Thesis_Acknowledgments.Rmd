@@ -1,0 +1,40 @@
+---
+bibliography: library.bib
+csl: marine-ecology-progress-series.csl
+header-includes:
+- \usepackage{setspace}
+- \doublespacing
+indent: yes
+output:
+  pdf_document:
+    fig_caption: yes
+---
+
+# Acknowledgments 
+
+This thesis is the culmination of the myriad of people who assisted and encouraged me along the way. 
+
+First, I'd like to express my gratitude for my advisor Dr. Danielle Zacherl for her inexhaustible fervor towards her students and their research.
+Thank you to Dr. Ted Grosholz for adopting me into your lab when I lived 400 miles from my own lab, loaning me your immortal Marsh-McBirney, and for the statistics council in the 11th hour.
+Thank you to Dr. Doug Eernisse for always bringing a different angle to the discussion and for the all fun in La Paz. 
+Thank you to Dr. Paul Stapp for your thorough feedback and tough questions that strengthened my research.
+Thank you to Dr. Kevin Nichols for the most productive 1 hour meetings and expanding my statistics worldview.
+Thank you to Dr. Chela Zabin, Dr. Kathy Boyer, and Marilyn Latta for sharing data and setting me up on the San Rafael living shorelines site.
+Thank you to Neal Maloney and Morro Bay Oyster Company for collaborating with my research.
+"tough love" feedback in lab meetings. 
+
+Thank you to the people, departments, and agencies that financially supported my research: The National Geographic Society, California Sea Grant, Mr. Coppel, Associated Students Inc. CSUF, CSUF Biology Department, NSMICC, The Giles T. Brown Graduate Student Award, The National Shellfisheries Association, and The Pacific Coast Shellfish Growers Association. 
+
+Thank you to all the members of the Zacherl Lab past and present for the support, laughs, and 
+Thank you to my grandfather Alan Amsler, who was often mistaken for a Ph.D., and grandmother Katherine Amsler for instilling scholarship into my life at an early age and supporting it later on. 
+Thank you to my parents, Kevin and Wendy Marks, for your love, encouragement, and passing on your wonderment of the natural world.
+Thank you to my nana Dolores Smalis for your love and showing me the value of postie perverseness.
+Thank you to David's parents Carol Coats and Dave Wasick for your love and encouragement. 
+Thank you to Diane Parnell for sharing your home with David and I during my fieldwork in Morro Bay and for the fierce kindness you extend to the world. 
+
+David, thank you for your positive outlook and pragmatic sensibilities. 
+Thank you for being my drone pilot and keeping an eye on me while I fumbled with deep mud and cumbersome instruments, all while educating concerned dog-walkers on native oyster restoration. 
+You are a fantastic field assistant and an even better life partner.  
+
+
+
