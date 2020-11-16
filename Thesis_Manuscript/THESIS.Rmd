@@ -52,6 +52,11 @@ library()
 \listoffigures
 \newpage 
 
+```{r child = 'Thesis_Acknowledgments.Rmd'}
+```
+
+\newpage
+
 ```{r child = 'Thesis_Introduction.Rmd'}
 ```
 
