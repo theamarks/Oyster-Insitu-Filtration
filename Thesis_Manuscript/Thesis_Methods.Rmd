@@ -124,7 +124,7 @@ All data wrangling and analysis was conducted R 3.6.3 [@R; tidyverse R package; 
 Two field days (Morro Bay 2019-05-18 and Deanza 2018-10-25; Table 1) from my data set were missing TPM and OC values.
 I used a semi-parametric imputation to estimate the missing values [missForest R package; @Stekhoven2012].
 Differences in temperature, salinity, turbidity, and Chl $\alpha$ among sites was investigated using a one-way ANOVA and post-hoc Tukey honestly significant difference (HSD) on significantly results.
-Percent Chl removal among sites was examined using a Kruskal-Wallis oneß-way analysis of variance.
+Percent Chl removal among sites was examined using a Kruskal-Wallis one-way analysis of variance.
 
 To determine if there was a difference between mudflat control and oyster habitat  filtration trial HCRs, I first used a two-sample, single-tail, t-test.
 To account for the effects of water quality (i.e. temperature, salinity, turbidity, TPM, OC) and site variables, I fit a random forest regression (including all filtration and control trials) to HCR with temperature, salinity, turbidity, TPM, OC, and site as predictor variables [randomForest R package @Liaw2002].
