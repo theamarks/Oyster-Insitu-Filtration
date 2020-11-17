@@ -48,7 +48,7 @@ These physiological differences have called into question the filtration functio
 Based on single-species clearance rate studies, one would expect *C. gigas* aquaculture to outperform *O. lurida* restoration in filtration functions.
 I found evidence that *in situ* HCRs between native oyster restoration and introduced oyster aquaculture are likely more similar than estimated by previous studies (Figure \ref{FR_Site_boxplot}).
 Although my study only includes a single *C. gigas* aquaculture site, the use of three *O. lurida* restoration sites in two bays north and south of Morro Bay set up a comparison with fairly robust inferential strength, albeit limited to the particular contexts of the selected sites.
-While my evidence is generated from limited data, the power analysis of HCR by site further points to a very small effect size and corroborates my findings that at least this particular *C. gigas* aquaculture setup does not "stand out" from *O. lurida* restoration.
+While my evidence is generated from limited data, my findings indicate that at least this particular *C. gigas* aquaculture setup does not "stand out" from *O. lurida* restoration.
 Furthermore, *O. lurida*'s filtration functions on a bay-wide spatial scale may dramatically increase when spatially-explicitly hydrodynamics are accounted for [@Gray2019a].
 
 Clearance rates are typically expressed as a function of dry tissue weight (DTW), consequently a direct comparison between @Gray2018's results and my measured HCRs is only possible at the two sites (Deanza and San Rafael) where I can estimate clearance rates as a function of estimated biomass (DTW).
@@ -73,7 +73,7 @@ Allometric relationships may vary regionally [@Ross2006], necessitating more stu
 ## Environmental Conditions
 
 Gray & Langdon's [-@Gray2018] *O. lurida* *in situ* clearance rate model was conducted in a flow-through chamber and may not be directly applicable to estimating oyster habitat filtration functions without incorporating hydrodynamics [@Gray2019a].
-The *in situ* upstream-downstream method employed in my study inherently included natural hydrodynamic conditions formed by the interaction between the physical characteristics of oyster habitat and water flow dynamics,dictating food availability and quality to filter feeders.
+The *in situ* upstream-downstream method employed in my study inherently included natural hydrodynamic conditions formed by the interaction between the physical characteristics of oyster habitat and water flow dynamics, dictating food availability and quality to filter feeders.
 Hydrodynamics interact with aquatic ecosystems from large bay-wide scales to small-scale plankton interactions, and are not easy to simulate [@Sanford1997].
 Bivalves living in restored *O. lurida* habitat create a rough surface that produces drag and breaks up the water flow momentum [@Dame2012; @VanDuren2006].
 This basic interaction dissipates upward creating a velocity gradient from the bottom (lower velocity) into the water column (higher velocity) known as the boundary layer [@Dame2012].
@@ -102,7 +102,7 @@ In addition, Morro Bay and San Rafael were not continuous habitat like Deanza an
 This patchy habitat may have caused eddies, where water is retained longer than the average water flow, physically removing seston (i.e. Chl $\alpha$) from the main water flow measured by the downstream instrument.
 Chl $\alpha$ retention in eddies could be conflated as bivalve filtration, but is nonetheless capturing Chl $\alpha$ from the water column.
 This is especially possible at San Rafael, where the *O. lurida* habitat consisted of an array of 2 m x 2 m shell bag reefs each with a 1 m relief above the sediment. 
-Considering the extremely low *O. lurida* biomass at San Rafael compared to Deanza, one would not expect San Rafael to have a similar filtration services (Figure \ref{FR_Site_boxplot}). Rather, seston removal at patchy and high relief habitats, like San Rafael, may have a substantial physical seston removal mechanism. 
+Considering the extremely low *O. lurida* biomass at San Rafael compared to Deanza (\ref{Bivalve_DTW_Biomass}), one would not expect San Rafael to have a similar filtration services (Figure \ref{FR_Site_boxplot}). Rather, seston removal at patchy and high relief habitats, like San Rafael, may have a substantial physical seston removal mechanism. 
 
 Given that trials within each site were conducted in similar tidal conditions, thus hydrodynamics, my results still show highly variable HCRs within each site (Figure \ref{FR_Site_boxplot}).
 My HCRs across all sites ranged from `r round(min(Filter_only_outRmd_data$L_hr_m2))` to `r round(max(Filter_only_outRmd_data$L_hr_m2))` L hr^-1^m^-2^ (Table 1), which encompasses the HCR range of previous studies.
