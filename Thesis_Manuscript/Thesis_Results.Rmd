@@ -824,36 +824,36 @@ HCR_site_aov <- aov(L_hr_m2 ~ Site, data = Filter_only_outRmd_data)
 HCR_aov_values <- broom::tidy(HCR_site_aov)
 
 ############### Dr. Nichols Power analysis #######
-n=21
-r2 = 1068382/(1068382+6947629)
-r2
+#n=21
+#r2 = 1068382/(1068382+6947629)
+#r2
 
 #increase n to 60, r2 stays the same and sumsq should scale by 60/n
-n.new = 21:200
-SSR.new = 1068382*n.new/n
-SSE.new = 6947629*n.new/n
-MSR.new = SSR.new/3
-MRE.new = SSE.new/(n.new-3-1)
-Fa = MSR.new/MRE.new
-Fc = qf(.95,3,n.new-3-1)
-F.ratio = Fc/Fa
-power = 1 - pf(F.ratio,3,n.new-3-1)
-power
-plot(n.new,power,type="l",x.lab="Proposed Sample Size",y.lab = "Power",main="Power analysis if r2 = .133")
+#n.new = 21:200
+#SSR.new = 1068382*n.new/n
+#SSE.new = 6947629*n.new/n
+#MSR.new = SSR.new/3
+#MRE.new = SSE.new/(n.new-3-1)
+#Fa = MSR.new/MRE.new
+#Fc = qf(.95,3,n.new-3-1)
+#F.ratio = Fc/Fa
+#power = 1 - pf(F.ratio,3,n.new-3-1)
+#power
+#plot(n.new,power,type="l",x.lab="Proposed Sample Size",y.lab = "Power",main="Power analysis if r2 = .133")
 
 #Now we want to hold n constant and toggle r^2.
 #Assume sst is constant, change r^2 which gives us new SSR and SSE, then go from there.
-r2.new = seq(.1,1,by=.01)
-SST = 1068382+6947629
-SSR.new = r2.new*SST
-SSE.new = SST-SSR.new
-MSR.new = SSR.new/3
-MRE.new = SSE.new/(n-3-1)
-Fa = MSR.new/MRE.new
-Fc = qf(.95,3,n-3-1)
-F.ratio = Fc/Fa
-power = 1 - pf(F.ratio,3,n-3-1)
-plot(r2.new,power,type="l",xlab="Hypothetical r2",ylab = "Power",main="Power analysis if n=21")
+#r2.new = seq(.1,1,by=.01)
+#SST = 1068382+6947629
+#SSR.new = r2.new*SST
+#SSE.new = SST-SSR.new
+#MSR.new = SSR.new/3
+#MRE.new = SSE.new/(n-3-1)
+#Fa = MSR.new/MRE.new
+#Fc = qf(.95,3,n-3-1)
+#F.ratio = Fc/Fa
+#power = 1 - pf(F.ratio,3,n-3-1)
+#plot(r2.new,power,type="l",xlab="Hypothetical r2",ylab = "Power",main="Power analysis if n=21")
 ######################
 
 # Post-Hoc Tukey test
