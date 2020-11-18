@@ -13,17 +13,15 @@ output:
 
 # Abstract
 
-The Olympia oyster, *Ostrea lurida* is the focus of many restoration projects along estuaries in the North American Pacific coast, whereas the non-indigenous Pacific oyster, *Crassostrea gigas*, makes up the vast majority of oyster aquaculture in the region.
-Both *O. lurida* habitat and *C. gigas* aquaculture provide filtration functions as filter feeders, my project investigated the contributions of both in four California bays using a whole-habitat, *in situ* approach.
+The Olympia oyster, *Ostrea lurida*, is the focus of many restoration projects along estuaries in the North American Pacific coast, whereas the non-indigenous Pacific oyster, *Crassostrea gigas*, makes up the vast majority of oyster aquaculture in the region.
+Both *O. lurida* habitat and *C. gigas* aquaculture provide filtration functions as filter feeders, my project investigated the contributions of both in three California bays using a whole-habitat, *in situ* approach.
 I collected upstream-downstream measurements of chlorophyll $\alpha$, temperature, salinity, and turbidity to estimate habitat clearance rates (HCR, L hr^-1^m^-2^).
 In parallel, I estimated seston total particulate matter (TPM), and organic content (OC), and examined existing data on bivalve density and biomass.
 Twenty-two experimental trials and four control mudflat trials were conducted from February 2018 to June 2019.
 Mean HCR at *O. lurida* restoration sites were 166 L hr^-1^ m^-2^ (*SD* = 255) at San Rafael, -464 L hr^-1^ m^-2^ (*SD* = 1420) at Shellmaker, and 105 L hr^-1^ m^-2^ (*SD* = 251) at Deanza, while the *C. gigas* aquaculture site at Morro Bay was 10.3 L hr^-1^ m^-2^ (*SD* = 257).
 HCRs were highly variable within and among sites, and not significantly different. 
-Using random forest regression analysis, I found that temperature (23.1%) was relatively most important to HCR, followed by turbidity (20.6%), TPM (16.8%), OC (16.6%), site (15.1%), and salinity (7.8%).
+Using random forest regression analysis, I found that temperature (`r round(Temp_rel_import_HCR,1)`\%) was relatively most important to HCR, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
 The contributions of all bivalve filter feeders and natural hydrodynamics are inherently included in whole-habitat *in situ* measurements in this study. 
 My research indicates that the field filtration performance of *O. lurida* habitat and *C. gigas* aquaculture are similar in California bays.
-
-
 
 
