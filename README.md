@@ -1,6 +1,6 @@
 # Oyster-Insitu-Filtration
 
-## In situ Clearance Rates of Olympia Oyster (*Ostrea lurida*) Habitat and Japanese Oyster (*Crassostrea gigas*) Aquaculture in California
+## *In situ* Clearance Rates of Olympia Oyster (*Ostrea lurida*) Habitat and Japanese Oyster (*Crassostrea gigas*) Aquaculture in California
 
 Althea N. Marks
 
