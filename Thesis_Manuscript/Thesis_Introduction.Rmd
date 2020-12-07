@@ -14,7 +14,7 @@ indent: true
 
 ## Oyster Filtration Functions
 
-In estuaries along the North American Pacific coast (NAPC), the Olympia oyster, *Ostrea lurida*, is a foundation species that autogeneously creates complex three-dimensional habitat [@Dayton1972].
+In estuaries along the North American Pacific coast (NAPC), the Olympia oyster, *Ostrea lurida*, is a foundation species that autogenously creates complex three-dimensional habitat [@Dayton1972].
 The shells of living and dead oysters provide habitat for a variety of invertebrates [@Kimbro2006; @Ramsey2012; @Rodney2006; @Boyer2017], nursery, refuge, and foraging habitat for fishes [@Coen2007; @Peterson2003; @Stunz2010], and foraging habitat for birds [@Galtsoff1929; @Boyer2017].
 *O. lurida* and other bivalves that recruit to oyster habitat are suspension feeders that remove particulate matter (seston) from the water column and deposit mucus-bound feces and pseudofeces (i.e. biodeposits) on the sediment surface [@Elsey1935; @Baird1989; @Dame1999; @Kellogg2013].
 This feeding behavior contributes to three critical ecosystem functions including nutrient sequestration, trophic energy transfer, and water clarification.
@@ -68,7 +68,7 @@ This illustrates bivalves' highly variable feeding responses to natural conditio
 
 Here, I assessed the contributions of restored *O. lurida* habitat and *C. gigas* aquaculture to estuary filtration functions in California, as a function of natural water quality conditions and filter feeder communities, which are expected to vary among locations.
 My research questions were:
-1) Do oyster habitat habitat clearance rates (HCR) differ from adjacent mudflat habitat HCR?
+1) Do oyster habitat clearance rates (HCR) differ from adjacent mudflat habitat HCR?
 2) How do the HCRs of restored *O. lurida* habitat compare to *C. gigas* aquaculture?
 3) What biotic and abiotic factors are important in estimating HCR?
 4) Is there a predictable allometric relationship between *O. lurida* shell length and dry tissue weight, allowing for accurate estimates of DTW without sacrificing restored oysters?
