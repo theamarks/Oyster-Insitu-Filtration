@@ -87,12 +87,12 @@ The TPM and PIM of control filters represented processing contamination within e
 
 \begin{equation}
 \label{Eq:TPM}
-TPM (mg/L)= \frac{[Filter Dry Weight (g) - Filter Pre Weight (g)] \times \frac{100 mg}{L}}{Water sample volume (mL) \times \frac{1 L}{1000 mL}} \
+TPM (mg/L)= \frac{[Filter Dry Weight (g) - Filter Pre Weight (g)] \times \frac{1000 mg}{L}}{Water sample volume (mL) \times \frac{1 L}{1000 mL}} \
 \end{equation}
 
 \begin{equation}
 \label{Eq:PIM}
-PIM (mg/L)= \frac{[Filter Ash Weight (g) - Filter Pre Weight (g)] \times \frac{100 mg}{L}}{Water sample volume (ml)\times \frac{1 L}{1000 mL}} \
+PIM (mg/L)= \frac{[Filter Ash Weight (g) - Filter Pre Weight (g)] \times \frac{1000 mg}{L}}{Water sample volume (ml)\times \frac{1 L}{1000 mL}} \
 \end{equation}
 
 \begin{equation}
