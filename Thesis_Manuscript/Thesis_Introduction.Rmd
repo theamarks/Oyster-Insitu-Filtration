@@ -34,7 +34,7 @@ Dwindling *O. lurida* harvests led to the cultivation of the Japanese oyster, *C
 *C. gigas* now accounts for the overwhelming majority of commercial oyster harvest on the NAPC [@Beattie1982; @Pauley1988], and has established feral populations outside of aquaculture operations in the Salish Sea [@Quayle1988], Willipa Bay, Washington [@Kincaid1968], and southern California [@Crooks2015a; @Polson2009; @Tronske2018].
 *C. gigas* is a large, fast growing oyster with higher filtration rates than *O. lurida* per unit dry tissue weight (DTW) [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019], and it can exert top-down control of seston at aquaculture densities [@Wheat2013].
 Furthermore, *C. gigas* has a higher particle capture efficiency presumably because it has smaller gill ostea than *O. lurida* [@Elsey1935; @Gray2018; @Gray2016].
-Beyond differences in species physiology, many aquaculture operations cultivate oyster in off-bottom structures that are fundamentally different than natural oyster reefs and may alter how commercially grown *C. gigas* delivers pelagic seston resources to benthic communities.
+Beyond differences in species physiology, many aquaculture operations cultivate oysters in off-bottom structures that are fundamentally different than natural oyster reefs and may alter how commercially grown *C. gigas* delivers pelagic seston resources to benthic communities.
 Therefore, ecosystem filtration functions (e.g. nutrient sequestration, sediment enrichment, and water clarification) and habitat quality in NAPC estuaries may differ between native *O. lurida* habitat and cultivated *C. gigas* aquaculture [@Ruesink2006; reviewed by @Ruesink2005].
 
 ## Single-species Research
