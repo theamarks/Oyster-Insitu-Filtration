@@ -418,16 +418,6 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
   return(distrubution_plot_stats)
 }
 
-######################################################################################
-## This function replaces negative CHL a values with 0 - they are below sensor detection limit
-######################################################################################
-
-neg_chl_to_zero = function(aTimeSeriesFile)
-{
-  neg_chl_fixed = aTimeSeriesFile %>% 
-    mutate(Chl_ug_L = ifelse(Chl_ug_L < 0, 0, Chl_ug_L))
-  return(neg_chl_fixed)
-}
 
 ######################################################################################
 ## This function summarizes the sbs correction requirements 
