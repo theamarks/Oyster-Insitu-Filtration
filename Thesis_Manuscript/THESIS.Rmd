@@ -1,10 +1,9 @@
 ---
-title: IN SITU CLEARANCE RATES OF OLYMPIA OYSTER (*OSTREA LURIDA*) HABITAT AND PACFICIC
+title: IN SITU CLEARANCE RATES OF OLYMPIA OYSTER (*OSTREA LURIDA*) HABITAT AND PACIFIC
   OYSTER (*CRASSOSTREA GIGAS*) AQUACULTURE IN CALIFORNIA
 author: "Althea N. Marks"
-date: "9/17/2020"
+date: "Fall 2020"
 output:
-  word_document: default
   pdf_document:
     fig_caption: yes
     latex_engine: xelatex
@@ -38,8 +37,10 @@ knitr::opts_chunk$set(fig.path = 'figures/',
 library()
 ```
 
+\pagenumbering{gobble}
 \titlepage
-\newpage
+\pagenumbering{arabic} 
+\clearpage
 
 ```{r child = 'Thesis_Abstract.Rmd'}
 ```
@@ -49,11 +50,13 @@ library()
 \tableofcontents
 \newpage 
 
-\listoftables
-\newpage
-
 \listoffigures
 \newpage 
+
+```{r child = 'Thesis_Acknowledgments.Rmd'}
+```
+
+\newpage
 
 ```{r child = 'Thesis_Introduction.Rmd'}
 ```
@@ -70,7 +73,7 @@ library()
 ```
 
 \FloatBarrier
-\newpage 
+\clearpage
 
 ```{r child = 'Thesis_Discussion.Rmd'}
 ```

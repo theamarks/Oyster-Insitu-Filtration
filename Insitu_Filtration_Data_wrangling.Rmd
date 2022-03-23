@@ -137,6 +137,12 @@ for(file in 1 : length(all_files))
   fwrite(one_file, file.path(output_dir_manual_corrections, file_name))
   
 ######################################################################
+##CHange negative Chl values to zero (AM - 2020_11_4) - below detection limit
+###################################################################### 
+  # Changes HCR to 17,700 L/hr/m^2 this date still needs to be removed
+  # one_file = neg_chl_to_zero(one_file)
+  
+######################################################################
 ##Step 6) Apply sbs corrections 
 ######################################################################
   

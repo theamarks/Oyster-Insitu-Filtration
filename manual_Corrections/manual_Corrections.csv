@@ -12,11 +12,11 @@ Insitu_Filter_SR_2018_11_8.csv,sbs_after,17:16:00,17:16:18,H,TRUE,,"No field not
 Insitu_Filter_SR_2018_7_17.csv,sbs_after,12:41:00,12:41:36,H,TRUE,,Sonde G did not record data - remove sbs_after trial
 Insitu_Filter_SR_2018_7_18.csv,Filtration,12:20:00,12:29:00,H,TRUE,,"orignial start time 12:20, cut based on restart notes. Super slow water flow through reef, 10:24 wind picking up, 10:28 kicked sed at up G, 10:29 RWT "
 Insitu_Filter_MB_2018_7_27.csv,Filtration,8:53:00,8:55:00,H,FALSE,,"Field notes: Sonde Fell (prob recorded spike), probably before 8:55 mudflat flooded, probably changes flow to parallel along oyster lines (~90 degree change)"
-Insitu_Filter_NPD_2019_6_9.csv,,6:42:00,7:14:17,H,FALSE,,"No specific notes about spike, probably sediment disturbed from sonde reposition or my boots"
-Insitu_Filter_NPSM_2019_6_9.csv,,11:53:00,11:54:25,H,FALSE,,spike at beginning of trial probably from my boots or sonde housing disturbance
-Insitu_Filter_NPSM_2019_6_9.csv,,12:24:12,12:32:50,G,FALSE,,
-Insitu_Filter_NPSM_2019_6_9.csv,,12:38:48,12:40:33,G,FALSE,,This is a messy third NC trial - need to think removing more
-Insitu_Filter_NPSM_2019_6_9.csv,,12:20:00,12:43:00,G,TRUE,,"Decided to remove Neg control 2 and 3 from data. Field notes show super messy trail. Massive chl diff is creating an outlier, stick with first trial."
+Insitu_Filter_NPD_2019_6_9.csv,NA,6:42:00,7:14:17,H,FALSE,,"No specific notes about spike, probably sediment disturbed from sonde reposition or my boots"
+Insitu_Filter_NPSM_2019_6_9.csv,NA,11:53:00,11:54:25,H,FALSE,,spike at beginning of trial probably from my boots or sonde housing disturbance
+Insitu_Filter_NPSM_2019_6_9.csv,NA,12:24:12,12:32:50,G,FALSE,,
+Insitu_Filter_NPSM_2019_6_9.csv,NA,12:38:48,12:40:33,G,FALSE,,This is a messy third NC trial - need to think removing more
+Insitu_Filter_NPSM_2019_6_9.csv,NA,12:20:00,12:43:00,G,TRUE,,"Decided to remove Neg control 2 and 3 from data. Field notes show super messy trail. Massive chl diff is creating an outlier, stick with first trial."
 Insitu_Filter_NPSM_2019_5_11.csv,sbs_after,13:10:00,13:10:13,H,TRUE,,"No notes on spike, but probably distrubance from sonde placement or my boots"
 Insitu_Filter_NPSM_2019_5_22.csv,sbs_before,9:12:00,9:12:16,H,TRUE,,"No notes on spike, but probably distrubance from sonde placement or my boots"
 Insitu_Filter_NPD_2019_4_15.csv,Filtration,11:19:30,11:36:00,H,TRUE,,"11:19:30 boat wake, 11:20 sediment resuspended, 11:27 sediment still resuspended upshore of bed and over mid bed to downstream, 11:14:59 Turbidity spike observed in excel (clocks may be off)"

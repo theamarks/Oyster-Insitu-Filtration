@@ -206,10 +206,11 @@ applyManualCorrections =  function(aTimeSeriesFile, aFileName, aManualCorrection
       # get the list of experiments 
       all_exp = unique(aTimeSeriesFile$Experiment)
       
-      if(one_correction$Experiment == ""|is.na(one_correction$Experiment)) # if Experiment is left blank or contains NA
+      # if Experiment is left blank or contains NA
+      if(one_correction$Experiment == ""|is.na(one_correction$Experiment)) 
       {
-        experiment_to_correct = all_exp[!(all_exp %in% c("sbs_before", "sbs_after"))] # Then experiments besides sbs are corrected (i.e. Neg Control 1, 2 ,3)
-        
+        # Then experiments besides sbs are corrected (i.e. Neg Control 1, 2 ,3)
+        experiment_to_correct = all_exp[!(all_exp %in% c("sbs_before", "sbs_after"))] 
       } else {
         
         experiment_to_correct = one_correction$Experiment # otherwise experiment entered is selected for correction
@@ -415,6 +416,17 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
                 y = 0.35)
 
   return(distrubution_plot_stats)
+}
+
+######################################################################################
+## This function replaces negative CHL a values with 0 - they are below sensor detection limit
+######################################################################################
+
+neg_chl_to_zero = function(aTimeSeriesFile)
+{
+  neg_chl_fixed = aTimeSeriesFile %>% 
+    mutate(Chl_ug_L = ifelse(Chl_ug_L < 0, 0, Chl_ug_L))
+  return(neg_chl_fixed)
 }
 
 ######################################################################################

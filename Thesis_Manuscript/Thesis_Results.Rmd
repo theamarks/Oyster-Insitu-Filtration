@@ -8,6 +8,7 @@ header-includes:
 - \usepackage{booktabs}
 - \usepackage{makecell}
 - \usepackage{gensymb}
+- \usepackage{upgreek}
 - \usepackage{pdfpages}
 - \usepackage{caption}
 output: 
@@ -64,6 +65,11 @@ library(ISLR) # Dataset in Intro to statistical learning
 library(knitr)
 library(tinytex) # LaTeX conversion package
 library(broom) # tidy() function to convert t.test to dataframe
+library(agricolae) # post-hoc Tukey test
+library(multcompView) #
+library(quantreg) # Quantile regression
+library(grid) # makes test grobs useful for multiframe figures
+library(pwr) # Power analysis
 
 # source functions 
 source("./functions.R")
@@ -92,18 +98,21 @@ site_by_lat_abv <- c("SR", "MB", "NPSM", "NPD")
 # transform Site variable to factor and arange by Latitude
 Master_analysis_table <- arrange(transform(Master_analysis_table, Site = factor(Site,levels = site_by_lat)), Site)
 
+# All Trials, NPD 2019_4_17 removed - below Chl detection limit
+site_data_outrmd <- Master_analysis_table %>% 
+  filter(round(Chl_ug_L_Up,2) > 0.1 | round(Chl_ug_L_Up,2) < -0.1)
+
  # Filtration trials only - exclude Negative controls
 Filtration_only_data <- Master_analysis_table %>% 
   filter(Experiment %in% c("Filtration"))
 
 # Negative Control Trials only 
 Control_only_data <- Master_analysis_table %>% 
-  filter(grepl("Neg*", Master_analysis_table$Experiment),
-         abs(pcnt_Chl_rmvd) < 50)
+  filter(grepl("Neg*", Master_analysis_table$Experiment))
 
-# Filtration trials with Outliers removed - same syntax used by Dr. Nichols
+# Filtration only - remove trials with Chl a within sensor detection limit (+- 0.1ug/L)
 Filter_only_outRmd_data <- Filtration_only_data %>% 
-  filter(abs(pcnt_Chl_rmvd) < 50)
+  filter(round(Chl_ug_L_Up,2) > 0.1 | round(Chl_ug_L_Up,2) < -0.1)
 
 ################# Values for Results text #####
 # SR filtration trial data
@@ -134,6 +143,10 @@ NPSM_filter_sum <- Filter_only_outRmd_data %>%
 
 NPSM_NC_sum <- Control_only_data %>% 
   filter(Site %in% c("Shellmaker")) 
+
+##### Single out NPD 2019_4_17 for stats reporting
+NPD_2019_4_17 <- read_csv("output/4_Filtration_Calculations/Insitu_Filter_NPD_2019_4_17.csv")
+NPD_2019_4_17 %<>% filter(Experiment == "Filtration") 
 
 # Filtration trials only - exclude Negative controls & Percent Chl removed greater than 0
 ### Important Note ## When Percent Chl removed is positive, so is L/hr/m^2 and vice visa. 
@@ -166,6 +179,15 @@ logy_x_formula <- log(y) ~ x
 y_logx_fomula <- y ~ log(x)
 # double log
 logy_logx_formula <- log(y) ~ log(x)
+
+### Reporting Restoration vs aquaculture in Abstract
+abstract_num <- Filter_only_outRmd_data %>% 
+  mutate(habitat = ifelse(Site %in% c("San Rafael", "Deanza", "Shellmaker"), "Rest", "Aqcltr")) %>%
+  dplyr::select(Site, L_hr_m2, habitat) %>% 
+  group_by(habitat) %>% 
+  summarise(mean_HCR = mean(L_hr_m2),
+            SD = sd(L_hr_m2),
+            st_error = SD / sqrt(length(L_hr_m2)))
 
 ############### Site Color Assignments ###############
 viridis(4)
@@ -220,139 +242,267 @@ find_outlier <- function(data){
   outlier <- ifelse((data < (average - 2.2 * stdev) | (data > (average + 2.2 * stdev))),
          TRUE, FALSE)
 }
+
 ```
 
+```{r Site WQ ANOVA, fig.width=7, fig.asp=1.2, fig.cap="Box plots of ambient (upstream) A) temperature, B) salinity, C) turbidity, D) total particulate matter, E) organic content, and F) chlorophyll $\\alpha$ from filtration trials. One-way ANOVAs compared the difference between water quality variables and site. Significantly different results were grouped by a post-hoc Tukey's HSD; significantly different sites do not share a common letter, and non-significant differences share letters. Site effects on OC were significant, and a Newman-Keuls post-hoc analysis determined a significant difference between San Rafael and Deanza undetected by Tukey's HSD. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company, aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
+
+#########################
+###### Temperature 
+#hist(Filter_only_outRmd_data$Temp_C_Up)
+site_temp_aov <- aov(Temp_C_Up ~ Site, data = Filter_only_outRmd_data)
+#summary(site_temp_aov)
+temp_aov_values <- broom::tidy(site_temp_aov) # put ANOVA model into tibble to extract individual values
+# Post-Hoc Tukey test
+tukey_temp <- TukeyHSD(site_temp_aov)
+#tukey_temp
+#plot(tukey_temp)
+
+#Honestly Significant Difference test --> Don't need if non-significant ANOVA
+hds_temp <- HSD.test(site_temp_aov, trt = "Site")
+#hds_temp
+
+Temp_box <- ggplot(Filter_only_outRmd_data, aes(Site, Temp_C_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = expression(paste("Temperature (",degree, "C)")),
+       title = "A)")
+
+#########################
+####### Salinity
+#hist(site_data_outrmd$Sal_ppt_Up)
+site_sal_aov <- aov(Sal_ppt_Up ~ Site, data = Filter_only_outRmd_data)
+sal_aov_values <- broom::tidy(site_sal_aov)
+
+# Post-Hoc Tukey test
+tukey_sal <- TukeyHSD(site_sal_aov)
+#tukey_sal
+#plot(tukey_sal)
+
+#Honestly Significant Difference test
+hds_sal <- HSD.test(site_sal_aov, trt = "Site")
+#hds_sal
+
+Sal_box <- ggplot(Filter_only_outRmd_data, aes(Site, Sal_ppt_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = "Salinity (ppt)",
+       title = "B)") +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Sal_ppt_Up) + 0.75, label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Morro Bay"))$Sal_ppt_Up) + 0.75, label = "b") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Sal_ppt_Up) + 0.75, label = "b") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Deanza"))$Sal_ppt_Up) + 0.75, label = "b") 
+
+###########################
+######### Turbidity
+#hist(site_data_outrmd$Turbidity_NTU_Up)
+site_turb_aov <- aov(Turbidity_NTU_Up ~ Site, data = Filter_only_outRmd_data)
+turb_aov_values <- broom::tidy(site_turb_aov)
+
+# Post-Hoc Tukey test
+tukey_turb <- TukeyHSD(site_turb_aov)
+#tukey_turb
+#plot(tukey_turb)
+
+#Honestly Significant Difference test
+hds_turb <- HSD.test(site_turb_aov, trt = "Site")
+#hds_turb
+
+Turb_box <- ggplot(Filter_only_outRmd_data, aes(Site, Turbidity_NTU_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = "Turbidity (NTU)",
+       title = "C)") +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Turbidity_NTU_Up) + 2, 
+           label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Morro Bay"))$Turbidity_NTU_Up) + 2, 
+           label = "b") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Turbidity_NTU_Up) + 2, 
+           label = "c") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Deanza"))$Turbidity_NTU_Up) + 2, 
+           label = "c") 
+
+########################
+####### TPM
+#hist(site_data_outrmd$Avg_TPM_mg_L)
+site_TPM_aov <- aov(Avg_TPM_mg_L ~ Site, data = Filter_only_outRmd_data)
+TPM_aov_values <- broom::tidy(site_TPM_aov)
+
+# Post-Hoc Tukey test
+tukey_tpm <- TukeyHSD(site_TPM_aov)
+#tukey_tpm
+#plot(tukey_tpm)
+
+#Honestly Significant Difference test
+hds_tpm <- HSD.test(site_TPM_aov, trt = "Site")
+#hds_tpm
+
+Tpm_box <- ggplot(Filter_only_outRmd_data, aes(Site, Avg_TPM_mg_L)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = expression(paste("Total Particulate Matter (mg/L)")),
+       title = "D)") +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Avg_TPM_mg_L) + 10, label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% 
+                  na.omit() %>% 
+                  filter(Site == "Morro Bay"))$Avg_TPM_mg_L) + 10, label = "b") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Avg_TPM_mg_L) + 10, label = "b") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% 
+                  na.omit() %>% 
+                  filter(Site == "Deanza"))$Avg_TPM_mg_L) + 10, label = "b") 
+
+#####################
+####### OC
+#hist(site_data_outrmd$Avg_OC_Ratio)
+site_OC_aov <- aov(Avg_OC_Ratio ~ Site, data = Filter_only_outRmd_data %>% na.omit())
+OC_aov_values <- broom::tidy(site_OC_aov)
+
+# Post-Hoc Tukey test
+tukey_oc <- TukeyHSD(site_OC_aov)
+
+#Honestly Significant Difference test
+hds_oc <- HSD.test(site_OC_aov, trt = "Site")
+# Not not showing differences between sites
+
+# Less conservative Post-hoc analysis - Newman-keuls (also good for simple group structure)
+library(DescTools)
+NK_oc <- PostHocTest(site_OC_aov, method = "newmankeuls", conf.level = 0.95)
+
+OC_box <- ggplot(Filter_only_outRmd_data, aes(Site, Avg_OC_Ratio)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = "Organic Content (Ratio)",
+       title = "E)")
+
+#########################
+###### Chlorphyll
+#hist(site_data_outrmd$Chl_ug_L_Up)
+site_chl_aov <- aov(Chl_ug_L_Up ~ Site, data = Filter_only_outRmd_data)
+#summary(site_chl_aov)
+chl_aov_values <- broom::tidy(site_chl_aov) # put ANOVA model into tibble to extract individual values
+# Post-Hoc Tukey test
+tukey_chl <- TukeyHSD(site_chl_aov, ordered = FALSE, conf.level = 0.95)
+#tukey_chl
+#plot(tukey_chl)
+
+#Honestly Significant Difference test
+hds_chl <- HSD.test(site_chl_aov, trt = "Site")
+#hds_chl
+
+Chl_box <- ggplot(Filter_only_outRmd_data, aes(Site, Chl_ug_L_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = expression(paste("Chlorophyll ",alpha, " (", mu,"g/L)")),
+       title = "F)") 
+
+grid.arrange(Temp_box, Sal_box, Turb_box, Tpm_box, OC_box, Chl_box,nrow=3)
+```
 
 # Results
 
-Three extreme observations were removed from the data set based on the signal-to-correction comparison (Figure \ref{Corr_to_signal_95CI_graph}).
-One of three extreme values eliminated corresponded with a Chl $\alpha$ concentration near the sensor's detection limits (± 0.1 \\mu/L), the other two extreme values correspond with low Chl $\alpha$ concentrations (Table 1).
+Twenty-five experimental trials, across the four study sites, were included in the analyses; 21 filtration trials and four control trials.
+A single filtration trial at Deanza (2019-4-17; Table 1) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 $\mu$g/L). 
+Filtration trials across sites were not distributed equally (Table 1), Deanza had more than twice the amount filtration trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4), while each site had a single control.
 
-## Percent Chlorophyll $\alpha$ Removal
+Ambient water quality during filtration trials varied within and among sites (Figure \ref{Site_WQ_boxplot}). 
+Salinity was significantly different among sites as determined by a one-way ANOVA at a *p* < 0.05 (*F*(`r sal_aov_values[[1,2]]`, `r sal_aov_values[[2,2]]`) = `r round(sal_aov_values[[1,5]],2)`, *p* < 0.001), along with turbidity (*F*(`r turb_aov_values[[1,2]]`, `r turb_aov_values[[2,2]]`) = `r round(turb_aov_values[[1,5]],2)`, *p* < 0.001), and TPM (*F*(`r TPM_aov_values[[1,2]]`, `r TPM_aov_values[[2,2]]`) = `r round(TPM_aov_values[[1,5]],2)`, *p* = < 0.001) (Figure \ref{Site_WQ_boxplot}).  
+Temperature (*F*(`r temp_aov_values[[1,2]]`, `r temp_aov_values[[2,2]]`) = `r round(temp_aov_values[[1,5]],2)`, *p* = `r format(round(temp_aov_values[[1,6]],2), nsmall = 2)`), and Chl $\alpha$ (*F*(`r chl_aov_values[[1,2]]`, `r chl_aov_values[[2,2]]`) = `r round(chl_aov_values[[1,5]],2)`, *p* = `r round(chl_aov_values[[1,6]],2)`) were not different among sites (Figure \ref{Site_WQ_boxplot}).
+OC was significant among sites (*F*(`r OC_aov_values[[1,2]]`, `r OC_aov_values[[2,2]]`) = `r round(OC_aov_values[[1,5]],2)`, *p* = `r round(OC_aov_values[[1,6]],2)`), but the post-hoc Tukey HSD did not reveal significant differences among sites. 
+Therefore, I use a less conservative post-hoc analysis, the Newman-Keuls method, and found that OC was significantly different between Shellmaker and Deanza (*p* = `r round(NK_oc$Site[[3,4]],2)`).
 
-Percent Chl $\alpha$ removal at the San Rafael site averaged `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}) and was `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial. 
-Filtration trials at Morro Bay averaged `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% Chl $\alpha$ removal (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and measured `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
-At Deanza, Chl $\alpha$ removal averaged `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and during three consecutive control trials averaged `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removal (*N* = `r nrow(NPD_NC_sum)`, *SD* =  `r round(sd(NPD_NC_sum$pcnt_Chl_rmvd))`).
-Shellmaker averaged `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% Chl $\alpha$ removal (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was removed from analysis as an extreme value (Figure \ref{Corr_to_signal_95CI_graph}).
+```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are listed in Table 1. Each data point is the mean of a single filtration trial. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{ChlRmd_Site_boxplot}"}
 
-```{r Correction_to_Signal_95CI_graph, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= 'default', out.width="50%", fig.show="hold", fig.asp=1, fig.width=4, message=FALSE, warning=FALSE,  fig.cap= "The relationship between side-by-side trial chlorophyll $\\alpha$ difference (correction) and filtration trial chlorophyll $\\alpha$ difference (signal). The solid black line is a 1-1 relationship, the dashed red lines are confidence intervals of the signal-to-correction relationship. Extreme values were identified with 95\\% confidence interval and were removed from the linear model and further analyses (left). Confidence intervals were recalculated to 98\\% to identify additional extreme values from analyses (right). \\label{Corr_to_signal_95CI_graph}"}
+### Chl removed summary - filtration trials only
+Chlrmd_Site <- Filter_only_outRmd_data %>% 
+  group_by(Site) %>% 
+  summarize(avg_Chlrmd = mean(pcnt_Chl_rmvd),
+            SD = sd(pcnt_Chl_rmvd),
+            n_samples = length(pcnt_Chl_rmvd))
 
-##### Althea's Chl correction x Filtration diff Graph ###########
-## Correction data & OG Chl values
-#Sbs_correction_data 
-sbs_corr_NoAbs <- Sbs_correction_data %>% 
-  dplyr::select(File_Name, Sonde_Up, Sonde_Down, G_Avg_Chl, H_Avg_Chl, Correction_Factor) %>% 
-  mutate(correction_noabs = ifelse(Sonde_Up == "G", G_Avg_Chl - H_Avg_Chl, H_Avg_Chl - G_Avg_Chl),
-         sbs_chl_up = ifelse(Sonde_Up == "G", G_Avg_Chl, H_Avg_Chl),
-         sbs_chl_down = ifelse(Sonde_Down == "G", G_Avg_Chl, H_Avg_Chl)) %>% 
-  dplyr::select(-c(Sonde_Up, Sonde_Down))
+Chlrmd_site_aov <- aov(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data)
+#summary(HCR_site_aov)
+Chlrmd_aov_values <- broom::tidy(Chlrmd_site_aov)
 
-sbs_correction_summary <- read_csv("output/6_Sbs_Corrections_Summary/sbs_correction_summary.csv")
-filtration_summary <- read_csv("output/4_Filtration_Calculations/Filtration_Summary/filtration_summary.csv")
+# Post-Hoc Tukey test
+tukey_Chlrmd <- TukeyHSD(Chlrmd_site_aov)
+#tukey_Chlrmd
+#plot(tukey_Chlrmd)
+#Honestly Significant Difference test
+hds_Chlrmd <- HSD.test(Chlrmd_site_aov, trt = "Site")
+#hds_Chlrmd
 
-filter_diff_tpaired <- filtration_summary %>% 
-  dplyr::select(File_Name, Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
-  rename(filter_chl_up = Chl_ug_L_Up,
-         filter_chl_down = Chl_ug_L_Down)
-
-Corr_chl_diff_data <- full_join(filter_diff_tpaired, sbs_corr_NoAbs, by = "File_Name")
-# Missing data from MB_2019_6_5 and MB_2019_6_4 - filtration trial not long enough for water to travel from upstream to downstream - not included in other analyses either
-
-Corr_chl_diff_data %<>%
-  mutate(chl_filter_up_uncorr = ifelse(sbs_chl_up > sbs_chl_down, 
-                                       filter_chl_up + Correction_Factor, # reverse sbs correction 
-                                       filter_chl_up - Correction_Factor),
-         chl_filter_down_uncorr = ifelse(sbs_chl_down > sbs_chl_up, 
-                                         filter_chl_down + Correction_Factor, 
-                                         filter_chl_down - Correction_Factor),
-         filter_chl_diff = chl_filter_up_uncorr - chl_filter_down_uncorr,
-         graph_labels = ifelse( File_Name == "Insitu_Filter_NPSM_2019_5_22.csv" | 
-                                  File_Name == "Insitu_Filter_NPSM_2019_6_9.csv", 
-                               paste(Site, "\n", Date, "\n", Experiment), NA))
-
-Corr_chl_diff_data$dummie = 1:32
-
-#Corr_chl_diff_data[c(9,21,23),] # Look at problem data points
-
-### Confidence intervals
-model.temp = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data)
-x.seq = seq(-5,5,by=.005)
-y.seq = predict(model.temp,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.95)
-#low.bound = y.seq[,2]
-#high.bound = y.seq[,3]
-#plot(Corr_chl_diff_data$correction_noabs,Corr_chl_diff_data$filter_chl_diff)
-#lines(x.seq,low.bound,lty=2,col=2)
-#lines(x.seq,high.bound,lty=2,col=2)
-
-Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_chl_diff)) +
-  geom_point() +
-  theme_classic() + 
-  xlim(-3,3) + # even axes
-  ylim(-3,3) +
-  xlab(expression("Side-by-side Chl" ~ alpha ~"Difference")) +
-  ylab(expression("Experiment Chl" ~ alpha ~ "Difference (Velocity Paired)")) +
-  geom_abline(slope = 1) + # 1-1 reference line
-  #annotate("text", x = -2.5, y = 2.75, label = "A") +
-  geom_line(data = data.frame(y.seq), aes(x = fit, y = lwr), linetype = "dashed", color = "red") +
-  geom_line(data = data.frame(y.seq), aes(x = fit, y = upr), linetype = "dashed", color = "red") +
-  #geom_text(aes(x=correction_noabs + .12,label=dummie)) 
-  #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
-  #geom_label(aes(label = graph_labels))
-  ggrepel::geom_label_repel(aes(label = graph_labels), point.padding = 0.9, na.rm = T,
-                            nudge_y = c(-1.2,-0.75),
-                            nudge_x = c(-0.5,0.75))
-print(Corr_Chl_diff_graph)
-#plot_grid(Corr_Chl_diff_graph, labels = c("A"))
-
-### Remove two problem data points - remove their influence on confidence intervals
-Corr_chl_diff_data1 = Corr_chl_diff_data[-c(21,23),]
-
-Corr_chl_diff_data1 %<>%
-  mutate(graph_labels = ifelse(File_Name == "Insitu_Filter_NPD_2019_4_17.csv",
-                               paste(Site, "\n", Date, "\n", Experiment), NA))
+#### exteme Shellmaker may violate ANOVA equal variance assumption
+## more suited for Kruskal-Wallis
+KW_Chlrmd_site <- broom::tidy(kruskal.test(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data))
 
 
-model.temp1 = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data1)
-x.seq1 = seq(-5,5,by=.005)
-y.seq1 = predict(model.temp1,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.98)
-#low.bound1 = y.seq1[,2]
-#high.bound1 = y.seq1[,3]
-#plot(Corr_chl_diff_data1$correction_noabs,Corr_chl_diff_data1$filter_chl_diff)
-#lines(x.seq1,low.bound1,lty=2,col=2)
-#lines(x.seq1,high.bound1,lty=2,col=2)
+########### Power analysis - sensitivity power analysis 
+# one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
+d_Chlrmd_site <- {Chlrmd_aov_values[[1,3]] / (Chlrmd_aov_values[[1,3]] + Chlrmd_aov_values[[2,3]]) }
 
-Corr_Chl_diff_graph1 <- ggplot(Corr_chl_diff_data1, aes(correction_noabs, filter_chl_diff)) +
-  geom_point() +
-  theme_classic() + 
-  xlim(-3,3) + # even axes
-  ylim(-3,3) +
-  xlab(expression("Side-by-side Chl" ~ alpha ~"Difference")) +
-  ylab(expression("Experiment Chl" ~ alpha ~ "Difference (Velocity Paired)")) +
-  geom_abline(slope = 1) + # 1-1 reference line
-  geom_line(data = data.frame(y.seq1), aes(x = fit, y = lwr), linetype = "dashed", color = "red") +
-  geom_line(data = data.frame(y.seq1), aes(x = fit, y = upr), linetype = "dashed", color = "red") +
-  #geom_text(aes(x=correction_noabs + .12,label=dummie)) 
-  #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
-  #geom_label(aes(label = graph_labels))
-  ggrepel::geom_label_repel(aes(label = graph_labels), point.padding = 0.9, na.rm = T,
-                            nudge_y = c(-1),
-                            nudge_x = c(0.4))
-print(Corr_Chl_diff_graph1)
-# plot_grid(Corr_Chl_diff_graph1, labels = c("B"))
-```
-
-```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). Each data point is the average value from a single filtration trial. Extreme values excluded from analysis are not shown. \\label{ChlRmd_Site_boxplot}"}
+# power analysis for "balanced one-way analysis of variance tests"
+# For now Ted says to use the mean of the different sample sizes
+Chlrmd_site_power <- pwr.anova.test(f = d_Chlrmd_site, 
+                                 k = 4,
+                                 n = mean(Chlrmd_Site$n_samples), 
+                                 sig.level = 0.05,
+                                 power = NULL) # solve for this
 
 Chl_Rmd_box <- ggplot(Filter_only_outRmd_data, aes(Site, pcnt_Chl_rmvd)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
   scale_fill_manual(values = Site_colors) +
-  #scale_y_continuous(labels = percent) +
   theme_classic() +
-  #stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
-       y = Prt_Chl_Label) 
+       y = Prt_Chl_Label)
+
 plot(Chl_Rmd_box)
 
 ####### Don't include - doesn't match analysis data
@@ -369,6 +519,14 @@ ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
 
 ```
 
+## Percent Chlorophyll $\alpha$ Removal
+
+The mean percent Chl $\alpha$ removal at the San Rafael site was `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}) and was `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial (Table 1). 
+Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
+At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removal during the control trial.
+Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was `r round(mean(NPSM_NC_sum$pcnt_Chl_rmvd),1)` \% (Table 1).
+Chl $\alpha$ removal in filtration trials did not differ significantly between sites (one-way Kruskal-Wallis, *p* = `r round(KW_Chlrmd_site$p.value,2)`).
+
 
 ```{r Random_Forest_DrNichols, include=FALSE}
 ##################### Estimate missing values (Imputation) ##########################
@@ -379,11 +537,8 @@ ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
 #For imputation we are doing a non parametric random forest imputation.  See missForest documentation for details/references.  
 #Stekhoven, D.J. and Buehlmann, P. (2012), "missForest - nonparametric missing value imputation for mixed-type data', Bioinformatics, 28(1) 2012, 112-118, doi: 10.1093/bioinformatics/btr597
 
-#install.packages('missForest')
-#install.packages('rpart')
-#install.packages('randomForest')
-#install.packages('adabag')
 
+# Import data
 Analysis_data <- Master_analysis_table %>% 
     mutate(Date = mdy(Date),
          L_hr_m2 = round(L_hr_m2),
@@ -403,7 +558,7 @@ Analysis_data <- Master_analysis_table %>%
           pcnt_Chl_rmvd, L_hr_m2) %>% 
  dplyr::arrange(Site, Date)
   
-
+# packages needed for imputation and randomforest regression
 library(missForest)
 library(rpart)
 library(randomForest)
@@ -413,8 +568,8 @@ library(adabag)
 temp1 = Analysis_data[,c(1,2,3)] # temporarily remove data labels for imputation
 temp2 = missForest(Analysis_data[,-c(1,2,3)])$ximp # Imputation of missing values
 test = cbind(temp1,temp2) # bing back data labels 
-
-dim(Analysis_data[,-c(1,2,3)]) # dimensions of data with labels removed (data only) 28 x 12 = 336 data cells
+# dimensions of data with labels removed (data only) 28 x 12 = 336 data cells
+dim(Analysis_data[,-c(1,2,3)]) 
 num_NA_values <- sum(is.na(Analysis_data)) # 4 missing values
 
 colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity",
@@ -427,20 +582,65 @@ colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity
 ## Thea Notes ###
 ## Shellmaker 06-09 Neg Control - floating algae mats caused me to reposition instruments after ~10 mins into Neg Control trial. Looks like sediments never settled afterward. Huge spikes in Chl afterwards that even cutting out is suspect. Avg depth and distance b/w sondes are wrong If I just use the first part of the neg control. Going to change values in Insitu_Filter_Veolcity_All_Data.csv - will reduce clearance rate b/c reduced water volume. 
 
-#############  Mud vs Oyster - Filtraiton vs Control (unadjusted)
-test1 = test[abs(test$Chl.removal) < 50,] # remove extreme values (NPSM 2020_6_9, NPSM 2020_5_22, NPD 2020_4_17)
+###############################################
+#############  Mud vs Oyster - Filtraiton vs Control (unadjusted) #########################
+
+### Make a Choice - Two ways to treat extreme values
+
+### 1) remove extreme values (NPSM 2020_6_9, NPSM 2020_5_22, NPD 2020_4_17)
+### Committee did not like this approach. Stick to domain knowlege for removal, don't mix 
+# Confidence intervals and domain knowlege. Could compare outputs later.
+#test1 = test[abs(test$Chl.removal) < 50,] 
+#check_filter_dist <- test1 %>% 
+#  filter(Experiment %in% c("Filtration"))
+#hist(check_filter_dist$Clearance) # Looks more normal than just removing NPD_2020_4_17)
+#summary(check_filter_dist$Clearance)
+
+### 2) Domain knowlege - remove one single trial (NPD_2020_4_17) avg Chlup at sensor detection limit (+- 0.1 ug/L)
+test1 = test %>% 
+  dplyr::filter(round(Chl.up,2) > 0.1 | round(Chl.up,2) < -0.1)
+# check distribution of Control trials
+check_control_dist <- test1 %>% 
+  filter(Experiment %in% c("Neg Control 1"))
+hist(check_control_dist$Clearance, breaks = 50)
+summary(check_control_dist$Clearance) # mean and median not close... prob not normally distributed
+# check distribution of Filtration trials
+check_filter_dist <- test1 %>% 
+  filter(Experiment %in% c("Filtration"))
+hist(check_filter_dist$Clearance, breaks = 50)
+summary(check_filter_dist$Clearance) # also not close... doesn't look normal with extreme values
+
+########### T-test Compare Control vs Filtration trials
 exp = test1[test1$Experiment=="Filtration",] # separate Filtraiton trials
 control = test1[test1$Experiment!="Filtration",] # separate negative control trials
-t_test <- t.test(exp$Clearance,control$Clearance,alternative="greater") # single sided t-test?
+# Two-sample / independent t-test , single / one-sided 
+t_test <- t.test(exp$Clearance,control$Clearance,alternative="greater")
 # extract t.test results from tibble format
-filter_control_ttest <- broom::tidy(t.test(exp$Clearance,control$Clearance,alternative="greater"))
+filter_control_ttest <- broom::tidy(t_test)
 filter_control_ttest
 # Degrees of freedom two-sample t-test
-t_test_df <- (nrow(exp) - nrow(control)) - 2 
-### t-test results - AM #####
-# Combined filtration trials had significantly higher HCRs (habitat clearance rate) than negative controls (two sample t(`t_test_df`) = t-value = `filter_control_ttest$statistic`, p < `filter_control_ttest$p.value`).
+t_test_df <- (nrow(exp) + nrow(control)) - 2 
 
-######## Descriptive Filtration (as a function WQ) --> RANDOM FOREST MODEL- control for WQ & Site
+########### Power analysis - sensitivity power analysis 
+library(pwr)
+# estimate s per Cohen --> d (effect size) = mean(x1) - mean(x2) / s
+# formulas from Cohen (1988) on Wikipedia
+d_test1 <- {
+  (mean(exp$Clearance) - mean(control$Clearance)) / 
+  (sqrt(
+    ((nrow(exp) - 1)*sd(exp$Clearance)^2 + (nrow(control) - 1)*sd(control$Clearance)^2) / 
+         (nrow(exp) + nrow(control) - 2))
+   ) }
+
+# power analysis for "t-test (two samples with unequal n)"
+test1_power <- pwr.t2n.test(d = d_test1, 
+                            n1 = nrow(exp), 
+                            n2 = nrow(control),
+                            sig.level = 0.05,
+                            power = NULL, # solve for this
+                            alternative = "greater")
+
+########## RANDOM FOREST MODEL- control for WQ & Site
 model.rf = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,
                         data=test1, # use data with extreme values removed 
                         ntree=100,
@@ -452,7 +652,6 @@ y.hat = predict(model.rf,newdata=test1) # model predicted values
 res = test1$Clearance - y.hat # residuals - difference between measured values and model predicted values 
 r.sq = (var(test1$Clearance) - var(res))/var(test1$Clearance)
 r.sq # r squared value for random forest model
-#r.sq  is about 66.3% (yay)
 
 ### Random Forest variable importance
 Var_import1 <- importance(model.rf)
@@ -472,15 +671,37 @@ TPM_rel_import <- (Var_import_df1[[4,2]] / sum_import1) * 100
 Sal_rel_import <- (Var_import_df1[[5,2]] / sum_import1) *100
 Site_rel_import <- (Var_import_df1[[6,2]] / sum_import1) *100
 
-######## Adjust values - Random Forest model - compare Mud flat to Oyster habitat. 
-y.adj = res + mean(test1$Clearance) # take residuals (diff between data and model - what the model doesn't account for (oysters)) and add to the mean response (same for data and model?). This gives me response with the effects of all variables accounted for. 
+######## Adjust values - Random Forest model - compare Mud flat to Oyster habitat. ###############
+# take residuals (diff between data and model - what the model doesn't account for (oysters)) and add to the mean response (same for data and model?). This gives me response with the effects of all variables accounted for. 
+y.adj = res + mean(test1$Clearance) 
 y.adj.experiment = y.adj[test1$Experiment=="Filtration"]
 y.adj.control = y.adj[test1$Experiment!="Filtration"]
 t.test(y.adj.experiment,y.adj.control,alternative="greater")
 t_test_adj <- broom::tidy(t.test(y.adj.experiment,y.adj.control,alternative="greater"))
 t_test_adj
 # Degrees of freedom two-sample t-test
-t_test_adj_df <- (length(y.adj.experiment) - length(y.adj.control)) - 2 
+t_test_adj_df <- (length(y.adj.experiment) + length(y.adj.control)) - 2 
+
+########### Power analysis - sensitivity power analysis 
+# estimate s per Cohen --> d (effect size) = mean(x1) - mean(x2) / s
+# formulas from Cohen (1988) on Wikipedia
+d_adj_test1 <- {
+  (mean(y.adj.experiment) - mean(y.adj.control)) / 
+  (sqrt(
+    ((length(y.adj.experiment) - 1)*sd(y.adj.experiment)^2 + 
+       (length(y.adj.control) - 1)*sd(y.adj.control)^2) / 
+         (length(y.adj.experiment) + length(y.adj.control) - 2))
+   ) }
+
+# power analysis for "t-test (two samples with unequal n)"
+adj_test1_power <- pwr.t2n.test(d = d_adj_test1, 
+                            n1 = length(y.adj.experiment), 
+                            n2 = length(y.adj.control),
+                            sig.level = 0.05,
+                            power = NULL, # solve for this
+                            alternative = "greater")
+
+
 
 ### Example tree ######
 #model.tree = rpart(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,method="anova",control=rpart.control(minsplit=2,cp=0.05),data=test1)
@@ -576,64 +797,411 @@ mlr = lm(clr~Site+Temp+Salinity+Turbidity+TPM+OC,data=test2)
 summary(mlr)
 ```
 
-
 ## Oyster Habitat vs. Control 
 
-Filtration trials had significantly higher habitat clearance rates (HCR) than negative controls (two-sample *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, *p* = `r round(filter_control_ttest$p.value, digits = 2)`).
-The random forest model that included all filtration and control trials (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 2)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r round(Turb_rel_import, 1)`\%), TPM (`r round(TPM_rel_import, 1)`\%), salinity (`r round(Sal_rel_import, 1)`\%), and site (`r round(Site_rel_import, 1)`\%).
-Filtration and control trials adjusted by the random forest model were not significantly different (two-sample *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`); however, my limited sample size and variable clearance rates are expected to inhibit statistical signal detection.
+Habitat clearance rates (HCR) in filtration trials (*N* = `r nrow(exp)`) were not significantly different than in control trials (*N* = `r nrow(control)`) (two-sample, one-tail *t*(`r t_test_df`) = `r round(filter_control_ttest$statistic, digits = 2)`, *p* = `r round(filter_control_ttest$p.value, digits = 2)`). 
+A statistical power analysis determined that the effect size between filtration and control trial HCR was very large (*ES* = `r round(test1_power$d, 2)`), per the criteria in @Sawilowsky2009a, but there was little power (`r round(test1_power$power,2)`) to detect a statistical signal.
+A random forest model including all filtration and control trials HCR (*R*^2^ = `r round(r.sq,2)`) indicated that temperature had the highest relative importance to the model (`r round(Temp_rel_import, 1)`\%), followed by OC (`r round(OC_rel_import, 1)`\%), turbidity (`r format(round(Turb_rel_import, 1), nsmall = 1)`\%), TPM (`r format(round(TPM_rel_import, 1), nsmall =1)`\%), salinity (`r format(round(Sal_rel_import, 1), nsmall = 1)`\%), and site (`r format(round(Site_rel_import, 1), nsmall =1)`\%).
+The residuals of this random forest regression adjusted the HCR values to account for variance caused by water quality variables and site. 
+I then compared these adjusted HCRs between filtration and control trials; they were not significantly different (two-sample, one-tail *t*(`r t_test_adj_df`) = `r round(t_test_adj$statistic, digits = 2)`, *p* = `r round(t_test_adj$p.value, digits = 3)`).
+A statistical power analysis determined that the effect size of adjusted HCRs between filtration and control trials was still very large (*ES* = `r round(adj_test1_power$d,2 )`) [@Sawilowsky2009a], and with only slightly improved power (`r round(adj_test1_power$power, 2)`) than the unadjusted HCR t-test.
+Despite non-significant results between control and filtration trials, statistical power analysis indicated that my limited sample size is inhibiting statistical inference of a very large effect size between oyster habitat HCRs relative to mudflat control HCRs.
 
-## Habitat Clearance Rates 
-
-HCR at Ran Rafael averaged `r round(mean(SR_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$L_hr_m2),1)`) (Figure \ref{FR_Site_boxplot}), 
-at Morro Bay averaged `r round(mean(MB_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = to `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$L_hr_m2),1)`), 
-at Shellmaker averaged `r round(mean(NPSM_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`), 
-and at Deanza averaged `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`).
-Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, and `r round(MB_NC_sum$L_hr_m2,1)` L hr^-1^ m^2^ for San Rafael, and Morro Bay respectively, Shellmaker's control trial was removed from the analysis as an extreme value (Figure \ref{Corr_to_signal_95CI_graph}).
-Newport Deanza's three consecutive control trials averaged `r round(mean(NPD_NC_sum$L_hr_m2))` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_NC_sum)`, *SD* = `r round(sd(NPD_NC_sum$L_hr_m2),1)`).
-Site did not significantly affect HCR as determined by a one-way ANOVA at a *p* < .05 level (*F*(3,16) = 0.29, *p* = 0.83) (Table 2).
-
-```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials, control trials are not displayed. Each data point is an the average value from a single filtration trial, and triangles are the mean for the site. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds) Extreme values excluded from analysis are not shown. \\label{FR_Site_boxplot}"}
+```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", fig.width=6,  message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials; control trials are listed in Table 1. Each data point is the mean of a single filtration trial. HCR was not statistically different among sites (one-way Kruskal-Wallis). Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
 
 ## HCR averages by Site
 FR_Site <- Filter_only_outRmd_data %>% 
   group_by(Site) %>% 
-  summarize(avg_L_hr_m2 = mean(L_hr_m2))
+  summarize(avg_HCR = mean(L_hr_m2),
+            SD = sd(L_hr_m2),
+            n_samples = length(L_hr_m2),
+            median = median(L_hr_m2),
+            varience = var(L_hr_m2))
+
+#### one-way ANOVA -- HCR by Site
+HCR_site_aov <- aov(L_hr_m2 ~ Site, data = Filter_only_outRmd_data)
+#summary(HCR_site_aov)
+HCR_aov_values <- broom::tidy(HCR_site_aov)
+
+############### Dr. Nichols Power analysis #######
+#n=21
+#r2 = 1068382/(1068382+6947629)
+#r2
+
+#increase n to 60, r2 stays the same and sumsq should scale by 60/n
+#n.new = 21:200
+#SSR.new = 1068382*n.new/n
+#SSE.new = 6947629*n.new/n
+#MSR.new = SSR.new/3
+#MRE.new = SSE.new/(n.new-3-1)
+#Fa = MSR.new/MRE.new
+#Fc = qf(.95,3,n.new-3-1)
+#F.ratio = Fc/Fa
+#power = 1 - pf(F.ratio,3,n.new-3-1)
+#power
+#plot(n.new,power,type="l",x.lab="Proposed Sample Size",y.lab = "Power",main="Power analysis if r2 = .133")
+
+#Now we want to hold n constant and toggle r^2.
+#Assume sst is constant, change r^2 which gives us new SSR and SSE, then go from there.
+#r2.new = seq(.1,1,by=.01)
+#SST = 1068382+6947629
+#SSR.new = r2.new*SST
+#SSE.new = SST-SSR.new
+#MSR.new = SSR.new/3
+#MRE.new = SSE.new/(n-3-1)
+#Fa = MSR.new/MRE.new
+#Fc = qf(.95,3,n-3-1)
+#F.ratio = Fc/Fa
+#power = 1 - pf(F.ratio,3,n-3-1)
+#plot(r2.new,power,type="l",xlab="Hypothetical r2",ylab = "Power",main="Power analysis if n=21")
+######################
+
+# Post-Hoc Tukey test
+tukey_HCR <- TukeyHSD(HCR_site_aov)
+#tukey_HCR
+#plot(tukey_HCR)
+#Honestly Significant Difference test
+hds_HCR <- HSD.test(HCR_site_aov, trt = "Site")
+#hds_HCR
+
+########### Power analysis - sensitivity power analysis 
+# one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
+d_HCR_site <- { HCR_aov_values[[1,3]] / (HCR_aov_values[[1,3]] + HCR_aov_values[[2,3]]) }
+
+# power analysis for "balanced one-way analysis of variance tests"
+# For now Ted says to use the mean of the different sample sizes
+HCR_site_power <- pwr.anova.test(f = d_HCR_site, 
+                                 k = 4,
+                                 n = mean(FR_Site$n_samples), 
+                                 sig.level = 0.05,
+                                 power = NULL) # solve for this
+
+# test if shellmaker extreme value was removed. SD is approxamtely equal among sites
+x <- Filter_only_outRmd_data %>% 
+  filter(L_hr_m2 > -1000) %>% 
+  group_by(Site) %>% 
+  summarize(avg_L_hr_m2 = mean(L_hr_m2),
+            SD = sd(L_hr_m2),
+            n_samples = length(L_hr_m2))
+
+####### Try Kruskal- Wallis one-way analysis of variance 
+## non-parametric equvilant to one-way ANOVA
+# Assumtions 1) continuous response variable 2) Independent groups 3) Distributions have similar shapes
+
+#hist(Filter_only_outRmd_data$L_hr_m2, breaks = 25)
+
+# Similar distributions? - I think so
+#hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "San Rafael",L_hr_m2], breaks = 25)
+#hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Morro Bay",L_hr_m2], breaks = 25)
+#hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Shellmaker",L_hr_m2], breaks = 25)
+#hist(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Deanza",L_hr_m2], breaks = 25)
+
+# check data is grouped / ordered by site
+#levels(Filter_only_outRmd_data$Site)
+
+# K-W test - tidy converts to clean dataframe
+KW_HCR_site <- broom::tidy(kruskal.test(L_hr_m2 ~ Site, data = Filter_only_outRmd_data))
+
+# Significant results can then use VVV pairwise comparison between groups
+# pairwise.wilcox.test(PlantGrowth$weight, PlantGrowth$group, p.adjust.method = "BH")
 
 ### Filtration by site (Filtration Trials only)
 FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
   geom_boxplot(color = Site_colors) +
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
-  geom_point(data = FR_Site, aes(Site, avg_L_hr_m2),
-             size = 2, shape = 17) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
-  #stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Hab_FR_Label)
-  #ylim(-2500, 1300)
+
 plot(FR_box) 
 
-# Example data for DZ to try ANOVA by site HCR
-#fwrite(Filter_only_outRmd_data, "Filter_data_HCR_ForDZ.csv")
+#### HCR by Site with .5 quantile ###########
+# select within each stie
+SR_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "San Rafael",
+         L_hr_m2 > FR_Site[[1,5]])
+#hist(SR_50quant$L_hr_m2, breaks = 20)
 
-# Don't include ######
-#### Doesn't make sense to exclue negative values if everything is going into model.
+MB_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "Morro Bay",
+         L_hr_m2 > FR_Site[[2,5]])
+#hist(SR_50quant$L_hr_m2, breaks = 20)
 
-FR_pos_box <- ggplot((Filtration_pos_data), aes(Site, L_hr_m2)) +
-  geom_boxplot(color = Site_colors) +
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+NPSM_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "Shellmaker",
+         L_hr_m2 > FR_Site[[3,5]])
+#hist(NPSM_50quant$L_hr_m2, breaks = 20)
+
+NPD_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "Deanza",
+         L_hr_m2 > FR_Site[[4,5]])
+#hist(NPD_50quant$L_hr_m2, breaks = 20)
+
+# combine each site's .5 quantile data together
+Site_HCR_50quant <- rbind(SR_50quant, MB_50quant, NPSM_50quant, NPD_50quant)
+
+HCR50_sum <- Site_HCR_50quant %>% 
+  group_by(Site) %>% 
+  summarize(avg_L_hr_m2 = mean(L_hr_m2),
+            SD = sd(L_hr_m2),
+            n_samples = length(L_hr_m2),
+            med = median(L_hr_m2),
+            var = var(L_hr_m2))
+# 443514/6689 --> largest residual / smallest residual - greater than 5 not good for ANOVA
+
+HCR_50quant_box <- ggplot((Site_HCR_50quant), aes(Site, L_hr_m2)) +
+  geom_point(aes(fill = Site), shape = 21, show.legend = FALSE) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
-  stat_summary(fun.data = n_mean_stats, geom = "text") +
   labs(x = 'Site',
        y = Hab_FR_Label)
 
-#plot(FR_pos_box)
+#plot(HCR_50quant_box)
+
+####### Kruskal-Wallis test - tidy converts to clean dataframe
+KW_HCR50_site <- broom::tidy(kruskal.test(L_hr_m2 ~ Site, data = Site_HCR_50quant))
+
+
+####### one-way ANOVA -- HCR by Site
+HCR50_site_aov <- aov(L_hr_m2 ~ Site, data = Site_HCR_50quant)
+#summary(HCR_site_aov)
+HCR50_aov_values <- broom::tidy(HCR50_site_aov)
+
+########### Power analysis - sensitivity power analysis 
+# one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
+d_HCR50_site <- { HCR50_aov_values[[1,3]] / (HCR50_aov_values[[1,3]] + HCR50_aov_values[[2,3]]) }
+
+# power analysis for "balanced one-way analysis of variance tests"
+# For now Ted says to use the mean of the different sample sizes
+HCR50_site_power <- pwr.anova.test(f = d_HCR50_site, 
+                                 k = 4,
+                                 n = mean(HCR50_sum$n_samples), 
+                                 sig.level = 0.05,
+                                 power = NULL) # solve for this
+
 ```
 
+```{r HCR_Quantile_Regression, fig.width=7, fig.asp=1.2, warning=F, message = F, fig.cap="The relationship between water quality variables and habitat clearance rate (HCR). For all oyster habitat filtration trials, quantile regression with $\\tau$ = 0.5 and $\\tau$ = 0.9 was used to test wheather HCR changed with A) temperature, B) salinity, C) turbidity, D) total particulate matter, or E) organic content; slopes that are not significantly different from zero are indicated by red dashed lines. Dotted gray lines are the mean value of HCR. \\label{Quantile_Reg}"}
+#create model variables
+attach(Filter_only_outRmd_data)
+qr_x <- cbind(Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, Avg_OC_Ratio, Site)
+#summary(qr_x)
+qr_y <- cbind(L_hr_m2)
+#summary(qr_y)
+
+## OLS Model
+HCR_lm <- lm(qr_y ~ qr_x)
+#summary(HCR_lm)
+#hist(Filter_only_outRmd_data$L_hr_m2)
+# Look at linear model assumptions
+# Doesn't look good with this data
+#par(mfrow=c(2,2))
+#plot(HCR_lm)
+
+##########################################
+############## Quantile Regression ###############
+## Bivariate comparisons only, not doing multivariate in this study (Talked with Ted Grosholz)
+library(quantreg) # Quantile Rregression package
+
+#### Look at change over most Quantiles
+qr_temp <- rq(L_hr_m2 ~ Temp_C_Up,
+             tau = seq(0.05,0.95, by = 0.05),
+             na.action = na.omit,
+             data = Filter_only_outRmd_data)
+#summary(qr_temp)
+#plot(qr_temp)
+
+#### Temperature
+## Looking at .5 and .9 quantiles of Habitat Clearance Rates - Filtration most likely on
+qr_5_9_temp <- rq(L_hr_m2 ~ Temp_C_Up,
+                tau = c(0.5,0.9),
+                data = Filter_only_outRmd_data)
+
+# Check results
+sumQRtemp <- summary(qr_5_9_temp, se = "boot", R = 1000)
+#sumQRtemp
+
+## Graph
+# if statements choose linetype - solid (significant) or dashed (not significant)
+qrplot_temp <- ggplot(Filter_only_outRmd_data, aes(Temp_C_Up, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  # gray line indicating mean of HCR
+  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
+             linetype = "dotted", 
+             color = "gray50") +
+  theme_classic() +
+  guides(color=FALSE) +
+  labs(x = expression(paste("Temperature (", degree, "C)")),
+       y = "",
+       title = "A)") +
+  scale_color_manual(values = Site_colors) +
+  {if(sumQRtemp[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRtemp[[1]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
+  {if(sumQRtemp[[1]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
+  {if(sumQRtemp[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRtemp[[2]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
+  {if(sumQRtemp[[2]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
+
+### Salinity 
+qr_5_9_sal <- rq(L_hr_m2 ~ Sal_ppt_Up,
+                tau = c(0.5,0.9),
+                data = Filter_only_outRmd_data)
+
+# Check results
+sumQRsal <- summary(qr_5_9_sal, se = "boot", R = 1000)
+#sumQRsal
+
+# Graph
+qrplot_sal <- ggplot(Filter_only_outRmd_data, aes(Sal_ppt_Up, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
+             linetype = "dotted", 
+             color = "gray50") +
+  theme_classic() +
+  guides(color=FALSE) +
+    labs(x = expression(paste("Salinity (ppt)")),
+       y = "",
+       title = "B)") +
+  scale_color_manual(values = Site_colors) +
+  {if(sumQRsal[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRsal[[1]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
+  {if(sumQRsal[[1]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
+  {if(sumQRsal[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRsal[[2]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
+  {if(sumQRsal[[2]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
+
+### Turbidity
+qr_5_9_turb <- rq(L_hr_m2 ~ Turbidity_NTU_Up,
+                tau = c(0.5,0.9),
+                data = Filter_only_outRmd_data)
+
+# Check results
+sumQRturb <- summary(qr_5_9_turb, se = "boot", R = 1000)
+#sumQRturb
+
+# Graph
+qrplot_turb <- ggplot(Filter_only_outRmd_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
+             linetype = "dotted", 
+             color = "gray50") +
+  theme_classic() +
+  guides(color=FALSE) +
+  labs(x = expression(paste("Turbidity (NTU)")),
+       y = "",
+       title = "C)") +
+  scale_color_manual(values = Site_colors) +
+  {if(sumQRturb[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRturb[[1]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
+  {if(sumQRturb[[1]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
+  {if(sumQRturb[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRturb[[2]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
+  {if(sumQRturb[[2]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
+
+### TPM
+qr_5_9_tpm <- rq(L_hr_m2 ~ Avg_TPM_mg_L,
+                tau = c(0.5,0.9),
+                data = Filter_only_outRmd_data)
+
+# Check results
+sumQRtpm <- summary(qr_5_9_tpm , se = "boot", R = 1000)
+#sumQRtpm
+
+# Graph
+qrplot_tpm <- ggplot(Filter_only_outRmd_data, aes(Avg_TPM_mg_L, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
+             linetype = "dotted", 
+             color = "gray50") +
+  theme_classic() +
+  guides(color=FALSE) +
+  labs(x = expression(paste("Total Particulate Matter (", mu,"g/L)")),
+       y = "",
+       title = "D)") +
+  scale_color_manual(values = Site_colors) +
+  {if(sumQRtpm[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRtpm[[1]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
+  {if(sumQRtpm[[1]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
+  {if(sumQRtpm[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRtpm[[2]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
+  {if(sumQRtpm[[2]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
+
+### OC 
+qr_5_9_oc <- rq(L_hr_m2 ~ Avg_OC_Ratio,
+                tau = c(0.5,0.9),
+                data = Filter_only_outRmd_data)
+
+# Check results
+sumQRoc <- summary(qr_5_9_oc , se = "boot", R = 1000)
+#sumQRoc
+
+# Graph
+qrplot_oc <- ggplot(Filter_only_outRmd_data, aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
+             linetype = "dotted", 
+             color = "gray50") +
+  theme_classic() +
+  guides(color=FALSE) +
+  labs(x = expression(paste("Organic Content (ratio)")),
+       y = "",
+       title = "E)") +
+  scale_color_manual(values = Site_colors) +
+  {if(sumQRoc[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRoc[[1]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
+  {if(sumQRoc[[1]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
+  {if(sumQRoc[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRoc[[2]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
+  {if(sumQRoc[[2]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
+
+## Combine graphs into single multiframe figure
+## Function to pull out legend
+extract_legend<-function(myggplot){
+    tmp <- ggplot_gtable(ggplot_build(myggplot))
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+    legend <- tmp$grobs[[leg]]
+    return(legend)
+    }
+
+# Dumbie graph
+legend_plot <- ggplot(Filter_only_outRmd_data, aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() 
+# extract legend
+QR_legend <- extract_legend(legend_plot)
+
+# make multipframe figure
+grid.arrange(arrangeGrob(qrplot_temp, qrplot_sal, qrplot_turb, qrplot_tpm, qrplot_oc, QR_legend, 
+             nrow = 3,
+             left = grid::textGrob(Hab_FR_Label, rot = 90, vjust = 1, 
+                                          gp = gpar(fontsize = 12))))
+```
+
+## Habitat Clearance Rates 
+
+Mean HCR at San Rafael was `r round(mean(SR_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$L_hr_m2),1)`), `r round(mean(MB_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = to `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$L_hr_m2),1)`) at Morro Bay, 
+`r round(mean(NPSM_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`) at Shellmaker, 
+and `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`) at Deanza (Figure \ref{FR_Site_boxplot}).
+Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, `r round(NPSM_NC_sum$L_hr_m2,1)`, and `r round(NPD_NC_sum$L_hr_m2,1)` L hr^-1^ m^2^ at San Rafael, Morro Bay, Shellmaker, and Deanza respectively.
+HCR for filtration trials did not differ significantly among sites, see Figure \ref{FR_Site_boxplot} (one-way Kruskal-Wallis, *p* = `r round(KW_HCR_site$p.value,2)`).
+The upper 0.5 quantile of HCR at each site, representing the top filtration performance within each site, also did not differ among sites (one-way Kruskal-Wallis, *p* = `r round(KW_HCR50_site$p.value,2)`).
+Individual water quality variables did not significantly relate with HCR at 0.5 and 0.9 quantiles: temperature ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtemp[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtemp[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtemp[[2]]$coefficients[2,4],2)`), salinity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRsal[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRsal[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRsal[[2]]$coefficients[2,4],2)`),
+turbidity ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRturb[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRturb[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRturb[[2]]$coefficients[2,4],2)`),
+TPM ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRtpm[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRtpm[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRtpm[[2]]$coefficients[2,4],2)`),
+OC ($\tau$ = 0.5, $\beta$±*SE* = `r round(sumQRoc[[1]]$coefficients[2,2],2)`, *p* = `r round(sumQRoc[[1]]$coefficients[2,4],2)`; $\tau$ = 0.9, $\beta$±*SE* = `r round(sumQRoc[[2]]$coefficients[2,2],2)`, *p* = `r round(sumQRoc[[2]]$coefficients[2,4],2)`) (Figure \ref{Quantile_Reg}).
 
 ```{r Final_Summary_table, eval=FALSE, include=FALSE, results='asis'}
 
@@ -669,11 +1237,12 @@ Final_table <- Master_analysis_table %>%
                 d_bw_sondes_m, avg_m_sec) %>% 
  dplyr::arrange(Site, Date)
 
+
 # arrange by site latitude
 Final_table <- arrange(transform(Final_table, Site = factor(Site,levels = site_by_lat_abv)), Site)
 
-data_removed <- Final_table[c(13, 15, 19),] # name excluded data
-data_analysis <- Final_table[-c(13, 15, 19),] # remove excluded analysis data points
+data_removed <- Final_table[19,] # name excluded data
+data_analysis <- Final_table[-19,] # remove excluded analysis data points
 
 Latex_table_data <- rbind(data_analysis, data_removed) # add excluded data back in at bottom 
 
@@ -686,20 +1255,20 @@ colnames(Latex_table_data) <- c( "\\multicolumn{1}{p{1cm}}{\\centering Site}",
                             "\\multicolumn{1}{p{1cm}}{\\centering Trial}",
                             "\\multicolumn{1}{p{1cm}}{\\centering Tide}",
                            "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{rmd} \\\ (\\%)}",
-                           "\\multicolumn{1}{p{1cm}}{\\centering HCR \\\ (L/hr/m^2)}",
+                           "\\multicolumn{1}{p{1cm}}{\\centering HCR \\\ (L/hr/$m^{2}$)}",
                             "\\multicolumn{1}{p{1cm}}{\\centering Temp \\\ (\\si{\\degree}C)}",
                             "\\multicolumn{1}{p{1cm}}{\\centering Sal \\\ (ppt)} ", 
                             "\\multicolumn{1}{p{1cm}}{\\centering Turb \\\ (NTU)}",
                             "\\multicolumn{1}{p{1cm}}{\\centering TPM \\\ (mg/L)}", 
                             "\\multicolumn{1}{p{1cm}}{\\centering OC \\\ (ratio)}", 
-                            "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{up} \\\ (\\mu g/L)}", 
+                            "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{up} \\\ ($\\upmu$g/L)}", 
                            "\\multicolumn{1}{p{1cm}}{\\centering Depth \\\ (m)}",
                            "\\multicolumn{1}{p{1cm}}{\\centering Dist \\\ (m)}",
                            "\\multicolumn{1}{p{1cm}}{\\centering Vel \\\ (m/s)}")
 
 # create xtable
 sumtable_latex <- xtable(Latex_table_data, 
-                         caption = "Whole-habitat in situ filtration and control trials across four California sites. Water quality values are upstream instrument averages. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. The three observations separated at the bottom are extreme values removed from the analysis.",
+                         caption = "Details of Whole-habitat In Situ Filtration and Control Trials Across Four California Sites. All Values are Means from the Entire Trial. The Trial Separated at the Bottom is within the Chlorophyll  Sensor’s Error and was Removed from the Analysis. Dashes Denote Missing Values.",
                          label = "tb:summary",
                          align = "lllllrrrrrrrrrrr",
                          type = "latex")
@@ -715,7 +1284,7 @@ print.xtable(sumtable_latex,
       sanitize.colnames.function=function(x){x},
       floating.environment = "sidewaystable",
       #add.to.row = foot_note,
-      hline.after = c(-1,0,25),
+      hline.after = c(-1,0,25,26),
       comment = F,
       include.rownames = FALSE,
       timestamp = NULL,
@@ -727,42 +1296,11 @@ print.xtable(sumtable_latex,
 #Field sites are San Rafael (SR), Morro Bay (MB), Newport Shellmaker (NPSM), and Newport Deanza (NPD). Trials are either filtration over oyster habitat (Fltr), or control over mudflat (Ctrl). Chl$\textsubscript{rmd}$ is the percent chlorophyll $\alpha$ removed as water traveled across the habitat. HCR is the habitat clearance rate originally described in Milbrandt et al. (2015). Temp is temperature, Turb. is Turbidity, TPM is sesson total particulate matter, OC is relative organic content of TPM. Chl$\textsubscript{up}$ is chlorophyll $\alpha$ concentration at the upstream instrument. Depth is the average water column depth, Dist. is the distance between instruments, and Vel. is the average water velocity.
 ```
 
-
-\includepdf[pagecommand={},noautoscale = true]{Summary_Table_2020_10_8.pdf}
+\includepdf[pagecommand={},noautoscale = true]{Summary_Table_2020_11_5.pdf}
 
 \captionsetup[table]{labelformat=empty}
 
-```{r HCR_Site_ANOVA, echo=FALSE, message = F, warning=F, results='asis'}
-
-## ANOVA Data
-FR_Site_alldata <- Filter_only_outRmd_data %>% 
-  dplyr::select(Date, Site, L_hr_m2)
-
-## Check Normality assumption - looks ok..
-# hist(FR_Site_alldata$L_hr_m2)
-
-## ANOVA HCR ~ Site
-model <- lm(L_hr_m2 ~ Site, data = FR_Site_alldata)
-aov.model <- anova(model)
-aov.xt <- xtable(aov.model,
-                       caption = 'Table 2: One-way ANOVA of the effect of site on habitat clearance rate (HCR L hr\\textsuperscript{-1} m\\textsuperscript{-2})')
-colnames(aov.xt) <- c("df", "Sum Sq", "Mean Sq", "\\textit{F} value", "\\textit{p} value")
-print(aov.xt,
-      type="latex",
-      booktabs = T,
-      caption.placement = 'top',
-      sanitize.colnames.function=function(x){x},
-      comment = F,
-      timestamp = NULL,
-      label=anovasum)
-
-
-```
-
-
-## Variables Affecting HCR
-
-The random forest model using only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
+A random forest regression containing only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
 
 ```{r TPM_OC_Values, include=FALSE}
 TPM_OC_Values <- Master_analysis_table %>% 
@@ -810,10 +1348,10 @@ logOC_logTPM_LM_sum <- summary(logOC_logTPM_LM)
 str(logOC_logTPM_LM_sum)
 ```
 
-```{r TPM_OC_graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", fig.asp=0.618, fig.width=6, out.width="70%", warning=F, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. Two field days are not included because of missing TPM data. \\label{TPM_OC_model}"}
-############ Linear Model
+```{r TPM_OC_graphs, echo=FALSE, fig.align="center", fig.asp=0.618, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across sites and all trials. Two trials are not included because of missing TPM data. \\label{TPM_OC_model}", fig.keep='all', fig.width=6, message=FALSE, warning=FALSE, dev='pdf', out.width="70%"}
 
-OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ratio )) +
+## Linear Model
+OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ratio, group = Site)) +
   geom_smooth(method = lm, se = F, color = 'grey50') +
   geom_point(aes(color = Site)) +
   # geom_abline(aes(intercept=0, slope=1)) +
@@ -829,6 +1367,17 @@ OC_TPM_graph <- ggplot(data = Avg_TPM_summary_table, aes(Avg_TPM_mg_L, Avg_OC_Ra
                parse = TRUE,
                label.x = "right",
                label.y = "top")
+
+## ANCOVA - https://towardsdatascience.com/doing-and-reporting-your-first-anova-and-ancova-in-r-1d820940f2ef
+library(car)
+ancova_2 <- aov(Avg_OC_Ratio ~ Site + Avg_TPM_mg_L, data = Avg_TPM_summary_table)
+#Anova(ancova_2, type = "III") # summary() uses type I error, no good
+# can also use summary.lm()
+#summary.lm(ancova_2)
+# Post-hoc Tukey Honestly Significant Difference test
+hsd_ancova <- HSD.test(ancova_2, trt = "Site")
+
+
 
 ############ Y ~ log(x)
 # create range of values to predict with model
@@ -895,13 +1444,12 @@ logOC_logTPM_graph
 
 ```
 
-Total Particulate Matter (TPM) is a significant negative predictor of seston OC when sites are combined (ln(y) = `r round(coef(logOC_logTPM_LM_sum)[1,1],digits=2)` `r round(coef(logOC_logTPM_LM_sum)[2,1],digits=3)` ln(x), *R*^2^ = `r  round(logOC_logTPM_LM_sum$r.squared,digits=2)`, *p* = `r round(coef(logOC_logTPM_LM_sum)[2,4],digits = 3)`) (Figure \ref{TPM_OC_model}). 
-This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collect the same way regardless of the trial. 
-Bays have distinct TPM signatures that do not overlap (Figure \ref{TPM_OC_model}).
-Northern San Francisco Bay (San Rafael) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`), and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`).
+Total Particulate Matter (TPM) was significantly related to seston OC when sites were combined  (Figure \ref{TPM_OC_model}). 
+This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collected the same way regardless of the trial. 
+Northern San Francisco Bay (San Rafael) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`), and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`) (Figure \ref{TPM_OC_model}).
 Newport Bay (Deanza and Shellmaker) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
 Northern San Francisco Bay (San Rafael) OC averaged `r round(mean(SR_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_OC_Ratio),2)`), and Morro Bay OC averaged `r round(mean(MB_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_OC_Ratio,2))`).
-Newport Bay (Deanza and Shellmaker) OC averaged `r round(mean(NP_combo_TPM_OC$Avg_OC_Ratio),3)` (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_OC_Ratio),2)`).
+Newport Bay (Deanza and Shellmaker) OC averaged `r round(mean(NP_combo_TPM_OC$Avg_OC_Ratio),3)` (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_OC_Ratio),2)`) (Figure \ref{TPM_OC_model}).
 
 ```{r TPM_OC_Sites_graphs, echo=FALSE, include=F, fig.keep = 'all', dev = 'pdf', fig.align="default", fig.asp=0.618, fig.width=8, message= F, fig.cap="The relationship between seston total particulate matter (TPM) and seston organic content (OC) across all sites and all trials. \\label{TPM_OC_Sites_graphs}"}
 
@@ -974,7 +1522,7 @@ TPM_OC_bysite_graph <- grid.arrange(TPM_OC_SR, TPM_OC_MB, TPM_OC_NPSM, TPM_OC_De
 # plot(TPM_OC_bysite_graph)
 ```
 
-## Filter-Feeding Community
+## Filter Feeding Community
 
 ```{r Oly_DTW_Shell_length_setup, include=FALSE}
 ############ Olympia DTW and Shell Length #####################
@@ -1088,13 +1636,13 @@ NPD_species <- Bivalve_Den_data %>%
   
 ```
 
-In November 2017 the estimated bivalve density at San Rafael was `r SR_Den` individuals/m^2^, all bivalves were *Ostrea lurida* (Figure \ref{Bivalve_Den_Biomass}).
-Other bivalves were noted, but rare, and were not detected in sample bags (C. Zabin, unpublished data). 
-Morro Bay has an estimated `r MB_Den` *Crassostrea gigas* individuals/m^2^ (Morro Bay Oyster Company), personal field observations confirm the lack of bivalve fouling on the aquaculture lines.
-Shellmaker has an estimated `r NPSM_Den` individuals/m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals/m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals/m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals/m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals/m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals/m^2^) (Figure \ref{Bivalve_Den_Biomass}.
-Deanza has an estimated `r NPD_Den` individuals/m^2^, composed of *M. senhousia* (`r NPD_species[NPD_species$Species=="Musculista senhousia",2]` individuals/m^2^), *A. diegensis* (`r NPD_species[NPD_species$Species=="Adula diegensis",2]` individuals/m^2^), *O. lurida* (`r NPD_species[NPD_species$Species=="Ostrea lurida",2]` individuals/m^2^), *M. galloprovincialis* (`r NPD_species[NPD_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^) (Figure \ref{Bivalve_Den_Biomass}.
+In November 2017 the estimated bivalve density at San Rafael was `r SR_Den` individuals/m^2^, all of which were *Ostrea lurida* (Figure \ref{Bivalve_Den}).
+Other bivalves were noted, but were rare, and were not detected in sample bags (C. Zabin, unpublished data). 
+Morro Bay had an estimated `r MB_Den` *Crassostrea gigas* individuals/m^2^ in the summer of 2018 (Morro Bay Oyster Company); personal field observations confirm the lack of bivalve fouling on the aquaculture lines.
+In May 2018, Shellmaker had an estimated `r NPSM_Den` individuals/m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals/m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals/m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals/m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals/m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals/m^2^) (Figure \ref{Bivalve_Den}).
+Deanza had an estimated `r NPD_Den` individuals/m^2^ in May 2018, and was composed of *M. senhousia* (`r NPD_species[NPD_species$Species=="Musculista senhousia",2]` individuals/m^2^), *A. diegensis* (`r NPD_species[NPD_species$Species=="Adula diegensis",2]` individuals/m^2^), *O. lurida* (`r NPD_species[NPD_species$Species=="Ostrea lurida",2]` individuals/m^2^), *M. galloprovincialis* (`r NPD_species[NPD_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^) (Figure \ref{Bivalve_Den}).
 
-```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Bivalve community density and composition for each study site. San Rafael data was collected November 2017 by the Zabin lab at SERC, Morro Bay was estimated by Morro Bay Oyster Company, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab at CSUF.  \\label{Bivalve_Den_Biomass}"}
+```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Bivalve community density and composition for each study site. San Rafael data were collected November 2017 by the Zabin lab at SERC, Morro Bay was estimated by Morro Bay Oyster Company in 2018, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab at CSUF.  \\label{Bivalve_Den}"}
 
 #unique(Bivalve_Den_data$Species) # list each individual bivalve species
 # Assign species to specific color
@@ -1121,7 +1669,7 @@ Bivalve_Den_graph
 ```
 
 ```{r Gray_OlyDTW_SL, include=FALSE}
-
+########### Gray DTW 
 Gray_Oly_Data <- fread(file.path('./Data/bivalve_density_community', "MattGray_2011_2013_Olurida_allometric_data.csv"))
 colnames(Gray_Oly_Data) <- c("ID", "Date", "species", "length_mm", "shell_tissue_g", "vial_weight", "Vial_wet_oyster", "Tissue_weight_g", "vial_dry_oyster", "tissue_dry_weight_g")
 Gray_Oly_Data %<>% 
@@ -1207,46 +1755,108 @@ str(Oly_LogDTW_logSH_lm)
 ```
 
 
-```{r Oly_DTW_SH_outlier_rmd, include=F, fig.keep = 'all', dev = 'pdf', warning=F, message=F, fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) at two locations, Newport Bay, California (Zacherl unpublished data) and Yaquina Bay, Oregon (Gray unpublished data). The Newport Bay data was collected at the Deanza restoration site and outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
+```{r Bivalve_biomass_setup, include=FALSE}
+######### Biomass by Site ############################
+# excavation quadrat area m^2 (0.25 x 0.25m)
+NP_excavation_quad_area = 0.0625
+# calculate DTW / m^2 / species 
+NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>% 
+  group_by(excavation_sample, species) %>% 
+  summarize(mean_DTW = mean(tissue_dry_weight_g)) %>% # show the average DTW for each species within each excav sample
+  ungroup() %>% # undo previous grouping by excavation_sample and species
+  group_by(species) %>% # new grouping by species to determine the average DTW by species across all quads
+  summarize(mean_DTW_m2 = mean(mean_DTW/NP_excavation_quad_area)) %>% 
+  mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
+  rename(Species = species) # rename column with capital case
 
-Site_Shapes <- c("Deanza" = 16,
-                 "Yaquina" = 3)
+################### Biomass by species San Rafael ####################
+# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
+SR_Density_directory = "./Data/bivalve_density_community"
+SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
 
-######## Graph with Deanza and Yaquina DTW x Shell length
-# Combine legend --> https://gist.github.com/mps9506/39b70aec30ab1322f7ecd6b21f04120e#file-testplot-r-L96
-Oly_shell_DTW_NPD_Yaquina <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_weight_g)) +
-  geom_point(aes(color = legend, shape = legend)) +
-  #geom_smooth(se = F, color = 'grey50') + # method=lm, formula = x_y_formula, level = 0.95, color = 'grey50') +
-  scale_color_manual(labels = c("Yaquina Bay, OR", 
-                                "Deanza, Newport Bay, CA"),
-                     values = c("Yaquina" = "#9986A5",
-                                "Deanza" = "#9986A5"),
-                     na.translate = TRUE, drop = FALSE) + 
-  scale_shape_manual(labels = c("Yaquina Bay, OR", 
-                                "Deanza, Newport Bay, CA"),
-                     values = c("Yaquina" = 3,
-                                "Deanza" = 16),
-                     na.translate = TRUE, drop = FALSE) + 
-  theme_classic() +
-  theme(legend.box.background = element_rect(colour = "black"),
-        legend.justification = c(0, 1), 
-        legend.position = c(0.1, 0.95),
-        legend.title = element_blank()) +
-  ylim(0,1)+
-  labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)') 
- # ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-  #             formula = x_y_formula,
-   #            parse = TRUE,
-    #           label.x = "right",
-     #          label.y = "bottom") 
-  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-   #                    aes(label = sprintf("%i observations", stat(count))))
+######## Predict SR DTW with shell length #########
+## Predict with log-log model (best fit)
+predict_DTW_loglog <- function(data){
+  exp(predict(Oly_LogDTW_logSH_lm, newdata = data.frame(length_mm = data$length_mm))) 
+  # exp() converts log value, predict needs data.frame input
+  # does predict() include error term inherently in lm()
+}
 
-plot(Oly_shell_DTW_NPD_Yaquina)
+SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
+  mutate(DTW_g = predict_DTW_loglog(SR_Oly_Shelllength_data)) %>%  # predict Oly Dry tissue weight with length_mm
+  group_by(Site, bag_number) %>% 
+  summarize(DTW_bag = mean(DTW_g)) # average DTW per sample bag
+
+Oly_italic <- expression(italic("Ostrea lurida"))
+
+SR_Oly_DTW_data2 <- SR_Oly_DTW_data %>% 
+  ungroup() %>% 
+  group_by(Site) %>% # regroup by site
+  summarize(DTW_bag_avg = mean(DTW_bag)) %>% # average DTW across sample bags
+  mutate(mean_DTW_m2 = DTW_bag_avg * 18,
+         Species = "Ostrea lurida") # sample bag is 1/3 the size of regular shell bag. There are 6 full size bags on the 
+# top of the reef unit at San Rafael. The units are 1 x 1 x 1m, so the top area of the reef is 1m^2. (3 * 6 = the amount in 1m^2)
+
+SR_Oly_DTW_data3 <- SR_Oly_DTW_data2 %>% 
+  dplyr::select(-(DTW_bag_avg)) # remove DTW_bag_avg 
+SR_Oly_DTW_data4 <- data.frame(SR_Oly_DTW_data3) # convert wierd mess of types into a data.frame
+
+SR_NPD_biv_DTWm2 <- rbind(SR_Oly_DTW_data4, NPD_biv_DTW_m2)
+# SR total and species total DTW values 
+SR_total_DTW <- SR_NPD_biv_DTWm2 %>% 
+  filter(Site == "San Rafael") %>% 
+  summarise(total = sum(mean_DTW_m2))
+
+SR_species_DTW <- SR_NPD_biv_DTWm2 %>% 
+  filter(Site == "San Rafael") %>%
+  group_by(Species) %>% 
+  summarise(total = sum(mean_DTW_m2))
+# Deanza total and species totoal DTW values
+NPD_total_DTW <- SR_NPD_biv_DTWm2 %>% 
+  filter(Site == "Deanza") %>% 
+  summarise(total = sum(mean_DTW_m2))
+
+NPD_species_DTW <- SR_NPD_biv_DTWm2 %>% 
+  filter(Site == "Deanza") %>%
+  group_by(Species) %>% 
+  summarise(total = sum(mean_DTW_m2))
+
 ```
 
-```{r Oly_DTW_SH_outrmd_Graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%", fig.cap="The relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) in Newport Bay, California at the Deanza restoration site. \\label{NPD_Oly_DTW_SH_Trans}"}
+
+Direct biomass data were only available for Deanza, which estimated `r round(NPD_total_DTW, 2)` g/m^2^ of bivalve dry tissue weight (DTW) (Figure \ref{Bivalve_DTW_Biomass}). 
+*O. lurida* had the highest DTW with `r round(NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2],2)` g/m^2^, followed by *M. galloprovincialis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Mytilus galloprovincialis",2],)` g/m^2^), an unknown *Modiolus* sp. (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Unknown mussel",2],2)` g/m^2^), *A. diegensis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Adula diegensis",2],2)` g/m^2^), and *M. senhousia* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Musculista senhousia",2],2)` g/m^2^) (Figure \ref{Bivalve_DTW_Biomass}).
+San Rafael surveys did not directly measure biomass, but did include *O. lurida* shell length measurements which I used to estimate DTW (Figure \ref{Bivalve_DTW_Biomass}) with a model describing the relationship between *O. lurida* shell length and DTW at Deanza (ln(y) = `r round(coef(OlyDTW_loglog_sum)[1,1],digits=2)` `r round(coef(OlyDTW_loglog_sum)[2,1],digits=3)`ln(x), R^2^ = `r round(OlyDTW_loglog_sum$r.squared,digits=2)`, *p* < 0.0001) (Figure \ref{NPD_Oly_DTW_SH_Trans}). 
+I estimated San Rafael had `r round(SR_species_DTW$total,2)` g/m^2^ of *O. lurida* (Figure \ref{Bivalve_DTW_Biomass}).
+A direct comparison between site biomass to HCR was not possible with my limited biomass and shell length data. 
+
+```{r Bivalve_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Estimated biomass of \\textit{O. lurida} habitat at Deanza and San Rafael sites. Data for Deanza was collected by the Zacherl lab (CSUF) in May 2018, the relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) from the survey was used to estimate DTW at San Rafael with shell length data collected by the Zabin lab (SERC) in November 2017. \\label{Bivalve_DTW_Biomass}"}
+
+####### Bar graph NPD Biomass / DTW by species
+Bivalve_Biomass_graph <- ggplot(SR_NPD_biv_DTWm2, aes(Site)) + 
+  geom_col(aes(x = Site, y = mean_DTW_m2, fill = Species)) +
+  theme_classic() +
+  scale_fill_manual(values = Species_colors) +
+  theme(legend.text = element_text(face = "italic")) +
+  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
+  labs(y = expression("Dry Tissue Weight (g m" ^-2* ")"))
+## Add total Biomass on top of bars
+Bivalve_Biomass_graph
+#bar_graphs <- plot_grid(Bivalve_Den_graph + theme(legend.position="none"),
+ #                       Bivalve_Biomass_graph + theme(legend.position="none"),
+  #                      align = 'vh',
+   #                     labels = c("A", "B"),
+    #                    hjust = -1,
+     #                   nrow = 1)
+#legend_b <- get_legend(Bivalve_Den_graph + theme(legend.box.margin = margin(0, 0, 0, 12)))
+#bar_graph_1legend <- plot_grid(bar_graphs, legend_b, rel_widths = c(3, .4))
+# How do I move legend inside of plot area? This method uses cowplot
+#bar_graph_1legend
+
+### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
+```
+
+```{r Oly_DTW_SH_outrmd_Graphs, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align="center", warning=F, message=F, fig.asp=0.618, fig.width=6, out.width="70%", fig.cap="The relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) at the Deanza restoration site in Newport Bay, California. \\label{NPD_Oly_DTW_SH_Trans}"}
 
 ### y ~ log(x) model ####
 # range of Shell length values
@@ -1343,131 +1953,52 @@ Oly_SH_DTW2_graph <- ggplot(NPD_oly_outRmd, aes(length_mm, tissue_dry_weight_g))
 
 ```
 
-```{r Bivalve_biomass_setup, include=FALSE}
-######### Biomass by Site ############################
-# excavation quadrat area m^2 (0.25 x 0.25m)
-NP_excavation_quad_area = 0.0625
-# calculate DTW / m^2 / species 
-NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>% 
-  group_by(excavation_sample, species) %>% 
-  summarize(mean_DTW = mean(tissue_dry_weight_g)) %>% # show the average DTW for each species within each excav sample
-  ungroup() %>% # undo previous grouping by excavation_sample and species
-  group_by(species) %>% # new grouping by species to determine the average DTW by species across all quads
-  summarize(mean_DTW_m2 = mean(mean_DTW/NP_excavation_quad_area)) %>% 
-  mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
-  rename(Species = species) # rename column with capital case
-
-################### Biomass by species San Rafael ####################
-# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
-SR_Density_directory = "./Data/bivalve_density_community"
-SR_Oly_Shelllength_data = fread(file.path(SR_Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
-
-######## Predict SR DTW with shell length #########
-## Predict with log-log model (best fit)
-predict_DTW_loglog <- function(data){
-  exp(predict(Oly_LogDTW_logSH_lm, newdata = data.frame(length_mm = data$length_mm))) 
-  # exp() converts log value, predict needs data.frame input
-  # does predict() include error term inherently in lm()
-}
-
-SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
-  mutate(DTW_g = predict_DTW_loglog(SR_Oly_Shelllength_data)) %>%  # predict Oly Dry tissue weight with length_mm
-  group_by(Site, bag_number) %>% 
-  summarize(DTW_bag = mean(DTW_g)) # average DTW per sample bag
-
-Oly_italic <- expression(italic("Ostrea lurida"))
-
-SR_Oly_DTW_data2 <- SR_Oly_DTW_data %>% 
-  ungroup() %>% 
-  group_by(Site) %>% # regroup by site
-  summarize(DTW_bag_avg = mean(DTW_bag)) %>% # average DTW across sample bags
-  mutate(mean_DTW_m2 = DTW_bag_avg * 18,
-         Species = "Ostrea lurida") # sample bag is 1/3 the size of regular shell bag. There are 6 full size bags on the 
-# top of the reef unit at San Rafael. The units are 1 x 1 x 1m, so the top area of the reef is 1m^2. (3 * 6 = the amount in 1m^2)
-
-SR_Oly_DTW_data3 <- SR_Oly_DTW_data2 %>% 
-  dplyr::select(-(DTW_bag_avg)) # remove DTW_bag_avg 
-SR_Oly_DTW_data4 <- data.frame(SR_Oly_DTW_data3) # convert wierd mess of types into a data.frame
-
-SR_NPD_biv_DTWm2 <- rbind(SR_Oly_DTW_data4, NPD_biv_DTW_m2)
-# SR total and species total DTW values 
-SR_total_DTW <- SR_NPD_biv_DTWm2 %>% 
-  filter(Site == "San Rafael") %>% 
-  summarise(total = sum(mean_DTW_m2))
-
-SR_species_DTW <- SR_NPD_biv_DTWm2 %>% 
-  filter(Site == "San Rafael") %>%
-  group_by(Species) %>% 
-  summarise(total = sum(mean_DTW_m2))
-# Deanza total and species totoal DTW values
-NPD_total_DTW <- SR_NPD_biv_DTWm2 %>% 
-  filter(Site == "Deanza") %>% 
-  summarise(total = sum(mean_DTW_m2))
-
-NPD_species_DTW <- SR_NPD_biv_DTWm2 %>% 
-  filter(Site == "Deanza") %>%
-  group_by(Species) %>% 
-  summarise(total = sum(mean_DTW_m2))
-
-```
-
-Direct biomass data were only available for Deanza, which estimated `r round(NPD_total_DTW, 2)` g/m^2^ of bivalve dry tissue weight (DTW) (Figure \ref{Bivalve_Den_Biomass}). 
-*O. lurida* had the highest DTW with `r round(NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2],2)` g/m^2^, followed by *M. galloprovincialis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Mytilus galloprovincialis",2],)` g/m^2^), an unknown mussel (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Unknown mussel",2],2)` g/m^2^), *A. diegensis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Adula diegensis",2],2)` g/m^2^), and *M. senhousia* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Musculista senhousia",2],2)` g/m^2^) (Figure \ref{Bivalve_Den_Biomass}).
-San Rafael survey data did not directly assess biomass, but did include *O. lurida* shell length measurements which I used to estimate DTW (Figure \ref{Bivalve_Den_Biomass}) with a model describing Deanza shell length and DTW (ln(y) = `r round(coef(OlyDTW_loglog_sum)[1,1],digits=2)` `r round(coef(OlyDTW_loglog_sum)[2,1],digits=3)`ln(x), R^2^ = `r round(OlyDTW_loglog_sum$r.squared,digits=2)`, *p* < 0.0001) (Figure \ref{NPD_Oly_DTW_SH_Trans}). 
-I estimated San Rafael had `r round(SR_species_DTW$total,2)` g/m^2^ of *O. lurida* (Figure \ref{Bivalve_Den_Biomass}).
-A direct comparison between site biomass to HCR was not possible with my limited biomass data. 
-
-```{r Bivalve_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Estimated biomass of \\textit{O. lurida} habitat at Deanza and San Rafael sites. Data for Deanza was collected by the Zacherl lab (CSUF) in May 2018, the relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) from the survey was used to estimate DTW at San Rafael with shell length data collected by the Zabin lab (SERC) in November 2017. \\label{Bivalve_Den_Biomass}"}
-
-####### Bar graph NPD Biomass / DTW by species
-Bivalve_Biomass_graph <- ggplot(SR_NPD_biv_DTWm2, aes(Site)) + 
-  geom_col(aes(x = Site, y = mean_DTW_m2, fill = Species)) +
-  theme_classic() +
-  scale_fill_manual(values = Species_colors) +
-  theme(legend.text = element_text(face = "italic")) +
-  #scale_y_continuous(breaks = seq(0, max(NPD_Posbiomass_outlier$tissue_dry_weight_g), by = 500)) +
-  labs(y = expression("Dry Tissue Weight (g m" ^-2* ")"))
-## Add total Biomass on top of bars
-Bivalve_Biomass_graph
-#bar_graphs <- plot_grid(Bivalve_Den_graph + theme(legend.position="none"),
- #                       Bivalve_Biomass_graph + theme(legend.position="none"),
-  #                      align = 'vh',
-   #                     labels = c("A", "B"),
-    #                    hjust = -1,
-     #                   nrow = 1)
-#legend_b <- get_legend(Bivalve_Den_graph + theme(legend.box.margin = margin(0, 0, 0, 12)))
-#bar_graph_1legend <- plot_grid(bar_graphs, legend_b, rel_widths = c(3, .4))
-# How do I move legend inside of plot area? This method uses cowplot
-#bar_graph_1legend
-
-### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
-```
-
-```{r Research_Comparison, include=FALSE}
-FR_Site # Average HCR by site
-NPD_Oly_HCR = FR_Site[[4,2]] # NPD average HCR l hr-1 m-2
-NPD_Oly_Bio = NPD_species_DTW[[4,2]] # NPD Oly DTW (g m-2)
-Gray_Oly_dry_CR = 0.78 # (l hr-1 g-1) Gray dry season Oly avg CR
-
-NPD_CR_est = NPD_Oly_Bio*Gray_Oly_dry_CR
-NPD_CR_est # adjust my NPD HCR by Oly biomass to compare to Gray CR
 
 
-Avg_WQ <- Filter_only_outRmd_data %>% 
-  group_by(Site) %>% 
-  na.omit() %>% 
-  summarize(avg_OC = mean(Avg_OC_Ratio),
-            avg_Temp = mean(Temp_C_Up))
-
-Gray_Oly_CR <- (-0.96) + (2.49*Avg_WQ[[4,2]]) + (0.06*Avg_WQ[[4,3]])
-NPD_HCR_est = Gray_Oly_CR * NPD_Oly_Bio
-
-```
 
 ```{r EXTRA ANALYSIS CODE, eval=FALSE, include=FALSE}
 \/ \/ \/ THIS IS ALL EXTRA EXPLORATORY ANALYSIS NOT USED BELOW THIS POINT \/ \/ \/
 ```
 
+
+```{r Oly_DTW_SH_outlier_rmd, include=F, fig.keep = 'all', dev = 'pdf', warning=F, message=F, fig.align="center", out.width = "70%", fig.asp=0.618, fig.width=6, fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) at two locations, Newport Bay, California (Zacherl unpublished data) and Yaquina Bay, Oregon (Gray unpublished data). The Newport Bay data was collected at the Deanza restoration site and outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
+
+Site_Shapes <- c("Deanza" = 16,
+                 "Yaquina" = 3)
+
+######## Graph with Deanza and Yaquina DTW x Shell length
+# Combine legend --> https://gist.github.com/mps9506/39b70aec30ab1322f7ecd6b21f04120e#file-testplot-r-L96
+Oly_shell_DTW_NPD_Yaquina <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_weight_g)) +
+  geom_point(aes(color = legend, shape = legend)) +
+  #geom_smooth(se = F, color = 'grey50') + # method=lm, formula = x_y_formula, level = 0.95, color = 'grey50') +
+  scale_color_manual(labels = c("Yaquina Bay, OR", 
+                                "Deanza, Newport Bay, CA"),
+                     values = c("Yaquina" = "#9986A5",
+                                "Deanza" = "#9986A5"),
+                     na.translate = TRUE, drop = FALSE) + 
+  scale_shape_manual(labels = c("Yaquina Bay, OR", 
+                                "Deanza, Newport Bay, CA"),
+                     values = c("Yaquina" = 3,
+                                "Deanza" = 16),
+                     na.translate = TRUE, drop = FALSE) + 
+  theme_classic() +
+  theme(legend.box.background = element_rect(colour = "black"),
+        legend.justification = c(0, 1), 
+        legend.position = c(0.1, 0.95),
+        legend.title = element_blank()) +
+  ylim(0,1)+
+  labs(x = 'Shell Length (mm)',
+       y = 'Dry Tissue Weight (g)') 
+ # ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
+  #             formula = x_y_formula,
+   #            parse = TRUE,
+    #           label.x = "right",
+     #          label.y = "bottom") 
+  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
+   #                    aes(label = sprintf("%i observations", stat(count))))
+
+plot(Oly_shell_DTW_NPD_Yaquina)
+```
 ```{r Oly_TWW_DTW_outRmd, eval=FALSE, fig.align="default", fig.asp=0.618, fig.cap="The relationship between \\*O. lurida* total wet weight (TWW) and its dry tissue weight (DTW) in Newport Bay, fig.keep='all', fig.width=8, message=FALSE, warning=FALSE, California at the Deanza restoration site. Blue dashed lines represent the relationship found by Gray and Langdon (2018) in Yaquina Bay, Oregon Olympia oysters (DTW=0.0044*TWW - 0.043). \\label{Oly_TWW_DTW_outRmd}", dev='pdf', include=FALSE}
 
 ######### NPD Oly TWW DTW Graphs - Not using 
@@ -1609,7 +2140,116 @@ ols_regress(Oly_TWW2_DTW_LM)
 #plot(NPD_bivalve_outrmd_graph)
 ```
 
+```{r Correction_to_Signal_95CI_graph, eval=FALSE, fig.align='default', fig.asp=1, fig.cap="The relationship between side-by-side trial chlorophyll $\\alpha$ difference (correction) and filtration trial chlorophyll $\\alpha$ difference (signal). The solid black line is a 1-1 relationship", fig.keep='all', fig.show="hold", fig.width=4, message=FALSE, warning=FALSE, dev='pdf', include=FALSE, out.width="50%"}
 
+##### Althea's Chl correction x Filtration diff Graph ###########
+## Correction data & OG Chl values
+#Sbs_correction_data 
+sbs_corr_NoAbs <- Sbs_correction_data %>% 
+  dplyr::select(File_Name, Sonde_Up, Sonde_Down, G_Avg_Chl, H_Avg_Chl, Correction_Factor) %>% 
+  mutate(correction_noabs = ifelse(Sonde_Up == "G", G_Avg_Chl - H_Avg_Chl, H_Avg_Chl - G_Avg_Chl),
+         sbs_chl_up = ifelse(Sonde_Up == "G", G_Avg_Chl, H_Avg_Chl),
+         sbs_chl_down = ifelse(Sonde_Down == "G", G_Avg_Chl, H_Avg_Chl)) %>% 
+  dplyr::select(-c(Sonde_Up, Sonde_Down))
+
+sbs_correction_summary <- read_csv("output/6_Sbs_Corrections_Summary/sbs_correction_summary.csv")
+filtration_summary <- read_csv("output/4_Filtration_Calculations/Filtration_Summary/filtration_summary.csv")
+
+filter_diff_tpaired <- filtration_summary %>% 
+  dplyr::select(File_Name, Experiment, Date, Site, Chl_ug_L_Up, Chl_ug_L_Down) %>% 
+  rename(filter_chl_up = Chl_ug_L_Up,
+         filter_chl_down = Chl_ug_L_Down)
+
+Corr_chl_diff_data <- full_join(filter_diff_tpaired, sbs_corr_NoAbs, by = "File_Name")
+# Missing data from MB_2019_6_5 and MB_2019_6_4 - filtration trial not long enough for water to travel from upstream to downstream - not included in other analyses either
+
+Corr_chl_diff_data %<>%
+  filter(!Site == "San Diego") %>% 
+  mutate(chl_filter_up_uncorr = ifelse(sbs_chl_up > sbs_chl_down, 
+                                       filter_chl_up + Correction_Factor, # reverse sbs correction 
+                                       filter_chl_up - Correction_Factor),
+         chl_filter_down_uncorr = ifelse(sbs_chl_down > sbs_chl_up, 
+                                         filter_chl_down + Correction_Factor, 
+                                         filter_chl_down - Correction_Factor),
+         filter_chl_diff = chl_filter_up_uncorr - chl_filter_down_uncorr,
+         graph_labels = ifelse( File_Name == "Insitu_Filter_NPSM_2019_5_22.csv" | 
+                                  File_Name == "Insitu_Filter_NPSM_2019_6_9.csv", 
+                               paste(Site, "\n", Date, "\n", Experiment), NA))
+
+Corr_chl_diff_data$dummie = 1:27
+
+# Explore if values are outliers (+-2.2 SD) based on correction:signal relationship 
+Corr_chl_diff_data$singal_corr = Corr_chl_diff_data$correction_noabs / Corr_chl_diff_data$filter_chl_diff
+Corr_chl_diff_data$outlier = find_outlier(Corr_chl_diff_data$singal_corr)
+
+#Corr_chl_diff_data[c(9,19,21),] # Look at problem data points
+
+### Confidence intervals
+model.temp = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data)
+x.seq = seq(-5,5,by=.005)
+y.seq = predict(model.temp,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.95)
+#low.bound = y.seq[,2]
+#high.bound = y.seq[,3]
+#plot(Corr_chl_diff_data$correction_noabs,Corr_chl_diff_data$filter_chl_diff)
+#lines(x.seq,low.bound,lty=2,col=2)
+#lines(x.seq,high.bound,lty=2,col=2)
+
+Corr_Chl_diff_graph <- ggplot(Corr_chl_diff_data, aes(correction_noabs, filter_chl_diff)) +
+  geom_point() +
+  theme_classic() + 
+  xlim(-3,3) + # even axes
+  ylim(-3,3) +
+  xlab(expression("Side-by-side Chl" ~ alpha ~"Difference")) +
+  ylab(expression("Experiment Chl" ~ alpha ~ "Difference")) +
+  geom_abline(slope = 1) + # 1-1 reference line
+  #annotate("text", x = -2.5, y = 2.75, label = "A") +
+  geom_line(data = data.frame(y.seq), aes(x = fit, y = lwr), linetype = "dashed", color = "red") +
+  geom_line(data = data.frame(y.seq), aes(x = fit, y = upr), linetype = "dashed", color = "red") +
+  #geom_text(aes(x=correction_noabs + .12,label=dummie)) 
+  #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
+  #geom_label(aes(label = graph_labels))
+  ggrepel::geom_label_repel(aes(label = graph_labels), point.padding = 0.9, na.rm = T,
+                            nudge_y = c(-1.2,-0.75),
+                            nudge_x = c(-0.5,0.75))
+print(Corr_Chl_diff_graph)
+#plot_grid(Corr_Chl_diff_graph, labels = c("A"))
+
+### Remove two problem data points - remove their influence on confidence intervals
+Corr_chl_diff_data1 = Corr_chl_diff_data[-c(21,19),]
+
+Corr_chl_diff_data1 %<>%
+  mutate(graph_labels = ifelse(File_Name == "Insitu_Filter_NPD_2019_4_17.csv",
+                               paste(Site, "\n", Date, "\n", Experiment), NA))
+
+
+model.temp1 = lm(filter_chl_diff~correction_noabs,data=Corr_chl_diff_data1)
+x.seq1 = seq(-5,5,by=.005)
+y.seq1 = predict(model.temp1,newdata=data.frame(correction_noabs=x.seq),interval="prediction",level=.98)
+#low.bound1 = y.seq1[,2]
+#high.bound1 = y.seq1[,3]
+#plot(Corr_chl_diff_data1$correction_noabs,Corr_chl_diff_data1$filter_chl_diff)
+#lines(x.seq1,low.bound1,lty=2,col=2)
+#lines(x.seq1,high.bound1,lty=2,col=2)
+
+Corr_Chl_diff_graph1 <- ggplot(Corr_chl_diff_data1, aes(correction_noabs, filter_chl_diff)) +
+  geom_point() +
+  theme_classic() + 
+  xlim(-3,3) + # even axes
+  ylim(-3,3) +
+  xlab(expression("Side-by-side Chl" ~ alpha ~"Difference")) +
+  ylab(expression("Experiment Chl" ~ alpha ~ "Difference (Velocity Paired)")) +
+  geom_abline(slope = 1) + # 1-1 reference line
+  geom_line(data = data.frame(y.seq1), aes(x = fit, y = lwr), linetype = "dashed", color = "red") +
+  geom_line(data = data.frame(y.seq1), aes(x = fit, y = upr), linetype = "dashed", color = "red") +
+  #geom_text(aes(x=correction_noabs + .12,label=dummie)) 
+  #geom_text(hjust = "center", vjust= "top",aes(x=correction_noabs, label=graph_labels))
+  #geom_label(aes(label = graph_labels))
+  ggrepel::geom_label_repel(aes(label = graph_labels), point.padding = 0.9, na.rm = T,
+                            nudge_y = c(-1),
+                            nudge_x = c(0.4))
+print(Corr_Chl_diff_graph1)
+# plot_grid(Corr_Chl_diff_graph1, labels = c("B"))
+```
 
 
 ```{r Bar_Graphs_up_vs_down,  include=FALSE}
