@@ -431,7 +431,7 @@ Master_analysis_table <- filtration_summary_table %>%
   left_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
   # Exclude downstream average WQ values and unneeded single tail t-test results
   dplyr::select(-c("Temp_C_Down", "SpCond_mS_cm_Down",
-            "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down"))#  %>% 
+            "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down"))  %>% 
   # Add in site simple variables for regression - removed b/c not using Multiple Linear Regression
   # mutate(SR = ifelse(grepl("San Rafael", filtration_summary_table$Site), T, F),
    #      NPD = ifelse(grepl("Deanza", filtration_summary_table$Site), T, F),
