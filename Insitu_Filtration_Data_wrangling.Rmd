@@ -64,8 +64,8 @@ fwrite(water_vel_summary, file.path(water_velocity_summary_directory, "Water_V_s
 manual_correction_df = fread(file.path(manual_correction_directory, "Manual_Corrections.csv"))
 
 manual_correction_df %<>%
-  dplyr::mutate(Correction_Start_Time = as.hms(Correction_Start_Time),
-                Correction_End_Time   = as.hms(Correction_End_Time))
+  dplyr::mutate(Correction_Start_Time = as_hms(Correction_Start_Time),
+                Correction_End_Time   = as_hms(Correction_End_Time))
 ```
 
 
@@ -186,7 +186,7 @@ SBS - Correction Calc
 =====================================
 
 ###
-```{r Sbs_Correction_Uncertainty, fig.height=5, fig.width=4, cache=TRUE}
+```{r Sbs_Correction_Uncertainty, fig.height=5, fig.width=4, cache=TRUE, eval = FALSE}
 ######################################################################
 # Create SBS Stats - Uncertainty Table & Graph SBS Density Plots
 ######################################################################
