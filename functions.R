@@ -374,9 +374,9 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
               se_chl_up = sd_chl_up/sqrt(length(Chl_ug_L)))
   
   Sbs_stats_plot = aSbs_stat_summary %>% 
-   dplyr::select(Sample_count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
+   dplyr::select(Sample_sbs_Count, Mean_sbs_Chl_diff, SD_sbs_Chl_diff, SE_sbs_Chl_diff) %>% 
    mutate_if(is.numeric, round, 3) %>% 
-   rename("n" = Sample_count,  
+   rename("n" = Sample_sbs_Count,  
          "Mean Chl Diff" = Mean_sbs_Chl_diff,  
          "StDev Chl Diff" = SD_sbs_Chl_diff,  
          "St Error Chl Diff" = SE_sbs_Chl_diff)
