@@ -10,9 +10,22 @@ library(broom) # turning t test output into a table
 
 # viridis package - extra palatte Cividis
 
-Master_Filtration_analysis_table <- read_csv("output/4_Filtration_Calculations/Filtration_Summary/Master_Filtration_analysis_table.csv")
+### replace negative chl values with 0s
+neg_chl_to_zero = function(aTimeSeriesFile)
+{
+  neg_chl_fixed = aTimeSeriesFile %>% 
+    mutate(Chl_ug_L = ifelse(Chl_ug_L < 0, 0, Chl_ug_L))
+  return(neg_chl_fixed)
+}
 
-Paired_
+test <- read_csv("output/1_Cleaned_Data/Insitu_Filter_NPD_2019_4_17.csv")
+#test$Chl_ug_L[test$Chl_ug_L < 0] <-0
+
+
+test1 = neg_chl_to_zero(test)
+
+
+Master_Filtration_analysis_table <- read_csv("output/4_Filtration_Calculations/Filtration_Summary/Master_Filtration_analysis_table.csv")
 
 
 # Negative selection water summary table ----------------------------------
