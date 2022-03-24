@@ -206,12 +206,13 @@ for(file in 1 : length(all_files))
     ## calculate Statistics on Sbs data
     one_file_stats = calculateErrorStats(one_file, file_name, manual_correction_df,
                                     error_directory)
-    sbs_stats_summary = rbind(sbs_stats_summary, one_file_stats) 
+    sbs_stats_summary_table = rbind(sbs_stats_summary, one_file_stats) 
   }
+  
 }
 
 # Save the SBS Statistics summary
-fwrite(sbs_stats_summary, file.path(error_directory,
+fwrite(sbs_stats_summary_table, file.path(error_directory,
                                         "Sbs_stats_error_summary.csv"))
 ```
 
