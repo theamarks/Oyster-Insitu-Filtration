@@ -26,7 +26,7 @@ library(knitr)
 
 # set default settings to save figures in Figures folder
 knitr::opts_knit$set(root.dir = normalizePath('../'), # set working directory to project level
-                     fig.path = "./Thesis_Manuscript/Figures")
+                     fig.path = "./Pub_Manuscript/Figures")
 
 # Set chunk options- no warning messages, and place figures near where they are referenced.             
 knitr::opts_chunk$set(echo = FALSE, 
@@ -542,18 +542,18 @@ Chl $\alpha$ removal in filtration trials did not differ significantly between s
 # Import data
 Analysis_data <- Master_analysis_table %>% 
     mutate(Date = mdy(Date),
-         L_hr_m2 = round(L_hr_m2),
-         pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1),
-         Temp_C_Up = round(Temp_C_Up, digits = 2),
-         Sal_ppt_Up = round(Sal_ppt_Up, digits = 1),
-         Turbidity_NTU_Up = round(Turbidity_NTU_Up, digits = 1),
-         Avg_TPM_mg_L = round(Avg_TPM_mg_L, digits = 4),
-         Avg_OC_Ratio = round(Avg_OC_Ratio, digits = 2),
-         Chl_ug_L_Up = round(Chl_ug_L_Up, digits = 1),
-         Chl_ug_L_Down = round(Chl_ug_L_Down, digits = 1),
-         avg_depth_m = round((avg_depth_cm/100), digits = 2),
-         d_bw_sondes_m = round(d_bw_sondes_m, digits = 1),
-         avg_m_sec = round(avg_m_hr/3600, 2)) %>%
+         L_hr_m2 = L_hr_m2,
+         pcnt_Chl_rmvd = pcnt_Chl_rmvd,
+         Temp_C_Up = Temp_C_Up,
+         Sal_ppt_Up = Sal_ppt_Up,
+         Turbidity_NTU_Up = Turbidity_NTU_Up,
+         Avg_TPM_mg_L = Avg_TPM_mg_L,
+         Avg_OC_Ratio = Avg_OC_Ratio,
+         Chl_ug_L_Up = Chl_ug_L_Up,
+         Chl_ug_L_Down = Chl_ug_L_Down,
+         avg_depth_m = avg_depth_cm/100,
+         d_bw_sondes_m = d_bw_sondes_m,
+         avg_m_sec = avg_m_hr/3600) %>%
   dplyr::select(Site, Date, Experiment, Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, 
           Avg_OC_Ratio, Chl_ug_L_Up, Chl_ug_L_Down, avg_depth_m, d_bw_sondes_m, avg_m_sec, 
           pcnt_Chl_rmvd, L_hr_m2) %>% 
