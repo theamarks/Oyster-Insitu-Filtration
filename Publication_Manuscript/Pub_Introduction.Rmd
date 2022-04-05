@@ -1,0 +1,76 @@
+---
+bibliography: library.bib
+csl: marine-ecology-progress-series.csl
+header-includes: 
+- \usepackage{setspace}
+- \doublespacing
+output:
+  pdf_document:
+    fig_caption: yes
+indent: true
+---
+
+# Introduction
+
+## Oyster Filtration Functions
+
+In estuaries along the North American Pacific coast (NAPC), the Olympia oyster, *Ostrea lurida*, is a foundation species that autogenously creates complex three-dimensional habitat [@Dayton1972].
+The shells of living and dead oysters provide habitat for a variety of invertebrates [@Kimbro2006; @Ramsey2012; @Rodney2006; @Boyer2017], nursery, refuge, and foraging habitat for fishes [@Coen2007; @Peterson2003; @Stunz2010], and foraging habitat for birds [@Galtsoff1929; @Boyer2017].
+*O. lurida* and other bivalves that recruit to oyster habitat are suspension feeders that remove particulate matter (seston) from the water column and deposit mucus-bound feces and pseudofeces (i.e. biodeposits) on the sediment surface [@Elsey1935; @Baird1989; @Dame1999; @Kellogg2013].
+This feeding behavior contributes to three critical ecosystem functions including nutrient sequestration, trophic energy transfer, and water clarification.
+Most of the seston particulate organic matter (POM) is ingested by bivalves for growth and maintenance.
+Nutrients incorporated into bivalve shells can be sequestered long-term [@Kellogg2013] when buried in sediments [@Hu2011], and likely serve as a sink for anthropologically produced nutrients [@Martinetto2006; @Carmichael2012].
+Bivalve feeding is an important biochemical pathway, linking the water column to the benthos, that transfers energy to higher trophic levels [@Rodney2006; @Kautsky1987] and supplies nutrients to benthic seagrasses [@Peterson1999].
+Bivalve biodeposits can have higher organic and nitrogen content than particles settling out of the water column [@Kautsky1987; @Muschenheim1987], providing high quality food for deposit feeders and subsequently feeding omnivores and carnivores including fish [@Rodney2006].
+Lastly, seston removal via bivalve filter feeding increases water clarity [@Newell2004b; @Grizzle2008; @Grizzle2018] and, thus, the amount of photosynthetically available radiation reaching benthic primary producers, such as seagrasses [@Newell2004b] and microalgae [@Newell2002].
+
+At a regional scale, the capacity of *O. lurida*'s filtration functions was diminished when *O. lurida* populations were decimated in the late 1800s and early 1900s by destructive fishing practices [@Kirby2004], introduction of non-native species [@Bonnot1935], pollution, and excessive sedimentation [@Gilbert1917; @Lotze2006; @Nelson1909].
+Currently, *O. lurida* populations are less than 10% of historical abundance in parts of the Pacific Northwest, and less than 1% in the rest of its geographic range [@Beck2011; @ZuErmgassen2012].
+The extreme reduction of native *O. lurida* abundances and, therefore, the important estuarine habitat *O. lurida* creates, is likely coupled with the loss of water filtration functions. 
+Restoring filtration functions is one motivation behind native *O. lurida* restoration and living shoreline projects efforts along the West Coast, along with restoring other habitat functions such as habitat provision and sediment stabilization [@Dinnel2009; @Henderson2015b; @Latta2015; @Wasson2015; @Zacherl2015a].
+Restoring the filtration functions of *O. lurida* habitat is relative to the mudflats where restorations are often located, which have their own filtration functions driven by infaunal bivalves.
+
+Dwindling *O. lurida* harvests led to the cultivation of the Japanese oyster, *Crassostrea gigas*, [@Beattie1982] in the Salish Sea in the early 1920s [@Quayle1988], and in California in 1928 [@Conte1982].
+*C. gigas* now accounts for the overwhelming majority of commercial oyster harvest on the NAPC [@Beattie1982; @Pauley1988], and has established feral populations outside of aquaculture operations in the Salish Sea [@Quayle1988], Willipa Bay, Washington [@Kincaid1968], and southern California [@Crooks2015a; @Polson2009; @Tronske2018].
+*C. gigas* is a large, fast growing oyster with higher filtration rates than *O. lurida* per unit dry tissue weight (DTW) [@Bougrier1995; @ZuErmgassen2013c; @Gray2018; @Gray2019], and it can exert top-down control of seston at aquaculture densities [@Wheat2013].
+Furthermore, *C. gigas* has a higher particle capture efficiency presumably because it has smaller gill ostea than *O. lurida* [@Elsey1935; @Gray2018; @Gray2016].
+Beyond differences in species physiology, many aquaculture operations cultivate oyster in off-bottom structures that are fundamentally different than natural oyster reefs and may alter how commercially grown *C. gigas* delivers pelagic seston resources to benthic communities.
+Therefore, ecosystem filtration functions (e.g. nutrient sequestration, sediment enrichment, and water clarification) and habitat quality in NAPC estuaries may differ between native *O. lurida* habitat and cultivated *C. gigas* aquaculture [@Ruesink2006; reviewed by @Ruesink2005].
+
+## Single-species Research
+
+Estimating the filtration capacity of *O. lurida* habitat and *C. gigas* aquaculture currently relies on a handful of single-species studies [@ZuErmgassen2016; @ZuErmgassen2013c; @Gray2018; @Gray2019a] and a single field aquaculture study [@Wheat2013].
+@Gray2018 estimated the clearance rates of *O. lurida* and *C. gigas* under a range of laboratory and seasonal *in situ* conditions using the biodeposition method [@Hawkins1996].
+These models provide important insights into the feeding responses of individual *O. lurida* and *C. gigas* to specific conditions (temperature, salinity, turbidity, chlorophyll $\alpha$, total particulate matter (TPM), and organic content (OC)), but may not be appropriate for estimating whole-habitat clearance rates in the field [@Cranford2011; @Grizzle2018] because they do not incorporate local habitat or hydrodynamics conditions.
+For example, non-oyster filter feeders living in *O. lurida* habitat, contribute to the overall filtration capacity of the habitat [@Grizzle2018; @Grizzle2008; @Byers2014; @Gedan2014].
+These non-oyster filter feeders that occupy oyster habitat have species-specific feeding behavior [@Møhlenberg1979; @Riisgard1988; @Riisgard2001; @Cranford2011; @Gray2016; @Gedan2014]. 
+The regional composition of this filter feeding guild is likely to change along the NAPC, consequently creating unique filtration signatures for different *O. lurida* habitat.
+In addition, clearance rates calculated based on biomass are not particularly useful in assessing whether restored *O. lurida* habitat is also restoring filtration functions unless species-specific allometric relationships are known and applied to estimate biomass, as restoration practitioners are hesitant to sacrifice bivalves to measure biomass directly.
+
+## Whole-Habitat Measurements
+
+The complex biological and physical characteristics of oyster habitat highlight the need for *in situ*, whole-habitat filtration measurements [@Grizzle2008; @Grizzle2018; @Gedan2014; @Byers2014] specific to the habitat.
+Whole-habitat *in situ* filtration measurements have several distinct advantages over single-species measurements.
+First, *in situ* measurements include the contributions of the entire filter feeding guild.
+Next, individual bivalve feeding variation is aggregated with a higher precision in *in situ* measurements than filtration rates derived from individual bivalve feeding trials [@Jones2011a; @Iglesias1998; @Cranford2011].
+Filtration studies often exclude individuals that are not filtering (closed valves), and artificially inflate filtration models and overestimate filtration when extrapolated to the population level [@Cranford2011; @Harsh1999]; this may partly explain why many field studies find lower filtration rates than laboratory studies [@Newell2005; @Grizzle2008; @Cranford2011]. 
+Lastly, bivalve feeding responses to natural water flow dynamics along with spatial and seasonal changes in seston composition are inherently included in whole-habitat *in situ* measurements. 
+
+Water flow dynamics in the field are highly variable [@Wilson-Ormond1997] due to the interaction of tidal prisms and the physical characteristics of bays and estuaries [@Dame2012].
+Whereas the direct effects of water velocity on bivalve filter feeding is unclear [@Grizzle1992; @Cranford1998; also see review in @Judge1992], water velocity and depth affect water column mixing and sediment re-suspension [@Widdows1998], and thus, food availability for benthic filter feeders.
+The quantity, particle size, and organic content (OC) of seston available can affect filter feeders' feeding behavior [@Gray2018; @Gray2019; @Cranford1999; @Newell2005; @Velasco2005; @Moody2020a; @Moody2020].
+Natural seston is composed of phytoplankton [@Navarro1995], zooplankton [@Lehane2006; @Trottet2008], macroalgae detritus [@Page1997; @Kwak1997; @Gilbane2006], bacteria [@Newell1989], and inorganic sediments [@Wilson-Ormond1997; @Gray2018].
+Although @Gray2018 used ambient sea water from Yaquina Bay, Oregon in their *in situ* experiments across seasons; seston also changes spatially and temporally due to tides, wind, bathometry, and proximity to benthic organisms [@Navarro1995; @Muschenheim1987; @Ashley1988; @Moody2020a], limiting their findings to bays with similar seston profiles.  
+@Cranford2011 conducted a meta-analysis of 133 bivalve clearance rate studies and found highly variable short-term fluctuations in clearance rates, as well as intermittent feeding cessation when bivalves were fed with natural seston.
+This illustrates bivalves' highly variable feeding responses to natural conditions, further making the case that whole-habitat *in situ* measurements are needed for ecologically and environmentally realistic filtration estimates of *O. lurida* habitat and *C. gigas* aquaculture. 
+
+## Research Questions
+
+Here, I assessed the contributions of restored *O. lurida* habitat and *C. gigas* aquaculture to estuary filtration functions in California, as a function of natural water quality conditions and filter feeder communities, which are expected to vary among locations.
+My research questions were:
+1) Do oyster habitat clearance rates (HCR) differ from adjacent mudflat habitat HCR?
+2) How do the HCRs of restored *O. lurida* habitat compare to *C. gigas* aquaculture?
+3) What biotic and abiotic factors are important in estimating HCR?
+4) Is there a predictable allometric relationship between *O. lurida* shell length and dry tissue weight, allowing for accurate estimates of DTW without sacrificing restored oysters?
+
+\newpage

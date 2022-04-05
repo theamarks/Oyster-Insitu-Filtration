@@ -1,0 +1,266 @@
+---
+bibliography: library.bib
+csl: marine-ecology-progress-series.csl
+header-includes: 
+- \usepackage{setspace}
+- \doublespacing
+- \usepackage{rotating}
+output:
+  pdf_document:
+    fig_caption: yes
+indent: true
+---
+
+# Methods
+
+## Study Sites
+I selected four sites along the California coast to measure *in situ* filtration clearance rates that represent filtration function.
+The sites represent a range of constructed oyster habitats including shell bag reef, shell bed, and floating aquaculture long-lines.
+The San Francisco Living Shorelines Project is located in northern San Francisco Bay, California (latitude, longitude: 37.964179, -122.487217; henceforth, San Rafael), and contains *Ostrea lurida* reefs constructed from July to August 2012 by The Coastal Conservancy and collaborators [@Latta2015; @EnvironmentalScienceAssociates2014].
+San Rafael consists of a shell bag reef matrix with a 32 m x 10 m footprint with three rows of eight shell bag reefs constructed as *O. lurida* habitat [@EnvironmentalScienceAssociates2014]. 
+Each reef unit measured 2 m x 2 m x 1 m and was composed of four shell bag elements measuring 1 m x 1 m x 1 m. 
+A shell bag was made of plastic mesh filled with clean, commercially-grown *Crassostrea gigas* shell.
+The matrix was positioned approximately 200 m from shore on a mudflat at -0.3 m MLLW (Mean Low Lower Water) tidal elevation [@EnvironmentalScienceAssociates2014]. 
+
+The Upper Newport Bay Living Shorelines Project is located in Newport Bay, California and contains restored *O. lurida* beds. 
+It was constructed in May 2017 by Orange County Coast Keeper, and collaborators at CSU Fullerton and CSU Long Beach [@Wood2018]. 
+My research included two sites: Shellmaker (33.622097, -117.892399) and Deanza (33.620291, -117.897692) that are about 550 m apart.
+The oyster beds measure 20 m x 1 m x 0.25 m and were constructed with coconut coir bags filled with clean, commercially-grown *C. gigas* and *Mytilus galloprovincialis* mussel shell. 
+The beds were positioned approximately 30 m from shore on a mudflat at approximately -0.15 m MLLW [@Wood2018].
+
+Morro Bay Oyster Company (MBOC) is a commercial aquaculture operation in Morro Bay, California (35.334707, -120.844000; henceforth, Morro Bay). 
+MBOC grows *C. gigas* in plastic mesh bags measuring about (80 cm x 55 cm) attached to floating lines that stretch across an area about 75 m x 75 m. 
+The oysters grown in the bags are approximately five to eight cm in length.
+The bags of oysters rest on the underlying mudflat at around 0 m MLLW, and float to the surface as the tide rises. 
+
+## Experimental Setup
+*In situ* filtration methods were adapted from Grizzle et al.'s (2006, 2008) upstream-downstream measurements of bivalve beds on the North American Atlantic coast.
+Two identical water quality sondes (Yellow Springs Instruments 6600EDS) measured the change in chlorophyll $\alpha$ (Chl $\alpha$, fluorometer), temperature, salinity (automatically calculated from conductivity/temperature sensor), and turbidity (optical sensor) from positions upstream and downstream of the oyster habitat. 
+The sondes were hung inside of freestanding PVC (polyvinyl chloride) housings with water flow slats (Figure \ref{fig:fieldgear}) and were set at a height to align the sensors with the approximate height of the oyster beds, reefs, or floating bags. 
+
+Prior to each filtration trial, water tracing dye (Rhodamine WT) released upstream of the habitat provided a visual indicator of water flow direction and interfering currents or eddies and was recorded by a drone about 25 feet above the water. 
+Trials were conducted close to low tide on either the ebb or flood tide depending on how the water flow direction transected  the oyster habitat.
+The sonde housings were positioned to measure an uninterrupted linear water flow across the oyster habitat based on the dye.
+Linear water flow assumes that the upstream sonde is measuring the same water as the downstream sonde.
+An electromagnetic meter (Marsh-McBirney Flo-Mate 2000) measured water velocity at the depth of the sensors at the beginning, middle, and end of each trial. 
+Water velocity measurements were taken at the downstream sonde position and in the middle of the transect, velocity was averaged across positions and time.
+Mean depth was determined by markings on the PVC sonde housings at the beginning and end of the trial, and distance between sondes was determined post-trial with a transect tape.
+The sondes recorded measurements every one second, and trials lasted as long as water flow direction was consistent; ranging from six and 40 minutes. 
+
+I took the mean of temperature, salinity, turbidity of the upstream sonde during the filtration trial for analyses, and the mean of Chl $\alpha$ at both upstream and downstream sondes for analyses. 
+To compare the clearance rates of surrounding mudflat habitat to restored *O. lurida* and *C. gigas* aquaculture, I conducted a mudflat control trial at each site.
+Control trials used the same experimental set up, except the instruments were positioned over the mudflat adjacent to the oyster habitat.
+Data corresponding with field disturbances was cut from the time series.
+Field work was conducted from February 2018 to June 2019 and measured 22 oyster habitat filtration trials and four control mudflat trials.
+
+## Chlorophyll $\alpha$ Corrections
+
+Chl $\alpha$ is a photosynthetic pigment whose concentration is a proxy for phytoplankton and macroalgal detritus consumed by filter-feeding bivalves, and is commonly used to measure filtration [@Harsh1999; @Wasson2015; @Grizzle2006; @Grizzle2008; @Milbrandt2015].
+I compared Chl $\alpha$ sensors readings by conducting two side-by-side trials before and after filtration and control trials.
+In the side-by-side trials, I placed the sondes adjacent to one another to compare the sensors' Chl $\alpha$ concentration readings in the same mass of water for approximately 10 minutes.
+All data, in filtration, control, and side-by-side trials, was reviewed for extreme Chl $\alpha$ and turbidity spikes indicating disturbances to the trial. 
+If extreme Chl $\alpha$ and turbidity values were corroborated by field notes, the time period was removed from the trial.
+Next, I corrected mean Chl $\alpha$ values in the filtration and control trials with the mean Chl $\alpha$ difference from the corresponding side-by-side trials.
+The mean difference between sondes in combined side-by-side trials was divided in half to produce a correction term.
+The sonde with higher mean Chl $\alpha$ in the side-by-side trials was corrected in the filtration and control trials by subtracting the correction term from mean Chl $\alpha$ measurements, and the lower sonde was corrected by adding the correction term.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.5\textwidth]{Fieldwork instruments and gear copy.jpg}
+  \caption{Two identical YSI 6600EDS water quality sondes were used to measure chlorophyll $\alpha$, temperature, salinity, and turbidity. The sondes were hung inside PVC housings to adjust the sensor depth in the water column. Water velocity measurements were taken with an Marsh-McBirney Flo-Mate 2000. Photo taken at Deanza, Newport Bay, California.}
+  \label{fig:fieldgear}
+\end{figure}
+
+## Seston Content
+I determined seston total particulate matter (TPM), particulate inorganic matter (PIM), particulate organic matter (POM), and organic content (OC) gravimetrically.
+I collected water samples immediately adjacent to the experimental area during the filtration or control trials, and filtered the water through a borosilicate glass microfiber filter (Whatman 9907-047 pre-wash and pre-weighed) in the field.
+The filters were stored on ice until they could be moved to a freezer. 
+Thawed filters were rinsed with a 0.5 M ammonium formate solution to remove salt. 
+Typically this step immediately precedes filtering [@Gray2018], but this was not possible to do in the field. 
+Filters were then dried in an oven at 60&deg;C for 48 hours, and weighed to determine TPM (Equation \ref{Eq:TPM}). 
+Next, the dried filters were ashed at 450&deg;C for \( \geq 4 \) hours and weighed to determine PIM (Equation \ref{Eq:PIM}) and POM (Equation \ref{Eq:POM}). 
+Seston OC is simply the ratio of POM to TPM.
+@Gray2018 used washed and ashed filters; however, the filters I used that were only washed. 
+The mean weight difference between ashed filters and washed only filters was 0.5\%, which I used to corrected the filter pre-weights in Equations \ref{Eq:TPM} & \ref{Eq:PIM}.
+In addition, control filters, filtered with distilled water, were stored and processed with every sampling batch.
+The TPM and PIM of control filters represented processing contamination within each sample batch, and I used these values to correct sample TPM and PIM within each batch.
+
+\begin{equation}
+\label{Eq:TPM}
+TPM (mg/L)= \frac{[Filter Dry Weight (g) - Filter Pre Weight (g)] \times \frac{1000 mg}{L}}{Water sample volume (mL) \times \frac{1 L}{1000 mL}} \
+\end{equation}
+
+\begin{equation}
+\label{Eq:PIM}
+PIM (mg/L)= \frac{[Filter Ash Weight (g) - Filter Pre Weight (g)] \times \frac{1000 mg}{L}}{Water sample volume (ml)\times \frac{1 L}{1000 mL}} \
+\end{equation}
+
+\begin{equation}
+\label{Eq:POM}
+POM (mg/L) = TPM (mg/L) - PIM (mg/L)
+\end{equation}
+
+## Filtration Calculations
+I paired upstream and downstream Chl $\alpha$ measurements in the experiment and control trials to determine how Chl $\alpha$ concentrations changed across the habitat.
+I used mean water velocity and sonde distance to estimate the time it took a parcel of water to travel from the upstream sonde to the downstream sonde. 
+The travel time was subtracted from the time-stamps of each downstream Chl $\alpha$ measurement to pair with upstream Chl $\alpha$ measurements; unpaired measurements were discarded. 
+Next, I calculated percent Chl $\alpha$ removal [$Chl_{rmd}$, Equation \ref{Eq:PrctChl}; @Grizzle2008] and habitat clearance rate [HCR, Equation \ref{Eq:Lhrm2}; @Milbrandt2015] using average Chl $\alpha$ concentrations and habitat dimensions instead of biomass. 
+
+\begin{equation}
+\label{Eq:PrctChl}
+Chl_{rmd} = \frac{Chl_{up} - Chl_{down}}{Chl_{up}} \times 100
+\end{equation}
+
+\begin{equation}
+\label{Eq:Lhrm2}
+HCR (Lhr^{-1}m^2) = \frac{A_{Xsec} \times V \times 1000}{A_{habitat}} \times \frac{Chl_{up} - Chl_{down}}{Chl_{up}}
+\end{equation}
+
+$A_{Xsec}$ is the cross-sectional area of the water column (mean water depth $\times$ assumed 1 m width), *V* is the mean water velocity (m/hr), $A_{habitat}$ is the area being measured (distance between the instruments $\times$ assumed 1 m width), $Chl_{up}$ is the mean upstream Chl $\alpha$ concentration, and $Chl_{down}$ is the mean downstream Chl $\alpha$ concentration.
+
+## Analysis
+
+All data wrangling and analysis was conducted R 3.6.3 [@R; tidyverse R package; @Wickham2019] and plotted using the ggplot2 package [@Wickham2016]; the code is available in Github repository "Oyster-Insitu-Filtration".
+Two field days (Morro Bay 2019-05-18 and Deanza 2018-10-25; Table 1) from my data set were missing TPM and OC values.
+I used a semi-parametric imputation to estimate the missing values [missForest R package; @Stekhoven2012].
+Differences in temperature, salinity, turbidity, and Chl $\alpha$ among sites was investigated using a one-way ANOVA and post-hoc Tukey honestly significant difference (HSD) on significantly results.
+Percent Chl removal among sites was examined using a Kruskal-Wallis one-way analysis of variance.
+
+To determine if there was a difference between mudflat control and oyster habitat  filtration trial HCRs, I first used a two-sample, single-tail, t-test.
+To account for the effects of water quality (i.e. temperature, salinity, turbidity, TPM, OC) and site variables, I fit a random forest regression (including all filtration and control trials) to HCR with temperature, salinity, turbidity, TPM, OC, and site as predictor variables [randomForest R package @Liaw2002].
+Control and filtration HCR were adjusted by the residuals of the random forest regression to control for the effects of water quality and site and were compared by a second two-sample, single-tail, t-test. 
+The effect of site on filtration trial HCR was examined using a Kruskal-Wallis analysis.
+Another Kruskal-Wallis analysis examined the top 0.5 quantile of filtration trial data at each site to determine if the top HCR performance differed among sites. 
+A quantile analysis ($\tau$ = 0.5, 0.9) was used to see if water quality variables had differential relationships with HCR.
+
+To examine the effect of water quality variables and site on HCR, I fit a second random forest regression that only included filtration trials [randomForest R package; @Liaw2002].
+The random forest model I fit is an ensemble of 2,000 individual decision trees.
+Each tree fits a random subset of the data and is prone to over-fitting.
+The final output (forest) is the average of the 2,000 individual trees, which corrects for the individual trees' weaknesses [i.e. ensemble learning, @Sagi2018].
+I chose to use a random forest regression for several reasons. 
+First, random forest regressions are non-parametric models that learn non-linearity relationships without explicitly modeling them [@Gromping2009].
+This works well for my data as previous research suggests that temperature, salinity, and TPM have non-linear relationships with *O. lurida* and *C. gigas* clearance rates [@Gray2018].
+Second, random forest regressions work with missing data [@Stekhoven2012], and I had two trials with missing TPM and OC values because of a processing error. 
+Third, I had a large number of variables relative to observations; random forests regressions work well with this 'wide' data structure [@Gromping2009].
+
+The relationship between TPM and OC was estimated using a linear model, as well as the relationship between *O. lurida* shell length at Deanza and DTW.
+Data corrections and statistical analyses were conducted in consultation with Dr. Kevin Nichols (CSUF Statistical Consulting Unit).
+
+```{r Study_site_map, eval=FALSE, include=FALSE}
+##### Code broken, https://stackoverflow.com/questions/62182238/error-in-st-normalize-sfcx-cx-range1-y-range1-x-range2-y-range2
+# Error in st_normalize.sfc(x, c(x_range[1], y_range[1], x_range[2], y_range[2])) : domain must have a positive range
+
+
+library(tidyverse) # data manupulation package  
+library(ggplot2) # plotting and mapping package
+library(sf) # mapping data package
+library(rnaturalearth) # map data source, website with descriptions
+library(rgdal) # mapping package
+library(ggspatial) # mapping package
+library(ggrepel) # 
+library(viridis) # Color palette for Restoration Area - Options: magma , inferno, plasma, viridis, cividis
+library(RColorBrewer) # Color palette with YlOrRd
+library(cowplot) # combining mulitple plots into single figure
+library(scales) # plot scaling - used to adjust legend attributes
+library(gtable) # part of extend legend function
+
+coast_xmin <- -112
+coast_xmax <- -129
+coast_ymin <- 27
+coast_ymax <- 52
+
+NorCal_xmin <- -120
+NorCal_xmax <- -125
+NorCal_ymin <- 36
+NorCal_ymax <- 41.25
+
+study_sites <- data.frame(Site = c("San Rafael", "Morro Bay", "Deanza", "Shellmaker"),
+                          Lat = c(37.964179, 35.334707, 33.620362, 33.622098),
+                          Long = c(-122.487217, -120.844000, -117.898110, -117.892408))
+
+### Download spatialpolygondataframe from rnatural earth
+country <- ne_download(scale = 10, type = 'countries', category = 'cultural', returnclass = 'sf')
+
+############ Entire Coast #######################
+(NOOC_coast <- ggplot(data = country) +
+    geom_sf() +
+    labs(x = 'Longitude', y = 'Latitude') +
+    #annotate(geom = "text", x = -118, y = 41, label = "United States", 
+     #      fontface = "italic", color = "grey22", size = 4, angle = 0) +
+    #annotate(geom = "text", x = -119, y = 51, label = "Canada", 
+     #     fontface = "italic", color = "grey22", size = 4, angle = 0) +
+    #annotate(geom = "text", x = -118.5, y = 31, label = "Mexico", 
+     #        fontface = "italic", color = "grey22", size = 4, angle = 0) +
+    #annotation_north_arrow(location = "bl", which_north = "true", 
+     #                    pad_x = unit(0.25, "in"), pad_y = unit(0.5, "in"),
+      #                   style = north_arrow_fancy_orienteering) +
+    coord_sf(xlim = c(coast_xmin, coast_xmax), ylim = c(coast_ymin, coast_ymax), expand = FALSE) +
+    theme(panel.grid.major = element_line(color = gray(.5), linetype = 'solid', size = 0.25), 
+        panel.background = element_rect(fill = 'aliceblue'),
+        axis.text.y = element_text(color = "black"),
+        axis.text.x = element_text(color = "black")))
+
+
+## Insert map
+(Insert_NorCal_map <- ggplot(data = country) +
+    geom_sf() +
+    geom_rect(xmin = NorCal_xmin, xmax = NorCal_xmax, ymin = NorCal_ymin, ymax = NorCal_ymax, 
+              fill = NA, colour = "black", size = 0.5) +
+    coord_sf(xlim = c(coast_xmin, coast_xmax), ylim = c(coast_ymin, coast_ymax), expand = FALSE) +
+    theme_void() + # remove all formatting 
+    theme(panel.border = element_rect(colour = "black", fill = NA),
+          panel.background = element_rect(fill = "aliceblue")))
+
+#### Nor Cal Map w/o insert
+(NOOC_NorCal <- ggplot(data = country) +
+   geom_sf() +
+   coord_sf(xlim = c(NorCal_xmin, NorCal_xmax),
+            ylim = c(NorCal_ymin, NorCal_ymax),
+            expand = FALSE) +
+   geom_jitter(data = NOOC_data_NorCal,
+              aes(x = long, y = lat, fill = brks),
+              size = 5,
+              shape = 21,
+              height = 0.03,
+              width = 0.01) +
+   theme(text = element_text(size = 20, family = "sans", color = "black"), # set text to sans serif / Arial
+         panel.grid.major = element_line(color = "white", linetype = "solid", size = 0.25), 
+         axis.text.x = element_text(color = "black"),
+         axis.text.y = element_text(color = "black"),
+         panel.border = element_rect(color = "black", fill = NA, linetype = "solid", size = .5),
+         panel.background = element_rect(fill = "aliceblue")) + 
+   scale_x_continuous(breaks = seq(-121, -124, by = -1)) + # set longitude axis marks
+   scale_y_continuous(breaks = seq(36, 41, by = 1)) + # set latitude axis marks
+   scale_fill_manual(values = rev(viridis(6)), # no.colors from viridis palatte, call for more colors and select a portion [2:6]
+                      breaks = rev(brks_scale),
+                      guide = FALSE) +
+   labs(x = 'Longitude', y = 'Latitude', size = 12) +
+   geom_text_repel(data = (NOOC_data_NorCal), aes(x = long, y = lat, label = Project_ID), 
+                   fontface = "bold",
+                   point.padding = .75,
+                   size = 5,
+                   nudge_x = c(1,0,0.5,1.25,0,-0.75,-1,-1,1,1,1),
+                   nudge_y = c(0,1,1,1,0.5,-0.1,-0.5,-1,-0.25,0,-0.5)) +
+   annotation_north_arrow(location = "bl", which_north = "true", 
+                          pad_x = unit(0.5, "in"),
+                          pad_y = unit(2.5, "in"),
+                          style = north_arrow_fancy_orienteering) 
+)
+
+########## NorCal Map with Insert
+NOOC_NorCal_figure <- ggdraw(NOOC_NorCal) +
+   draw_plot(Insert_NorCal_map,
+             hjust = 1, # change justification (where insert map is positioned from)
+             vjust = 1,
+             x = 1.026, # The distance along a (0,1) x-axis to draw insert
+             y = 0.99, # The distance along a (0,1) y-axis to draw insert
+             width = 0.35, # The width and height of the plot expressed as proportion of the entire ggdraw object
+             height = 0.35) +
+   draw_plot(Res_Area_CBar, # Draw color bar on plot
+             hjust = 0.5, # change justification (where insert map is positioned from)
+             vjust = 0.5,
+             x = 0.41,
+             y = 0.13,
+             width = 0.48)
+```
+
