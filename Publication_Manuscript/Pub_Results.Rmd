@@ -587,18 +587,7 @@ colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity
 #################### Habitat Clearance Rate Model - Random Forest
 #########################
 
-### Make a Choice - Two ways to treat extreme values
-
-### 1) remove extreme values (NPSM 2020_6_9, NPSM 2020_5_22, NPD 2020_4_17)
-### Committee did not like this approach. Stick to domain knowlege for removal, don't mix 
-# Confidence intervals and domain knowlege. Could compare outputs later.
-#test1 = test[abs(test$Chl.removal) < 50,] 
-#check_filter_dist <- test1 %>% 
-#  filter(Experiment %in% c("Filtration"))
-#hist(check_filter_dist$Clearance) # Looks more normal than just removing NPD_2020_4_17)
-#summary(check_filter_dist$Clearance)
-
-### 2) Domain knowlege - remove one single trial (NPD_2020_4_17) avg Chlup at sensor detection limit (+- 0.1 ug/L)
+###  Domain knowledge - remove one single trial (NPD_2020_4_17) avg Chlup at sensor detection limit (+- 0.1 ug/L). Leave other extreme values.
 test1 = test %>% 
   dplyr::filter(round(Chl.up,2) > 0.1 | round(Chl.up,2) < -0.1)
 # check distribution of Filtration trials
