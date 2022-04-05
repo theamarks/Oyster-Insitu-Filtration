@@ -590,11 +590,6 @@ colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity
 ###  Domain knowledge - remove one single trial (NPD_2020_4_17) avg Chlup at sensor detection limit (+- 0.1 ug/L). Leave other extreme values.
 test1 = test %>% 
   dplyr::filter(round(Chl.up,2) > 0.1 | round(Chl.up,2) < -0.1)
-# check distribution of Filtration trials
-check_filter_dist <- test1 %>% 
-  filter(Experiment %in% c("Filtration"))
-hist(check_filter_dist$Clearance, breaks = 50)
-summary(check_filter_dist$Clearance) # also not close... doesn't look normal with extreme values
 
 ############# Random Forest - WQ values affect on Filtration trails only #############
 
