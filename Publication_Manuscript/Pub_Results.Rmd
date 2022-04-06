@@ -568,7 +568,7 @@ library(adabag)
 # Imputation for 4 missing values (TPM & OC)
 temp1 = Analysis_data[,c(1,2,3)] # temporarily remove data labels for imputation
 temp2 = missForest(Analysis_data[,-c(1,2,3)])$ximp # Imputation of missing values
-test = cbind(temp1,temp2) # bing back data labels 
+test = cbind(temp1,temp2) # bring back data labels 
 # dimensions of data with labels removed (data only) 28 x 12 = 336 data cells
 dim(Analysis_data[,-c(1,2,3)]) 
 num_NA_values <- sum(is.na(Analysis_data)) # 4 missing values
@@ -834,213 +834,6 @@ HCR50_site_power <- pwr.anova.test(f = d_HCR50_site,
                                  sig.level = 0.05,
                                  power = NULL) # solve for this
 
-```
-
-```{r HCR_Quantile_Regression, fig.width=7, fig.asp=1.2, warning=F, message = F, fig.cap="The relationship between water quality variables and habitat clearance rate (HCR). For all oyster habitat filtration trials, quantile regression with $\\tau$ = 0.5 and $\\tau$ = 0.9 was used to test wheather HCR changed with A) temperature, B) salinity, C) turbidity, D) total particulate matter, or E) organic content; slopes that are not significantly different from zero are indicated by red dashed lines. Dotted gray lines are the mean value of HCR. \\label{Quantile_Reg}"}
-#create model variables
-attach(Filter_only_outRmd_data)
-qr_x <- cbind(Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, Avg_OC_Ratio, Site)
-#summary(qr_x)
-qr_y <- cbind(L_hr_m2)
-#summary(qr_y)
-
-## OLS Model
-HCR_lm <- lm(qr_y ~ qr_x)
-#summary(HCR_lm)
-#hist(Filter_only_outRmd_data$L_hr_m2)
-# Look at linear model assumptions
-# Doesn't look good with this data
-#par(mfrow=c(2,2))
-#plot(HCR_lm)
-
-##########################################
-############## Quantile Regression ###############
-## Bivariate comparisons only, not doing multivariate in this study (Talked with Ted Grosholz)
-library(quantreg) # Quantile Rregression package
-
-#### Look at change over most Quantiles
-qr_temp <- rq(L_hr_m2 ~ Temp_C_Up,
-             tau = seq(0.05,0.95, by = 0.05),
-             na.action = na.omit,
-             data = Filter_only_outRmd_data)
-#summary(qr_temp)
-#plot(qr_temp)
-
-#### Temperature
-## Looking at .5 and .9 quantiles of Habitat Clearance Rates - Filtration most likely on
-qr_5_9_temp <- rq(L_hr_m2 ~ Temp_C_Up,
-                tau = c(0.5,0.9),
-                data = Filter_only_outRmd_data)
-
-# Check results
-sumQRtemp <- summary(qr_5_9_temp, se = "boot", R = 1000)
-#sumQRtemp
-
-## Graph
-# if statements choose linetype - solid (significant) or dashed (not significant)
-qrplot_temp <- ggplot(Filter_only_outRmd_data, aes(Temp_C_Up, L_hr_m2)) +
-  geom_point(aes(color = Site)) +
-  # gray line indicating mean of HCR
-  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
-             linetype = "dotted", 
-             color = "gray50") +
-  theme_classic() +
-  guides(color=FALSE) +
-  labs(x = expression(paste("Temperature (", degree, "C)")),
-       y = "",
-       title = "A)") +
-  scale_color_manual(values = Site_colors) +
-  {if(sumQRtemp[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRtemp[[1]]$coefficients[2,4]))
-              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
-  {if(sumQRtemp[[1]]$coefficients[2,4]< 0.05)
-              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
-  {if(sumQRtemp[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRtemp[[2]]$coefficients[2,4]))
-              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
-  {if(sumQRtemp[[2]]$coefficients[2,4]< 0.05)
-              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
-
-### Salinity 
-qr_5_9_sal <- rq(L_hr_m2 ~ Sal_ppt_Up,
-                tau = c(0.5,0.9),
-                data = Filter_only_outRmd_data)
-
-# Check results
-sumQRsal <- summary(qr_5_9_sal, se = "boot", R = 1000)
-#sumQRsal
-
-# Graph
-qrplot_sal <- ggplot(Filter_only_outRmd_data, aes(Sal_ppt_Up, L_hr_m2)) +
-  geom_point(aes(color = Site)) +
-  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
-             linetype = "dotted", 
-             color = "gray50") +
-  theme_classic() +
-  guides(color=FALSE) +
-    labs(x = expression(paste("Salinity (ppt)")),
-       y = "",
-       title = "B)") +
-  scale_color_manual(values = Site_colors) +
-  {if(sumQRsal[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRsal[[1]]$coefficients[2,4]))
-              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
-  {if(sumQRsal[[1]]$coefficients[2,4]< 0.05)
-              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
-  {if(sumQRsal[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRsal[[2]]$coefficients[2,4]))
-              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
-  {if(sumQRsal[[2]]$coefficients[2,4]< 0.05)
-              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
-
-### Turbidity
-qr_5_9_turb <- rq(L_hr_m2 ~ Turbidity_NTU_Up,
-                tau = c(0.5,0.9),
-                data = Filter_only_outRmd_data)
-
-# Check results
-sumQRturb <- summary(qr_5_9_turb, se = "boot", R = 1000)
-#sumQRturb
-
-# Graph
-qrplot_turb <- ggplot(Filter_only_outRmd_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
-  geom_point(aes(color = Site)) +
-  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
-             linetype = "dotted", 
-             color = "gray50") +
-  theme_classic() +
-  guides(color=FALSE) +
-  labs(x = expression(paste("Turbidity (NTU)")),
-       y = "",
-       title = "C)") +
-  scale_color_manual(values = Site_colors) +
-  {if(sumQRturb[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRturb[[1]]$coefficients[2,4]))
-              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
-  {if(sumQRturb[[1]]$coefficients[2,4]< 0.05)
-              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
-  {if(sumQRturb[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRturb[[2]]$coefficients[2,4]))
-              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
-  {if(sumQRturb[[2]]$coefficients[2,4]< 0.05)
-              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
-
-### TPM
-qr_5_9_tpm <- rq(L_hr_m2 ~ Avg_TPM_mg_L,
-                tau = c(0.5,0.9),
-                data = Filter_only_outRmd_data)
-
-# Check results
-sumQRtpm <- summary(qr_5_9_tpm , se = "boot", R = 1000)
-#sumQRtpm
-
-# Graph
-qrplot_tpm <- ggplot(Filter_only_outRmd_data, aes(Avg_TPM_mg_L, L_hr_m2)) +
-  geom_point(aes(color = Site)) +
-  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
-             linetype = "dotted", 
-             color = "gray50") +
-  theme_classic() +
-  guides(color=FALSE) +
-  labs(x = expression(paste("Total Particulate Matter (", mu,"g/L)")),
-       y = "",
-       title = "D)") +
-  scale_color_manual(values = Site_colors) +
-  {if(sumQRtpm[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRtpm[[1]]$coefficients[2,4]))
-              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
-  {if(sumQRtpm[[1]]$coefficients[2,4]< 0.05)
-              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
-  {if(sumQRtpm[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRtpm[[2]]$coefficients[2,4]))
-              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
-  {if(sumQRtpm[[2]]$coefficients[2,4]< 0.05)
-              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
-
-### OC 
-qr_5_9_oc <- rq(L_hr_m2 ~ Avg_OC_Ratio,
-                tau = c(0.5,0.9),
-                data = Filter_only_outRmd_data)
-
-# Check results
-sumQRoc <- summary(qr_5_9_oc , se = "boot", R = 1000)
-#sumQRoc
-
-# Graph
-qrplot_oc <- ggplot(Filter_only_outRmd_data, aes(Avg_OC_Ratio, L_hr_m2)) +
-  geom_point(aes(color = Site)) +
-  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
-             linetype = "dotted", 
-             color = "gray50") +
-  theme_classic() +
-  guides(color=FALSE) +
-  labs(x = expression(paste("Organic Content (ratio)")),
-       y = "",
-       title = "E)") +
-  scale_color_manual(values = Site_colors) +
-  {if(sumQRoc[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRoc[[1]]$coefficients[2,4]))
-              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
-  {if(sumQRoc[[1]]$coefficients[2,4]< 0.05)
-              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
-  {if(sumQRoc[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRoc[[2]]$coefficients[2,4]))
-              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
-  {if(sumQRoc[[2]]$coefficients[2,4]< 0.05)
-              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
-
-## Combine graphs into single multiframe figure
-## Function to pull out legend
-extract_legend<-function(myggplot){
-    tmp <- ggplot_gtable(ggplot_build(myggplot))
-    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
-    legend <- tmp$grobs[[leg]]
-    return(legend)
-    }
-
-# Dumbie graph
-legend_plot <- ggplot(Filter_only_outRmd_data, aes(Avg_OC_Ratio, L_hr_m2)) +
-  geom_point(aes(color = Site)) +
-  scale_color_manual(values = Site_colors) +
-  theme_classic() 
-# extract legend
-QR_legend <- extract_legend(legend_plot)
-
-# make multipframe figure
-grid.arrange(arrangeGrob(qrplot_temp, qrplot_sal, qrplot_turb, qrplot_tpm, qrplot_oc, QR_legend, 
-             nrow = 3,
-             left = grid::textGrob(Hab_FR_Label, rot = 90, vjust = 1, 
-                                          gp = gpar(fontsize = 12))))
 ```
 
 ## Habitat Clearance Rates 
@@ -1799,5 +1592,215 @@ Oly_shell_DTW_NPD_Yaquina <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_
    #                    aes(label = sprintf("%i observations", stat(count))))
 
 plot(Oly_shell_DTW_NPD_Yaquina)
+```
+
+## Supplemental / Repository 
+
+
+```{r HCR_Quantile_Regression, fig.width=7, fig.asp=1.2, warning=F, message = F, fig.cap="The relationship between water quality variables and habitat clearance rate (HCR). For all oyster habitat filtration trials, quantile regression with $\\tau$ = 0.5 and $\\tau$ = 0.9 was used to test wheather HCR changed with A) temperature, B) salinity, C) turbidity, D) total particulate matter, or E) organic content; slopes that are not significantly different from zero are indicated by red dashed lines. Dotted gray lines are the mean value of HCR. \\label{Quantile_Reg}"}
+#create model variables
+attach(Filter_only_outRmd_data)
+qr_x <- cbind(Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, Avg_OC_Ratio, Site)
+#summary(qr_x)
+qr_y <- cbind(L_hr_m2)
+#summary(qr_y)
+
+## OLS Model
+HCR_lm <- lm(qr_y ~ qr_x)
+#summary(HCR_lm)
+#hist(Filter_only_outRmd_data$L_hr_m2)
+# Look at linear model assumptions
+# Doesn't look good with this data
+#par(mfrow=c(2,2))
+#plot(HCR_lm)
+
+##########################################
+############## Quantile Regression ###############
+## Bivariate comparisons only, not doing multivariate in this study (Talked with Ted Grosholz)
+library(quantreg) # Quantile Rregression package
+
+#### Look at change over most Quantiles
+qr_temp <- rq(L_hr_m2 ~ Temp_C_Up,
+             tau = seq(0.05,0.95, by = 0.05),
+             na.action = na.omit,
+             data = Filter_only_outRmd_data)
+#summary(qr_temp)
+#plot(qr_temp)
+
+#### Temperature
+## Looking at .5 and .9 quantiles of Habitat Clearance Rates - Filtration most likely on
+qr_5_9_temp <- rq(L_hr_m2 ~ Temp_C_Up,
+                tau = c(0.5,0.9),
+                data = Filter_only_outRmd_data)
+
+# Check results
+sumQRtemp <- summary(qr_5_9_temp, se = "boot", R = 1000)
+#sumQRtemp
+
+## Graph
+# if statements choose linetype - solid (significant) or dashed (not significant)
+qrplot_temp <- ggplot(Filter_only_outRmd_data, aes(Temp_C_Up, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  # gray line indicating mean of HCR
+  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
+             linetype = "dotted", 
+             color = "gray50") +
+  theme_classic() +
+  guides(color=FALSE) +
+  labs(x = expression(paste("Temperature (", degree, "C)")),
+       y = "",
+       title = "A)") +
+  scale_color_manual(values = Site_colors) +
+  {if(sumQRtemp[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRtemp[[1]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
+  {if(sumQRtemp[[1]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
+  {if(sumQRtemp[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRtemp[[2]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
+  {if(sumQRtemp[[2]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
+
+### Salinity 
+qr_5_9_sal <- rq(L_hr_m2 ~ Sal_ppt_Up,
+                tau = c(0.5,0.9),
+                data = Filter_only_outRmd_data)
+
+# Check results
+sumQRsal <- summary(qr_5_9_sal, se = "boot", R = 1000)
+#sumQRsal
+
+# Graph
+qrplot_sal <- ggplot(Filter_only_outRmd_data, aes(Sal_ppt_Up, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
+             linetype = "dotted", 
+             color = "gray50") +
+  theme_classic() +
+  guides(color=FALSE) +
+    labs(x = expression(paste("Salinity (ppt)")),
+       y = "",
+       title = "B)") +
+  scale_color_manual(values = Site_colors) +
+  {if(sumQRsal[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRsal[[1]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
+  {if(sumQRsal[[1]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
+  {if(sumQRsal[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRsal[[2]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
+  {if(sumQRsal[[2]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
+
+### Turbidity
+qr_5_9_turb <- rq(L_hr_m2 ~ Turbidity_NTU_Up,
+                tau = c(0.5,0.9),
+                data = Filter_only_outRmd_data)
+
+# Check results
+sumQRturb <- summary(qr_5_9_turb, se = "boot", R = 1000)
+#sumQRturb
+
+# Graph
+qrplot_turb <- ggplot(Filter_only_outRmd_data, aes(Turbidity_NTU_Up, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
+             linetype = "dotted", 
+             color = "gray50") +
+  theme_classic() +
+  guides(color=FALSE) +
+  labs(x = expression(paste("Turbidity (NTU)")),
+       y = "",
+       title = "C)") +
+  scale_color_manual(values = Site_colors) +
+  {if(sumQRturb[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRturb[[1]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
+  {if(sumQRturb[[1]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
+  {if(sumQRturb[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRturb[[2]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
+  {if(sumQRturb[[2]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
+
+### TPM
+qr_5_9_tpm <- rq(L_hr_m2 ~ Avg_TPM_mg_L,
+                tau = c(0.5,0.9),
+                data = Filter_only_outRmd_data)
+
+# Check results
+sumQRtpm <- summary(qr_5_9_tpm , se = "boot", R = 1000)
+#sumQRtpm
+
+# Graph
+qrplot_tpm <- ggplot(Filter_only_outRmd_data, aes(Avg_TPM_mg_L, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
+             linetype = "dotted", 
+             color = "gray50") +
+  theme_classic() +
+  guides(color=FALSE) +
+  labs(x = expression(paste("Total Particulate Matter (", mu,"g/L)")),
+       y = "",
+       title = "D)") +
+  scale_color_manual(values = Site_colors) +
+  {if(sumQRtpm[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRtpm[[1]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
+  {if(sumQRtpm[[1]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
+  {if(sumQRtpm[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRtpm[[2]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
+  {if(sumQRtpm[[2]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
+
+### OC 
+qr_5_9_oc <- rq(L_hr_m2 ~ Avg_OC_Ratio,
+                tau = c(0.5,0.9),
+                data = Filter_only_outRmd_data)
+
+# Check results
+sumQRoc <- summary(qr_5_9_oc , se = "boot", R = 1000)
+#sumQRoc
+
+# Graph
+qrplot_oc <- ggplot(Filter_only_outRmd_data, aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  geom_hline(yintercept = mean(Filter_only_outRmd_data$L_hr_m2),
+             linetype = "dotted", 
+             color = "gray50") +
+  theme_classic() +
+  guides(color=FALSE) +
+  labs(x = expression(paste("Organic Content (ratio)")),
+       y = "",
+       title = "E)") +
+  scale_color_manual(values = Site_colors) +
+  {if(sumQRoc[[1]]$coefficients[2,4] >= 0.05 | is.na(sumQRoc[[1]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "dashed")} +
+  {if(sumQRoc[[1]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.5, color = 'red', linetype = "solid")} +
+  {if(sumQRoc[[2]]$coefficients[2,4] >= 0.05 | is.na(sumQRoc[[2]]$coefficients[2,4]))
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "dashed")} +
+  {if(sumQRoc[[2]]$coefficients[2,4]< 0.05)
+              geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
+
+## Combine graphs into single multiframe figure
+## Function to pull out legend
+extract_legend<-function(myggplot){
+    tmp <- ggplot_gtable(ggplot_build(myggplot))
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+    legend <- tmp$grobs[[leg]]
+    return(legend)
+    }
+
+# Dumbie graph
+legend_plot <- ggplot(Filter_only_outRmd_data, aes(Avg_OC_Ratio, L_hr_m2)) +
+  geom_point(aes(color = Site)) +
+  scale_color_manual(values = Site_colors) +
+  theme_classic() 
+# extract legend
+QR_legend <- extract_legend(legend_plot)
+
+# make multipframe figure
+grid.arrange(arrangeGrob(qrplot_temp, qrplot_sal, qrplot_turb, qrplot_tpm, qrplot_oc, QR_legend, 
+             nrow = 3,
+             left = grid::textGrob(Hab_FR_Label, rot = 90, vjust = 1, 
+                                          gp = gpar(fontsize = 12))))
 ```
 
