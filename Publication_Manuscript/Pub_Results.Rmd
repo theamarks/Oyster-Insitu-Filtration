@@ -994,6 +994,8 @@ NPD_biv_bio_summary <- NPD_bivalves %>%
 # what are the unique species in dataset
 #unique(NPD_bivalves$species)
 
+#Newport, CA All excavation quadrat samples processed to date aggregated (summer 2020)
+
 # Still contains missing data --> which quadrats to use for analyses
 NPD_bivalve_data_clean <- NPD_bivalves %>% 
   filter(!excavation_sample %in% c("Q10", "Q4", "Q8")) %>% 
@@ -1011,32 +1013,6 @@ NPD_bivalve_data_clean <- NPD_bivalves %>%
 NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
   mutate(DTW_outlier = find_outlier(NPD_bivalve_data_clean$tissue_dry_weight_g)) %>% 
   filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0)
-
-#Olympia DTW predicted by Shell Length - Newport, CA
-# All excavation quadrat samples processed to date aggregated (summer 2020)
-NPD_oly <- NPD_bivalve_data_clean %>% 
-  filter(species == "Ostrea lurida") %>% 
-  drop_na() %>% 
-  as_tibble() 
-
-Oly_shell_DTW <- ggplot(NPD_oly, aes(length_mm, tissue_dry_weight_g)) +
-  geom_smooth(method = lm, se=TRUE, level=0.95, color = 'grey50') +
-  geom_point(aes(color = species)) +
-  scale_color_manual(values = Species_colors, guide = F) +
-  theme_classic() +
-  labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)',
-       title = 'Olympia Oyster DTW predicted by Shell Length - Newport, CA',
-       subtitle = 'With outlier (bad data)') +
-  ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-               formula = x_y_formula,
-               parse = TRUE,
-               label.x = "right",
-               label.y = "top") +
-  stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-                       aes(label = sprintf("%i observations", stat(count))))
-
-#plot(Oly_shell_DTW)
 ```
 
 ```{r Bivalve_Den_Setup, include=FALSE}
