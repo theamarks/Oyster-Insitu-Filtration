@@ -917,6 +917,13 @@ NPD_bivalve_data_clean <- NPD_bivalves %>%
 NPD_bivalve_outrmd <- NPD_bivalve_data_clean %>%
   mutate(DTW_outlier = find_outlier(NPD_bivalve_data_clean$tissue_dry_weight_g)) %>% 
   filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0)
+
+# All excavation quadrat samples processed to date aggregated (summer 2020)
+# filter only O. lurida dtw in newport
+NPD_oly_outRmd <- NPD_bivalve_outrmd %>% 
+  filter(species == "Ostrea lurida") %>% 
+  drop_na() %>% 
+  as_tibble()
 ```
 
 ```{r Bivalve_Den_Setup, include=FALSE}
@@ -1028,11 +1035,7 @@ SD_Oly_SL_DTW %<>%
   mutate("species" = "Ostrea lurida") %>% 
   dplyr::select(Site, species, length_mm, tissue_dry_weight_g)
 
-NP_oly
-# Remove outlier and negative DTW value
-NPD_oly_outRmd <- NPD_oly %>%
-  mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
-  filter(DTW_outlier == FALSE & tissue_dry_weight_g >= 0) 
+#### Import Newport Deanza (NPD) O. lurida dataframe cleaned above
 
 NPD_Oly_SL_DTW <- NPD_oly_outRmd %>% 
   mutate(Date = excavation_date) %>% 
@@ -1048,6 +1051,7 @@ Oly_combo_DTW_SL <- full_join(NPD_Oly_SL_DTW,Gray_Oly_SL_DTW) %>%
 Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>% 
   mutate(Site = fct_relevel(Site, "San Diego", "Deanza", "Yaquina"))
 
+#### start of Kevin's code ###
 #find domain of shell length
 
 #fit separate models log(weight)~log(length)
@@ -1090,9 +1094,7 @@ y.seq3 = exp(predict(m3,newdata=data.frame(lx3=log(x.seq))))
 temp1 = data.frame(x.seq,y.seq1)
 temp2 = data.frame(x.seq,y.seq2)
 temp3 = data.frame(x.seq,y.seq3)
-
-########## DTW figure #######
-
+### End of Kevin's code ####
 
 ######## Graph with Deanza, Yaquina & San Diego DTW x Shell length
 
