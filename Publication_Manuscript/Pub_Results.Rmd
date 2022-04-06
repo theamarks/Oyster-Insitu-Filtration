@@ -1196,8 +1196,9 @@ Bivalve_Biomass_graph
 gray_dry_cr_oly <- 0.78 # Dry season
 gray_wet_cr_oly <- 0.19 # Wet season
 # O. lurida all season model insitu - as selected by stepwise regression analysis of temp, salinity, total particulate matter, organic content. 
-estimate_oly_cr_gray <- function (temp, TPM){
-  -1.02(0.67) + 0.13(0.06)temp - 0.006(0.002)TMP
+estimate_oly_cr_gray <- function (temp, OC){
+  clearance = (-0.95*0.35) + (2.49*0.26*OC) + (0.06*0.03*Temp)
+  return(clearance)
   }
 # M. gigas clearance rate mean L/hr/g (DTW)
 gray_dry_cr_gigas <- 0.95
