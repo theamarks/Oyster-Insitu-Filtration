@@ -1293,46 +1293,6 @@ Bivalve_Biomass_graph
 ### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
 ```
 
-
-```{r Oly_DTW_SH_outlier_rmd, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="The relationship between \\textit{O. lurida} shell length and its dry tissue weight (DTW) at two locations, Newport Bay, California (Zacherl unpublished data) and Yaquina Bay, Oregon (Gray unpublished data). The Newport Bay data was collected at the Deanza restoration site and outlier data (outside mean +- 2.2 SD) and negative values are excluded. \\label{Oly_DTW_SH_outlier_rmd}"}
-
-Site_Shapes <- c("Deanza" = 16,
-                 "Yaquina" = 3)
-
-######## Graph with Deanza and Yaquina DTW x Shell length
-# Combine legend --> https://gist.github.com/mps9506/39b70aec30ab1322f7ecd6b21f04120e#file-testplot-r-L96
-Oly_shell_DTW_NPD_Yaquina <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_weight_g)) +
-  geom_point(aes(color = legend, shape = legend)) +
-  #geom_smooth(se = F, color = 'grey50') + # method=lm, formula = x_y_formula, level = 0.95, color = 'grey50') +
-  scale_color_manual(labels = c("Yaquina Bay, OR", 
-                                "Deanza, Newport Bay, CA"),
-                     values = c("Yaquina" = "#9986A5",
-                                "Deanza" = "#9986A5"),
-                     na.translate = TRUE, drop = FALSE) + 
-  scale_shape_manual(labels = c("Yaquina Bay, OR", 
-                                "Deanza, Newport Bay, CA"),
-                     values = c("Yaquina" = 3,
-                                "Deanza" = 16),
-                     na.translate = TRUE, drop = FALSE) + 
-  theme_classic() +
-  theme(legend.box.background = element_rect(colour = "black"),
-        legend.justification = c(0, 1), 
-        legend.position = c(0.1, 0.95),
-        legend.title = element_blank()) +
-  ylim(0,1)+
-  labs(x = 'Shell Length (mm)',
-       y = 'Dry Tissue Weight (g)') 
- # ggpmisc::stat_poly_eq(aes(label = paste("atop(",..eq.label.., ",",..adj.rr.label.., ")", sep ="")),
-  #             formula = x_y_formula,
-   #            parse = TRUE,
-    #           label.x = "right",
-     #          label.y = "bottom") 
-  #stat_quadrant_counts(quadrants = 0L, label.x = "left", 
-   #                    aes(label = sprintf("%i observations", stat(count))))
-
-plot(Oly_shell_DTW_NPD_Yaquina)
-```
-
 ## Supplemental / Repository 
 
 
