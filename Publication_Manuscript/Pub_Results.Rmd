@@ -1281,7 +1281,17 @@ Bivalve_Biomass_graph <- ggplot(NPD_biv_DTW_m2, aes(Site)) +
 Bivalve_Biomass_graph
 ```
 
+```{r Compare_prev_filt}
+# Compare previous filtration studies to our HCR findings
 
+## Gray & Langdon (2018)
+
+
+
+## Wheat & Ruesink (2013)
+
+
+```
 
 ## Supplemental / Repository 
 
