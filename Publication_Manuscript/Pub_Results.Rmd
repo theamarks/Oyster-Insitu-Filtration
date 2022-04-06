@@ -1104,8 +1104,8 @@ Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) +
 Bivalve_Den_graph
 ```
 
-```{r Gray_OlyDTW_SL, include=FALSE}
-########### Gray DTW 
+```{r Oly_DTW_SL_Newport_Yaquina_SanDiego_data, include=FALSE}
+########### import Matt Gray DTW dataset - Yaquina Bay, Oregon
 Gray_Oly_Data <- fread(file.path('./Data/bivalve_density_community', "MattGray_2011_2013_Olurida_allometric_data.csv"))
 colnames(Gray_Oly_Data) <- c("ID", "Date", "species", "length_mm", "shell_tissue_g", "vial_weight", "Vial_wet_oyster", "Tissue_weight_g", "vial_dry_oyster", "tissue_dry_weight_g")
 Gray_Oly_Data %<>% 
@@ -1115,11 +1115,8 @@ Gray_Oly_Data %<>%
 Gray_Oly_SL_DTW <- Gray_Oly_Data %>% 
   dplyr::select(Date, Site, species, length_mm, tissue_dry_weight_g)
 
-```
-
-```{r Langevin_SD_OlyDTW_SL}
-
-SD_Oly_SL_DTW <- read_csv("./Data/Langevin_SD_O_lurida_length_weight_Theacopy.csv")
+##### Import Jason Langevin DTW dataset - San Diego Bay, California
+SD_Oly_SL_DTW <- read_csv("./Data/bivalve_density_community/Langevin_SD_O_lurida_length_weight_data.csv")
 SD_Oly_SL_DTW %<>% 
   rename("Tidal_hight" = "Tidal height",
          "length_mm" = "Length (mm)",
@@ -1127,9 +1124,6 @@ SD_Oly_SL_DTW %<>%
   mutate("species" = "Ostrea lurida") %>% 
   dplyr::select(Site, species, length_mm, tissue_dry_weight_g)
 
-```
-
-```{r NPD_Oly_DTW_SL_combine_Gray_data, include=FALSE}
 # Remove outlier and negative DTW value
 NPD_oly_outRmd <- NPD_oly %>%
   mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
