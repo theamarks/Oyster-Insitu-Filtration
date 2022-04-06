@@ -1163,23 +1163,19 @@ a <- NPD_bivalve_outrmd %>%
 b <- a %>% 
   group_by(species) %>% 
   summarize(dtw_mean_q = mean(total_q_dtw))
-c <- b %>% 
+NPD_biv_DTW_m2 <- b %>% 
   mutate(mean_DTW_m2 = dtw_mean_q/NP_excavation_quad_area) %>% 
   mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
   rename(Species = species) %>% # rename column with capital case
-  dplyr::select(Species, mean_DTW_m2)
+  dplyr::select(Site, Species, mean_DTW_m2)
 
 ## Values to populated text
-
-# Deanza total and species total DTW values
 NPD_total_DTW <- NPD_biv_DTW_m2 %>% 
-  filter(Site == "Deanza") %>% 
   summarise(total = sum(mean_DTW_m2))
 
 NPD_species_DTW <- NPD_biv_DTW_m2 %>% 
-  filter(Site == "Deanza") %>%
   group_by(Species) %>% 
-  summarise(total = sum(mean_DTW_m2))
+  summarise(total = mean_DTW_m2)
 
 ```
 
