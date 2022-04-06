@@ -738,72 +738,6 @@ FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_hr_m2)) +
 
 plot(FR_box) 
 
-
-############### Quantile Regresssion Analysis Values ################
-#### HCR by Site with .5 quantile ###########
-# select within each stie
-SR_50quant <- Filter_only_outRmd_data %>%
-  filter(Site == "San Rafael",
-         L_hr_m2 > FR_Site[[1,5]])
-#hist(SR_50quant$L_hr_m2, breaks = 20)
-
-MB_50quant <- Filter_only_outRmd_data %>%
-  filter(Site == "Morro Bay",
-         L_hr_m2 > FR_Site[[2,5]])
-#hist(SR_50quant$L_hr_m2, breaks = 20)
-
-NPSM_50quant <- Filter_only_outRmd_data %>%
-  filter(Site == "Shellmaker",
-         L_hr_m2 > FR_Site[[3,5]])
-#hist(NPSM_50quant$L_hr_m2, breaks = 20)
-
-NPD_50quant <- Filter_only_outRmd_data %>%
-  filter(Site == "Deanza",
-         L_hr_m2 > FR_Site[[4,5]])
-#hist(NPD_50quant$L_hr_m2, breaks = 20)
-
-# combine each site's .5 quantile data together
-Site_HCR_50quant <- rbind(SR_50quant, MB_50quant, NPSM_50quant, NPD_50quant)
-
-HCR50_sum <- Site_HCR_50quant %>% 
-  group_by(Site) %>% 
-  summarize(avg_L_hr_m2 = mean(L_hr_m2),
-            SD = sd(L_hr_m2),
-            n_samples = length(L_hr_m2),
-            med = median(L_hr_m2),
-            var = var(L_hr_m2))
-# 443514/6689 --> largest residual / smallest residual - greater than 5 not good for ANOVA
-
-HCR_50quant_box <- ggplot((Site_HCR_50quant), aes(Site, L_hr_m2)) +
-  geom_point(aes(fill = Site), shape = 21, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = 'Site',
-       y = Hab_FR_Label)
-
-#plot(HCR_50quant_box)
-
-####### Kruskal-Wallis test - tidy converts to clean dataframe
-KW_HCR50_site <- broom::tidy(kruskal.test(L_hr_m2 ~ Site, data = Site_HCR_50quant))
-
-
-####### one-way ANOVA -- HCR by Site
-HCR50_site_aov <- aov(L_hr_m2 ~ Site, data = Site_HCR_50quant)
-#summary(HCR_site_aov)
-HCR50_aov_values <- broom::tidy(HCR50_site_aov)
-
-########### Power analysis - sensitivity power analysis 
-# one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
-d_HCR50_site <- { HCR50_aov_values[[1,3]] / (HCR50_aov_values[[1,3]] + HCR50_aov_values[[2,3]]) }
-
-# power analysis for "balanced one-way analysis of variance tests"
-# For now Ted says to use the mean of the different sample sizes
-HCR50_site_power <- pwr.anova.test(f = d_HCR50_site, 
-                                 k = 4,
-                                 n = mean(HCR50_sum$n_samples), 
-                                 sig.level = 0.05,
-                                 power = NULL) # solve for this
-
 ```
 
 ## Habitat Clearance Rates 
@@ -1483,4 +1417,71 @@ grid.arrange(arrangeGrob(qrplot_temp, qrplot_sal, qrplot_turb, qrplot_tpm, qrplo
              nrow = 3,
              left = grid::textGrob(Hab_FR_Label, rot = 90, vjust = 1, 
                                           gp = gpar(fontsize = 12))))
+
+#############################################
+# Copy and Pasted from HCR code chunk. Not used up there, not sure if this is redundant to code above. Delete possibly?
+############### Quantile Regresssion Analysis Values ################
+#### HCR by Site with .5 quantile ###########
+# select within each stie
+SR_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "San Rafael",
+         L_hr_m2 > FR_Site[[1,5]])
+#hist(SR_50quant$L_hr_m2, breaks = 20)
+
+MB_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "Morro Bay",
+         L_hr_m2 > FR_Site[[2,5]])
+#hist(SR_50quant$L_hr_m2, breaks = 20)
+
+NPSM_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "Shellmaker",
+         L_hr_m2 > FR_Site[[3,5]])
+#hist(NPSM_50quant$L_hr_m2, breaks = 20)
+
+NPD_50quant <- Filter_only_outRmd_data %>%
+  filter(Site == "Deanza",
+         L_hr_m2 > FR_Site[[4,5]])
+#hist(NPD_50quant$L_hr_m2, breaks = 20)
+
+# combine each site's .5 quantile data together
+Site_HCR_50quant <- rbind(SR_50quant, MB_50quant, NPSM_50quant, NPD_50quant)
+
+HCR50_sum <- Site_HCR_50quant %>% 
+  group_by(Site) %>% 
+  summarize(avg_L_hr_m2 = mean(L_hr_m2),
+            SD = sd(L_hr_m2),
+            n_samples = length(L_hr_m2),
+            med = median(L_hr_m2),
+            var = var(L_hr_m2))
+# 443514/6689 --> largest residual / smallest residual - greater than 5 not good for ANOVA
+
+HCR_50quant_box <- ggplot((Site_HCR_50quant), aes(Site, L_hr_m2)) +
+  geom_point(aes(fill = Site), shape = 21, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = Hab_FR_Label)
+
+#plot(HCR_50quant_box)
+
+####### Kruskal-Wallis test - tidy converts to clean dataframe
+KW_HCR50_site <- broom::tidy(kruskal.test(L_hr_m2 ~ Site, data = Site_HCR_50quant))
+
+
+####### one-way ANOVA -- HCR by Site
+HCR50_site_aov <- aov(L_hr_m2 ~ Site, data = Site_HCR_50quant)
+#summary(HCR_site_aov)
+HCR50_aov_values <- broom::tidy(HCR50_site_aov)
+
+########### Power analysis - sensitivity power analysis 
+# one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
+d_HCR50_site <- { HCR50_aov_values[[1,3]] / (HCR50_aov_values[[1,3]] + HCR50_aov_values[[2,3]]) }
+
+# power analysis for "balanced one-way analysis of variance tests"
+# For now Ted says to use the mean of the different sample sizes
+HCR50_site_power <- pwr.anova.test(f = d_HCR50_site, 
+                                 k = 4,
+                                 n = mean(HCR50_sum$n_samples), 
+                                 sig.level = 0.05,
+                                 power = NULL) # solve for this
 ```
