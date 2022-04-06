@@ -1041,6 +1041,7 @@ NPD_Oly_SL_DTW <- NPD_oly_outRmd %>%
   mutate(Date = excavation_date) %>% 
   dplyr::select(Date, Site, species, length_mm, tissue_dry_weight_g)
 
+# join Newport, Yaquina, and San Diego data together into singe dataframe
 Oly_combo_DTW_SL <- full_join(NPD_Oly_SL_DTW,Gray_Oly_SL_DTW) %>% 
   full_join(SD_Oly_SL_DTW) %>% 
   mutate(legend = case_when(Site == "Deanza" & species == "Ostrea lurida" ~ "Deanza",
@@ -1153,9 +1154,22 @@ NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>%
   rename(Species = species) # rename column with capital case
 
 
+#### Check above code for calculations
+a <- NPD_bivalve_outrmd %>% 
+  group_by(excavation_sample, species) %>% 
+  summarize(total_q_dtw = sum(tissue_dry_weight_g))
+b <- a %>% 
+  group_by(species) %>% 
+  summarize(dtw_mean_q = mean(total_q_dtw))
+c <- b %>% 
+  mutate(mean_DTW_m2 = dtw_mean_q/NP_excavation_quad_area) %>% 
+  mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
+  rename(Species = species) %>% # rename column with capital case
+  dplyr::select(Species, mean_DTW_m2)
+
 ## Values to populated text
 
-# Deanza total and species totoal DTW values
+# Deanza total and species total DTW values
 NPD_total_DTW <- NPD_biv_DTW_m2 %>% 
   filter(Site == "Deanza") %>% 
   summarise(total = sum(mean_DTW_m2))
@@ -1209,7 +1223,7 @@ gray_wet_cr_gigas <- 1.06
 wheat_cr_gigas <- 0.73
 
 ## Calculate Clearance Rate estimate at Deanza with biomass
-npd_dtw_oly <- 
+npd_dtw_oly <- NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2]
 
 ```
 
