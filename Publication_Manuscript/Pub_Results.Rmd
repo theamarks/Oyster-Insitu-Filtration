@@ -975,29 +975,6 @@ NP_combo_TPM_OC <- TPM_OC_Values %>%
 
 ## Seston Quantity and Quality
 
-```{r TPM_OC_Models, include=FALSE}
-### Linear Model 
-OC_TPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ Avg_TPM_mg_L)
-#summary(OC_TPM_LM)
-#par(mfrow=c(2,2))
-#plot(OC_TPM_LM)
-
-### linear - log model
-OC_logTPM_LM <- lm(data = Avg_TPM_summary_table, Avg_OC_Ratio ~ log(Avg_TPM_mg_L))
-#summary(OC_logTPM_LM)
-#par(mfrow=c(2,2))
-#plot(OC_logTPM_LM)
-# Leverage Statistics - plots index of parameter elements against their leverage on the model
-# plot(hatvalues(OC_logTPM_all_LM)) 
-# identifies the index of the largest element of a vector
-# which.max(hatvalues(OC_logTPM_all_LM))
-
-### log - log model
-logOC_logTPM_LM <- lm(data = Avg_TPM_summary_table, log(Avg_OC_Ratio) ~ log(Avg_TPM_mg_L))
-logOC_logTPM_LM_sum <- summary(logOC_logTPM_LM)
-str(logOC_logTPM_LM_sum)
-```
-
 Total Particulate Matter (TPM) was significantly related to seston OC when sites were combined  (Figure \ref{TPM_OC_model}). 
 This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collected the same way regardless of the trial. 
 Northern San Francisco Bay (San Rafael) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`), and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`) (Figure \ref{TPM_OC_model}).
