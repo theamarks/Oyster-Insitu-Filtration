@@ -1279,19 +1279,9 @@ Bivalve_Biomass_graph <- ggplot(NPD_biv_DTW_m2, aes(Site)) +
   labs(y = expression("Dry Tissue Weight (g m" ^-2* ")"))
 ## Add total Biomass on top of bars
 Bivalve_Biomass_graph
-#bar_graphs <- plot_grid(Bivalve_Den_graph + theme(legend.position="none"),
- #                       Bivalve_Biomass_graph + theme(legend.position="none"),
-  #                      align = 'vh',
-   #                     labels = c("A", "B"),
-    #                    hjust = -1,
-     #                   nrow = 1)
-#legend_b <- get_legend(Bivalve_Den_graph + theme(legend.box.margin = margin(0, 0, 0, 12)))
-#bar_graph_1legend <- plot_grid(bar_graphs, legend_b, rel_widths = c(3, .4))
-# How do I move legend inside of plot area? This method uses cowplot
-#bar_graph_1legend
-
-### Might be better to have separate graphs so size scaling & fonts stays good when knitting. Legend could takeup more room next to DTW graph, forcing columns to compact. Figure out how to display legend with more data then is present in the data.frame.
 ```
+
+
 
 ## Supplemental / Repository 
 
@@ -1502,4 +1492,3 @@ grid.arrange(arrangeGrob(qrplot_temp, qrplot_sal, qrplot_turb, qrplot_tpm, qrplo
              left = grid::textGrob(Hab_FR_Label, rot = 90, vjust = 1, 
                                           gp = gpar(fontsize = 12))))
 ```
-
