@@ -149,13 +149,6 @@ NPSM_NC_sum <- Control_only_data %>%
 NPD_2019_4_17 <- read_csv("output/4_Filtration_Calculations/Insitu_Filter_NPD_2019_4_17.csv")
 NPD_2019_4_17 %<>% filter(Experiment == "Filtration") 
 
-# Filtration trials only - exclude Negative controls & Percent Chl removed less than 0
-### Important Note ## When Percent Chl removed is positive, so is L/hr/m^2 and vice visa. 
-# Filtering by pcnt_Chl_rmvd effectively filters both values the same, so further analysis 
-# with Filtration_pos_data serves both purposes. 
-Filtration_pos_data <- Filtration_only_data %>% 
-  filter(pcnt_Chl_rmvd > 0)
-
 # Deanza data only - all trials
 Deanza_data_all <- Master_analysis_table %>% 
   filter(Site %in% c("Deanza"))
@@ -505,18 +498,6 @@ Chl_Rmd_box <- ggplot(Filter_only_outRmd_data, aes(Site, pcnt_Chl_rmvd)) +
        y = Prt_Chl_Label)
 
 plot(Chl_Rmd_box)
-
-####### Don't include - doesn't match analysis data
-ChlRmd_pos_box <- ggplot((Filtration_pos_data), aes(Site, pcnt_Chl_rmvd)) +
-  geom_boxplot(color = Site_colors) +
-    geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  stat_summary(fun.data = n_mean_stats, geom = "text") +
-  labs(x = 'Site',
-       y = Prt_Chl_Label)
-#plot(ChlRmd_pos_box)
 
 ```
 
@@ -1281,7 +1262,7 @@ Bivalve_Biomass_graph <- ggplot(NPD_biv_DTW_m2, aes(Site)) +
 Bivalve_Biomass_graph
 ```
 
-```{r Compare_prev_filt}
+```{r Estimate_filt_w_other_studies}
 ##### Compare previous filtration studies to our HCR findings
 
 ## Gray & Langdon (2018)
@@ -1289,7 +1270,7 @@ Bivalve_Biomass_graph
 gray_dry_cr_oly <- 0.78 # Dry season
 gray_wet_cr_oly <- 0.19 # Wet season
 # O. lurida all season model insitu - as selected by stepwise regression analysis of temp, salinity, total particulate matter, organic content. 
-estimate_loy_cr_gray <- function (temp, TPM){
+estimate_oly_cr_gray <- function (temp, TPM){
   -1.02(0.67) + 0.13(0.06)temp - 0.006(0.002)TMP
   }
 # M. gigas clearance rate mean L/hr/g (DTW)
