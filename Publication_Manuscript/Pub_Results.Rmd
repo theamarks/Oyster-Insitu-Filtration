@@ -1270,7 +1270,7 @@ A direct comparison between site biomass to HCR was not possible with my limited
 ```{r Bivalve_biomass_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Estimated biomass of \\textit{O. lurida} habitat at Deanza and San Rafael sites. Data for Deanza was collected by the Zacherl lab (CSUF) in May 2018, the relationship between \\textit{O. lurida} shell length and dry tissue weight (DTW) from the survey was used to estimate DTW at San Rafael with shell length data collected by the Zabin lab (SERC) in November 2017. \\label{Bivalve_DTW_Biomass}"}
 
 ####### Bar graph NPD Biomass / DTW by species
-Bivalve_Biomass_graph <- ggplot(SR_NPD_biv_DTWm2, aes(Site)) + 
+Bivalve_Biomass_graph <- ggplot(NPD_biv_DTW_m2, aes(Site)) + 
   geom_col(aes(x = Site, y = mean_DTW_m2, fill = Species)) +
   theme_classic() +
   scale_fill_manual(values = Species_colors) +
