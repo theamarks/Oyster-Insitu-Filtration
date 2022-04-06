@@ -1220,8 +1220,11 @@ gray_wet_cr_gigas <- 1.06
 # M gigas clearance rate L/hr/g grown on long-lines in Willipa Bay, WA
 wheat_cr_gigas <- 0.73
 
-## Calculate Clearance Rate estimate at Deanza with biomass
+## Deanza O.lurida biomass per m^2 of habitat
 npd_dtw_oly <- NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2]
+
+# estimate clearance rate with NPD biomass & Gray's model
+NPD_oly_cr_est <- estimate_oly_cr_gray()
 
 ```
 
