@@ -1288,6 +1288,10 @@ Bivalve_Biomass_graph
 # O. lurida clearance rate mean L/hr/g (DTW) Yaquina Bay, OR
 gray_dry_cr_oly <- 0.78 # Dry season
 gray_wet_cr_oly <- 0.19 # Wet season
+# O. lurida all season model insitu - as selected by stepwise regression analysis of temp, salinity, total particulate matter, organic content. 
+estimate_loy_cr_gray <- function (temp, TPM){
+  -1.02(0.67) + 0.13(0.06)temp - 0.006(0.002)TMP
+  }
 # M. gigas clearance rate mean L/hr/g (DTW)
 gray_dry_cr_gigas <- 0.95
 gray_wet_cr_gigas <- 1.06
@@ -1295,6 +1299,9 @@ gray_wet_cr_gigas <- 1.06
 ## Wheat & Ruesink (2013)
 # M gigas clearance rate L/hr/g grown on long-lines in Willipa Bay, WA
 wheat_cr_gigas <- 0.73
+
+## Calculate Clearance Rate estimate at Deanza with biomass
+npd_dtw_oly <- 
 
 ```
 
