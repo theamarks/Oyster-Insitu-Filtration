@@ -1028,6 +1028,7 @@ SD_Oly_SL_DTW %<>%
   mutate("species" = "Ostrea lurida") %>% 
   dplyr::select(Site, species, length_mm, tissue_dry_weight_g)
 
+NP_oly
 # Remove outlier and negative DTW value
 NPD_oly_outRmd <- NPD_oly %>%
   mutate(DTW_outlier = find_outlier(NPD_oly$tissue_dry_weight_g)) %>% 
