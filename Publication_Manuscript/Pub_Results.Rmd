@@ -1245,54 +1245,15 @@ NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>%
   mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
   rename(Species = species) # rename column with capital case
 
-################### Biomass by species San Rafael ####################
-# double dot in file path steps down from current folder "Thesis_Manuscript" back to project level folder
 
-SR_Oly_Shelllength_data = fread(file.path(Density_directory, "Insitu_Filter_SR_oyster_length.csv"))
+## Values to populated text
 
-######## Predict SR DTW with shell length #########
-## Predict with log-log model (best fit)
-predict_DTW_loglog <- function(data){
-  exp(predict(Oly_LogDTW_logSH_lm, newdata = data.frame(length_mm = data$length_mm))) 
-  # exp() converts log value, predict needs data.frame input
-  # does predict() include error term inherently in lm()
-}
-
-SR_Oly_DTW_data <- SR_Oly_Shelllength_data %>% 
-  mutate(DTW_g = predict_DTW_loglog(SR_Oly_Shelllength_data)) %>%  # predict Oly Dry tissue weight with length_mm
-  group_by(Site, bag_number) %>% 
-  summarize(DTW_bag = mean(DTW_g)) # average DTW per sample bag
-
-Oly_italic <- expression(italic("Ostrea lurida"))
-
-SR_Oly_DTW_data2 <- SR_Oly_DTW_data %>% 
-  ungroup() %>% 
-  group_by(Site) %>% # regroup by site
-  summarize(DTW_bag_avg = mean(DTW_bag)) %>% # average DTW across sample bags
-  mutate(mean_DTW_m2 = DTW_bag_avg * 18,
-         Species = "Ostrea lurida") # sample bag is 1/3 the size of regular shell bag. There are 6 full size bags on the 
-# top of the reef unit at San Rafael. The units are 1 x 1 x 1m, so the top area of the reef is 1m^2. (3 * 6 = the amount in 1m^2)
-
-SR_Oly_DTW_data3 <- SR_Oly_DTW_data2 %>% 
-  dplyr::select(-(DTW_bag_avg)) # remove DTW_bag_avg 
-SR_Oly_DTW_data4 <- data.frame(SR_Oly_DTW_data3) # convert wierd mess of types into a data.frame
-
-SR_NPD_biv_DTWm2 <- rbind(SR_Oly_DTW_data4, NPD_biv_DTW_m2)
-# SR total and species total DTW values 
-SR_total_DTW <- SR_NPD_biv_DTWm2 %>% 
-  filter(Site == "San Rafael") %>% 
-  summarise(total = sum(mean_DTW_m2))
-
-SR_species_DTW <- SR_NPD_biv_DTWm2 %>% 
-  filter(Site == "San Rafael") %>%
-  group_by(Species) %>% 
-  summarise(total = sum(mean_DTW_m2))
 # Deanza total and species totoal DTW values
-NPD_total_DTW <- SR_NPD_biv_DTWm2 %>% 
+NPD_total_DTW <- NPD_biv_DTW_m2 %>% 
   filter(Site == "Deanza") %>% 
   summarise(total = sum(mean_DTW_m2))
 
-NPD_species_DTW <- SR_NPD_biv_DTWm2 %>% 
+NPD_species_DTW <- NPD_biv_DTW_m2 %>% 
   filter(Site == "Deanza") %>%
   group_by(Species) %>% 
   summarise(total = sum(mean_DTW_m2))
