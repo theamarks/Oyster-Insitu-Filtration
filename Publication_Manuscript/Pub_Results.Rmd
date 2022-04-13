@@ -169,7 +169,7 @@ find_outlier <- function(data){
 }
 ```
 
-```{Graphing_colors_labels}
+```{r, Graphing_colors_labels, include=FALSE}
 
 ############### Site Color Assignments ###############
 viridis(4)
@@ -1121,10 +1121,10 @@ NP_excavation_quad_area = 0.0625
 #### Check above code for calculations
 a <- NPD_bivalve_outrmd %>% 
   group_by(excavation_sample, species) %>% 
-  summarize(total_q_dtw = sum(tissue_dry_weight_g))
+  summarize(total_quad_dtw = sum(tissue_dry_weight_g))
 b <- a %>% 
   group_by(species) %>% 
-  summarize(dtw_mean_q = mean(total_q_dtw))
+  summarize(dtw_mean_q = mean(total_quad_dtw))
 NPD_biv_DTW_m2 <- b %>% 
   mutate(mean_DTW_m2 = dtw_mean_q/NP_excavation_quad_area) %>% 
   mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
