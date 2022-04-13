@@ -1131,19 +1131,15 @@ NPD_biv_DTW_m2 <- b %>%
   rename(Species = species) %>% # rename column with capital case
   dplyr::select(Site, Species, mean_DTW_m2)
 
-## Values to populated text
+###### Values to populated text
 NPD_total_DTW <- NPD_biv_DTW_m2 %>% 
   summarise(total = sum(mean_DTW_m2))
-
-NPD_species_DTW <- NPD_biv_DTW_m2 %>% 
-  group_by(Species) %>% 
-  summarise(total = mean_DTW_m2)
 
 ```
 
 
 Direct biomass data were only available for Deanza, which estimated `r round(NPD_total_DTW, 2)` g/m^2^ of bivalve dry tissue weight (DTW) (Figure \ref{Bivalve_DTW_Biomass}). 
-*O. lurida* had the highest DTW with `r round(NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2],2)` g/m^2^, followed by *M. galloprovincialis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Mytilus galloprovincialis",2],)` g/m^2^), an unknown *Modiolus* sp. (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Unknown mussel",2],2)` g/m^2^), *A. diegensis* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Adula diegensis",2],2)` g/m^2^), and *M. senhousia* (`r round(NPD_species_DTW[NPD_species_DTW$Species=="Musculista senhousia",2],2)` g/m^2^) (Figure \ref{Bivalve_DTW_Biomass}).
+*O. lurida* had the highest DTW with `r round(NPD_biv_DTW_m2[NPD_biv_DTW_m2$Species=="Ostrea lurida",2],2)` g/m^2^, followed by *M. galloprovincialis* (`r round(NPD_biv_DTW_m2[NPD_biv_DTW_m2$Species=="Mytilus galloprovincialis",2],)` g/m^2^), an unknown *Modiolus* sp. (`r round(NPD_biv_DTW_m2[NPD_biv_DTW_m2$Species=="Unknown mussel",2],2)` g/m^2^), *A. diegensis* (`r round(NPD_biv_DTW_m2[NPD_biv_DTW_m2$Species=="Adula diegensis",2],2)` g/m^2^), and *M. senhousia* (`r round(NPD_biv_DTW_m2[NPD_biv_DTW_m2$Species=="Musculista senhousia",2],2)` g/m^2^) (Figure \ref{Bivalve_DTW_Biomass}).
 San Rafael surveys did not directly measure biomass, but did include *O. lurida* shell length measurements which I used to estimate DTW (Figure \ref{Bivalve_DTW_Biomass}) with a model describing the relationship between *O. lurida* shell length and DTW at Deanza (ln(y) = `r round(coef(OlyDTW_loglog_sum)[1,1],digits=2)` `r round(coef(OlyDTW_loglog_sum)[2,1],digits=3)`ln(x), R^2^ = `r round(OlyDTW_loglog_sum$r.squared,digits=2)`, *p* < 0.0001) (Figure \ref{NPD_Oly_DTW_SH_Trans}). 
 I estimated San Rafael had `r round(SR_species_DTW$total,2)` g/m^2^ of *O. lurida* (Figure \ref{Bivalve_DTW_Biomass}).
 A direct comparison between site biomass to HCR was not possible with my limited biomass and shell length data. 
@@ -1183,7 +1179,7 @@ gray_wet_cr_gigas <- 1.06
 wheat_cr_gigas <- 0.73
 
 ## Deanza O.lurida biomass per m^2 of habitat
-npd_dtw_oly <- NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2]
+npd_dtw_oly <- NPD_biv_DTW_m2[NPD_biv_DTW_m2$Species=="Ostrea lurida",2]
 
 # estimate clearance rate with NPD biomass & Gray's model
 NPD_oly_cr_est <- estimate_oly_cr_gray()
