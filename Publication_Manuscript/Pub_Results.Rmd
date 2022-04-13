@@ -1182,7 +1182,10 @@ wheat_cr_gigas <- 0.73
 npd_dtw_oly <- NPD_biv_DTW_mean[NPD_biv_DTW_mean$species=="Ostrea lurida",2]
 
 ## Deanza mean Temperature and organic conent 
-NPD_mean_wq <-
+NPD_mean_wq <- NPD_filter_sum %>% 
+  dplyr::summarise(mean_temp = mean(Temp_C_Up),
+                   mean_OC = mean(Avg_OC_Ratio, na.rm = T))
+  
 
 # estimate clearance rate with NPD biomass & Gray's model
 NPD_oly_cr_est <- estimate_oly_cr_gray()
