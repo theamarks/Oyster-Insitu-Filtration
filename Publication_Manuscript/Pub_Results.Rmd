@@ -1126,7 +1126,7 @@ b <- a %>%
   group_by(species) %>% 
   summarize(mean_quad_dtw = mean(total_quad_dtw))
 NPD_biv_DTW_m2 <- b %>% 
-  mutate(mean_DTW_m2 = mean_quad_dtw/NP_excavation_quad_area) %>% 
+  mutate(mean_DTW_m2 = mean_quad_dtw/NP_excavation_quad_area) %>% # adjust by quadrat area
   mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
   rename(Species = species) %>% # rename column with capital case
   dplyr::select(Site, Species, mean_DTW_m2)
