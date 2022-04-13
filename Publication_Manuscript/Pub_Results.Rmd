@@ -162,18 +162,6 @@ Deanza_PosFilter_data <- Deanza_Filter_data %>%
 ### Average TPM Data ######################
 Avg_TPM_summary_table <- arrange(transform(Avg_TPM_summary_table, Site = factor(Site, levels = site_by_lat)), Site)
 
-############### model formulas ###############
-# linear model formula
-x_y_formula <- y ~ x 
-# Quadratic model
-x2_y_formula <- y ~ poly(x, degree = 2)
-# Exponential model
-logy_x_formula <- log(y) ~ x
-# logx
-y_logx_fomula <- y ~ log(x)
-# double log
-logy_logx_formula <- log(y) ~ log(x)
-
 ### Reporting Restoration vs aquaculture in Abstract
 abstract_num <- Filter_only_outRmd_data %>% 
   mutate(habitat = ifelse(Site %in% c("San Rafael", "Deanza", "Shellmaker"), "Rest", "Aqcltr")) %>%
