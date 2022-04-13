@@ -115,7 +115,7 @@ Control_only_data <- Master_analysis_table %>%
 Filter_only_outRmd_data <- Filtration_only_data %>% 
   filter(round(Chl_ug_L_Up,2) > 0.1 | round(Chl_ug_L_Up,2) < -0.1)
 
-################# Values for Results text #####
+############### Values for populating Results in text #####
 # SR filtration trial data
 SR_filter_sum <- Filter_only_outRmd_data %>% 
   filter(Site %in% c("San Rafael"),
@@ -133,16 +133,14 @@ NPSM_filter_sum <- Filter_only_outRmd_data %>%
   filter(Site %in% c("Shellmaker"),
          Experiment %in% c("Filtration"))
 
-##### Single out NPD 2019_4_17 for stats reporting
+# Single out NPD 2019_4_17 for stats reporting
 NPD_2019_4_17 <- read_csv("output/4_Filtration_Calculations/Insitu_Filter_NPD_2019_4_17.csv")
 NPD_2019_4_17 %<>% filter(Experiment == "Filtration") 
 
-# Deanza data only - all trials
-Deanza_data_all <- Master_analysis_table %>% 
-  filter(Site %in% c("Deanza"))
-# Deanza only - Filtraiton trials only
-Deanza_Filter_data <- Deanza_data_all %>% 
-  filter(Experiment %in% c("Filtration"))
+# Deanza only - Filtration trials only
+Deanza_Filter_data <- Master_analysis_table %>% 
+  filter(Site %in% c("Deanza"),
+         Experiment %in% c("Filtration"))
 # Deanza only- Positive Filtration only
 Deanza_PosFilter_data <- Deanza_Filter_data %>% 
   filter(pcnt_Chl_rmvd > 0)
