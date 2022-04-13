@@ -1124,9 +1124,9 @@ a <- NPD_bivalve_outrmd %>%
   summarize(total_quad_dtw = sum(tissue_dry_weight_g))
 b <- a %>% 
   group_by(species) %>% 
-  summarize(dtw_mean_q = mean(total_quad_dtw))
+  summarize(mean_quad_dtw = mean(total_quad_dtw))
 NPD_biv_DTW_m2 <- b %>% 
-  mutate(mean_DTW_m2 = dtw_mean_q/NP_excavation_quad_area) %>% 
+  mutate(mean_DTW_m2 = mean_quad_dtw/NP_excavation_quad_area) %>% 
   mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
   rename(Species = species) %>% # rename column with capital case
   dplyr::select(Site, Species, mean_DTW_m2)
