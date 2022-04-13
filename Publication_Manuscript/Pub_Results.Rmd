@@ -107,10 +107,6 @@ site_data_outrmd <- Master_analysis_table %>%
 Filtration_only_data <- Master_analysis_table %>% 
   filter(Experiment %in% c("Filtration"))
 
-# Negative Control Trials only 
-Control_only_data <- Master_analysis_table %>% 
-  filter(grepl("Neg*", Master_analysis_table$Experiment))
-
 # Filtration only - remove trials with Chl a within sensor detection limit (+- 0.1ug/L)
 Filter_only_outRmd_data <- Filtration_only_data %>% 
   filter(round(Chl_ug_L_Up,2) > 0.1 | round(Chl_ug_L_Up,2) < -0.1)
@@ -1182,8 +1178,11 @@ gray_wet_cr_gigas <- 1.06
 # M gigas clearance rate L/hr/g grown on long-lines in Willipa Bay, WA
 wheat_cr_gigas <- 0.73
 
-## Deanza O.lurida biomass per m^2 of habitat
+## Deanza Mean O.lurida biomass per 
 npd_dtw_oly <- NPD_biv_DTW_mean[NPD_biv_DTW_mean$species=="Ostrea lurida",2]
+
+## Deanza mean Temperature and organic conent 
+NPD_mean_wq <-
 
 # estimate clearance rate with NPD biomass & Gray's model
 NPD_oly_cr_est <- estimate_oly_cr_gray()
