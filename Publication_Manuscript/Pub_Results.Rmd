@@ -171,6 +171,20 @@ abstract_num <- Filter_only_outRmd_data %>%
             SD = sd(L_hr_m2),
             st_error = SD / sqrt(length(L_hr_m2)))
 
+###################### Functions ####################################
+
+# function to calculate average, standard deviation, outlier data. 
+find_outlier <- function(data){
+  average <- mean(data)
+  stdev <- sd(data)
+  # Outlier data defined by outside 2.2 standard deviations from the mean 
+  outlier <- ifelse((data < (average - 2.2 * stdev) | (data > (average + 2.2 * stdev))),
+         TRUE, FALSE)
+}
+```
+
+```{Graphing_colors_labels}
+
 ############### Site Color Assignments ###############
 viridis(4)
 Site_colors <- c("San Rafael" = "#440154FF",
@@ -198,32 +212,6 @@ Chl_ugL_Label <- expression(paste("Chlorophyll ", alpha, " (", mu, "g/L) "))
 TPM_Label <- c('Total Particulate Matter mg/L')
 PIM_Label <- c('Particulate Inorganic Matter mg/L')
 
-###################### Functions ####################################
-# function for number of samples - display on graph
-n_mean_stats <- function(x){
-  return(tibble(y = max(x) * 0.95, 
-                    label = paste("n = ",length(x), "\n",
-                                  "mean =  ", round(mean(x), 1), '\n')
-                )
-         )
-}
-# function for number of samples - 3 decimal places
-n_mean_stats3 <- function(x){
-  return(tibble(y = max(x) * 0.95, 
-                    label = paste("n = ",length(x), "\n",
-                                  'mean =', round(mean(x), 3), '\n')
-                )
-         )
-}
-
-# function to calculate average, standard deviation, outlier data. 
-find_outlier <- function(data){
-  average <- mean(data)
-  stdev <- sd(data)
-  # Outlier data defined by outside 2.2 standard deviations from the mean 
-  outlier <- ifelse((data < (average - 2.2 * stdev) | (data > (average + 2.2 * stdev))),
-         TRUE, FALSE)
-}
 
 ```
 
