@@ -120,30 +120,18 @@ Filter_only_outRmd_data <- Filtration_only_data %>%
 SR_filter_sum <- Filter_only_outRmd_data %>% 
   filter(Site %in% c("San Rafael"),
          Experiment %in% c("Filtration")) 
-# SR Negative control data
-SR_NC_sum <- Control_only_data %>% 
-  filter(Site %in% c("San Rafael"))
 
 MB_filter_sum <- Filter_only_outRmd_data %>% 
   filter(Site %in% c("Morro Bay"),
          Experiment %in% c("Filtration"))
 
-MB_NC_sum <- Control_only_data %>% 
-  filter(Site %in% c("Morro Bay"))
-
 NPD_filter_sum <- Filter_only_outRmd_data %>% 
   filter(Site %in% c("Deanza"),
          Experiment %in% c("Filtration"))
 
-NPD_NC_sum <- Control_only_data %>% 
-  filter(Site %in% c("Deanza")) 
-
 NPSM_filter_sum <- Filter_only_outRmd_data %>% 
   filter(Site %in% c("Shellmaker"),
          Experiment %in% c("Filtration"))
-
-NPSM_NC_sum <- Control_only_data %>% 
-  filter(Site %in% c("Shellmaker")) 
 
 ##### Single out NPD 2019_4_17 for stats reporting
 NPD_2019_4_17 <- read_csv("output/4_Filtration_Calculations/Insitu_Filter_NPD_2019_4_17.csv")
