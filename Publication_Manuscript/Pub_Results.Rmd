@@ -1405,6 +1405,28 @@ pval = 1-pchisq(chi.sq,3)
 ```
 
 
+```{r Part_select_mosaic_plots}
+# select columns for mosaic plot
+mosaic_table2 <- Results2[,1:5]
+# rearrange data to long format and pull out data from column names
+mosaic_table2 <- mosaic_table2 %>% 
+  pivot_longer(2:5, "particle_size_um", names_prefix = "Mean.Freq.", values_to = "mean_freq")
+# convert particle size and species to discrete factors
+mosaic_table2$particle_size_um <- factor(mosaic_table2$particle_size_um, levels = c(3, 6, 12, 20))
+
+mosaic_table2 <- mosaic_table2 %>% 
+  mutate(Species = replace(Species, Species == "C. gigas", "M. gigas"))
+
+library(ggmosaic)
+
+moasic_plot2 <- ggplot(mosaic_table2) +
+  geom_mosaic(aes(x = product(Species, particle_size_um),
+                  weight = mean_freq,
+                  fill = Species))
+moasic_plot2
+```
+
+
 ## Supplemental / Repository 
 
 
