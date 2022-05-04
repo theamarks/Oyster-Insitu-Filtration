@@ -374,7 +374,8 @@ Tpm_box <- ggplot(Filter_only_outRmd_data, aes(Site, Avg_TPM_mg_L)) +
 #####################
 ####### OC
 #hist(site_data_outrmd$Avg_OC_Ratio)
-site_OC_aov <- aov(Avg_OC_Ratio ~ Site, data = Filter_only_outRmd_data %>% na.omit())
+site_OC_aov <- aov(Avg_OC_Ratio ~ Site, data = Filter_only_outRmd_data %>% 
+                     filter(!is.na(Avg_OC_Ratio)))
 OC_aov_values <- broom::tidy(site_OC_aov)
 
 # Post-Hoc Tukey test
