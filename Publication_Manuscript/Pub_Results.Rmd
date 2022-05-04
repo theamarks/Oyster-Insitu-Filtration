@@ -106,10 +106,6 @@ site_data_outrmd <- Master_analysis_table %>%
 Filtration_only_data <- Master_analysis_table %>% 
   filter(Experiment %in% c("Filtration"))
 
-# Negative Control Trials only 
-Control_only_data <- Master_analysis_table %>% 
-  filter(grepl("Neg*", Master_analysis_table$Experiment))
-
 # Filtration only - remove trials with Chl a within sensor detection limit (+- 0.1ug/L)
 Filter_only_outRmd_data <- Filtration_only_data %>% 
   filter(round(Chl_ug_L_Up,2) > 0.1 | round(Chl_ug_L_Up,2) < -0.1)
