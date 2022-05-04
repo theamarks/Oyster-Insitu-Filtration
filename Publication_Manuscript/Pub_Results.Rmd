@@ -1120,12 +1120,13 @@ NP_excavation_quad_area = 0.0625
  ###### ^^^^^ end of incorrect code ^^^ 
 
 #### Check above code for calculations
+
+# sum the total DTW (g) within each excavation sample by species
 a <- NPD_bivalve_outrmd %>% 
   group_by(excavation_sample, species) %>% 
   summarize(total_q_dtw = sum(tissue_dry_weight_g)) %>% 
   ungroup() 
-
-# fill in implicit zeros(NA) to data
+# fill in implicit zeros(NA) to dataframe
 a2 <- a %>% 
   complete(excavation_sample, species) %>% 
   replace_na(list(total_q_dtw = 0))
@@ -1135,18 +1136,18 @@ b <- a2 %>%
   summarize(dtw_mean_q = mean(total_q_dtw))
 # adjust per m^2
 NPD_biv_DTW_m2 <- b %>% 
-  mutate(mean_DTW_m2 = dtw_mean_q/NP_excavation_quad_area) %>% 
+  mutate(mean_DTW_g_m2 = dtw_mean_q/NP_excavation_quad_area) %>% 
   mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
   rename(Species = species) %>% # rename column with capital case
-  dplyr::select(Site, Species, mean_DTW_m2)
+  dplyr::select(Site, Species, mean_DTW_g_m2)
 
 ## Values to populated text
 NPD_total_DTW <- NPD_biv_DTW_m2 %>% 
-  summarise(total = sum(mean_DTW_m2))
+  summarise(total = sum(mean_DTW_g_m2))
 
 # Keep object names for text reporting
 NPD_species_DTW <- NPD_biv_DTW_m2 %>% 
-  dplyr::select(Species, mean_DTW_m2)
+  dplyr::select(Species, mean_DTW_g_m2)
 
 ```
 
@@ -1158,7 +1159,7 @@ Direct biomass data were only available for Deanza, which estimated `r round(NPD
 
 ####### Bar graph NPD Biomass / DTW by species
 Bivalve_Biomass_graph <- ggplot(NPD_biv_DTW_m2, aes(Site)) + 
-  geom_col(aes(x = Site, y = mean_DTW_m2, fill = Species)) +
+  geom_col(aes(x = Site, y = mean_DTW_g_m2, fill = Species)) +
   theme_classic() +
   scale_fill_manual(values = Species_colors) +
   theme(legend.text = element_text(face = "italic")) +
@@ -1175,20 +1176,14 @@ Bivalve_Biomass_graph
 # O. lurida clearance rate mean L/hr/g (DTW) Yaquina Bay, OR
 gray_dry_cr_oly <- 0.78 # Dry season
 gray_wet_cr_oly <- 0.19 # Wet season
-# O. lurida all season model insitu - as selected by stepwise regression analysis of temp, salinity, total particulate matter, organic content. 
-estimate_oly_cr_gray <- function (temp, OC){
-  clearance = -0.95 + 2.49*OC + 0.06*temp
+
+# O. lurida all season model insitu - as selected by stepwise regression analysis of temp, salinity, total particulate matter, organic content. Per 1 g of biomass DTW
+estimate_oly_cr_gray <- function (temp, OC, biomass_g){
+  clearance = (-0.95 + 2.49*OC + 0.06*temp)*biomass_g
   return(clearance)
   }
-# M. gigas clearance rate mean L/hr/g (DTW)
-gray_dry_cr_gigas <- 0.95
-gray_wet_cr_gigas <- 1.06
 
-## Wheat & Ruesink (2013)
-# M gigas clearance rate L/hr/g grown on long-lines in Willipa Bay, WA
-wheat_cr_gigas <- 0.73
-
-## Deanza O.lurida biomass per m^2 of habitat
+## Deanza O.lurida grams biomass per m^2 of habitat
 npd_dtw_oly <- NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2]
 
 # Mean Seston Organic Content - Deanza
@@ -1197,8 +1192,17 @@ npd_OC <- mean(NPD_TPM_OC$Avg_OC_Ratio)
 # Mean Temperature - Deanza
 npd_temp <- mean(Filter_only_outRmd_data[Filter_only_outRmd_data[,Site == "Deanza"], "Temp_C_Up"]$Temp_C_Up)
 
-# estimate clearance rate with NPD biomass & Gray's model
-NPD_oly_cr_est <- estimate_oly_cr_gray(npd_temp, npd_OC)
+# estimate clearance rate with NPD biomass & Gray's model 
+NPD_oly_cr_est <- estimate_oly_cr_gray(npd_temp, npd_OC, npd_dtw_oly)
+
+#### 
+# M. gigas clearance rate mean L/hr/g (DTW)
+gray_dry_cr_gigas <- 0.95
+gray_wet_cr_gigas <- 1.06
+
+## Wheat & Ruesink (2013)
+# M gigas clearance rate L/hr/g grown on long-lines in Willipa Bay, WA
+wheat_cr_gigas <- 0.73
 
 ```
 
