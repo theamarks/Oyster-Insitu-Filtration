@@ -1194,8 +1194,12 @@ NPD_oly_cr_est <- estimate_oly_cr_gray(Temp = NPD_mean_wq$mean_temp,
 NPD_oly_hcr_est <- NPD_oly_cr_est*npd_dtw_oly
 ```
 
-## Supplemental / Repository 
+```{r, Gray_particle_selection}
 
+### Add code here for Particle seleciton analysis and graph
+```
+
+## Supplemental / Repository 
 
 ```{r HCR_Quantile_Regression, fig.width=7, fig.asp=1.2, warning=F, message = F, fig.cap="The relationship between water quality variables and habitat clearance rate (HCR). For all oyster habitat filtration trials, quantile regression with $\\tau$ = 0.5 and $\\tau$ = 0.9 was used to test wheather HCR changed with A) temperature, B) salinity, C) turbidity, D) total particulate matter, or E) organic content; slopes that are not significantly different from zero are indicated by red dashed lines. Dotted gray lines are the mean value of HCR. \\label{Quantile_Reg}"}
 #create model variables
