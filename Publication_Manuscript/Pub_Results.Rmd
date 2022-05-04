@@ -860,8 +860,6 @@ NP_combo_TPM_OC <- TPM_OC_Values %>%
 
 ## Seston Quantity and Quality
 
-Total Particulate Matter (TPM) was significantly related to seston OC when sites were combined  (Figure \ref{TPM_OC_model}). 
-This model includes all field days (filtration and controls) because water samples used to determine TPM and OC were collected the same way regardless of the trial. 
 Northern San Francisco Bay (San Rafael) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`), and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`) (Figure \ref{TPM_OC_model}).
 Newport Bay (Deanza and Shellmaker) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
 Northern San Francisco Bay (San Rafael) OC averaged `r round(mean(SR_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_OC_Ratio),2)`), and Morro Bay OC averaged `r round(mean(MB_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_OC_Ratio,2))`).
