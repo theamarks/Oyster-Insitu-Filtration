@@ -1122,10 +1122,18 @@ NP_excavation_quad_area = 0.0625
 #### Check above code for calculations
 a <- NPD_bivalve_outrmd %>% 
   group_by(excavation_sample, species) %>% 
-  summarize(total_q_dtw = sum(tissue_dry_weight_g))
-b <- a %>% 
+  summarize(total_q_dtw = sum(tissue_dry_weight_g)) %>% 
+  ungroup() 
+
+# fill in implicit zeros(NA) to data
+a2 <- a %>% 
+  complete(excavation_sample, species) %>% 
+  replace_na(list(total_q_dtw = 0))
+# take mean DTW across quadrats
+b <- a2 %>% 
   group_by(species) %>% 
   summarize(dtw_mean_q = mean(total_q_dtw))
+# adjust per m^2
 NPD_biv_DTW_m2 <- b %>% 
   mutate(mean_DTW_m2 = dtw_mean_q/NP_excavation_quad_area) %>% 
   mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
@@ -1136,9 +1144,9 @@ NPD_biv_DTW_m2 <- b %>%
 NPD_total_DTW <- NPD_biv_DTW_m2 %>% 
   summarise(total = sum(mean_DTW_m2))
 
+# Keep object names for text reporting
 NPD_species_DTW <- NPD_biv_DTW_m2 %>% 
-  group_by(Species) %>% 
-  summarise(total = mean_DTW_m2)
+  dplyr::select(Species, mean_DTW_m2)
 
 ```
 
