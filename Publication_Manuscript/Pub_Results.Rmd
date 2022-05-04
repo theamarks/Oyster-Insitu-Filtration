@@ -1,5 +1,4 @@
 ---
-bibliography: library.bib
 csl: inter-research-science-center.csl
 header-includes: 
 - \usepackage{setspace}
