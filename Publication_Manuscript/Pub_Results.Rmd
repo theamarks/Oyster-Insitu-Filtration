@@ -1133,7 +1133,8 @@ a2 <- a %>%
 # take mean DTW across quadrats
 b <- a2 %>% 
   group_by(species) %>% 
-  summarize(dtw_mean_q = mean(total_q_dtw))
+  summarize(dtw_mean_q = mean(total_q_dtw)) %>% 
+  ungroup()
 # adjust per m^2
 NPD_biv_DTW_m2 <- b %>% 
   mutate(mean_DTW_g_m2 = dtw_mean_q/NP_excavation_quad_area) %>% 
@@ -1184,7 +1185,7 @@ estimate_oly_cr_gray <- function (temp, OC, biomass_g){
   }
 
 ## Deanza O.lurida grams biomass per m^2 of habitat
-npd_dtw_oly <- NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida",2]
+npd_dtw_oly <- as.numeric(NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida","mean_DTW_g_m2"])
 
 # Mean Seston Organic Content - Deanza
 npd_OC <- mean(NPD_TPM_OC$Avg_OC_Ratio)
