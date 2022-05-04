@@ -1395,7 +1395,7 @@ pval = 1-pchisq(chi.sq,3)
 ```
 
 
-```{r Part_select_equal_mosaic_plots, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Caption Needed From Matt"}
+```{r Particle_volume_mosaic_plot, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Caption Needed From Matt"}
 # select columns for mosaic plot
 mosaic_table2 <- Results2[,1:5]
 # rearrange data to long format and pull out data from column names
@@ -1433,7 +1433,7 @@ moasic_plot2 <- ggplot(mosaic_table2) +
 moasic_plot2
 ```
 
-```{r}
+```{r Particle_conc_mosaic_plot, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Caption Needed From Matt"}
 # select columns for mosaic plot
 mosaic_table3 <- Results3[,1:5]
 # rearrange data to long format and pull out data from column names
