@@ -17,3 +17,4 @@ THESIS.log
 .Rprofile
 renv/
 renv.lock
+output/
