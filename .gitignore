@@ -2,10 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
-Insitu_Filtration_Model_Analysis_files
-Insitu_Filtration_Model_Analysis_cache
-Insitu_Filtration_Analysis_script_files
-Insitu_Filtration_Analysis_script_cache
+Insitu_Filtration_Model_Analysis_files/
+Insitu_Filtration_Model_Analysis_cache/
+Insitu_Filtration_Analysis_script_files/
+Insitu_Filtration_Analysis_script_cache/
 Insitu_Filtration_Analysis_script.html
 Test Graph Code for DZ.R
 .DS_Store
