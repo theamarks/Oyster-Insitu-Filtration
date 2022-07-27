@@ -9,3 +9,11 @@ Insitu_Filtration_Analysis_script_cache
 Insitu_Filtration_Analysis_script.html
 Test Graph Code for DZ.R
 .DS_Store
+THESIS.log
+**/logs
+/THESIS_cache
+**/tex
+**/aux
+.Rprofile
+renv/
+renv.lock
