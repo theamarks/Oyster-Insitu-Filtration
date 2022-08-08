@@ -6,7 +6,6 @@ M.S. Biology / Marine Ecology
 Graduate Thesis for  
 Department of Biological Sciences  
 California State University Fullerton
-----------
 
 Advisor: Dr. Danielle Zacherl (CSUF)  
 Committee: Dr. Doug Eernisse (CSUF), Dr. Paul Stapp (CSUF), Dr. Ted Grosholz (UC Davis)  
