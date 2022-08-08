@@ -1,28 +1,22 @@
-# Oyster-Insitu-Filtration
+# *In situ* Clearance Rates of Olympia Oyster (*Ostrea lurida*) Habitat and Japanese Oyster (*Magallana gigas*) Aquaculture in California
 
-## *In situ* Clearance Rates of Olympia Oyster (*Ostrea lurida*) Habitat and Japanese Oyster (*Magallana gigas*) Aquaculture in California
+Althea N. Marks  
+M.S. Biology / Marine Ecology
 
-Althea N. Marks
-
-Masters in Biology
-
+Graduate Thesis for  
+Department of Biological Sciences  
 California State University Fullerton
+----------
 
-theamarks 'at' csu 'dot' fullerton 'dot' edu
-
------------
-
-Advisor: Dr. Danielle Zacherl (CSUF)
-
-Committee: Dr. Doug Eernisse (CSUF), Dr. Paul Stapp (CSUF), Dr. Ted Grosholz (UC Davis)
-
-Statistical Consulting: Dr. Kevin Nichols (CSUF)
-
+Advisor: Dr. Danielle Zacherl (CSUF)  
+Committee: Dr. Doug Eernisse (CSUF), Dr. Paul Stapp (CSUF), Dr. Ted Grosholz (UC Davis)  
+Statistical Consulting: Dr. Kevin Nichols (CSUF)  
+Programming Consulting: Sarthak Saini 
 
 
 [![DOI](https://zenodo.org/badge/211166776.svg)](https://zenodo.org/badge/latestdoi/211166776)
 
-Session Info:
+### Session Info & package versions need to run:
 
 R version 3.6.3 (2020-02-29)
 Platform: x86_64-apple-darwin15.6.0 (64-bit)
