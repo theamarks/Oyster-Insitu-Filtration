@@ -15,6 +15,11 @@ Programming Consulting: Sarthak Saini
 
 [![DOI](https://zenodo.org/badge/211166776.svg)](https://zenodo.org/badge/latestdoi/211166776)
 
+### Status
+
+In prep for publication 2022
+M.S. completed 2021
+
 ### Session Info & package versions need to run:
 
 R version 3.6.3 (2020-02-29)
