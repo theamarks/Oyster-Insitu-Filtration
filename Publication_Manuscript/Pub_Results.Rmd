@@ -205,206 +205,6 @@ PIM_Label <- c('Particulate Inorganic Matter mg/L')
 
 ```
 
-```{r Site WQ ANOVA, fig.width=7, fig.asp=1.2, fig.cap="Box plots of ambient (upstream) A) temperature, B) salinity, C) turbidity, D) total particulate matter, E) organic content, and F) chlorophyll $\\alpha$ from filtration trials. One-way ANOVAs compared the difference between water quality variables and site. Significantly different results were grouped by a post-hoc Tukey's HSD; significantly different sites do not share a common letter, and non-significant differences share letters. Site effects on OC were significant, and a Newman-Keuls post-hoc analysis determined a significant difference between San Rafael and Deanza undetected by Tukey's HSD. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company, aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
-
-#########################
-###### Temperature 
-#hist(Filter_only_outRmd_data$Temp_C_Up)
-site_temp_aov <- aov(Temp_C_Up ~ Site, data = Filter_only_outRmd_data)
-#summary(site_temp_aov)
-temp_aov_values <- broom::tidy(site_temp_aov) # put ANOVA model into tibble to extract individual values
-# Post-Hoc Tukey test
-tukey_temp <- TukeyHSD(site_temp_aov)
-#tukey_temp
-#plot(tukey_temp)
-
-#Honestly Significant Difference test --> Don't need if non-significant ANOVA
-hds_temp <- HSD.test(site_temp_aov, trt = "Site")
-#hds_temp
-
-Temp_box <- ggplot(Filter_only_outRmd_data, aes(Site, Temp_C_Up)) +
-  geom_boxplot(color = Site_colors) + 
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = 'Site',
-       y = expression(paste("Temperature (",degree, "C)")),
-       title = "A)")
-
-#########################
-####### Salinity
-#hist(site_data_outrmd$Sal_ppt_Up)
-site_sal_aov <- aov(Sal_ppt_Up ~ Site, data = Filter_only_outRmd_data)
-sal_aov_values <- broom::tidy(site_sal_aov)
-
-# Post-Hoc Tukey test
-tukey_sal <- TukeyHSD(site_sal_aov)
-#tukey_sal
-#plot(tukey_sal)
-
-#Honestly Significant Difference test
-hds_sal <- HSD.test(site_sal_aov, trt = "Site")
-#hds_sal
-
-Sal_box <- ggplot(Filter_only_outRmd_data, aes(Site, Sal_ppt_Up)) +
-  geom_boxplot(color = Site_colors) + 
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = 'Site',
-       y = "Salinity (ppt)",
-       title = "B)") +
-  annotate("text", "San Rafael", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "San Rafael"))$Sal_ppt_Up) + 0.75, label = "a") +
-  annotate("text", "Morro Bay", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "Morro Bay"))$Sal_ppt_Up) + 0.75, label = "b") +
-  annotate("text", "Shellmaker", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "Shellmaker"))$Sal_ppt_Up) + 0.75, label = "b") +
-  annotate("text", "Deanza", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "Deanza"))$Sal_ppt_Up) + 0.75, label = "b") 
-
-###########################
-######### Turbidity
-#hist(site_data_outrmd$Turbidity_NTU_Up)
-site_turb_aov <- aov(Turbidity_NTU_Up ~ Site, data = Filter_only_outRmd_data)
-turb_aov_values <- broom::tidy(site_turb_aov)
-
-# Post-Hoc Tukey test
-tukey_turb <- TukeyHSD(site_turb_aov)
-#tukey_turb
-#plot(tukey_turb)
-
-#Honestly Significant Difference test
-hds_turb <- HSD.test(site_turb_aov, trt = "Site")
-#hds_turb
-
-Turb_box <- ggplot(Filter_only_outRmd_data, aes(Site, Turbidity_NTU_Up)) +
-  geom_boxplot(color = Site_colors) + 
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = 'Site',
-       y = "Turbidity (NTU)",
-       title = "C)") +
-  annotate("text", "San Rafael", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "San Rafael"))$Turbidity_NTU_Up) + 2, 
-           label = "a") +
-  annotate("text", "Morro Bay", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "Morro Bay"))$Turbidity_NTU_Up) + 2, 
-           label = "b") +
-  annotate("text", "Shellmaker", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "Shellmaker"))$Turbidity_NTU_Up) + 2, 
-           label = "c") +
-  annotate("text", "Deanza", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "Deanza"))$Turbidity_NTU_Up) + 2, 
-           label = "c") 
-
-########################
-####### TPM
-#hist(site_data_outrmd$Avg_TPM_mg_L)
-site_TPM_aov <- aov(Avg_TPM_mg_L ~ Site, data = Filter_only_outRmd_data)
-TPM_aov_values <- broom::tidy(site_TPM_aov)
-
-# Post-Hoc Tukey test
-tukey_tpm <- TukeyHSD(site_TPM_aov)
-#tukey_tpm
-#plot(tukey_tpm)
-
-#Honestly Significant Difference test
-hds_tpm <- HSD.test(site_TPM_aov, trt = "Site")
-#hds_tpm
-
-Tpm_box <- ggplot(Filter_only_outRmd_data, aes(Site, Avg_TPM_mg_L)) +
-  geom_boxplot(color = Site_colors) + 
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = 'Site',
-       y = expression(paste("Total Particulate Matter (mg/L)")),
-       title = "D)") +
-  annotate("text", "San Rafael", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "San Rafael"))$Avg_TPM_mg_L) + 10, label = "a") +
-  annotate("text", "Morro Bay", 
-           max((site_data_outrmd %>% 
-                  na.omit() %>% 
-                  filter(Site == "Morro Bay"))$Avg_TPM_mg_L) + 10, label = "b") +
-  annotate("text", "Shellmaker", 
-           max((site_data_outrmd %>% 
-                  filter(Site == "Shellmaker"))$Avg_TPM_mg_L) + 10, label = "b") +
-  annotate("text", "Deanza", 
-           max((site_data_outrmd %>% 
-                  na.omit() %>% 
-                  filter(Site == "Deanza"))$Avg_TPM_mg_L) + 10, label = "b") 
-
-#####################
-####### OC
-#hist(site_data_outrmd$Avg_OC_Ratio)
-site_OC_aov <- aov(Avg_OC_Ratio ~ Site, data = Filter_only_outRmd_data %>% 
-                     filter(!is.na(Avg_OC_Ratio)))
-OC_aov_values <- broom::tidy(site_OC_aov)
-
-# Post-Hoc Tukey test
-tukey_oc <- TukeyHSD(site_OC_aov)
-
-#Honestly Significant Difference test
-hds_oc <- HSD.test(site_OC_aov, trt = "Site")
-# Not not showing differences between sites
-
-# Less conservative Post-hoc analysis - Newman-keuls (also good for simple group structure)
-library(DescTools)
-NK_oc <- PostHocTest(site_OC_aov, method = "newmankeuls", conf.level = 0.95)
-
-OC_box <- ggplot(Filter_only_outRmd_data, aes(Site, Avg_OC_Ratio)) +
-  geom_boxplot(color = Site_colors) + 
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = 'Site',
-       y = "Organic Content (Ratio)",
-       title = "E)")
-
-#########################
-###### Chlorphyll
-#hist(site_data_outrmd$Chl_ug_L_Up)
-site_chl_aov <- aov(Chl_ug_L_Up ~ Site, data = Filter_only_outRmd_data)
-#summary(site_chl_aov)
-chl_aov_values <- broom::tidy(site_chl_aov) # put ANOVA model into tibble to extract individual values
-# Post-Hoc Tukey test
-tukey_chl <- TukeyHSD(site_chl_aov, ordered = FALSE, conf.level = 0.95)
-#tukey_chl
-#plot(tukey_chl)
-
-#Honestly Significant Difference test
-hds_chl <- HSD.test(site_chl_aov, trt = "Site")
-#hds_chl
-
-Chl_box <- ggplot(Filter_only_outRmd_data, aes(Site, Chl_ug_L_Up)) +
-  geom_boxplot(color = Site_colors) + 
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = 'Site',
-       y = expression(paste("Chlorophyll ",alpha, " (", mu,"g/L)")),
-       title = "F)") 
-
-grid.arrange(Temp_box, Sal_box, Turb_box, Tpm_box, OC_box, Chl_box,nrow=3)
-```
-
 # Results
 
 Twenty-one filtration trials, across the four study sites, were included in the analyses. 
@@ -1468,6 +1268,207 @@ moasic_plot3
 
 
 ## Supplemental / Repository 
+
+```{r Site WQ ANOVA, fig.width=7, fig.asp=1.2, fig.cap="Box plots of ambient (upstream) A) temperature, B) salinity, C) turbidity, D) total particulate matter, E) organic content, and F) chlorophyll $\\alpha$ from filtration trials. One-way ANOVAs compared the difference between water quality variables and site. Significantly different results were grouped by a post-hoc Tukey's HSD; significantly different sites do not share a common letter, and non-significant differences share letters. Site effects on OC were significant, and a Newman-Keuls post-hoc analysis determined a significant difference between San Rafael and Deanza undetected by Tukey's HSD. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company, aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
+
+###### Temperature 
+#hist(Filter_only_outRmd_data$Temp_C_Up)
+site_temp_aov <- aov(Temp_C_Up ~ Site, data = Filter_only_outRmd_data)
+#summary(site_temp_aov)
+temp_aov_values <- broom::tidy(site_temp_aov) # put ANOVA model into tibble to extract individual values
+# Post-Hoc Tukey test
+tukey_temp <- TukeyHSD(site_temp_aov)
+#tukey_temp
+#plot(tukey_temp)
+
+#Honestly Significant Difference test --> Don't need if non-significant ANOVA
+hds_temp <- HSD.test(site_temp_aov, trt = "Site")
+#hds_temp
+
+Temp_box <- ggplot(Filter_only_outRmd_data, aes(Site, Temp_C_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = expression(paste("Temperature (",degree, "C)")),
+       title = "A)")
+
+####### Salinity
+#hist(site_data_outrmd$Sal_ppt_Up)
+site_sal_aov <- aov(Sal_ppt_Up ~ Site, data = Filter_only_outRmd_data)
+sal_aov_values <- broom::tidy(site_sal_aov)
+
+# Post-Hoc Tukey test
+tukey_sal <- TukeyHSD(site_sal_aov)
+#tukey_sal
+#plot(tukey_sal)
+
+#Honestly Significant Difference test
+hds_sal <- HSD.test(site_sal_aov, trt = "Site")
+#hds_sal
+
+Sal_box <- ggplot(Filter_only_outRmd_data, aes(Site, Sal_ppt_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = "Salinity (ppt)",
+       title = "B)") +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Sal_ppt_Up) + 0.75, label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Morro Bay"))$Sal_ppt_Up) + 0.75, label = "b") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Sal_ppt_Up) + 0.75, label = "b") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Deanza"))$Sal_ppt_Up) + 0.75, label = "b") 
+
+######### Turbidity
+#hist(site_data_outrmd$Turbidity_NTU_Up)
+site_turb_aov <- aov(Turbidity_NTU_Up ~ Site, data = Filter_only_outRmd_data)
+turb_aov_values <- broom::tidy(site_turb_aov)
+
+# Post-Hoc Tukey test
+tukey_turb <- TukeyHSD(site_turb_aov)
+#tukey_turb
+#plot(tukey_turb)
+
+#Honestly Significant Difference test
+hds_turb <- HSD.test(site_turb_aov, trt = "Site")
+#hds_turb
+
+Turb_box <- ggplot(Filter_only_outRmd_data, aes(Site, Turbidity_NTU_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = "Turbidity (NTU)",
+       title = "C)") +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Turbidity_NTU_Up) + 2, 
+           label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Morro Bay"))$Turbidity_NTU_Up) + 2, 
+           label = "b") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Turbidity_NTU_Up) + 2, 
+           label = "c") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Deanza"))$Turbidity_NTU_Up) + 2, 
+           label = "c") 
+
+####### TPM
+#hist(site_data_outrmd$Avg_TPM_mg_L)
+site_TPM_aov <- aov(Avg_TPM_mg_L ~ Site, data = Filter_only_outRmd_data)
+TPM_aov_values <- broom::tidy(site_TPM_aov)
+
+# Post-Hoc Tukey test
+tukey_tpm <- TukeyHSD(site_TPM_aov)
+#tukey_tpm
+#plot(tukey_tpm)
+
+#Honestly Significant Difference test
+hds_tpm <- HSD.test(site_TPM_aov, trt = "Site")
+#hds_tpm
+
+Tpm_box <- ggplot(Filter_only_outRmd_data, aes(Site, Avg_TPM_mg_L)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = expression(paste("Total Particulate Matter (mg/L)")),
+       title = "D)") +
+  annotate("text", "San Rafael", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "San Rafael"))$Avg_TPM_mg_L) + 10, label = "a") +
+  annotate("text", "Morro Bay", 
+           max((site_data_outrmd %>% 
+                  na.omit() %>% 
+                  filter(Site == "Morro Bay"))$Avg_TPM_mg_L) + 10, label = "b") +
+  annotate("text", "Shellmaker", 
+           max((site_data_outrmd %>% 
+                  filter(Site == "Shellmaker"))$Avg_TPM_mg_L) + 10, label = "b") +
+  annotate("text", "Deanza", 
+           max((site_data_outrmd %>% 
+                  na.omit() %>% 
+                  filter(Site == "Deanza"))$Avg_TPM_mg_L) + 10, label = "b") 
+
+####### OC
+#hist(site_data_outrmd$Avg_OC_Ratio)
+site_OC_aov <- aov(Avg_OC_Ratio ~ Site, data = Filter_only_outRmd_data %>% 
+                     filter(!is.na(Avg_OC_Ratio)))
+OC_aov_values <- broom::tidy(site_OC_aov)
+
+# Post-Hoc Tukey test
+tukey_oc <- TukeyHSD(site_OC_aov)
+
+#Honestly Significant Difference test
+hds_oc <- HSD.test(site_OC_aov, trt = "Site")
+# Not not showing differences between sites
+
+# Less conservative Post-hoc analysis - Newman-keuls (also good for simple group structure)
+library(DescTools)
+NK_oc <- PostHocTest(site_OC_aov, method = "newmankeuls", conf.level = 0.95)
+
+OC_box <- ggplot(Filter_only_outRmd_data, aes(Site, Avg_OC_Ratio)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = "Organic Content (Ratio)",
+       title = "E)")
+
+###### Chlorphyll
+#hist(site_data_outrmd$Chl_ug_L_Up)
+site_chl_aov <- aov(Chl_ug_L_Up ~ Site, data = Filter_only_outRmd_data)
+#summary(site_chl_aov)
+chl_aov_values <- broom::tidy(site_chl_aov) # put ANOVA model into tibble to extract individual values
+# Post-Hoc Tukey test
+tukey_chl <- TukeyHSD(site_chl_aov, ordered = FALSE, conf.level = 0.95)
+#tukey_chl
+#plot(tukey_chl)
+
+#Honestly Significant Difference test
+hds_chl <- HSD.test(site_chl_aov, trt = "Site")
+#hds_chl
+
+Chl_box <- ggplot(Filter_only_outRmd_data, aes(Site, Chl_ug_L_Up)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = expression(paste("Chlorophyll ",alpha, " (", mu,"g/L)")),
+       title = "F)") 
+
+grid.arrange(Temp_box, Sal_box, Turb_box, Tpm_box, OC_box, Chl_box,nrow=3)
+```
+
+
+Ambient water quality during filtration trials varied within and among sites (Figure \ref{Site_WQ_boxplot}). 
+Salinity was significantly different among sites as determined by a one-way ANOVA at a *p* < 0.05 (*F*(`r sal_aov_values[[1,2]]`, `r sal_aov_values[[2,2]]`) = `r round(sal_aov_values[[1,5]],2)`, *p* < 0.001), along with turbidity (*F*(`r turb_aov_values[[1,2]]`, `r turb_aov_values[[2,2]]`) = `r round(turb_aov_values[[1,5]],2)`, *p* < 0.001), and TPM (*F*(`r TPM_aov_values[[1,2]]`, `r TPM_aov_values[[2,2]]`) = `r round(TPM_aov_values[[1,5]],2)`, *p* = < 0.001) (Figure \ref{Site_WQ_boxplot}).  
+Temperature (*F*(`r temp_aov_values[[1,2]]`, `r temp_aov_values[[2,2]]`) = `r round(temp_aov_values[[1,5]],2)`, *p* = `r format(round(temp_aov_values[[1,6]],2), nsmall = 2)`), and Chl $\alpha$ (*F*(`r chl_aov_values[[1,2]]`, `r chl_aov_values[[2,2]]`) = `r round(chl_aov_values[[1,5]],2)`, *p* = `r round(chl_aov_values[[1,6]],2)`) were not different among sites (Figure \ref{Site_WQ_boxplot}).
+OC was significant among sites (*F*(`r OC_aov_values[[1,2]]`, `r OC_aov_values[[2,2]]`) = `r round(OC_aov_values[[1,5]],2)`, *p* = `r round(OC_aov_values[[1,6]],2)`), but the post-hoc Tukey HSD did not reveal significant differences among sites. 
+Therefore, I use a less conservative post-hoc analysis, the Newman-Keuls method, and found that OC was significantly different between Shellmaker and Deanza (*p* = `r round(NK_oc$Site[[3,4]],2)`).
 
 ```{r HCR_Quantile_Regression, eval=FALSE, fig.width=7, fig.asp=1.2, warning=F, message = F, fig.cap="The relationship between water quality variables and habitat clearance rate (HCR). For all oyster habitat filtration trials, quantile regression with $\\tau$ = 0.5 and $\\tau$ = 0.9 was used to test wheather HCR changed with A) temperature, B) salinity, C) turbidity, D) total particulate matter, or E) organic content; slopes that are not significantly different from zero are indicated by red dashed lines. Dotted gray lines are the mean value of HCR. \\label{Quantile_Reg}"}
 #create model variables
