@@ -37,7 +37,7 @@ knitr::opts_chunk$set(echo = FALSE,
 
 ```
 
-```{r load_packages_data, include=FALSE}
+```{r load_packages, include=FALSE}
 ################### Packages ###########################
 library(dplyr)
 library(tidyr)
@@ -71,22 +71,28 @@ library(grid) # makes test grobs useful for multiframe figures
 library(pwr) # Power analysis
 library(data.table)
 library(sqldf) # kevin partical analysis
+```
 
+```{r create_directories, include=FALSE}
 # source functions 
 source("./functions.R")
 # define output directory
 output_directory = "./output"
 # create output directories (same as Insitu_Filtraiton_Analysis_script.Rmd)
 createOutputDirectories()
+```
 
+```{r read_in_data, include=FALSE}
 ##################### Read in Data from  project output ##########################
 All_data <- fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
 Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
 Density_directory = "./Data/bivalve_density_community"
 NPD_bivalves = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
 Sbs_correction_data = fread(file.path('./output/6_Sbs_Corrections_Summary', "sbs_correction_summary.csv"))
+```
 
 
+```{r setup_data_wrangling, include=FALSE}
 ##################### Data #########################################
 # Remove San Diego filtration trial - not applicable to this analysis - different experimental set up
 Master_analysis_table <- All_data %>% 
@@ -110,8 +116,9 @@ Filtration_only_data <- Master_analysis_table %>%
 # Filtration only - remove trials with Chl a within sensor detection limit (+- 0.1ug/L)
 Filter_only_outRmd_data <- Filtration_only_data %>% 
   filter(round(Chl_ug_L_Up,2) > 0.1 | round(Chl_ug_L_Up,2) < -0.1)
+```
 
-############### Values for populating Results in text #####
+```{r values_for_text, include=FALSE}
 # SR filtration trial data
 SR_filter_sum <- Filter_only_outRmd_data %>% 
   filter(Site %in% c("San Rafael"),
@@ -153,7 +160,9 @@ abstract_num <- Filter_only_outRmd_data %>%
   summarise(mean_HCR = mean(L_hr_m2),
             SD = sd(L_hr_m2),
             st_error = SD / sqrt(length(L_hr_m2)))
+```
 
+```{r functions, include=FALSE}
 ###################### Functions ####################################
 
 # function to calculate average, standard deviation, outlier data. 
@@ -166,8 +175,7 @@ find_outlier <- function(data){
 }
 ```
 
-```{r, Graphing_colors_labels, include=FALSE}
-
+```{r, figure_setup, include=FALSE}
 ############### Site Color Assignments ###############
 viridis(4)
 Site_colors <- c("San Rafael" = "#440154FF",
