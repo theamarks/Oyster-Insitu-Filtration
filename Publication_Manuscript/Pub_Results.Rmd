@@ -1394,52 +1394,12 @@ mosaic_table2$Species <- as.character(mosaic_table2$Species)
 # replace gigas with magallana
 mosaic_table2 %<>%
   mutate(Species = replace(Species, Species %in% c("C. gigas"), "M. gigas"))
-  
 
 # moasic plots 
 library(ggmosaic) 
 moasic_colors  <- c("M. gigas" = "#6D6340",
                     "O. lurida" = "#9986A5",
                     "Control" = "black")
-part_label <- expression(paste("Particle Size Groups(", mu, "m)"))
-
-moasic_plot2 <- ggplot(mosaic_table2) +
-  geom_mosaic(aes(x = product(Species, particle_size_um), 
-                  fill = Species, 
-                  weight = mean_freq),
-              offset = 0.01,
-              alpha = 1) +
-  scale_fill_manual(values = moasic_colors) +
-  labs(y = "", 
-       x = part_label, 
-       title = "Frequencey of Artifical Particles Among Individuals",
-       subtitle = "Equal Volume of Particle Sizes") +
-  theme(axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        legend.position = "right",
-        panel.background = element_blank(),
-        legend.text = element_text(face = "italic")
-        )
-moasic_plot2
-```
-
-
-```{r Part_select_equal_mosaic_plots, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Caption Needed From Matt"}
-# select columns for mosaic plot
-mosaic_table2 <- Results2[,1:5]
-# rearrange data to long format and pull out data from column names
-mosaic_table2 <- mosaic_table2 %>% 
-  pivot_longer(2:5, "particle_size_um", names_prefix = "Mean.Freq.", values_to = "mean_freq")
-# convert particle size and species to discrete factors
-mosaic_table2$particle_size_um <- factor(mosaic_table2$particle_size_um, levels = c(3, 6, 12, 20))
-
-mosaic_table2 <- mosaic_table2 %>% 
-  mutate(Species = replace(Species, Species == "C. gigas", "M. gigas"))
-
-library(ggmosaic) # moasic plots 
-moasic_colors <- Species_colors <- c("M. gigas" = "#6D6340",
-                                     "O. lurida" = "#9986A5",
-                                     "Control" = "black")
 part_label <- expression(paste("Particle Size Groups(", mu, "m)"))
 
 moasic_plot2 <- ggplot(mosaic_table2) +
