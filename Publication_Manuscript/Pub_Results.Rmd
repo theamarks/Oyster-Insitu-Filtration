@@ -70,6 +70,7 @@ library(quantreg) # Quantile regression
 library(grid) # makes test grobs useful for multiframe figures
 library(pwr) # Power analysis
 library(data.table)
+library(sqldf) # kevin partical analysis
 
 # source functions 
 source("./functions.R")
@@ -1225,11 +1226,11 @@ library(sqldf)
 #4. Particle Size Preference_equal concentration_20um bead dominating volume.csv
 #Raw data for concentration?  Ask Matt why this data doesnt generate dataset 3?
 
-data1 = read.csv("Data/Gill_Area_Measurements.csv",
+data1 = read.csv("./Data/gray_data/Gill_Area_Measurements.csv",
                  h=T, check.names = F)
-data2 = read.csv("Data/Frequency_of_beads_among_individuals_equal_volume_FINAL.csv", 
+data2 = read.csv("./Data/gray_data/Frequency_of_beads_among_individuals_equal_volume_FINAL.csv", 
                  h=T, check.names = F)
-data3 = read.csv("Data/Frequency_of_beads_among_individuals_equal_concentration_FINAL.csv",
+data3 = read.csv("./Data/gray_data/Frequency_of_beads_among_individuals_equal_concentration_FINAL.csv",
                  h=T, check.names = F)
 
 #Analysis of data1.
