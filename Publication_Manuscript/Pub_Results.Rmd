@@ -211,65 +211,6 @@ Twenty-one filtration trials, across the four study sites, were included in the 
 A single filtration trial at Deanza (2019-4-17; Table 4) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 μg/L). 
 Filtration trials across sites were not distributed equally (Table 4), Deanza had more than twice the amount filtration trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4).
 
-```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are listed in Table 1. Each data point is the mean of a single filtration trial. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{ChlRmd_Site_boxplot}"}
-
-### Chl removed summary - filtration trials only
-Chlrmd_Site <- Filter_only_outRmd_data %>% 
-  group_by(Site) %>% 
-  summarize(avg_Chlrmd = mean(pcnt_Chl_rmvd),
-            SD = sd(pcnt_Chl_rmvd),
-            n_samples = length(pcnt_Chl_rmvd))
-
-Chlrmd_site_aov <- aov(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data)
-#summary(HCR_site_aov)
-Chlrmd_aov_values <- broom::tidy(Chlrmd_site_aov)
-
-# Post-Hoc Tukey test
-tukey_Chlrmd <- TukeyHSD(Chlrmd_site_aov)
-#tukey_Chlrmd
-#plot(tukey_Chlrmd)
-#Honestly Significant Difference test
-hds_Chlrmd <- HSD.test(Chlrmd_site_aov, trt = "Site")
-#hds_Chlrmd
-
-#### exteme Shellmaker may violate ANOVA equal variance assumption
-## more suited for Kruskal-Wallis
-KW_Chlrmd_site <- broom::tidy(kruskal.test(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data))
-
-
-########### Power analysis - sensitivity power analysis 
-# one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
-d_Chlrmd_site <- {Chlrmd_aov_values[[1,3]] / (Chlrmd_aov_values[[1,3]] + Chlrmd_aov_values[[2,3]]) }
-
-# power analysis for "balanced one-way analysis of variance tests"
-# For now Ted says to use the mean of the different sample sizes
-Chlrmd_site_power <- pwr.anova.test(f = d_Chlrmd_site, 
-                                 k = 4,
-                                 n = mean(Chlrmd_Site$n_samples), 
-                                 sig.level = 0.05,
-                                 power = NULL) # solve for this
-
-Chl_Rmd_box <- ggplot(Filter_only_outRmd_data, aes(Site, pcnt_Chl_rmvd)) +
-  geom_boxplot(color = Site_colors) + 
-  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
-               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
-  scale_fill_manual(values = Site_colors) +
-  theme_classic() +
-  labs(x = 'Site',
-       y = Prt_Chl_Label)
-
-plot(Chl_Rmd_box)
-
-```
-
-## Percent Chlorophyll $\alpha$ Removal
-
-The mean percent Chl $\alpha$ removal at the San Rafael site was `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}). 
-Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`). 
-At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`).
-Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}).
-Chl $\alpha$ removal in filtration trials did not differ significantly between sites (one-way Kruskal-Wallis, *p* = `r round(KW_Chlrmd_site$p.value,2)`).
-
 
 ```{r Random_Forest_DrNichols, include=FALSE}
 ##################### Estimate missing values (Imputation) ##########################
@@ -1469,6 +1410,65 @@ Salinity was significantly different among sites as determined by a one-way ANOV
 Temperature (*F*(`r temp_aov_values[[1,2]]`, `r temp_aov_values[[2,2]]`) = `r round(temp_aov_values[[1,5]],2)`, *p* = `r format(round(temp_aov_values[[1,6]],2), nsmall = 2)`), and Chl $\alpha$ (*F*(`r chl_aov_values[[1,2]]`, `r chl_aov_values[[2,2]]`) = `r round(chl_aov_values[[1,5]],2)`, *p* = `r round(chl_aov_values[[1,6]],2)`) were not different among sites (Figure \ref{Site_WQ_boxplot}).
 OC was significant among sites (*F*(`r OC_aov_values[[1,2]]`, `r OC_aov_values[[2,2]]`) = `r round(OC_aov_values[[1,5]],2)`, *p* = `r round(OC_aov_values[[1,6]],2)`), but the post-hoc Tukey HSD did not reveal significant differences among sites. 
 Therefore, I use a less conservative post-hoc analysis, the Newman-Keuls method, and found that OC was significantly different between Shellmaker and Deanza (*p* = `r round(NK_oc$Site[[3,4]],2)`).
+
+```{r ChlRmd_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", message= F, fig.cap="Box plots of percent chlorophyll $\\alpha$ removal (Chl\\textsubscript{up} - Chl\\textsubscript{down} / Chl\\textsubscript{up} * 100) during filtration trials, control trials are listed in Table 1. Each data point is the mean of a single filtration trial. Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{ChlRmd_Site_boxplot}"}
+
+### Chl removed summary - filtration trials only
+Chlrmd_Site <- Filter_only_outRmd_data %>% 
+  group_by(Site) %>% 
+  summarize(avg_Chlrmd = mean(pcnt_Chl_rmvd),
+            SD = sd(pcnt_Chl_rmvd),
+            n_samples = length(pcnt_Chl_rmvd))
+
+Chlrmd_site_aov <- aov(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data)
+#summary(HCR_site_aov)
+Chlrmd_aov_values <- broom::tidy(Chlrmd_site_aov)
+
+# Post-Hoc Tukey test
+tukey_Chlrmd <- TukeyHSD(Chlrmd_site_aov)
+#tukey_Chlrmd
+#plot(tukey_Chlrmd)
+#Honestly Significant Difference test
+hds_Chlrmd <- HSD.test(Chlrmd_site_aov, trt = "Site")
+#hds_Chlrmd
+
+#### exteme Shellmaker may violate ANOVA equal variance assumption
+## more suited for Kruskal-Wallis
+KW_Chlrmd_site <- broom::tidy(kruskal.test(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data))
+
+
+########### Power analysis - sensitivity power analysis 
+# one-way ANOVA effect size (n^2). n^2 = treatmentSumSquares / TotalSumSquares (TreatSS + ResidualSS) 
+d_Chlrmd_site <- {Chlrmd_aov_values[[1,3]] / (Chlrmd_aov_values[[1,3]] + Chlrmd_aov_values[[2,3]]) }
+
+# power analysis for "balanced one-way analysis of variance tests"
+# For now Ted says to use the mean of the different sample sizes
+Chlrmd_site_power <- pwr.anova.test(f = d_Chlrmd_site, 
+                                 k = 4,
+                                 n = mean(Chlrmd_Site$n_samples), 
+                                 sig.level = 0.05,
+                                 power = NULL) # solve for this
+
+Chl_Rmd_box <- ggplot(Filter_only_outRmd_data, aes(Site, pcnt_Chl_rmvd)) +
+  geom_boxplot(color = Site_colors) + 
+  geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
+               alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
+  scale_fill_manual(values = Site_colors) +
+  theme_classic() +
+  labs(x = 'Site',
+       y = Prt_Chl_Label)
+
+plot(Chl_Rmd_box)
+
+```
+
+## Percent Chlorophyll $\alpha$ Removal
+
+The mean percent Chl $\alpha$ removal at the San Rafael site was `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}). 
+Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`). 
+At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`).
+Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}).
+Chl $\alpha$ removal in filtration trials did not differ significantly between sites (one-way Kruskal-Wallis, *p* = `r round(KW_Chlrmd_site$p.value,2)`).
 
 ```{r HCR_Quantile_Regression, eval=FALSE, fig.width=7, fig.asp=1.2, warning=F, message = F, fig.cap="The relationship between water quality variables and habitat clearance rate (HCR). For all oyster habitat filtration trials, quantile regression with $\\tau$ = 0.5 and $\\tau$ = 0.9 was used to test wheather HCR changed with A) temperature, B) salinity, C) turbidity, D) total particulate matter, or E) organic content; slopes that are not significantly different from zero are indicated by red dashed lines. Dotted gray lines are the mean value of HCR. \\label{Quantile_Reg}"}
 #create model variables
