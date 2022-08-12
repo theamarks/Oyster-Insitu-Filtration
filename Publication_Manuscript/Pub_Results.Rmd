@@ -462,10 +462,10 @@ plot(Chl_Rmd_box)
 
 ## Percent Chlorophyll $\alpha$ Removal
 
-The mean percent Chl $\alpha$ removal at the San Rafael site was `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}) and was `r round(SR_NC_sum$pcnt_Chl_rmvd,1)`\% in the single control trial (Table 1). 
-Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(MB_NC_sum$pcnt_Chl_rmvd,1)`\% during the control trial. 
-At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`) and `r round(mean(NPD_NC_sum$pcnt_Chl_rmvd))`\% Chl $\alpha$ removal during the control trial.
-Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}), and its control trial was `r round(mean(NPSM_NC_sum$pcnt_Chl_rmvd),1)` \% (Table 1).
+The mean percent Chl $\alpha$ removal at the San Rafael site was `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}). 
+Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`). 
+At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`).
+Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}).
 Chl $\alpha$ removal in filtration trials did not differ significantly between sites (one-way Kruskal-Wallis, *p* = `r round(KW_Chlrmd_site$p.value,2)`).
 
 
@@ -704,7 +704,6 @@ plot(FR_box)
 Mean HCR at San Rafael was `r round(mean(SR_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$L_hr_m2),1)`), `r round(mean(MB_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = to `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$L_hr_m2),1)`) at Morro Bay, 
 `r round(mean(NPSM_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`) at Shellmaker, 
 and `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`) at Deanza (Figure \ref{FR_Site_boxplot}).
-Control trials measured `r round(SR_NC_sum$L_hr_m2,1)`, `r round(MB_NC_sum$L_hr_m2,1)`, `r round(NPSM_NC_sum$L_hr_m2,1)`, and `r round(NPD_NC_sum$L_hr_m2,1)` L hr^-1^ m^2^ at San Rafael, Morro Bay, Shellmaker, and Deanza respectively.
 HCR for filtration trials did not differ significantly among sites, see Figure \ref{FR_Site_boxplot} (one-way Kruskal-Wallis, *p* = `r round(KW_HCR_site$p.value,2)`).
 
 
