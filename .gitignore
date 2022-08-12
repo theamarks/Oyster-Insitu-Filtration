@@ -12,11 +12,11 @@ Insitu_Filtration_Analysis_script.html
 Test Graph Code for DZ.R
 .DS_Store
 THESIS.log
-**/log
+**/.log
 /THESIS_cache
 **/tex
 **/aux
 .Rprofile
 renv/
 renv.lock
-output/
+\output
