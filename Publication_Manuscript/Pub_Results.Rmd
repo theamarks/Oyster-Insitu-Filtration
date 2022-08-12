@@ -1432,6 +1432,8 @@ mosaic_table3 <- mosaic_table3 %>%
   pivot_longer(2:5, "particle_size_um", names_prefix = "Mean.Freq.", values_to = "mean_freq")
 # convert particle size and species to discrete factors
 mosaic_table3$particle_size_um <- factor(mosaic_table3$particle_size_um, levels = c(3, 6, 12, 20))
+# convert species factor to character for replacing
+mosaic_table3$Species <- as.character(mosaic_table3$Species)
 
 mosaic_table3 <- mosaic_table3 %>% 
   mutate(Species = replace(Species, Species == "C. gigas", "M. gigas"),
