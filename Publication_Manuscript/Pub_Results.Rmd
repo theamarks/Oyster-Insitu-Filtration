@@ -91,7 +91,6 @@ NPD_bivalves = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_bio
 Sbs_correction_data = fread(file.path('./output/6_Sbs_Corrections_Summary', "sbs_correction_summary.csv"))
 ```
 
-
 ```{r setup_data_wrangling, include=FALSE}
 ##################### Data #########################################
 # Remove San Diego filtration trial - not applicable to this analysis - different experimental set up
@@ -408,9 +407,9 @@ grid.arrange(Temp_box, Sal_box, Turb_box, Tpm_box, OC_box, Chl_box,nrow=3)
 
 # Results
 
-Twenty-five experimental trials, across the four study sites, were included in the analyses; 21 filtration trials and four control trials.
-A single filtration trial at Deanza (2019-4-17; Table 1) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 $\mu$g/L). 
-Filtration trials across sites were not distributed equally (Table 1), Deanza had more than twice the amount filtration trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4), while each site had a single control.
+Twenty-one filtration trials, across the four study sites, were included in the analyses. 
+A single filtration trial at Deanza (2019-4-17; Table 4) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 μg/L). 
+Filtration trials across sites were not distributed equally (Table 4), Deanza had more than twice the amount filtration trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4).
 
 Ambient water quality during filtration trials varied within and among sites (Figure \ref{Site_WQ_boxplot}). 
 Salinity was significantly different among sites as determined by a one-way ANOVA at a *p* < 0.05 (*F*(`r sal_aov_values[[1,2]]`, `r sal_aov_values[[2,2]]`) = `r round(sal_aov_values[[1,5]],2)`, *p* < 0.001), along with turbidity (*F*(`r turb_aov_values[[1,2]]`, `r turb_aov_values[[2,2]]`) = `r round(turb_aov_values[[1,5]],2)`, *p* < 0.001), and TPM (*F*(`r TPM_aov_values[[1,2]]`, `r TPM_aov_values[[2,2]]`) = `r round(TPM_aov_values[[1,5]],2)`, *p* = < 0.001) (Figure \ref{Site_WQ_boxplot}).  
