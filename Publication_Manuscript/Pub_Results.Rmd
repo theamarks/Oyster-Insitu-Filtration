@@ -1385,18 +1385,22 @@ pval = 1-pchisq(chi.sq,3)
 # select columns for mosaic plot
 mosaic_table2 <- Results2[,1:5]
 # rearrange data to long format and pull out data from column names
-mosaic_table2 <- mosaic_table2 %>% 
+mosaic_table2 %<>% 
   pivot_longer(2:5, "particle_size_um", names_prefix = "Mean.Freq.", values_to = "mean_freq")
 # convert particle size and species to discrete factors
 mosaic_table2$particle_size_um <- factor(mosaic_table2$particle_size_um, levels = c(3, 6, 12, 20))
+# convert species factor to character
+mosaic_table2$Species <- as.character(mosaic_table2$Species)
+# replace gigas with magallana
+mosaic_table2 %<>%
+  mutate(Species = replace(Species, Species %in% c("C. gigas"), "M. gigas"))
+  
 
-mosaic_table2 <- mosaic_table2 %>% 
-  mutate(Species = replace(Species, Species == "C. gigas", "M. gigas"))
-
-library(ggmosaic) # moasic plots 
-moasic_colors <- Species_colors <- c("M. gigas" = "#6D6340",
-                                     "O. lurida" = "#9986A5",
-                                     "Control" = "black")
+# moasic plots 
+library(ggmosaic) 
+moasic_colors  <- c("M. gigas" = "#6D6340",
+                    "O. lurida" = "#9986A5",
+                    "Control" = "black")
 part_label <- expression(paste("Particle Size Groups(", mu, "m)"))
 
 moasic_plot2 <- ggplot(mosaic_table2) +
