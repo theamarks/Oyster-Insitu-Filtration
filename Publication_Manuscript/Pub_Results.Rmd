@@ -214,7 +214,7 @@ Filtration trials across sites were not distributed equally (Table 4), Deanza ha
 ## Habitat Clearance Rates 
 
 ```{r Random_Forest_DrNichols, include=FALSE}
-##################### Estimate missing values (Imputation) ##########################
+###### Estimate missing values (Imputation) 
 #In our data we are missing 4 out of 400ish values.  (cells)
 #Because we have limited observations but a high number of variables simply
 #removing incomplete observations is too costly
@@ -262,14 +262,11 @@ colnames(test) <- c( "Site", "Date", "Experiment", "Temp","Salinity", "Turbidity
                            "Depth","Distance", "Water velocity", "Chl.removal", 
                            "Clearance")
 
-#Shellmaker 06-09 Neg Control, Shellmaker 05-22 Filtration and Deanze 4-17 Filtration just have astronomical outlier values for clearance.
+#Shellmaker 06-09 Neg Control, Shellmaker 05-22 Filtration and Deanza 4-17 Filtration just have astronomical outlier values for clearance.
 #Lets ignore them for now as they complete dominate any model useful for comparison.
-## Thea Notes ###
-## Shellmaker 06-09 Neg Control - floating algae mats caused me to reposition instruments after ~10 mins into Neg Control trial. Looks like sediments never settled afterward. Huge spikes in Chl afterwards that even cutting out is suspect. Avg depth and distance b/w sondes are wrong If I just use the first part of the neg control. Going to change values in Insitu_Filter_Veolcity_All_Data.csv - will reduce clearance rate b/c reduced water volume. 
 
-###############################################
-#################### Habitat Clearance Rate Model - Random Forest
-#########################
+##### Habitat Clearance Rate Model - Random Forest
+
 
 ###  Use Domain knowledge to remove one single trial (NPD_2020_4_17) avg Chlup at sensor detection limit (+- 0.1 ug/L). Leave other extreme values.
 test1 = test %>% 
@@ -297,7 +294,7 @@ for(k in 1:200){
 		control.subset = test1[-test.ind.matrix[j,],]
 	
 		control.model.rf = 			randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site	,
-	                        data=control.subset, # use data 		with extreme values removed 
+	                        data=control.subset, # use data	with extreme values removed 
                         ntree=trees,
                         mtry=try,
                         control=rpart.control(minsplit=		split,cp=cp.par))
@@ -448,9 +445,6 @@ Mean HCR (Habitat Cearance Rates) at San Rafael was `r round(mean(SR_filter_sum$
 and `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`) at Deanza (Figure \ref{FR_Site_boxplot}).
 HCR for filtration trials did not differ significantly among sites, see Figure \ref{FR_Site_boxplot} (one-way Kruskal-Wallis, *p* = `r round(KW_HCR_site$p.value,2)`).
 
-
-
-
 A random forest regression containing only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
 
 ```{r Final_Summary_table, eval=FALSE, include=FALSE, results='asis'}
@@ -487,12 +481,6 @@ Final_table <- Master_analysis_table %>%
 
 # arrange by site latitude
 Final_table <- arrange(transform(Final_table, Site = factor(Site,levels = site_by_lat_abv)), Site)
-
-
-data_removed <- Final_table[19,] # name excluded data
-data_analysis <- Final_table[-19,] # remove excluded analysis data points
-
-Latex_table_data <- rbind(data_analysis, data_removed) # add excluded data back in at bottom 
 
 ```
 
