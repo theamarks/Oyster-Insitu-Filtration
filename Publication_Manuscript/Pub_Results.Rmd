@@ -174,7 +174,7 @@ find_outlier <- function(data){
 }
 ```
 
-```{r, figure_setup, include=FALSE}
+```{r figure_setup, include=FALSE}
 ############### Site Color Assignments ###############
 viridis(4)
 Site_colors <- c("San Rafael" = "#440154FF",
@@ -449,12 +449,13 @@ and `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_
 HCR for filtration trials did not differ significantly among sites, see Figure \ref{FR_Site_boxplot} (one-way Kruskal-Wallis, *p* = `r round(KW_HCR_site$p.value,2)`).
 
 
+
+
+A random forest regression containing only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
+
 ```{r Final_Summary_table, eval=FALSE, include=FALSE, results='asis'}
 
-## Having hard time compiling this table in Rmd. LaTeX output in Console runs perfectly in Overleaf. ## Need to build table in Word per request of CSUF Thesis Reader :(
-## Export to pdf from Overleaf, Open pdf in Word
-
-#library(xtable)
+# code to construct summary table. table constructed in Overleaf. 
 
 # Organize & clean summary table data
 Final_table <- Master_analysis_table %>%
@@ -487,66 +488,13 @@ Final_table <- Master_analysis_table %>%
 # arrange by site latitude
 Final_table <- arrange(transform(Final_table, Site = factor(Site,levels = site_by_lat_abv)), Site)
 
-##########################################
-## LaTeX Table broken. Kevin is taking Final_table csv and constructing LaTeX table outside of this code for publication. - AM 2021_7_21
-#########################################
 
 data_removed <- Final_table[19,] # name excluded data
 data_analysis <- Final_table[-19,] # remove excluded analysis data points
 
 Latex_table_data <- rbind(data_analysis, data_removed) # add excluded data back in at bottom 
 
-### Add to column names for LaTeX to read a multicolumn names
-#\\multicolumn{1}{p{1cm}}{\\centering x \\\ y}
-# Make date formated as character to display properly
-Latex_table_data$Date <- as.character(Latex_table_data$Date)
-colnames(Latex_table_data) <- c( "\\multicolumn{1}{p{1cm}}{\\centering Site}", 
-                            "\\multicolumn{1}{p{1cm}}{\\centering Date}", 
-                            "\\multicolumn{1}{p{1cm}}{\\centering Trial}",
-                            "\\multicolumn{1}{p{1cm}}{\\centering Tide}",
-                           "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{rmd} \\\ (\\%)}",
-                           "\\multicolumn{1}{p{1cm}}{\\centering HCR \\\ (L/hr/$m^{2}$)}",
-                            "\\multicolumn{1}{p{1cm}}{\\centering Temp \\\ (\\si{\\degree}C)}",
-                            "\\multicolumn{1}{p{1cm}}{\\centering Sal \\\ (ppt)} ", 
-                            "\\multicolumn{1}{p{1cm}}{\\centering Turb \\\ (NTU)}",
-                            "\\multicolumn{1}{p{1cm}}{\\centering TPM \\\ (mg/L)}", 
-                            "\\multicolumn{1}{p{1cm}}{\\centering OC \\\ (ratio)}", 
-                            "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{up} \\\ ($\\upmu$g/L)}", 
-                           "\\multicolumn{1}{p{1cm}}{\\centering Depth \\\ (m)}",
-                           "\\multicolumn{1}{p{1cm}}{\\centering Dist \\\ (m)}",
-                           "\\multicolumn{1}{p{1cm}}{\\centering Vel \\\ (m/s)}")
-
-# create xtable
-sumtable_latex <- xtable(Latex_table_data, 
-                         caption = "Details of Whole-habitat In Situ Filtration and Control Trials Across Four California Sites. All Values are Means from the Entire Trial. The Trial Separated at the Bottom is within the Chlorophyll  Sensor’s Error and was Removed from the Analysis. Dashes Denote Missing Values.",
-                         label = "tb:summary",
-                         align = "lllllrrrrrrrrrrr",
-                         type = "latex")
-
-#foot_note <-list(pos = list(0), command = NULL)
-#foot_note$pos[[1]] <- c(nrow(sumtable_latex))
-#foot_note$command <- c("\\hline\\footnotesize{SR: San Rafael, MB: Morro Bay, NPSM: Newport Shellmaker, NPD: Newport Deanza, Fltr: Filtration, Ctrl: Control, Chl\\textsubscript{rmd}: Percent Chlorophyll $\alpha$ Removed, HCR: habitat clearance rate, Temp: temperature, Sal: salinity, Turb: turbidity, TPM: total particulate matter, OC: organic content, Dist: Distance between instruments, Vel: water velocity.}\n")
-
-print.xtable(sumtable_latex, 
-      booktabs=TRUE, 
-      caption.placement="top", 
-      NA.string = NA, 
-      sanitize.colnames.function=function(x){x},
-      floating.environment = "sidewaystable",
-      #add.to.row = foot_note,
-      hline.after = c(-1,0,25,26),
-      comment = F,
-      include.rownames = FALSE,
-      timestamp = NULL,
-      size = "\\fontsize{10pt}{10pt}\\selectfont") # font size / line spacing 
-
-
-### Table abbreviations description
-
-#Field sites are San Rafael (SR), Morro Bay (MB), Newport Shellmaker (NPSM), and Newport Deanza (NPD). Trials are either filtration over oyster habitat (Fltr), or control over mudflat (Ctrl). Chl$\textsubscript{rmd}$ is the percent chlorophyll $\alpha$ removed as water traveled across the habitat. HCR is the habitat clearance rate originally described in Milbrandt et al. (2015). Temp is temperature, Turb. is Turbidity, TPM is sesson total particulate matter, OC is relative organic content of TPM. Chl$\textsubscript{up}$ is chlorophyll $\alpha$ concentration at the upstream instrument. Depth is the average water column depth, Dist. is the distance between instruments, and Vel. is the average water velocity.
 ```
-
-A random forest regression containing only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
 
 ```{r TPM_OC_Values, include=FALSE}
 TPM_OC_Values <- Master_analysis_table %>% 
