@@ -445,7 +445,7 @@ Mean HCR (Habitat Cearance Rates) at San Rafael was `r round(mean(SR_filter_sum$
 and `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`) at Deanza (Figure \ref{FR_Site_boxplot}).
 HCR for filtration trials did not differ significantly among sites, see Figure \ref{FR_Site_boxplot} (one-way Kruskal-Wallis, *p* = `r round(KW_HCR_site$p.value,2)`).
 
-A random forest regression containing only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that temperature (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by turbidity (`r round(Turb_rel_import_HCR,1)`\%), TPM (`r round(TPM_rel_import_HCR,1)`\%), OC (`r round(OC_rel_import_HCR,1)`\%), site (`r round(Site_rel_import_HCR,1)`\%), and salinity (`r round(Sal_rel_import_HCR,1)`\%).
+A random forest regression containing only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that `r Var_import_df[[1,1]]` (`r round(Temp_rel_import_HCR,1)`\%) had the highest relative importance to the model, followed by `r Var_import_df[[2,1]]` (`r round(Turb_rel_import_HCR,1)`\%), `r Var_import_df[[3,1]]` (`r round(TPM_rel_import_HCR,1)`\%), `r Var_import_df[[4,1]]` (`r round(OC_rel_import_HCR,1)`\%), `r Var_import_df[[5,1]]` (`r round(Site_rel_import_HCR,1)`\%), and `r Var_import_df[[6,1]]` (`r round(Sal_rel_import_HCR,1)`\%).
 
 ```{r Final_Summary_table, eval=FALSE, include=FALSE, results='asis'}
 
