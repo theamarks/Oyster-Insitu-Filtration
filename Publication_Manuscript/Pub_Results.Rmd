@@ -773,36 +773,10 @@ of the two experiments are somewhat contradictory with regards to which species
 is more likely to prefer larger food particles in general. (See Table 1 & 2 for
 statistical information).
 
+Two LaTeX tables here in Overleaf
 
-```{r TPM_OC_Values, include=FALSE}
-TPM_OC_Values <- Master_analysis_table %>% 
-  dplyr::select(Site, Avg_TPM_mg_L, Avg_OC_Ratio) %>% 
-  na.omit()
+## Allometric Predictor of Biomass
 
-SR_TPM_OC <- TPM_OC_Values %>% 
-  filter(Site == "San Rafael")
-
-MB_TPM_OC <- TPM_OC_Values %>% 
-  filter(Site == "Morro Bay")
-
-NPSM_TPM_OC <- TPM_OC_Values %>% 
-  filter(Site == "Shellmaker")
-
-NPD_TPM_OC <- TPM_OC_Values %>% 
-  filter(Site == "Deanza")
-
-NP_combo_TPM_OC <- TPM_OC_Values %>% 
-  filter(Site == "Deanza" | Site == "Shellmaker")
-```
-
-## Seston Quantity and Quality
-
-Northern San Francisco Bay (San Rafael) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`), and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`) (Figure \ref{TPM_OC_model}).
-Newport Bay (Deanza and Shellmaker) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
-Northern San Francisco Bay (San Rafael) OC averaged `r round(mean(SR_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_OC_Ratio),2)`), and Morro Bay OC averaged `r round(mean(MB_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_OC_Ratio,2))`).
-Newport Bay (Deanza and Shellmaker) OC averaged `r round(mean(NP_combo_TPM_OC$Avg_OC_Ratio),3)` (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_OC_Ratio),2)`) (Figure \ref{TPM_OC_model}).
-
-## Filter Feeding Community
 
 ```{r Oly_DTW_Shell_length_setup, include=FALSE}
 ############ Olympia DTW and Shell Length #####################
@@ -842,97 +816,10 @@ NPD_oly_outRmd <- NPD_bivalve_outrmd %>%
   as_tibble()
 ```
 
-```{r Bivalve_Den_Setup, include=FALSE}
-################### Bivalve Density by Site #########################
-# read in bivalve density data from cleaned data file
-Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
 
-# replace NAs with 0s
-Bivalve_Den_data[is.na(Bivalve_Den_data)] <- 0
-
-Bivalve_Den_data <- Bivalve_Den_data %>% 
-  # move species from individual columns to a single column with new density column to contain data
-  pivot_longer(c(Adula_diegensis_m2, Musculista_senhousia_m2, Mytilus_galloprovincialis_m2,
-                 Ostrea_lurida_m2, Crassostrea_gigas_m2, Argopecten_ventricosa_m2, 
-                 Geukensia_demissa_m2, Crassostrea_gigas_m2), 
-               names_to = "Species", 
-               values_to =  "individuals_m2") %>% 
-  # remove "_m2" from species names in Species column
-  mutate(Species = str_replace(Species, "_m2", ""),
-         Species = str_replace(Species, "_", " "))
-
-#Reorder levels of Site factor - display North to South
-order_by_site <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
-Bivalve_Den_data <- arrange(transform(Bivalve_Den_data, Site = factor(Site,levels = order_by_site)), Site)
-# Density values for in text
-SR_Den <- Bivalve_Den_data %>% 
-  filter(Site == "San Rafael",
-         individuals_m2 > 0) %>% 
-  summarise(total_den = sum(individuals_m2))
-
-MB_Den <- Bivalve_Den_data %>% 
-  filter(Site == "Morro Bay",
-         individuals_m2 > 0) %>% 
-  summarise(total_den = sum(individuals_m2))
-
-NPSM_Den <- Bivalve_Den_data %>% 
-  filter(Site == "Shellmaker",
-         individuals_m2 > 0) %>% 
-  summarise(total_den = sum(individuals_m2))
-  
-NPD_Den <- Bivalve_Den_data %>% 
-  filter(Site == "Deanza",
-         individuals_m2 > 0) %>% 
-  summarise(total_den = sum(individuals_m2))
-## Species list
-NPSM_species <- Bivalve_Den_data %>% 
-  filter(Site == "Shellmaker",
-         individuals_m2 > 0) %>% 
-  group_by(Species) %>% 
-  summarise(species_den = individuals_m2)
- 
-NPD_species <- Bivalve_Den_data %>% 
-  filter(Site == "Deanza",
-         individuals_m2 > 0) %>% 
-  group_by(Species) %>% 
-  summarise(species_den = individuals_m2)
-  
-```
-
-In November 2017 the estimated bivalve density at San Rafael was `r SR_Den` individuals/m^2^, all of which were *Ostrea lurida* (Figure \ref{Bivalve_Den}).
-Other bivalves were noted, but were rare, and were not detected in sample bags (C. Zabin, unpublished data). 
-Morro Bay had an estimated `r MB_Den` *Crassostrea gigas* individuals/m^2^ in the summer of 2018 (Morro Bay Oyster Company); personal field observations confirm the lack of bivalve fouling on the aquaculture lines.
-In May 2018, Shellmaker had an estimated `r NPSM_Den` individuals/m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals/m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals/m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals/m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals/m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals/m^2^) (Figure \ref{Bivalve_Den}).
-Deanza had an estimated `r NPD_Den` individuals/m^2^ in May 2018, and was composed of *M. senhousia* (`r NPD_species[NPD_species$Species=="Musculista senhousia",2]` individuals/m^2^), *A. diegensis* (`r NPD_species[NPD_species$Species=="Adula diegensis",2]` individuals/m^2^), *O. lurida* (`r NPD_species[NPD_species$Species=="Ostrea lurida",2]` individuals/m^2^), *M. galloprovincialis* (`r NPD_species[NPD_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^) (Figure \ref{Bivalve_Den}).
-
-```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Bivalve community density and composition for each study site. San Rafael data were collected November 2017 by the Zabin lab at SERC, Morro Bay was estimated by Morro Bay Oyster Company in 2018, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab at CSUF.  \\label{Bivalve_Den}"}
-
-#unique(Bivalve_Den_data$Species) # list each individual bivalve species
-# Assign species to specific color
-Species_colors <- c("Adula diegensis" = "#8D8680",
-                    "Argopecten ventricosa" = "#CCC3C5",
-                    "Crassostrea gigas" = "#6D6340",
-                    "Geukensia demissa" = "#524D4F",
-                    "Musculista senhousia" = "#B0915B",
-                    "Mytilus galloprovincialis" = "#7E4B41",
-                    "Ostrea lurida" = "#9986A5",
-                    "Unknown mussel" = "black")
-
-# Stacked bar graph
-Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) + 
-  geom_col(aes(x = Site, y = individuals_m2, fill = Species)) +
- # geom_text(aes(label = round(Bivalve_den_m2,0), y = Bivalve_den_m2), 
-          #  vjust = -0.5) +
-  theme_classic() +
-  theme(legend.text = element_text(face = "italic")) +
-  scale_fill_manual(values = Species_colors) +
-  scale_y_continuous(breaks = seq(0, max(Bivalve_Den_data$Bivalve_den_m2), by = 500)) +
-  labs(y = expression("Individuals m"^-2))
-Bivalve_Den_graph
-```
-
-```{r Oly_DTW_SL_Newport_Yaquina_SanDiego_data, include=FALSE}
-########### import Matt Gray DTW dataset - Yaquina Bay, Oregon
+```{r Oly_DTW_SL_NP_YQ_SD_analysis_figure, include=FALSE}
+## import Matt Gray DTW dataset - Yaquina Bay, Oregon
+## This code chunk needs "Oly_DTW_Shell_length_setup" chunk above 
 Gray_Oly_Data <- fread(file.path('./Data/bivalve_density_community', "MattGray_2011_2013_Olurida_allometric_data.csv"))
 colnames(Gray_Oly_Data) <- c("ID", "Date", "species", "length_mm", "shell_tissue_g", "vial_weight", "Vial_wet_oyster", "Tissue_weight_g", "vial_dry_oyster", "tissue_dry_weight_g")
 Gray_Oly_Data %<>% 
@@ -1053,6 +940,141 @@ ggsave(Combo_Oly_shell_DTW_figure, height=3.708, width=6, filename = "Oly_DTW_SL
 #fig.asp=0.618
 
 ```
+
+
+Need to convert to Markdown vvvv
+
+Pairwise parameter comparison of models relating allometric predictors of biomass
+reveal that there are statistically significant differences between each of the
+three observed O. lurida populations (San Diego, CA, Deanza, CA, Yaquina
+Bay, OR). Most notably, evidence supports that animals observed in Yaquina
+Bay, in general, are longer and proportionally support higher dry tissue weight
+than species found at the Deanza and San Diego sites. Though there are less
+notable yet still significant differences between the populations sampled at the
+two Southern California sites.
+
+
+## Seston Quantity and Quality
+
+
+```{r TPM_OC_text_values, include=FALSE}
+TPM_OC_Values <- Master_analysis_table %>% 
+  dplyr::select(Site, Avg_TPM_mg_L, Avg_OC_Ratio) %>% 
+  na.omit()
+
+SR_TPM_OC <- TPM_OC_Values %>% 
+  filter(Site == "San Rafael")
+
+MB_TPM_OC <- TPM_OC_Values %>% 
+  filter(Site == "Morro Bay")
+
+NPSM_TPM_OC <- TPM_OC_Values %>% 
+  filter(Site == "Shellmaker")
+
+NPD_TPM_OC <- TPM_OC_Values %>% 
+  filter(Site == "Deanza")
+
+NP_combo_TPM_OC <- TPM_OC_Values %>% 
+  filter(Site == "Deanza" | Site == "Shellmaker")
+```
+
+
+Northern San Francisco Bay (San Rafael) TPM averaged `r round(mean(SR_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_TPM_mg_L),2)`), and Morro Bay TPM averaged `r round(mean(MB_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_TPM_mg_L),2)`) (Figure \ref{TPM_OC_model}).
+Newport Bay (Deanza and Shellmaker) TPM averaged `r round(mean(NP_combo_TPM_OC$Avg_TPM_mg_L),2)` mg/L (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_TPM_mg_L),2)`).
+Northern San Francisco Bay (San Rafael) OC averaged `r round(mean(SR_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(SR_TPM_OC)`, *SD* = `r round(sd(SR_TPM_OC$Avg_OC_Ratio),2)`), and Morro Bay OC averaged `r round(mean(MB_TPM_OC$Avg_OC_Ratio),2)` (*N* = `r nrow(MB_TPM_OC)`, *SD* = `r round(sd(MB_TPM_OC$Avg_OC_Ratio,2))`).
+Newport Bay (Deanza and Shellmaker) OC averaged `r round(mean(NP_combo_TPM_OC$Avg_OC_Ratio),3)` (*N* = `r nrow(NP_combo_TPM_OC)`, *SD* = `r round(sd(NP_combo_TPM_OC$Avg_OC_Ratio),2)`) (Figure \ref{TPM_OC_model}).
+
+## Filter Feeding Community
+
+```{r Bivalve_Den_Setup, include=FALSE}
+################### Bivalve Density by Site #########################
+# read in bivalve density data from cleaned data file
+Bivalve_Den_data <- fread(file.path(Bivalve_output_directory, "Bivalve_Density_summary.csv"))
+
+# replace NAs with 0s
+Bivalve_Den_data[is.na(Bivalve_Den_data)] <- 0
+
+Bivalve_Den_data <- Bivalve_Den_data %>% 
+  # move species from individual columns to a single column with new density column to contain data
+  pivot_longer(c(Adula_diegensis_m2, Musculista_senhousia_m2, Mytilus_galloprovincialis_m2,
+                 Ostrea_lurida_m2, Crassostrea_gigas_m2, Argopecten_ventricosa_m2, 
+                 Geukensia_demissa_m2, Crassostrea_gigas_m2), 
+               names_to = "Species", 
+               values_to =  "individuals_m2") %>% 
+  # remove "_m2" from species names in Species column
+  mutate(Species = str_replace(Species, "_m2", ""),
+         Species = str_replace(Species, "_", " "))
+
+#Reorder levels of Site factor - display North to South
+order_by_site <- c("San Rafael", "Morro Bay", "Shellmaker", "Deanza") 
+Bivalve_Den_data <- arrange(transform(Bivalve_Den_data, Site = factor(Site,levels = order_by_site)), Site)
+# Density values for in text
+SR_Den <- Bivalve_Den_data %>% 
+  filter(Site == "San Rafael",
+         individuals_m2 > 0) %>% 
+  summarise(total_den = sum(individuals_m2))
+
+MB_Den <- Bivalve_Den_data %>% 
+  filter(Site == "Morro Bay",
+         individuals_m2 > 0) %>% 
+  summarise(total_den = sum(individuals_m2))
+
+NPSM_Den <- Bivalve_Den_data %>% 
+  filter(Site == "Shellmaker",
+         individuals_m2 > 0) %>% 
+  summarise(total_den = sum(individuals_m2))
+  
+NPD_Den <- Bivalve_Den_data %>% 
+  filter(Site == "Deanza",
+         individuals_m2 > 0) %>% 
+  summarise(total_den = sum(individuals_m2))
+## Species list
+NPSM_species <- Bivalve_Den_data %>% 
+  filter(Site == "Shellmaker",
+         individuals_m2 > 0) %>% 
+  group_by(Species) %>% 
+  summarise(species_den = individuals_m2)
+ 
+NPD_species <- Bivalve_Den_data %>% 
+  filter(Site == "Deanza",
+         individuals_m2 > 0) %>% 
+  group_by(Species) %>% 
+  summarise(species_den = individuals_m2)
+  
+```
+
+In November 2017 the estimated bivalve density at San Rafael was `r SR_Den` individuals/m^2^, all of which were *Ostrea lurida* (Figure \ref{Bivalve_Den}).
+Other bivalves were noted, but were rare, and were not detected in sample bags (C. Zabin, unpublished data). 
+Morro Bay had an estimated `r MB_Den` *Crassostrea gigas* individuals/m^2^ in the summer of 2018 (Morro Bay Oyster Company); personal field observations confirm the lack of bivalve fouling on the aquaculture lines.
+In May 2018, Shellmaker had an estimated `r NPSM_Den` individuals/m^2^, composed of *Adula diegensis* (`r NPSM_species[NPSM_species$Species=="Adula diegensis",2]` individuals/m^2^), *Musculista senhousia* (`r NPSM_species[NPSM_species$Species=="Musculista senhousia",2]` individuals/m^2^), *O. lurida* (`r NPSM_species[NPSM_species$Species=="Ostrea lurida",2]` individuals/m^2^), *Mytilus galloprovincialis* (`r NPSM_species[NPSM_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^), *Geukensia demissa* (`r NPSM_species[NPSM_species$Species=="Geukensia demissa",2]` individuals/m^2^), and *Argopecten ventricosa* (`r NPSM_species[NPSM_species$Species=="Argopecten ventricosa",2]` individuals/m^2^) (Figure \ref{Bivalve_Den}).
+Deanza had an estimated `r NPD_Den` individuals/m^2^ in May 2018, and was composed of *M. senhousia* (`r NPD_species[NPD_species$Species=="Musculista senhousia",2]` individuals/m^2^), *A. diegensis* (`r NPD_species[NPD_species$Species=="Adula diegensis",2]` individuals/m^2^), *O. lurida* (`r NPD_species[NPD_species$Species=="Ostrea lurida",2]` individuals/m^2^), *M. galloprovincialis* (`r NPD_species[NPD_species$Species=="Mytilus galloprovincialis",2]` individuals/m^2^) (Figure \ref{Bivalve_Den}).
+
+```{r Bivalve_Den_bargraph, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Bivalve community density and composition for each study site. San Rafael data were collected November 2017 by the Zabin lab at SERC, Morro Bay was estimated by Morro Bay Oyster Company in 2018, and Shellmaker and Deanza were surveyed in May 2018 by the Zacherl lab at CSUF.  \\label{Bivalve_Den}"}
+
+#unique(Bivalve_Den_data$Species) # list each individual bivalve species
+# Assign species to specific color
+Species_colors <- c("Adula diegensis" = "#8D8680",
+                    "Argopecten ventricosa" = "#CCC3C5",
+                    "Crassostrea gigas" = "#6D6340",
+                    "Geukensia demissa" = "#524D4F",
+                    "Musculista senhousia" = "#B0915B",
+                    "Mytilus galloprovincialis" = "#7E4B41",
+                    "Ostrea lurida" = "#9986A5",
+                    "Unknown mussel" = "black")
+
+# Stacked bar graph
+Bivalve_Den_graph <- ggplot(Bivalve_Den_data, aes(Site)) + 
+  geom_col(aes(x = Site, y = individuals_m2, fill = Species)) +
+ # geom_text(aes(label = round(Bivalve_den_m2,0), y = Bivalve_den_m2), 
+          #  vjust = -0.5) +
+  theme_classic() +
+  theme(legend.text = element_text(face = "italic")) +
+  scale_fill_manual(values = Species_colors) +
+  scale_y_continuous(breaks = seq(0, max(Bivalve_Den_data$Bivalve_den_m2), by = 500)) +
+  labs(y = expression("Individuals m"^-2))
+Bivalve_Den_graph
+```
+
 
 
 ```{r Bivalve_biomass_setup, include=FALSE}
