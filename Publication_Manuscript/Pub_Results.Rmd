@@ -10,6 +10,7 @@ header-includes:
 - \usepackage{upgreek}
 - \usepackage{pdfpages}
 - \usepackage{caption}
+- \usepackage{float}
 output: 
   pdf_document:
     fig_caption: yes
@@ -33,7 +34,8 @@ knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE, 
                       fig.width = 6,
                       fig.asp=0.618, 
-                      fig.align = "center")
+                      fig.align = "center",
+                      fig.pos='H')
 
 ```
 
@@ -487,6 +489,26 @@ Final_table <- arrange(transform(Final_table, Site = factor(Site,levels = site_b
 
 ## Particle Selection
 
+Need to convert to markdown vvv
+
+Statistical comparisons of particle preference between O. lurida and M. gigas
+supports significant differences in both overall mass consumption as well as
+differences in particle size preference between the two species when the total
+volume among particle size classes are kept equal (Table 1). When particles
+concentrations were equal among size classes, there was no significant difference
+in the total amount of particles consumed between O. lurida and M. gigas (Table
+2). In the first experiment in which an equal volume of particles were introduced
+into the ecosystem, both species were much more likely to consume the more
+prevalent smaller particles. However, when larger particle sizes became more
+available in the second experiment, the preference of both animals included
+higher frequencies of the larger pellets. There is statistical evidence supporting
+different particle preference distributions between the species, though the results
+of the two experiments are somewhat contradictory with regards to which species
+is more likely to prefer larger food particles in general. (See Table 1 & 2 for
+statistical information).
+
+Two LaTeX tables here in Overleaf
+
 ```{r Part_select_GrayData_KevinCode}
 
 library(sqldf)
@@ -670,7 +692,7 @@ pval = 1-pchisq(chi.sq,3)
 ```
 
 
-```{r Particle_volume_mosaic_plot, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Caption Needed From Matt"}
+```{r Particle_volume_mosaic_plot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", fig.width=6,  message= F, fig.cap="Caption Needed From Matt"}
 # select columns for mosaic plot
 mosaic_table2 <- Results2[,1:5]
 # rearrange data to long format and pull out data from column names
@@ -755,28 +777,19 @@ moasic_plot3
 ```
 
 
-Need to convert to markdown vvv
-
-Statistical comparisons of particle preference between O. lurida and M. gigas
-supports significant differences in both overall mass consumption as well as
-differences in particle size preference between the two species when the total
-volume among particle size classes are kept equal (Table 1). When particles
-concentrations were equal among size classes, there was no significant difference
-in the total amount of particles consumed between O. lurida and M. gigas (Table
-2). In the first experiment in which an equal volume of particles were introduced
-into the ecosystem, both species were much more likely to consume the more
-prevalent smaller particles. However, when larger particle sizes became more
-available in the second experiment, the preference of both animals included
-higher frequencies of the larger pellets. There is statistical evidence supporting
-different particle preference distributions between the species, though the results
-of the two experiments are somewhat contradictory with regards to which species
-is more likely to prefer larger food particles in general. (See Table 1 & 2 for
-statistical information).
-
-Two LaTeX tables here in Overleaf
-
 ## Allometric Predictor of Biomass
 
+
+Need to convert to Markdown vvvv
+
+Pairwise parameter comparison of models relating allometric predictors of biomass
+reveal that there are statistically significant differences between each of the
+three observed O. lurida populations (San Diego, CA, Deanza, CA, Yaquina
+Bay, OR). Most notably, evidence supports that animals observed in Yaquina
+Bay, in general, are longer and proportionally support higher dry tissue weight
+than species found at the Deanza and San Diego sites. Though there are less
+notable yet still significant differences between the populations sampled at the
+two Southern California sites.
 
 ```{r Oly_DTW_Shell_length_setup, include=FALSE}
 ############ Olympia DTW and Shell Length #####################
@@ -941,17 +954,6 @@ ggsave(Combo_Oly_shell_DTW_figure, height=3.708, width=6, filename = "Oly_DTW_SL
 
 ```
 
-
-Need to convert to Markdown vvvv
-
-Pairwise parameter comparison of models relating allometric predictors of biomass
-reveal that there are statistically significant differences between each of the
-three observed O. lurida populations (San Diego, CA, Deanza, CA, Yaquina
-Bay, OR). Most notably, evidence supports that animals observed in Yaquina
-Bay, in general, are longer and proportionally support higher dry tissue weight
-than species found at the Deanza and San Diego sites. Though there are less
-notable yet still significant differences between the populations sampled at the
-two Southern California sites.
 
 
 ## Seston Quantity and Quality
@@ -1187,7 +1189,7 @@ wheat_cr_gigas <- 0.73
 
 
 
-## Supplemental / Repository 
+# Supplemental / Repository 
 
 ```{r Site WQ ANOVA, fig.width=7, fig.asp=1.2, fig.cap="Box plots of ambient (upstream) A) temperature, B) salinity, C) turbidity, D) total particulate matter, E) organic content, and F) chlorophyll $\\alpha$ from filtration trials. One-way ANOVAs compared the difference between water quality variables and site. Significantly different results were grouped by a post-hoc Tukey's HSD; significantly different sites do not share a common letter, and non-significant differences share letters. Site effects on OC were significant, and a Newman-Keuls post-hoc analysis determined a significant difference between San Rafael and Deanza undetected by Tukey's HSD. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company, aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
 
