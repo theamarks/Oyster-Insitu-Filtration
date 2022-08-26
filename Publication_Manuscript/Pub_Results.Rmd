@@ -445,7 +445,7 @@ plot(FR_box)
 Mean HCR (Habitat Cearance Rates) at San Rafael was `r round(mean(SR_filter_sum$L_hr_m2), 3)` L hr^-1^ m^-2^ (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$L_hr_m2),1)`), `r round(mean(MB_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = to `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$L_hr_m2),1)`) at Morro Bay, 
 `r round(mean(NPSM_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$L_hr_m2),1)`) at Shellmaker, 
 and `r round(mean(NPD_filter_sum$L_hr_m2),1)` L hr^-1^ m^-2^ (*N* = `r nrow(NPD_filter_sum)`, *SD* = `r round(sd(NPD_filter_sum$L_hr_m2),1)`) at Deanza (Figure \ref{FR_Site_boxplot}).
-HCR for filtration trials did not differ significantly among sites, see Figure \ref{FR_Site_boxplot} (one-way Kruskal-Wallis, *p* = `r round(KW_HCR_site$p.value,2)`).
+There is not sufficient evidence to conclude that HCR was significantly different among sites (one-way Kruskal-Wallis, *p* = `r round(KW_HCR_site$p.value,2)`) (Figure \ref{FR_Site_boxplot}).
 
 A random forest regression containing only filtration trials (*R*^2^ = `r round(r.sq.filter, 2)`) indicated that `r Var_import_df[[1,1]]` (`r Var_import_df[[1,2]]`\%) had the highest relative importance to the model, followed by `r Var_import_df[[2,1]]` (`r Var_import_df[[2,2]]`\%), `r Var_import_df[[3,1]]` (`r Var_import_df[[3,2]]`\%), `r Var_import_df[[4,1]]` (`r Var_import_df[[4,2]]`\%), `r Var_import_df[[5,1]]` (`r Var_import_df[[5,2]]`\%), and `r Var_import_df[[6,1]]` (`r Var_import_df[[6,2]]`\%).
 
