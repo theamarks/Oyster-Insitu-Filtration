@@ -16,7 +16,7 @@ Programming Consulting: Sarthak Saini
 ## Status
 
 In prep for publication 2022  
-M.S. completed 2021 [![DOI](https://zenodo.org/badge/211166776.svg)](https://zenodo.org/badge/latestdoi/211166776)
+M.S. completed 2021 with this version --> [![DOI](https://zenodo.org/badge/211166776.svg)](https://zenodo.org/badge/latestdoi/211166776)
 
 ## Session Info & package versions need to run:
 
