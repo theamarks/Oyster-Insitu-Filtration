@@ -13,12 +13,10 @@ Statistical Consulting: Dr. Kevin Nichols (CSUF)
 Programming Consulting: Sarthak Saini 
 
 
-[![DOI](https://zenodo.org/badge/211166776.svg)](https://zenodo.org/badge/latestdoi/211166776)
-
 ## Status
 
 In prep for publication 2022  
-M.S. completed 2021
+M.S. completed 2021 with this version --> [![DOI](https://zenodo.org/badge/211166776.svg)](https://zenodo.org/badge/latestdoi/211166776)
 
 ## Session Info & package versions need to run:
 
