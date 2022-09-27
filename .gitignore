@@ -10,8 +10,6 @@ Insitu_Filtration_Analysis_script_files/**
 Insitu_Filtration_Analysis_script_cache/**
 Publication_Manuscript/Pub_Results_cache/**
 Publication_manuscript/Pub_results_files/**
-Insitu_Filtration_Analysis_script.html
-Insitu_Filtration_Analysis_script_2020_4_4.html
 Thesis_Manuscript/THESIS_cache/
 Thesis_Manuscript/*.out
 **/*.html
