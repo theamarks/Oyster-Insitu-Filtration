@@ -392,8 +392,16 @@ rank.mat[,i+1] = as.numeric(Var_import_df$rank)
 # alph order for variables
 apply(rank.mat[,2:1001],1, mean)   
 
-output = data.frame(variable = c("OC","Salinity","Site","Temp","TPM","Turbidity"),rank_avg = apply(rank.mat[,2:1001],1,mean),rank_sd = apply(rank.mat[,2:1001],1,sd),imp_avg = apply(imp.mat[,2:1001],1,mean),imp_sd = apply(imp.mat[,2:1001],1,sd))
+output = data.frame(variable = c("OC","Salinity","Site","Temp","TPM","Turbidity"),
+                    rank_avg = apply(rank.mat[,2:1001],1,mean),
+                    rank_sd = apply(rank.mat[,2:1001],1,sd),
+                    imp_avg = apply(imp.mat[,2:1001],1,mean),
+                    imp_sd = apply(imp.mat[,2:1001],1,sd))
 
+output <- output %>% 
+  arrange(rank_avg)
+
+output
 
 
 ```
