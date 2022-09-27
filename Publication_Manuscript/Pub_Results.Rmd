@@ -343,18 +343,28 @@ mean(SSR.sim)
 ############# Random Forest - WQ values affect on Filtration trails only #############
 
 test2 <- test1[test1$Experiment=="Filtration",] # Filtration trials only
+
+r.sq.vec = rep(0,1000)
+rank.mat = data.frame(matrix(0,6,1001))
+imp.mat = data.frame(matrix(0,6,1001))
+rank.mat[,1] = c("OC","Salinity","Site","Temp","TPM","Turbidity")
+imp.mat[,1] = c("OC","Salinity","Site","Temp","TPM","Turbidity")
+for(i in 1:1000){
+  
 model.rf.filter = randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site,
-                        data=test2, # use data with extreme values removed 
-                        ntree=100,
-                        mtry=3,
-                        control=rpart.control(minsplit=2,cp=.05))
+                               data=test2, # use data with extreme values removed 
+                               ntree=100,
+                               mtry=3,
+                               control=rpart.control(minsplit=2,cp=.05))
 model.rf.filter
-plot(model.rf.filter)
+# plot(model.rf.filter)
 y.hat.filter = predict(model.rf.filter,newdata=test2) # model predicted values
 res.filter = test2$Clearance - y.hat.filter # residuals - difference between measured values and model predicted values 
 r.sq.filter = (var(test2$Clearance) - var(res.filter))/var(test2$Clearance)
 r.sq.filter # r squared value for random forest model
 ### R^2: 0.646
+
+r.sq.vec[i]=r.sq.filter
 
 ### Random Forest variable importance
 Var_import <- importance(model.rf.filter)
@@ -373,6 +383,18 @@ sum_import <- sum(Var_import_df$Importance)
 Var_import_df %<>% 
   mutate(Importance_pct = (Importance / sum_import)*100) %>% 
   dplyr::select(-c(Importance))
+Var_import_df$rank = 1:6
+Var_import_df = Var_import_df[order(Var_import_df$Variable),]
+imp.mat[,i+1] = Var_import_df$Importance_pct
+rank.mat[,i+1] = as.numeric(Var_import_df$rank)
+
+}
+# alph order for variables
+apply(rank.mat[,2:1001],1, mean)   
+
+output = data.frame(variable = c("OC","Salinity","Site","Temp","TPM","Turbidity"),rank_avg = apply(rank.mat[,2:1001],1,mean),rank_sd = apply(rank.mat[,2:1001],1,sd),imp_avg = apply(imp.mat[,2:1001],1,mean),imp_sd = apply(imp.mat[,2:1001],1,sd))
+
+
 
 ```
 
