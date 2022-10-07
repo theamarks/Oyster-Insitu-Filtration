@@ -1729,7 +1729,7 @@ estimate_oly_cr_gray <- function (temp, OC, biomass_g){
   return(clearance)
   }
 
-## Deanza O.lurida grams biomass per m^2 of habitat
+## Deanza mean O.lurida grams biomass per m^2 of habitat
 npd_dtw_oly <- as.numeric(NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida","mean_DTW_g_m2"])
 
 # Mean Seston Organic Content - Deanza
@@ -1738,8 +1738,8 @@ npd_OC <- mean(NPD_TPM_OC$Avg_OC_Ratio)
 # Mean Temperature - Deanza
 npd_temp <- mean(Filter_only_outRmd_data[Filter_only_outRmd_data[,Site == "Deanza"], "Temp_C_Up"]$Temp_C_Up)
 
-# estimate clearance rate with NPD biomass & Gray's model 
-NPD_oly_cr_est <- estimate_oly_cr_gray(npd_temp, npd_OC, npd_dtw_oly)
+# estimate clearance rate with NPD biomass & Gray's model L/hr/g/m^2
+NPD_oly_cr_est <- estimate_oly_cr_gray(npd_temp, npd_OC, npd_dtw_oly) / npd_dtw_oly
 
 #### 
 # M. gigas clearance rate mean L/hr/g (DTW)
