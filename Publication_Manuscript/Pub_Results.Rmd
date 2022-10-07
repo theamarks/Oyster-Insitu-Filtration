@@ -1527,6 +1527,7 @@ HCR50_site_power <- pwr.anova.test(f = d_HCR50_site,
 
 ```{r TPM_OC_text_values, include=FALSE}
 TPM_OC_Values <- Master_analysis_table %>% 
+  filter(Experiment == "Filtration") %>% 
   dplyr::select(Site, Avg_TPM_mg_L, Avg_OC_Ratio) %>% 
   na.omit()
 
