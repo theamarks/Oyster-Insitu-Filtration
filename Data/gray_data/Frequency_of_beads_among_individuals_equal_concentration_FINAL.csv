@@ -1,0 +1,77 @@
+Species,Individual,Y,Level,Count,Prob
+C. gigas,1,Size Class,3,6,0.2
+C. gigas,2,Size Class,3,12,0.21429
+C. gigas,3,Size Class,3,49,0.362962963
+C. gigas,4,Size Class,3,17,0.24912
+C. gigas,5,Size Class,3,2,0.21361
+C. gigas,6,Size Class,3,13,0.26103
+O. lurida,1,Size Class,3,8,0.16667
+O. lurida,2,Size Class,3,2,0.1942
+O. lurida,3,Size Class,3,10,0.27634
+O. lurida,4,Size Class,3,11,0.210377
+O. lurida,5,Size Class,3,40,0.225988701
+O. lurida,6,Size Class,3,9,0.310714
+Suspension,1,Size Class,3,16,0.16
+Suspension,2,Size Class,3,16,0.25842
+Suspension,3,Size Class,3,18,0.28
+Suspension,4,Size Class,3,7,0.27
+Suspension,5,Size Class,3,9,0.275
+Suspension,6,Size Class,3,20,0.21364
+Suspension,7,Size Class,3,38,0.146153846
+C. gigas,1,Size Class,6,31,0.274336283
+C. gigas,2,Size Class,6,21,0.2
+C. gigas,3,Size Class,6,43,0.318518519
+C. gigas,4,Size Class,6,39,0.342105263
+C. gigas,5,Size Class,6,33,0.224489796
+C. gigas,6,Size Class,6,49,0.230046948
+O. lurida,1,Size Class,6,23,0.191666667
+O. lurida,2,Size Class,6,26,0.252427184
+O. lurida,3,Size Class,6,30,0.229007634
+O. lurida,4,Size Class,6,21,0.198113208
+O. lurida,5,Size Class,6,40,0.225988701
+O. lurida,6,Size Class,6,29,0.345238095
+Suspension,1,Size Class,6,35,0.35
+Suspension,2,Size Class,6,37,0.366336634
+Suspension,3,Size Class,6,33,0.33
+Suspension,4,Size Class,6,34,0.34
+Suspension,5,Size Class,6,32,0.266666667
+Suspension,6,Size Class,6,39,0.221590909
+Suspension,7,Size Class,6,55,0.211538462
+C. gigas,1,Size Class,10,39,0.21
+C. gigas,2,Size Class,10,47,0.26
+C. gigas,3,Size Class,10,27,0.16
+C. gigas,4,Size Class,10,34,0.28
+C. gigas,5,Size Class,10,67,0.25578
+C. gigas,6,Size Class,10,82,0.18498
+O. lurida,1,Size Class,10,36,0.2
+O. lurida,2,Size Class,10,37,0.25922
+O. lurida,3,Size Class,10,39,0.19771
+O. lurida,4,Size Class,10,40,0.17736
+O. lurida,5,Size Class,10,60,0.23898
+O. lurida,6,Size Class,10,25,0.19762
+Suspension,1,Size Class,10,35,0.25
+Suspension,2,Size Class,10,30,0.297029703
+Suspension,3,Size Class,10,30,0.2
+Suspension,4,Size Class,10,40,0.4
+Suspension,5,Size Class,10,60,0.5
+Suspension,6,Size Class,10,77,0.4375
+Suspension,7,Size Class,10,117,0.45
+C. gigas,1,Size Class,20,37,0.327433628
+C. gigas,2,Size Class,20,24,0.228571429
+C. gigas,3,Size Class,20,16,0.118518519
+C. gigas,4,Size Class,20,24,0.210526316
+C. gigas,5,Size Class,20,44,0.299319728
+C. gigas,6,Size Class,20,68,0.319248826
+O. lurida,1,Size Class,20,53,0.441666667
+O. lurida,2,Size Class,20,38,0.368932039
+O. lurida,3,Size Class,20,52,0.396946565
+O. lurida,4,Size Class,20,34,0.320754717
+O. lurida,5,Size Class,20,37,0.209039548
+O. lurida,6,Size Class,20,21,0.25
+Suspension,1,Size Class,20,14,0.14
+Suspension,2,Size Class,20,18,0.178217822
+Suspension,3,Size Class,20,19,0.19
+Suspension,4,Size Class,20,19,0.19
+Suspension,5,Size Class,20,19,0.25
+Suspension,6,Size Class,20,40,0.227272727
+Suspension,7,Size Class,20,50,0.31

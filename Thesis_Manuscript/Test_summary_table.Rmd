@@ -1,0 +1,106 @@
+---
+title: "Thesis_Discussion"
+author: "Althea Marks"
+date: "9/17/2020"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+header-includes: 
+- \usepackage{rotating}
+- \usepackage{makecell}
+- \usepackage{gensymb}
+---
+
+
+```{r Final_Summary_table, echo=FALSE, results='asis'}
+library(data.table)
+library(xtable)
+library(tidyverse)
+library(knitr)
+library(lubridate)
+
+Master_analysis_table <- fread(file.path('../output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
+
+#fig.cap="A summary table reporting every filtration and negative control trial from four sites within California. Water quality values are averages taken from the upstream instrument, with the exception of Chlorophyll $\\alpha$ from the downstream instrument. Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples. Percent Chlorophyll $\\alpha$ and Clearance rate (L/hr/$m^2$) were calculated with Equations \\ref{Eq:PrctChl} and \\ref{Eq:Lhrm2} respectively. \\label{Final_Summary_table}",
+
+#library(xtable) # load xtable package 
+#options(xtable.floating = FALSE)
+#options(xtable.timestamp = FALSE)
+
+# Organize & clean summary table data
+Final_table <- Master_analysis_table %>%
+  mutate(Date = mdy(Date),
+         Experiment = gsub("Neg Control*", "Control", Master_analysis_table$Experiment),
+         L_hr_m2 = round(L_hr_m2),
+         pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1),
+         Temp_C_Up = round(Temp_C_Up, digits = 2),
+         Sal_ppt_Up = round(Sal_ppt_Up, digits = 1),
+         Turbidity_NTU_Up = round(Turbidity_NTU_Up, digits = 1),
+         Avg_TPM_mg_L = round(Avg_TPM_mg_L, digits = 4),
+         Avg_OC_Ratio = round(Avg_OC_Ratio, digits = 2),
+         Chl_ug_L_Up = round(Chl_ug_L_Up, digits = 1),
+         Chl_ug_L_Down = round(Chl_ug_L_Down, digits = 1),
+         avg_depth_m = round((avg_depth_cm/100), digits = 2),
+         d_bw_sondes_m = round(d_bw_sondes_m, digits = 1),
+         avg_m_sec = round(avg_m_hr/3600, 2)) %>%
+  dplyr::select(Site, Date, Experiment, Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, 
+          Avg_OC_Ratio, Chl_ug_L_Up, avg_depth_m, d_bw_sondes_m, avg_m_sec, 
+          pcnt_Chl_rmvd, L_hr_m2) %>% 
+ dplyr::arrange(Site, Date)
+
+data_removed <- Final_table[c(13, 15, 19),] # name excluded data
+Final_table <- Final_table[-c(13, 15, 19),] # remove excluded analysis data points
+
+Final_table <- rbind(Final_table, data_removed) # add excluded data back in at bottom 
+
+### Add to column names for LaTeX to read a multicolumn names
+#\\multicolumn{1}{p{1cm}}{\\centering x \\\ y}
+# Make date formated as character to display properly
+Final_table$Date <- as.character(Final_table$Date)
+colnames(Final_table) <- c( "\\multicolumn{1}{p{1cm}}{\\centering Site}", 
+                            "\\multicolumn{1}{p{1cm}}{\\centering Date}", 
+                            "\\multicolumn{1}{p{1cm}}{\\centering Experiment}", 
+                            "\\multicolumn{1}{p{1cm}}{\\centering Temp \\\ (\\textdegree C)}",
+                            "\\multicolumn{1}{p{1cm}}{\\centering Salinity \\\ (ppt)} ", 
+                            "\\multicolumn{1}{p{1cm}}{\\centering Turbidity \\\ (NTU)}",
+                            "\\multicolumn{1}{p{1cm}}{\\centering TPM \\\ (mg/L)}", 
+                            "\\multicolumn{1}{p{1cm}}{\\centering OC \\\ (ratio)}", 
+                            "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{up} \\\ (\\mu g/L)}", 
+                           "\\multicolumn{1}{p{1cm}}{\\centering Depth \\\ (m)}",
+                           "\\multicolumn{1}{p{1cm}}{\\centering Distance \\\ (m)}",
+                           "\\multicolumn{1}{p{1cm}}{\\centering Velocity \\\ (m/s)}", 
+                           "\\multicolumn{1}{p{1cm}}{\\centering Chl\\textsubscript{rmd} \\\ (\\%)}",
+                           "\\multicolumn{1}{p{1cm}}{\\centering HCR \\\ (L/hr/m^2 )}")
+# allow column names text to wrap
+#colnames(Final_table) <- paste("\\multicolumn{1}{c}{", colnames(Final_table), "}")
+#colnames(Final_table) <- stringr::str_wrap(colnames(Final_table))
+# create xtable
+sumtable_latex <- xtable(Final_table, 
+                         caption = "Every filtration and negative control trial across four California sites. Water quality values are upstream instrument averages, with the exception of Chlorophyll $\\alpha$ (reported from both instruments). Depth, water velocity, Total Particulate Matter (TPM), and Organic Content (OC) are averages from multiple measurements or samples.",
+                         label = "tb:summary",
+                         align = "llllccccccccccr",
+                         type = "latex")
+
+print.xtable(sumtable_latex, 
+      booktabs=TRUE, 
+      caption.placement="top", 
+      NA.string = NA, 
+      sanitize.colnames.function=function(x){x},
+      floating.environment = "sidewaystable",
+      comment = F,
+      include.rownames = FALSE,
+      timestamp = NULL,
+      size = "\\fontsize{7pt}{10pt}\\selectfont") # font size / line spacing 
+
+## To do ##
+
+# distance to single decimal place
+# Experiment to "Control"
+# Put dates removed at the bottom to the table with a line
+# Try chaning line spacing size
+# large space after Experiment column
+
+
+```
+
+
