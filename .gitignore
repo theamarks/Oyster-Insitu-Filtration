@@ -20,7 +20,7 @@ THESIS.log
 **/*.log
 **/*.tex
 **/*.aux
-/THESIS_cache
+THESIS_cache/
 .Rprofile
 renv/
 renv.lock
