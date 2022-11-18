@@ -505,7 +505,8 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
     dplyr::filter(measure_position %in% c("Mid", "Down")) %>%
     dplyr::group_by(Date, Site, Experiment) %>%
     dplyr::summarise(avg_m_s = mean(m_s),
-                     avg_m_hr = avg_m_s*3600)
+                     avg_m_hr = mean(m_s)*3600,
+                     avg_m_hr_sd = sd(mean(m_s)*3600))
   
   final_results = aFRVariableData %>%
     dplyr::left_join(vel_summary_df , by = c("Date", "Site", "Experiment")) %>%
