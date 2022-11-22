@@ -548,7 +548,7 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
 {
   one_water_vel_summary = aWaterVelSummary %>%
     dplyr::filter(Date %in% unique(aTimeSeriesFile$Date)) %>%
-    # negative select unused data and dumby variables (they won't propigate into summary properly)
+    # negative select unused data and dumby variables (they won't propagate into summary properly)
     dplyr::select(-c("reliable_data", "data_possible_influence", "Wind","G_upstream",
                      "Daylight","Sonde_fell","Boat_wake","Algae","Notes"))
   
@@ -586,7 +586,8 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
     
     dplyr::mutate(pcnt_Chl_rmvd = ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up) * 100,
                   Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
-                  L_hr_m2 = (((avg_depth_cm/100) * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up))
+                  avg_depth_m = avg_depth_cm/100,
+                  L_hr_m2 = ((avg_depth_m * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up))
   
   return(combined_water_quality_df)
 
