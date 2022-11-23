@@ -587,8 +587,9 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
     
     dplyr::mutate(pcnt_Chl_rmvd = ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up) * 100,
                   Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
-                  avg_depth_m = avg_depth_cm/100,
-                  L_hr_m2 = ((avg_depth_m * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up))
+                 # avg_depth_m = avg_depth_cm/100,
+                  L_hr_m2 = ((avg_depth_m * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up)) %>% 
+                 select(-c("avg_depth_cm"))
   
   return(combined_water_quality_df)
 
@@ -623,7 +624,8 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
                      Sal_ppt_Down = mean(Sal_ppt_Down),
                      Turbidity_NTU_Down = mean(Turbidity_NTU_Down),
                      Chl_ug_L_Down = mean(Chl_ug_L_Down),
-                     avg_depth_cm = mean(avg_depth_cm),
+                    # avg_depth_cm = mean(avg_depth_cm),
+                    avg_depth_m = avg_depth_m,
                      d_bw_sondes_m = mean(d_bw_sondes_m),
                      avg_m_hr = mean(avg_m_hr),
                      #Mean_Chl_diff = mean(Chl_diff),
