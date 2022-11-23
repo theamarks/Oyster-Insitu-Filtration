@@ -510,7 +510,8 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
   
   final_results = aFRVariableData %>%
     dplyr::left_join(vel_summary_df , by = c("Date", "Site", "Experiment")) %>%
-    dplyr::mutate(t_travel_s = round(d_bw_sondes_m/avg_m_s, 0))
+    dplyr::mutate(t_travel_s = round(d_bw_sondes_m/avg_m_s, 0),
+                  avg_depth_m = round(avg_depth_cm/100, 0))
   
   return(final_results)
   
