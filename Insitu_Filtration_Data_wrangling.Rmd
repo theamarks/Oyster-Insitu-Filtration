@@ -47,7 +47,7 @@ output_directory = "./output"
 # Source/import required files 
 ######################################################################
 # Source the functions
-source( "functions.R")
+source("functions.R")
 
 # Create the required output directories
 createOutputDirectories()
