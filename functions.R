@@ -505,13 +505,12 @@ calculateTravelTimeBySiteAndDate =  function(aVelocityData, aFRVariableData)
     dplyr::filter(measure_position %in% c("Mid", "Down")) %>%
     dplyr::group_by(Date, Site, Experiment) %>%
     dplyr::summarise(avg_m_s = mean(m_s),
-                     avg_m_hr = mean(m_s)*3600,
-                     avg_m_hr_sd = sd((m_s*3600), na.rm = T))
+                     avg_m_hr = mean(m_s)*3600)
   
   final_results = aFRVariableData %>%
     dplyr::left_join(vel_summary_df , by = c("Date", "Site", "Experiment")) %>%
     dplyr::mutate(t_travel_s = round(d_bw_sondes_m/avg_m_s, 0),
-                  avg_depth_m = round(avg_depth_cm/100, 0))
+                  avg_depth_m = avg_depth_cm/100)
   
   return(final_results)
   
@@ -587,8 +586,8 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
     
     dplyr::mutate(pcnt_Chl_rmvd = ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up) * 100,
                   Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
-                 # avg_depth_m = avg_depth_cm/100,
-                  L_hr_m2 = ((avg_depth_m * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up)) %>% 
+                  avg_depth_m = avg_depth_cm/100,
+                  L_hr_m2 = (((avg_depth_cm/100) * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up)) %>% 
                  select(-c("avg_depth_cm"))
   
   return(combined_water_quality_df)
@@ -604,8 +603,6 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
   
   filtration_sub_df =  aFiltrationFile %>% 
     dplyr::select(c(names(data_only_numeric), "Experiment", "Date", "Site"))
-  # single tail t-test on Chl_diff --> Dr. Nichols said this violated independence assumption. Can't use t-test this way
-  #up_down_PairedTtest <- tidy(t.test(filtration_sub_df$Chl_diff, alternative = "greater"))
   
   filtration_sub_df_sum = filtration_sub_df %>%
     dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
@@ -616,22 +613,21 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
                      TDS_g_L_Up = mean(TDS_g_L_Up),
                      Sal_ppt_Up = mean(Sal_ppt_Up),
                      Turbidity_NTU_Up = mean(Turbidity_NTU_Up),
-                     Chl_ug_L_Up = mean(Chl_ug_L_Up),
+                     Chl_ug_L_up = mean(Chl_ug_L_Up),
+                     Chl_ug_L_up_sd = sd(Chl_ug_L_Up, na.rm = TRUE),
                      Temp_C_Down = mean(Temp_C_Down),
                      SpCond_mS_cm_Down = mean(SpCond_mS_cm_Down),
                      Cond_mS_cm_Down = mean(Cond_mS_cm_Down),
                      TDS_g_L_Down = mean(TDS_g_L_Down),
                      Sal_ppt_Down = mean(Sal_ppt_Down),
                      Turbidity_NTU_Down = mean(Turbidity_NTU_Down),
-                     Chl_ug_L_Down = mean(Chl_ug_L_Down),
-                    # avg_depth_cm = mean(avg_depth_cm),
-                    avg_depth_m = avg_depth_m,
+                     Chl_ug_L_down = mean(Chl_ug_L_Down),
+                     Chl_ug_L_down_sd = sd(Chl_ug_L_Down, na.rm = TRUE),
+                    avg_depth_m = mean(avg_depth_m),
                      d_bw_sondes_m = mean(d_bw_sondes_m),
                      avg_m_hr = mean(avg_m_hr),
-                     #Mean_Chl_diff = mean(Chl_diff),
-                     #StDev_Chl_diff = sd(Chl_diff),
-                     #StEr_Chl_diff = sd(Chl_diff)/sqrt(length(Chl_diff)),
-                     L_hr_m2 = mean(L_hr_m2),
+                     L_Hr_m2 = mean(L_hr_m2),
+                    L_Hr_m2_sd = sd(L_hr_m2, na.rm = TRUE),
                      pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd)) %>% 
                      
     data.frame() %>%
