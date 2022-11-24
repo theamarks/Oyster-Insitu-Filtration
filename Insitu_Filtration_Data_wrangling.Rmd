@@ -13,7 +13,7 @@ editor_options:
 
 ## Import the libraries and functions
 library(flexdashboard) # knit output format
-library(dplyr) # data manupulation 
+library(dplyr) # data manipulation 
 library(tidyr) # data rearranging
 library(data.table)
 library(magrittr)
@@ -22,9 +22,9 @@ library(ggplot2) # graphing
 library(ggthemes) # theme_gdocs() in graphs
 library(stringr) # dealing with strings
 library(hms) # dealing with time & date
-library(wesanderson) # color palatte
+library(wesanderson) # color palette
 library(ggpubr) 
-library(cowplot) # arragne multiple plots or objects in single plot
+library(cowplot) # arrange multiple plots or objects in single plot
 library(broom) # tidy(t.test()) converts t-test output from console text to 1 x 8 tibble 
 library(olsrr)
 
