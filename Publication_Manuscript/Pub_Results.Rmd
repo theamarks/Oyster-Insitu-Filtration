@@ -108,7 +108,7 @@ Master_analysis_table <- arrange(transform(Master_analysis_table, Site = factor(
 
 # All Trials, NPD 2019_4_17 removed - below Chl detection limit
 site_data_outrmd <- Master_analysis_table %>% 
-  filter(round(Chl_ug_L_Up,2) > 0.1 | round(Chl_ug_L_Up,2) < -0.1)
+  filter(round(Chl_ug_L_up,2) > 0.1 | round(Chl_ug_L_up,2) < -0.1)
 
  # Filtration trials only - exclude Negative controls
 Filtration_only_data <- Master_analysis_table %>% 
@@ -116,7 +116,7 @@ Filtration_only_data <- Master_analysis_table %>%
 
 # Filtration only - remove trials with Chl a within sensor detection limit (+- 0.1ug/L)
 Filter_only_outRmd_data <- Filtration_only_data %>% 
-  filter(round(Chl_ug_L_Up,2) > 0.1 | round(Chl_ug_L_Up,2) < -0.1)
+  filter(round(Chl_ug_L_up,2) > 0.1 | round(Chl_ug_L_up,2) < -0.1)
 ```
 
 ```{r values_for_text, include=FALSE}
@@ -210,7 +210,7 @@ PIM_Label <- c('Particulate Inorganic Matter mg/L')
 # Results
 
 Twenty-one filtration trials, across the four study sites, were included in the analyses. 
-A single filtration trial at Deanza (2019-4-17; Table 4) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_Up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_Up),2)`) was within the detection limit of the sensor (± 0.1 μg/L). 
+A single filtration trial at Deanza (2019-4-17; Table 4) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_up),2)`) was within the detection limit of the sensor (± 0.1 μg/L). 
 Filtration trials across sites were not distributed equally (Table 4), Deanza had more than twice the amount filtration trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4).
 
 ## Habitat Clearance Rates 
@@ -235,7 +235,7 @@ Analysis_data <- Master_analysis_table %>%
          Turbidity_NTU_Up = Turbidity_NTU_Up,
          Avg_TPM_mg_L = Avg_TPM_mg_L,
          Avg_OC_Ratio = Avg_OC_Ratio,
-         Chl_ug_L_Up = Chl_ug_L_Up,
+         Chl_ug_L_Up = Chl_ug_L_up,
          Chl_ug_L_Down = Chl_ug_L_Down,
          avg_depth_m = avg_depth_cm/100,
          d_bw_sondes_m = d_bw_sondes_m,
@@ -503,7 +503,7 @@ Final_table <- Master_analysis_table %>%
          Turbidity_NTU_Up = round(Turbidity_NTU_Up, digits = 1),
          Avg_TPM_mg_L = round(Avg_TPM_mg_L, digits = 4),
          Avg_OC_Ratio = round(Avg_OC_Ratio, digits = 2),
-         Chl_ug_L_Up = round(Chl_ug_L_Up, digits = 1),
+         Chl_ug_L_Up = round(Chl_ug_L_up, digits = 1),
          Chl_ug_L_Down = round(Chl_ug_L_Down, digits = 1),
          avg_depth_m = round((avg_depth_cm/100), digits = 2),
          d_bw_sondes_m = round(d_bw_sondes_m, digits = 1),
@@ -1157,8 +1157,8 @@ OC_box <- ggplot(Filter_only_outRmd_data, aes(Site, Avg_OC_Ratio)) +
        title = "E)")
 
 ###### Chlorphyll
-#hist(site_data_outrmd$Chl_ug_L_Up)
-site_chl_aov <- aov(Chl_ug_L_Up ~ Site, data = Filter_only_outRmd_data)
+#hist(site_data_outrmd$Chl_ug_L_up)
+site_chl_aov <- aov(Chl_ug_L_up ~ Site, data = Filter_only_outRmd_data)
 #summary(site_chl_aov)
 chl_aov_values <- broom::tidy(site_chl_aov) # put ANOVA model into tibble to extract individual values
 # Post-Hoc Tukey test
@@ -1170,7 +1170,7 @@ tukey_chl <- TukeyHSD(site_chl_aov, ordered = FALSE, conf.level = 0.95)
 hds_chl <- HSD.test(site_chl_aov, trt = "Site")
 #hds_chl
 
-Chl_box <- ggplot(Filter_only_outRmd_data, aes(Site, Chl_ug_L_Up)) +
+Chl_box <- ggplot(Filter_only_outRmd_data, aes(Site, Chl_ug_L_up)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
