@@ -497,13 +497,13 @@ Final_table <- Master_analysis_table %>%
                              gsub("Neg Control*", "Ctrl", Master_analysis_table$Experiment), 
                              "Fltr"),
          L_hr_m2 = signif(L_Hr_m2, digits = 2),
-         pcnt_Chl_rmvd = round(pcnt_Chl_rmvd, digits = 1), ### Get rid of this 
-         Temp_C_Up = round(Temp_C_Up, digits = 2),
-         Sal_ppt_Up = round(Sal_ppt_Up, digits = 1),
-         Turbidity_NTU_Up = round(Turbidity_NTU_Up, digits = 1),
+         pcnt_Chl_rmvd = signif(pcnt_Chl_rmvd, digits = 3), ### Get rid of this 
+         Temp_C_Up = signif(Temp_C_Up, digits = 4),
+         Sal_ppt_Up = signif(Sal_ppt_Up, digits = 4),
+         Turbidity_NTU_Up = signif(Turbidity_NTU_Up, digits = 2),
          Avg_TPM_mg_L = round(Avg_TPM_mg_L, digits = 4),
          Avg_OC_Ratio = round(Avg_OC_Ratio, digits = 2),
-         Chl_ug_L_Up = round(Chl_ug_L_up, digits = 1),
+         Chl_ug_L_Up = signift(Chl_ug_L_up, digits = 1),
          Chl_ug_L_Down = round(Chl_ug_L_down, digits = 1),
          avg_depth_m = round(avg_depth_m, digits = 2),
          d_bw_sondes_m = round(d_bw_sondes_m, digits = 1),
