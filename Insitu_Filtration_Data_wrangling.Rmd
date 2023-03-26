@@ -170,7 +170,7 @@ for(file in 1 : length(all_files))
 # Save the correction summary
 fwrite(sbs_correction_summary, file.path(sbs_summary_output_directory,
                                         "sbs_correction_summary.csv"))
-
+# save filtration summary table
 fwrite(filtration_summary_table, file.path(filtration_summary_output_directory,
                                         "filtration_summary.csv"))
   
