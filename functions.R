@@ -630,7 +630,7 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
                     L_Hr_m2_sd = sd(L_hr_m2, na.rm = TRUE),
                      pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd)) %>% 
                      
-    data.frame() %>%
+  #  data.frame() %>%
     dplyr::mutate(File_Name = aFileName) %>%
     dplyr::select(File_Name, Experiment, everything()) # reorder columns, select all other variable afterwards
   
