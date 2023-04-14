@@ -586,9 +586,8 @@ calculateFiltrationForPairedData = function(aTimeSeriesFile, aWaterVelSummary)
     
     dplyr::mutate(pcnt_Chl_rmvd = ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up) * 100,
                   Chl_diff = Chl_ug_L_Up - Chl_ug_L_Down,
-                  avg_depth_m = avg_depth_cm/100,
-                  L_hr_m2 = (((avg_depth_cm/100) * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up)) %>% 
-                 select(-c("avg_depth_cm"))
+                  avg_depth_m = avg_depth_cm/100, 
+                  L_hr_m2 = (((avg_depth_cm/100) * avg_m_hr * 1000) / d_bw_sondes_m) * ((Chl_ug_L_Up - Chl_ug_L_Down) / Chl_ug_L_Up)) 
   
   return(combined_water_quality_df)
 
@@ -608,33 +607,44 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
     dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
     dplyr::group_by(Experiment, Date, Site) %>%
     dplyr::summarise(Temp_C_Up = mean(Temp_C_Up),
+                     Temp_C_Up_sd = sd(Temp_C_Up),
                      SpCond_mS_cm_Up = mean(SpCond_mS_cm_Up),
+                     SpCond_mS_cm_Up_sd = sd(SpCond_mS_cm_Up),
                      Cond_mS_cm_Up = mean(Cond_mS_cm_Up),
+                     Cond_mS_cm_Up_sd = sd(Cond_mS_cm_Up),
                      TDS_g_L_Up = mean(TDS_g_L_Up),
+                     TDS_g_L_Up_sd = sd(TDS_g_L_Up),
                      Sal_ppt_Up = mean(Sal_ppt_Up),
+                     Sal_ppt_Up_sd = sd(Sal_ppt_Up),
                      Turbidity_NTU_Up = mean(Turbidity_NTU_Up),
+                     Turbidity_NTU_Up_sd = sd(Turbidity_NTU_Up),
                      Chl_ug_L_up = mean(Chl_ug_L_Up),
                      Chl_ug_L_up_sd = sd(Chl_ug_L_Up, na.rm = TRUE),
                      Temp_C_Down = mean(Temp_C_Down),
+                     Temp_C_Down_sd = sd(Temp_C_Down),
                      SpCond_mS_cm_Down = mean(SpCond_mS_cm_Down),
+                     SpCond_mS_cm_Down_sd = sd(SpCond_mS_cm_Down),
                      Cond_mS_cm_Down = mean(Cond_mS_cm_Down),
+                     Cond_mS_cm_Down_sd = sd(Cond_mS_cm_Down),
                      TDS_g_L_Down = mean(TDS_g_L_Down),
+                     TDS_g_L_Down_sd = sd(TDS_g_L_Down),
                      Sal_ppt_Down = mean(Sal_ppt_Down),
+                     Sal_ppt_Down_sd = sd(Sal_ppt_Down),
                      Turbidity_NTU_Down = mean(Turbidity_NTU_Down),
+                     Turbidity_NTU_Down_sd = sd(Turbidity_NTU_Down),
                      Chl_ug_L_down = mean(Chl_ug_L_Down),
                      Chl_ug_L_down_sd = sd(Chl_ug_L_Down, na.rm = TRUE),
-                    avg_depth_m = mean(avg_depth_m),
+                     avg_depth_m = mean(avg_depth_m),
                      d_bw_sondes_m = mean(d_bw_sondes_m),
                      avg_m_hr = mean(avg_m_hr),
                      L_Hr_m2 = mean(L_hr_m2),
-                    L_Hr_m2_sd = sd(L_hr_m2, na.rm = TRUE),
-                     pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd)) %>% 
+                     L_Hr_m2_sd = sd(L_hr_m2, na.rm = TRUE),
+                     pcnt_Chl_rmvd = mean(pcnt_Chl_rmvd),
+                     pcnt_Chl_rmvd_sd = sd(pcnt_Chl_rmvd)) %>% 
                      
-  #  data.frame() %>%
+    data.frame() %>%
     dplyr::mutate(File_Name = aFileName) %>%
     dplyr::select(File_Name, Experiment, everything()) # reorder columns, select all other variable afterwards
-  
-  # filter_df_Ttest = cbind(filtration_sub_df_sum, up_down_PairedTtest) # don't need if removing t-test
   
   # Add in simple logic variables from field notes
   filter_df_logicVar = filtration_sub_df_sum %>% 
