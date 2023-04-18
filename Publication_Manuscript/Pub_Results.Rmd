@@ -51,7 +51,6 @@ library(ggplot2) # graphing
 library(ggthemes) # theme_classic() for graphs
 library(stringr) # dealing with text strings
 library(hms) # dealing with time
-library(viridisLite) # color palette
 library(forcats) # dealing with factors
 library(gridExtra)
 library(ggpmisc) # package for adding line equation and R^2 to plots
@@ -62,7 +61,6 @@ library(wesanderson) # color palette
 library(olsrr) # regression output table
 library(xtable) # creates tables in LaTex
 library(MASS) # collection of datasets and functions
-library(ISLR) # Dataset in Intro to statistical learning
 library(knitr)
 library(tinytex) # LaTeX conversion package
 library(broom) # tidy() function to convert t.test to dataframe
@@ -71,8 +69,7 @@ library(multcompView) #
 library(quantreg) # Quantile regression
 library(grid) # makes test grobs useful for multiframe figures
 library(pwr) # Power analysis
-library(data.table)
-library(sqldf) # kevin partical analysis
+library(sqldf) # kevin particle analysis
 ```
 
 ```{r create_directories, include=FALSE}
@@ -503,7 +500,7 @@ Final_table <- Master_analysis_table %>%
          Turbidity_NTU_Up = signif(Turbidity_NTU_Up, digits = 2),
          Avg_TPM_mg_L = round(Avg_TPM_mg_L, digits = 4),
          Avg_OC_Ratio = round(Avg_OC_Ratio, digits = 2),
-         Chl_ug_L_Up = signift(Chl_ug_L_up, digits = 1),
+         Chl_ug_L_Up = signif(Chl_ug_L_up, digits = 1),
          Chl_ug_L_Down = round(Chl_ug_L_down, digits = 1),
          avg_depth_m = round(avg_depth_m, digits = 2),
          d_bw_sondes_m = round(d_bw_sondes_m, digits = 1),
