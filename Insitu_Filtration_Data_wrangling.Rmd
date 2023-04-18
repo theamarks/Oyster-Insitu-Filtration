@@ -12,24 +12,22 @@ editor_options:
 ```{r setup}
 
 ## Import the libraries and functions
-library(flexdashboard) # knit output format
+library(flexdashboard) # knit html dashboard output template
 library(dplyr) # data manipulation 
 library(tidyr) # data rearranging
 library(data.table)
-library(magrittr)
+library(magrittr) # pipe function
 library(lubridate) # dealing with dates
 library(ggplot2) # graphing
 library(ggthemes) # theme_gdocs() in graphs
 library(stringr) # dealing with strings
 library(hms) # dealing with time & date
 library(wesanderson) # color palette
-library(ggpubr) 
+library(ggpubr) # figures
 library(cowplot) # arrange multiple plots or objects in single plot
-library(broom) # tidy(t.test()) converts t-test output from console text to 1 x 8 tibble 
-library(olsrr)
 
 ######################################################################
-## settings: 
+## Directories: 
 #1) data_directory: Keep only the input csv time series data in this directory
 #2) velocity_data_directory : Additional files required to pair filtration time stamps by Velocity to be kept here
 #3) manual_correction_directory: Put the manual correction files here. Can be the same as velocity_data_directory
@@ -41,7 +39,6 @@ data_directory = "./Data/sonde_time_series"
 velocity_data_directory = "./Data"
 manual_correction_directory = "./manual_corrections"
 output_directory = "./output"
-# V_corr_Filtration_dir = "./output/4_Filtration_Calculations" # Velocity Corrected Filtration 
 
 ######################################################################
 # Source/import required files 
