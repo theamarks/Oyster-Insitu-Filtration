@@ -39,7 +39,41 @@ knitr::opts_chunk$set(echo = FALSE,
 
 ```
 
-```{r load_packages, include=FALSE}
+```{r, message=TRUE, warning=TRUE, include=FALSE}
+library(groundhog)
+pkgs <- c("dplyr",
+          "tidyr",
+          "readr",
+          "magrittr",
+          "data.table",
+          "lubridate",
+          "ggplot2",
+          "ggthemes",
+          "stringr",
+          "hms",
+          "forcats",
+          "gridExtra",
+          "ggpmisc",
+          "viridis",
+          "scales",
+          "cowplot",
+          "wesanderson",
+          "knitr",
+          "tinytex",
+          "broom",
+          "agricolae",
+          "multcompView",
+          "quantreg",
+          "grid",
+          "pwr",
+          "sqldf",
+          "ggmosaic"
+          )
+groundhog.library(pkgs, "2020-03-01")
+```
+
+
+```{r load_packages, include=FALSE, eval=FALSE}
 ################### Packages ###########################
 library(dplyr)
 library(tidyr)
@@ -58,9 +92,8 @@ library(viridis) # Color palette - Options: magma , inferno, plasma, viridis, ci
 library(scales) # add different number scales in graphs
 library(cowplot) # for arranging multiple plots into a single figure
 library(wesanderson) # color palette
-library(olsrr) # regression output table
-library(xtable) # creates tables in LaTex
-library(MASS) # collection of datasets and functions
+#library(olsrr) # regression output table
+#library(MASS) # collection of datasets and functions
 library(knitr)
 library(tinytex) # LaTeX conversion package
 library(broom) # tidy() function to convert t.test to dataframe
@@ -70,6 +103,7 @@ library(quantreg) # Quantile regression
 library(grid) # makes test grobs useful for multiframe figures
 library(pwr) # Power analysis
 library(sqldf) # kevin particle analysis
+library(ggmosaic) # mosaic plots
 ```
 
 ```{r create_directories, include=FALSE}
@@ -519,26 +553,6 @@ Final_table <- arrange(transform(Final_table, Site = factor(Site,levels = site_b
 
 ## Particle Selection
 
-Need to convert to markdown vvv
-
-Statistical comparisons of particle preference between O. lurida and M. gigas
-supports significant differences in both overall mass consumption as well as
-differences in particle size preference between the two species when the total
-volume among particle size classes are kept equal (Table 1). When particles
-concentrations were equal among size classes, there was no significant difference
-in the total amount of particles consumed between O. lurida and M. gigas (Table
-2). In the first experiment in which an equal volume of particles were introduced
-into the ecosystem, both species were much more likely to consume the more
-prevalent smaller particles. However, when larger particle sizes became more
-available in the second experiment, the preference of both animals included
-higher frequencies of the larger pellets. There is statistical evidence supporting
-different particle preference distributions between the species, though the results
-of the two experiments are somewhat contradictory with regards to which species
-is more likely to prefer larger food particles in general. (See Table 1 & 2 for
-statistical information).
-
-Two LaTeX tables here in Overleaf
-
 ```{r Part_select_GrayData_KevinCode}
 
 library(sqldf)
@@ -722,7 +736,9 @@ pval = 1-pchisq(chi.sq,3)
 ```
 
 
-```{r Particle_volume_mosaic_plot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", fig.width=6,  message= F, fig.cap="Caption Needed From Matt"}
+Final particle selection mosaic plots are in file "Mosaic plots and Rgooglemaps.R" in publication dropbox folder. Move code to this project eventually
+
+```{r Particle_volume_mosaic_plot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", fig.width=6,  message= F, fig.cap="Caption Needed From Matt", eval= F}
 # select columns for mosaic plot
 mosaic_table2 <- Results2[,1:5]
 # rearrange data to long format and pull out data from column names
@@ -737,7 +753,6 @@ mosaic_table2 %<>%
   mutate(Species = replace(Species, Species %in% c("C. gigas"), "M. gigas"))
 
 # moasic plots 
-library(ggmosaic) 
 moasic_colors  <- c("M. gigas" = "#6D6340",
                     "O. lurida" = "#9986A5",
                     "Control" = "black")
@@ -764,7 +779,7 @@ moasic_plot2
 ```
 
 
-```{r Particle_conc_mosaic_plot, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Caption Needed From Matt"}
+```{r Particle_conc_mosaic_plot, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Caption Needed From Matt", eval= F}
 
 # select columns for mosaic plot
 mosaic_table3 <- Results3[,1:5]
@@ -808,9 +823,6 @@ moasic_plot3
 
 
 ## Allometric Predictor of Biomass
-
-
-Need to convert to Markdown vvvv
 
 Pairwise parameter comparison of models relating allometric predictors of biomass
 reveal that there are statistically significant differences between each of the
@@ -859,7 +871,7 @@ NPD_oly_outRmd <- NPD_bivalve_outrmd %>%
   as_tibble()
 ```
 
-```{r Oly_DTW_SL_NP_YQ_SD_analysis_figure, include=FALSE}
+```{r Oly_DTW_SL_NP_YQ_SD_analysis_figure}
 ## import Matt Gray DTW dataset - Yaquina Bay, Oregon
 ## This code chunk needs "Oly_DTW_Shell_length_setup" chunk above 
 Gray_Oly_Data <- fread(file.path('./Data/bivalve_density_community', "MattGray_2011_2013_Olurida_allometric_data.csv"))
