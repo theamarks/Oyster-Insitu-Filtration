@@ -1,7 +1,26 @@
 # *In situ* Clearance Rates of Olympia Oyster (*Ostrea lurida*) Habitat and Japanese Oyster (*Magallana gigas*) Aquaculture in California
 
+This repository holds the wrangling, analysis, and document building code for two versions of this research: 1) `Publication_Analysis` and 2) `Thesis_Manuscript`
+
+Instructions to Reproduce Publication Analysis:
+
+1) Run all `01_Data_wrangling.Rmd`
+2) Run all `Publication_Analysis/Pub_Results.Rmd`
+
+File Details:
+
+- Raw data is in `Data/` 
+- `manual_Corrections/` contains a .csv with field notes and observations used to cut "disturbed" data from the analysis (e.g. major boat wake)
+- `Thesis_Manuscript/` contains scripts used to construct CSUF thesis
+- `Publication_Analysis/` contains scripts used to analyze data for publication
+- `output/` will be populated by 10 sub-directories when `01_Data_wrangling.Rmd` is run
+- `functions.R` contains wrangling and analysis functions. sourced by other `.Rmd` scripts
+- `01_Data_wrangling.Rmd` cleans up raw data, pairs upstream and downstream measurements based on water velocity, corrects instrument measurements based on side-by-side trials and compiles summary tables used in further analysis. When knit, this file produces a html dashboard `Insitu_Filtration_Data_wrangling.html` displaying time series plots of filtration and side-by-side before and after trials for each field experiment. Tabs show raw data, data corrected by `manual_Corrections`, and Chlorophyll drawdown over time of paired instrument measurements. 
+- `02_Water_Quality.Rmd` when knit produces a html dashboard `Insitu_Filtration_Water_Quality.html` that displays all water quality data collected during filtration and side-by-side trials from both upstream and downstream instruments (Chl a, turbidity, temperature, and salinity). These are exploratory time series not directly use for anlysis or needed to reproduce thesis or publication results.
+
+
 Althea N. Marks  
-M.S. Biology / Marine Ecology
+M.S. Biology | Marine Ecology
 
 Graduate Thesis for  
 Department of Biological Sciences  
