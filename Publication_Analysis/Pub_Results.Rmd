@@ -365,51 +365,10 @@ Final_table <- arrange(transform(Final_table, Site = factor(Site,levels = site_b
 
 ```{r Part_select_GrayData_KevinCode}
 source(file.path("./Publication_Analysis/scripts/02_particle_selection.R"))
-
 ```
 
 
 Final particle selection mosaic plots are in file "Mosaic plots and Rgooglemaps.R" in publication dropbox folder. Move code to this project eventually
-
-```{r Particle_volume_mosaic_plot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", fig.width=6,  message= F, fig.cap="Caption Needed From Matt", eval= F}
-# select columns for mosaic plot
-mosaic_table2 <- Results2[,1:5]
-# rearrange data to long format and pull out data from column names
-mosaic_table2 %<>% 
-  pivot_longer(2:5, "particle_size_um", names_prefix = "Mean.Freq.", values_to = "mean_freq")
-# convert particle size and species to discrete factors
-mosaic_table2$particle_size_um <- factor(mosaic_table2$particle_size_um, levels = c(3, 6, 12, 20))
-# convert species factor to character
-mosaic_table2$Species <- as.character(mosaic_table2$Species)
-# replace gigas with magallana
-mosaic_table2 %<>%
-  mutate(Species = replace(Species, Species %in% c("C. gigas"), "M. gigas"))
-
-# moasic plots 
-moasic_colors  <- c("M. gigas" = "#6D6340",
-                    "O. lurida" = "#9986A5",
-                    "Control" = "black")
-part_label <- expression(paste("Particle Size Groups(", mu, "m)"))
-
-moasic_plot2 <- ggplot(mosaic_table2) +
-  geom_mosaic(aes(x = product(Species, particle_size_um), 
-                  fill = Species, 
-                  weight = mean_freq),
-              offset = 0.01,
-              alpha = 1) +
-  scale_fill_manual(values = moasic_colors) +
-  labs(y = "", 
-       x = part_label, 
-       title = "Frequencey of Artifical Particles Among Individuals",
-       subtitle = "Equal Volume of Particle Sizes") +
-  theme(axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        legend.position = "right",
-        panel.background = element_blank(),
-        legend.text = element_text(face = "italic")
-        )
-moasic_plot2
-```
 
 
 ```{r Particle_conc_mosaic_plot, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Caption Needed From Matt", eval= F}
