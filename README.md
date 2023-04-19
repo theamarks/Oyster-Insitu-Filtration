@@ -2,12 +2,12 @@
 
 This repository holds the wrangling, analysis, and document building code for two versions of this research: 1) `Publication_Analysis` and 2) `Thesis_Manuscript`
 
-Instructions to Reproduce Publication Analysis:
+## Instructions to Reproduce Publication Analysis:
 
 1) Run all `01_Data_wrangling.Rmd`
 2) Run all `Publication_Analysis/Pub_Results.Rmd`
 
-File Details:
+ ## File Details:
 
 - Raw data is in `Data/` 
 - `manual_Corrections/` contains a .csv with field notes and observations used to cut "disturbed" data from the analysis (e.g. major boat wake)
