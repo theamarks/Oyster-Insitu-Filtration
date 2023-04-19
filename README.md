@@ -35,6 +35,12 @@ Committee: Dr. Doug Eernisse (CSUF), Dr. Paul Stapp (CSUF), Dr. Ted Grosholz (UC
 Statistical Consulting: Dr. Kevin Nichols (CSUF)  
 Programming Consulting: Sarthak Saini 
 
+### Instructions to Reproduce Thesis 
+
+Not sure this is working at the moment. I've learned a lot about reproducible practices since first putting this together. Shortcut: open `THESIS.pdf`
+
+1) Run all `01_Data_wrangling.Rmd`
+2) Knit `Thesis_Manuscript/THESIS.Rmd` which will knit and compile children documents into single final document `THESIS.pdf` (`Thesis_Acknowledgments.Rmd`, `Thesis_Abstract.Rmd`, `Thesis_Introduction.Rmd`, `Thesis_Methods.Rmd`, `Thesis_Results.Rmd`, and `Thesis_Discussion.Rmd`)
 
 ## Publication Status
 
