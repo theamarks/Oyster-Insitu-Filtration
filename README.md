@@ -36,7 +36,7 @@ Statistical Consulting: Dr. Kevin Nichols (CSUF)
 Programming Consulting: Sarthak Saini 
 
 
-## Status
+## Publication Status
 
 In prep for publication 2023
 
