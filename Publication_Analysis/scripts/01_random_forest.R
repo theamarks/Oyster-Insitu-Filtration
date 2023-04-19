@@ -1,3 +1,7 @@
+# Random Forest Regression
+# Predictors of Habitat Clearance Rate (Lhr^-1m^-2)
+
+
 ###### Estimate missing values (Imputation) 
 #In our data we are missing 4 out of 400ish values.  (cells)
 #Because we have limited observations but a high number of variables simply
@@ -13,7 +17,8 @@ pkgs <- c("missForest",
          "rpart",
          "randomForest",
          "adabag",
-         "magrittr")
+         "magrittr",
+         "xtable")
 groundhog.library(pkgs, "2020-03-01")
 
 # Import data
@@ -36,11 +41,6 @@ Analysis_data <- Master_analysis_table %>%
                 pcnt_Chl_rmvd, L_hr_m2) %>% 
   dplyr::arrange(Site, Date)
 
-# packages needed for imputation and randomforest regression
-# library(missForest)
-# library(rpart)
-# library(randomForest)
-# library(adabag)
 
 # Imputation for 4 missing values (TPM & OC)
 temp1 = Analysis_data[,c(1,2,3)] # temporarily remove data labels for imputation
