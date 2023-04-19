@@ -24,6 +24,7 @@ Co-authors: Dr. Matthew Gray (UMCES), Dr. Kevin Nichols (CSUF), Dr. Danielle Zac
 - `functions.R` contains wrangling and analysis functions. sourced by other `.Rmd` scripts
 - `01_Data_wrangling.Rmd` cleans up raw data, pairs upstream and downstream measurements based on water velocity, corrects instrument measurements based on side-by-side trials and compiles summary tables used in further analysis. When knit, this file produces a html dashboard `Insitu_Filtration_Data_wrangling.html` displaying time series plots of filtration and side-by-side before and after trials for each field experiment. Tabs show raw data, data corrected by `manual_Corrections`, and Chlorophyll drawdown over time of paired instrument measurements. 
 - `02_Water_Quality.Rmd` when knit produces a html dashboard `Insitu_Filtration_Water_Quality.html` that displays all water quality data collected during filtration and side-by-side trials from both upstream and downstream instruments (Chl a, turbidity, temperature, and salinity). These are exploratory time series not directly use for anlysis or needed to reproduce thesis or publication results.
+- `Insitu_Filtration_Data_Cleaning_Outline.R` Outline of what `01_Data_wrangling.Rmd` needs to do. Plain language prompt
 
 ## Instructions to Reproduce Thesis 
 
