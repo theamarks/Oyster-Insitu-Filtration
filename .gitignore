@@ -1,27 +1,21 @@
 .Rproj.user
 .Rhistory
 .RData
+.Rprofile
 .Ruserdata
-Insitu_Filtration_Data_wrangling_cache/**
-Insitu_Filtration_Data_wrangling_files/**
-Insitu_Filtration_Model_Analysis_files/**
-Insitu_Filtration_Model_Analysis_cache/**
-Insitu_Filtration_Analysis_script_files/**
-Insitu_Filtration_Analysis_script_cache/**
-Publication_Manuscript/Pub_Results_cache/**
-Publication_manuscript/Pub_results_files/**
-Thesis_Manuscript/THESIS_cache/
-Thesis_Manuscript/*.out
+**/*cache/
+**/*files/
+**/*.out
 **/*.html
-Test Graph Code for DZ.R
-.DS_Store
-THESIS.log
 **/*.ot
 **/*.log
 **/*.tex
 **/*.aux
+Test Graph Code for DZ.R
+.DS_Store
+THESIS.log
 THESIS_cache/
-.Rprofile
 renv/
 renv.lock
 output/
+**/NA/
