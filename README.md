@@ -19,6 +19,10 @@ This repository holds the wrangling, analysis, and document building code for tw
 - `02_Water_Quality.Rmd` when knit produces a html dashboard `Insitu_Filtration_Water_Quality.html` that displays all water quality data collected during filtration and side-by-side trials from both upstream and downstream instruments (Chl a, turbidity, temperature, and salinity). These are exploratory time series not directly use for anlysis or needed to reproduce thesis or publication results.
 
 
+## Thesis Details
+
+M.S. completed 2021 with this version --> [![DOI](https://zenodo.org/badge/211166776.svg)](https://zenodo.org/badge/latestdoi/211166776)
+
 Althea N. Marks  
 M.S. Biology | Marine Ecology
 
@@ -34,10 +38,12 @@ Programming Consulting: Sarthak Saini
 
 ## Status
 
-In prep for publication 2022  
-M.S. completed 2021 with this version --> [![DOI](https://zenodo.org/badge/211166776.svg)](https://zenodo.org/badge/latestdoi/211166776)
+In prep for publication 2023
 
-## Session Info & package versions need to run:
+Co-authors: Dr. Matthew Gray (UMCES), Dr. Kevin Nichols (CSUF), Dr. Danielle Zacherl (CSUF)
+
+
+## Session Info & package versions needed to run:
 
 R version 3.6.3 (2020-02-29)  
 Platform: x86_64-apple-darwin15.6.0 (64-bit)  
