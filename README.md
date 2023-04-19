@@ -4,8 +4,9 @@ This repository holds the wrangling, analysis, and document building code for tw
 
 ## Instructions to Reproduce Publication Analysis:
 
-1) Run all `01_Data_wrangling.Rmd`
-2) Run all `Publication_Analysis/Pub_Results.Rmd`
+1) Run `01_Data_wrangling.Rmd` 
+2) Run `Publication_Analysis/Pub_Results.Rmd` 
+Note: not all code chunks will run by design
 
 ### Publication Status
 
@@ -15,8 +16,8 @@ Co-authors: Dr. Matthew Gray (UMCES), Dr. Kevin Nichols (CSUF), Dr. Danielle Zac
 
 ## File Details:
 
-- Raw data is in `Data/` 
-- `manual_Corrections/` contains a .csv with field notes and observations used to cut "disturbed" data from the analysis (e.g. major boat wake)
+- `Data/` Raw data
+- `manual_Corrections/` contains a .csv with field notes and observations used to cut disturbed data from raw data (e.g. major boat wake)
 - `Thesis_Manuscript/` contains scripts used to construct CSUF thesis
 - `Publication_Analysis/` contains scripts used to analyze data for publication
 - `output/` will be populated by 10 sub-directories when `01_Data_wrangling.Rmd` is run
