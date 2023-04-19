@@ -7,7 +7,13 @@ This repository holds the wrangling, analysis, and document building code for tw
 1) Run all `01_Data_wrangling.Rmd`
 2) Run all `Publication_Analysis/Pub_Results.Rmd`
 
- ## File Details:
+### Publication Status
+
+In prep for publication 2023
+
+Co-authors: Dr. Matthew Gray (UMCES), Dr. Kevin Nichols (CSUF), Dr. Danielle Zacherl (CSUF)
+
+## File Details:
 
 - Raw data is in `Data/` 
 - `manual_Corrections/` contains a .csv with field notes and observations used to cut "disturbed" data from the analysis (e.g. major boat wake)
@@ -18,8 +24,14 @@ This repository holds the wrangling, analysis, and document building code for tw
 - `01_Data_wrangling.Rmd` cleans up raw data, pairs upstream and downstream measurements based on water velocity, corrects instrument measurements based on side-by-side trials and compiles summary tables used in further analysis. When knit, this file produces a html dashboard `Insitu_Filtration_Data_wrangling.html` displaying time series plots of filtration and side-by-side before and after trials for each field experiment. Tabs show raw data, data corrected by `manual_Corrections`, and Chlorophyll drawdown over time of paired instrument measurements. 
 - `02_Water_Quality.Rmd` when knit produces a html dashboard `Insitu_Filtration_Water_Quality.html` that displays all water quality data collected during filtration and side-by-side trials from both upstream and downstream instruments (Chl a, turbidity, temperature, and salinity). These are exploratory time series not directly use for anlysis or needed to reproduce thesis or publication results.
 
+## Instructions to Reproduce Thesis 
 
-## Thesis Details
+Not sure this is working at the moment. I've learned a lot about reproducible practices since first putting this together. Shortcut: open `THESIS.pdf`
+
+1) Run all `01_Data_wrangling.Rmd`
+2) Knit `Thesis_Manuscript/THESIS.Rmd` which will knit and compile children documents into single final document `THESIS.pdf` (`Thesis_Acknowledgments.Rmd`, `Thesis_Abstract.Rmd`, `Thesis_Introduction.Rmd`, `Thesis_Methods.Rmd`, `Thesis_Results.Rmd`, and `Thesis_Discussion.Rmd`)
+
+### Thesis Details
 
 M.S. completed 2021 with this version --> [![DOI](https://zenodo.org/badge/211166776.svg)](https://zenodo.org/badge/latestdoi/211166776)
 
@@ -34,20 +46,6 @@ Advisor: Dr. Danielle Zacherl (CSUF)
 Committee: Dr. Doug Eernisse (CSUF), Dr. Paul Stapp (CSUF), Dr. Ted Grosholz (UC Davis)  
 Statistical Consulting: Dr. Kevin Nichols (CSUF)  
 Programming Consulting: Sarthak Saini 
-
-### Instructions to Reproduce Thesis 
-
-Not sure this is working at the moment. I've learned a lot about reproducible practices since first putting this together. Shortcut: open `THESIS.pdf`
-
-1) Run all `01_Data_wrangling.Rmd`
-2) Knit `Thesis_Manuscript/THESIS.Rmd` which will knit and compile children documents into single final document `THESIS.pdf` (`Thesis_Acknowledgments.Rmd`, `Thesis_Abstract.Rmd`, `Thesis_Introduction.Rmd`, `Thesis_Methods.Rmd`, `Thesis_Results.Rmd`, and `Thesis_Discussion.Rmd`)
-
-## Publication Status
-
-In prep for publication 2023
-
-Co-authors: Dr. Matthew Gray (UMCES), Dr. Kevin Nichols (CSUF), Dr. Danielle Zacherl (CSUF)
-
 
 ## Session Info & package versions needed to run:
 
