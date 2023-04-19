@@ -12,7 +12,8 @@ library(groundhog)
 pkgs <- c("missForest",
          "rpart",
          "randomForest",
-         "adabag")
+         "adabag",
+         "magrittr")
 groundhog.library(pkgs, "2020-03-01")
 
 # Import data
