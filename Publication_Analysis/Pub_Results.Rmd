@@ -425,7 +425,7 @@ than species found at the Deanza and San Diego sites. Though there are less
 notable yet still significant differences between the populations sampled at the
 two Southern California sites.
 
-```{r Oly_DTW_Shell_length_setup, include=FALSE}
+```{r Oly_DTW_Shell_height_setup, include=FALSE}
 ############ Olympia DTW and Shell Length #####################
 # Determine what quadrat samples have missing data (NAs)
 NPD_biv_bio_summary <- NPD_bivalves %>% 
@@ -461,11 +461,9 @@ NPD_oly_outRmd <- NPD_bivalve_outrmd %>%
   filter(species == "Ostrea lurida") %>% 
   drop_na() %>% 
   as_tibble()
-```
 
-```{r Oly_DTW_SL_NP_YQ_SD_analysis_figure}
 ## import Matt Gray DTW dataset - Yaquina Bay, Oregon
-## This code chunk needs "Oly_DTW_Shell_length_setup" chunk above 
+## This code chunk needs "Oly_DTW_Shell_height_setup" chunk above 
 Gray_Oly_Data <- fread(file.path('./Data/bivalve_density_community', "MattGray_2011_2013_Olurida_allometric_data.csv"))
 colnames(Gray_Oly_Data) <- c("ID", "Date", "species", "length_mm", "shell_tissue_g", "vial_weight", "Vial_wet_oyster", "Tissue_weight_g", "vial_dry_oyster", "tissue_dry_weight_g")
 Gray_Oly_Data %<>% 
@@ -476,7 +474,7 @@ Gray_Oly_SL_DTW <- Gray_Oly_Data %>%
   dplyr::select(Date, Site, species, length_mm, tissue_dry_weight_g)
 
 ##### Import Jason Langevin DTW dataset - San Diego Bay, California
-SD_Oly_SL_DTW <- read_csv("./Data/bivalve_density_community/Langevin_SD_O_lurida_length_weight_data.csv")
+SD_Oly_SL_DTW <- read_csv(file.path("./Data/bivalve_density_community/Langevin_SD_O_lurida_length_weight_data.csv"))
 SD_Oly_SL_DTW %<>% 
   rename("Tidal_hight" = "Tidal height",
          "length_mm" = "Length (mm)",
@@ -500,53 +498,14 @@ Oly_combo_DTW_SL <- full_join(NPD_Oly_SL_DTW,Gray_Oly_SL_DTW) %>%
 #Oly_combo_DTW_SL$legend <- fct_relevel(Oly_combo_DTW_SL$legend, "Yaquina", "San Diego", "Deanza")
 Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>% 
   mutate(Site = fct_relevel(Site, "San Diego", "Deanza", "Yaquina"))
+```
 
-#### start of Kevin's code ###
-#find domain of shell length
+```{r Oly_DTW_SH_analysis_figure}
+################ Statistical Analysis 
 
-#fit separate models log(weight)~log(length)
+source(file.path("./Publication_Analysis/scripts/03_dtw_shell_height.R"))
 
-#come up with 1000 evenly separated x values over domain.  Compute y.hat for each of the three models
-#add to plot.
-
-temp = Oly_combo_DTW_SL
-
-#find domain of shell lenght
-
-x.seq = seq(min(temp$length_mm),max(temp$length_mm),by=0.05)
-
-#fit separate models
-
-x1 = temp$length_mm[temp$Site == "Deanza"]
-y1 = temp$tissue_dry_weight_g[temp$Site=="Deanza"]
-x2 = temp$length_mm[temp$Site == "San Diego"]
-y2 = temp$tissue_dry_weight_g[temp$Site=="San Diego"]
-x3 = temp$length_mm[temp$Site == "Yaquina"]
-y3 = temp$tissue_dry_weight_g[temp$Site=="Yaquina"]
-
-lx1 = log(x1)
-lx2 = log(x2)
-lx3 = log(x3)
-ly1 = log(y1)
-ly2 = log(y2)
-ly3 = log(y3)
-
-m1 = lm(ly1~lx1)
-m2 = lm(ly2~lx2)
-m3 = lm(ly3~lx3)
-
-#example with confidence bounds
-#y.seq1 = exp(predict(m1,newdata=data.frame(lx1=log(x.seq)),interval="confidence"))
-y.seq1 = exp(predict(m1,newdata=data.frame(lx1=log(x.seq))))
-y.seq2 = exp(predict(m2,newdata=data.frame(lx2=log(x.seq))))
-y.seq3 = exp(predict(m3,newdata=data.frame(lx3=log(x.seq))))
-
-temp1 = data.frame(x.seq,y.seq1)
-temp2 = data.frame(x.seq,y.seq2)
-temp3 = data.frame(x.seq,y.seq3)
-### End of Kevin's code ####
-
-######## Graph with Deanza, Yaquina & San Diego DTW x Shell length
+################# Graph with Deanza, Yaquina & San Diego DTW x Shell length
 
 Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>% 
   arrange(Site, "San Diego", "Deanza", "Yaquina")
