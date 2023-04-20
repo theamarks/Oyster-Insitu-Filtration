@@ -398,12 +398,12 @@ createSbsDensityPlot = function(adistrubution, aSbs_stat_summary, aFileName)
       geom_vline(xintercept = distrubution_up$mean_chl_up,
                 color = wes_palette("Cavalcanti1")[2], linetype = "dashed", size = .75) +
     # add Mean Down next to dashed line
-      annotate("text", x = aSbs_stat_summary$Mean_Chl_Down - 0.05, 
-               y = 0, label = bquote(bar(x) ~ .(round(as.numeric(aSbs_stat_summary$Mean_Chl_Down), 2))),
+    annotate("text", x = aSbs_stat_summary$Mean_sbs_Chl_Down - 0.05, 
+             y = 0, label = bquote(bar(x) ~ .(round(as.numeric(aSbs_stat_summary$Mean_sbs_Chl_Down), 2))),
               vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[3]) +
     # add mean Up next to dashed line
-      annotate("text", x = aSbs_stat_summary$Mean_Chl_Up - 0.05, 
-              y = Inf, label = bquote(bar(x) ~ .(round(as.numeric(aSbs_stat_summary$Mean_Chl_Up), 2))),
+      annotate("text", x = aSbs_stat_summary$Mean_sbs_Chl_Up - 0.05, 
+              y = Inf, label = bquote(bar(x) ~ .(round(as.numeric(aSbs_stat_summary$Mean_sbs_Chl_Up), 2))),
               vjust = "top", hjust = "right", color = wes_palette("Cavalcanti1")[2]) +
       labs(title = aFileName %>% str_replace("Insitu_Filter_", "") %>%
                             str_replace(".csv", ""))

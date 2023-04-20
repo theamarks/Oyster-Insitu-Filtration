@@ -8,23 +8,44 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r load_packages}
+library(groundhog)
+pkgs <- c(
+  "flexdashboard",
+  "dplyr",
+  "tidyr",
+  "data.table",
+  "magrittr",
+  "lubridate",
+  "ggplot2",
+  "stringr",
+  "hms",
+  "wesanderson",
+  "ggpubr",
+  "cowplot",
+  "ggthemes"
+)
+
+groundhog.library(pkgs, "2020-03-01")
+```
+
 
 ```{r setup}
 
 ## Import the libraries and functions
-library(flexdashboard) # knit html dashboard output template
-library(dplyr) # data manipulation 
-library(tidyr) # data rearranging
-library(data.table)
-library(magrittr) # pipe function
-library(lubridate) # dealing with dates
-library(ggplot2) # graphing
-library(ggthemes) # theme_gdocs() in graphs
-library(stringr) # dealing with strings
-library(hms) # dealing with time & date
-library(wesanderson) # color palette
-library(ggpubr) # figures
-library(cowplot) # arrange multiple plots or objects in single plot
+# library(flexdashboard) # knit html dashboard output template
+# library(dplyr) # data manipulation 
+# library(tidyr) # data rearranging
+# library(data.table)
+# library(magrittr) # pipe function
+# library(lubridate) # dealing with dates
+# library(ggplot2) # graphing
+# library(ggthemes) # theme_gdocs() in graphs
+# library(stringr) # dealing with strings
+# library(hms) # dealing with time & date
+# library(wesanderson) # color palette
+# library(ggpubr) # figures
+# library(cowplot) # arrange multiple plots or objects in single plot
 
 ######################################################################
 ## Directories: 
@@ -201,8 +222,8 @@ for(file in 1 : length(all_files))
   if(nrow(one_file) > 0)
   {  
     ## calculate Statistics on Sbs data
-    one_file_stats = calculateErrorStats(one_file, file_name, manual_correction_df,
-                                    error_directory)
+   # one_file_stats = calculateErrorStats(one_file, file_name, manual_correction_df, error_directory)
+    one_file_stats = summarizeSbsCorrectionValues(one_file, file_name)
     sbs_stats_summary = rbind(one_file_stats, sbs_stats_summary) 
   }
   
