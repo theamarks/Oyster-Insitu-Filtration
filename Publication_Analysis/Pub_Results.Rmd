@@ -1208,20 +1208,6 @@ Bivalve_Den_graph
 # excavation quadrat area m^2 (0.25 x 0.25m)
 NP_excavation_quad_area = 0.0625
 
-### vvv incorrect calculation vvv - mean of quadrat DTW instead of total
-# calculate DTW / m^2 / species 
-#NPD_biv_DTW_m2 <- NPD_bivalve_outrmd %>% 
- # group_by(excavation_sample, species) %>% 
-  #summarize(mean_DTW = mean(tissue_dry_weight_g)) %>% # show the average DTW for each species within each excav sample
-  #ungroup() %>% # undo previous grouping by excavation_sample and species
-  #group_by(species) %>% # new grouping by species to determine the average DTW by species across all quads
-  #summarize(mean_DTW_m2 = mean(mean_DTW/NP_excavation_quad_area)) %>% 
-  #mutate(Site = "Deanza") %>%  # add new column with site info for bar graph
-  #rename(Species = species) # rename column with capital case
- ###### ^^^^^ end of incorrect code ^^^ 
-
-#### Check above code for calculations
-
 # sum the total DTW (g) within each excavation sample by species
 a <- NPD_bivalve_outrmd %>% 
   group_by(excavation_sample, species) %>% 
@@ -1273,7 +1259,7 @@ Bivalve_Biomass_graph <- ggplot(NPD_biv_DTW_m2, aes(Site)) +
 Bivalve_Biomass_graph
 ```
 
-```{r Estimate_filtr_w_other_studies}
+```{r Estimate_filter_w_other_studies}
 ##### Compare previous filtration studies to our HCR findings
 
 ## Gray & Langdon (2018) ####
