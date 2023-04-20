@@ -1293,7 +1293,5 @@ gray_wet_cr_gigas <- 1.06
 ## Wheat & Ruesink (2013) ####
 # M gigas clearance rate L/hr/g grown on long-lines in Willipa Bay, WA
 wheat_cr_gigas <- 0.73
-
-
 ```
 
