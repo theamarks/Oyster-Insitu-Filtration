@@ -495,9 +495,7 @@ Oly_combo_DTW_SL <- full_join(NPD_Oly_SL_DTW,Gray_Oly_SL_DTW) %>%
                             Site == "Yaquina" & species == "Ostrea lurida" ~ "Yaquina",
                             Site == "San Diego" & species == "Ostrea lurida" ~ "San Diego"))
 
-#Oly_combo_DTW_SL$legend <- fct_relevel(Oly_combo_DTW_SL$legend, "Yaquina", "San Diego", "Deanza")
-Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>% 
-  mutate(Site = fct_relevel(Site, "San Diego", "Deanza", "Yaquina"))
+
 ```
 
 ```{r Oly_DTW_SH_analysis_figure}
@@ -507,6 +505,18 @@ source(file.path("./Publication_Analysis/scripts/03_dtw_shell_height.R"))
 
 ################# Graph with Deanza, Yaquina & San Diego DTW x Shell length
 
+# order factor levels
+# Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>%
+#   mutate(Site = fct_relevel(Site, "San Diego", "Deanza", "Yaquina"))
+
+# Oly_combo_DTW_SL$Site <- factor(Oly_combo_DTW_SL$Site, levels = c("Yaquina", "Deanza", "San Diego"))
+
+# Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>%
+#   mutate(Site = arrange(Site, c("San Diego", "Deanza", "Yaquina")))
+
+
+
+# graph
 Combo_Oly_shell_DTW_figure <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_weight_g)) +
   geom_point(aes(color = Site, shape = Site)) +
   scale_color_manual(labels = c("San Diego Bay, CA",
@@ -520,8 +530,9 @@ Combo_Oly_shell_DTW_figure <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry
                                 "Deanza, Newport Bay, CA",
                                 "Yaquina Bay, OR"),
                      values = c("San Diego" = 6,
-                                "Yaquina" = 3,
-                                "Deanza" = 16),
+                                "Deanza" = 16,
+                                "Yaquina" = 3
+                                ),
                      na.translate = TRUE, drop = FALSE) + 
   theme_classic() +
   theme(legend.box.background = element_rect(colour = "black"),
@@ -538,7 +549,7 @@ Combo_Oly_shell_DTW_figure <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry
 
 Combo_Oly_shell_DTW_figure
 
-ggsave(Combo_Oly_shell_DTW_figure, height=3.708, width=6, filename = "Oly_DTW_SL_allsites.png")
+# ggsave(Combo_Oly_shell_DTW_figure, height=3.708, width=6, filename = "Oly_DTW_SL_allsites.png")
 #fig.asp=0.618
 
 ```
