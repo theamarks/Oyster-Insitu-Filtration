@@ -515,8 +515,8 @@ source(file.path("./Publication_Analysis/scripts/03_dtw_shell_height.R"))
 
 # Oly_combo_DTW_SL$Site <- factor(Oly_combo_DTW_SL$Site, levels = c("Yaquina", "Deanza", "San Diego"))
 
-# Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>%
-#   mutate(Site = arrange(Site, c("San Diego", "Deanza", "Yaquina")))
+Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>% 
+  arrange(Site)
 
 
 
