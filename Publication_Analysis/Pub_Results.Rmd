@@ -309,10 +309,17 @@ FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_Hr_m2)) +
                alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
   scale_fill_manual(values = Site_colors) +
   theme_classic() +
+  theme(text = element_text(size = 12)) +
   labs(x = 'Site',
        y = Hab_FR_Label)
 
-plot(FR_box) 
+#quartz(h = 3.09, w = 5)
+FR_box
+
+ ggsave(FR_box, 
+        height=3.09, width=5, dpi = 600, 
+        device = "png",
+        filename = file.path("./Publication_Analysis/figures/", paste0("HCR_boxplot_",Sys.Date() ,".png")))
 
 ```
 
@@ -558,7 +565,7 @@ Combo_Oly_shell_DTW_figure
  ggsave(Combo_Oly_shell_DTW_figure, 
         height=3.09, width=5, dpi = 600, 
         device = "png",
-        filename = file.path("./Publication_Analysis/figures/Oly_DTW_SL_allsites.png"))
+        filename = file.path("./Publication_Analysis/figures/", paste0("Oly_DTW_SL_allsites_",Sys.Date() ,".png")))
 #fig.asp=0.618
 # height=3.708, width=6
 
