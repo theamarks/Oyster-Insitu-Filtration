@@ -19,3 +19,4 @@ renv/
 renv.lock
 output/
 **/NA/
+Publication_Analysis/figures/*
