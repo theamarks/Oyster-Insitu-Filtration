@@ -544,17 +544,23 @@ Combo_Oly_shell_DTW_figure <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry
         legend.position = c(0.075, 0.95),
         legend.title = element_blank()) +
   ylim(0,1)+
+  xlim(0,80) +
   labs(x = 'Shell Length (mm)',
        y = 'Dry Tissue Weight (g)')+
   geom_line(data=temp1,aes(x.seq,y.seq1), color = "#440154FF") + #9986A5
   geom_line(data=temp2,aes(x.seq,y.seq2), color = "#FCA636FF") +
   geom_line(data=temp3,aes(x.seq,y.seq3), color = "#26828EFF") #20A386FF
 
-
+# test export proportions
+quartz(h = 3.09, w = 5)
 Combo_Oly_shell_DTW_figure
 
-# ggsave(Combo_Oly_shell_DTW_figure, height=3.708, width=6, filename = "Oly_DTW_SL_allsites.png")
+ ggsave(Combo_Oly_shell_DTW_figure, 
+        height=3.09, width=5, dpi = 600, 
+        device = "png",
+        filename = file.path("./Publication_Analysis/figures/Oly_DTW_SL_allsites.png"))
 #fig.asp=0.618
+# height=3.708, width=6
 
 ```
 
