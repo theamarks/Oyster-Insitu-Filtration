@@ -209,11 +209,14 @@ find_outlier <- function(data){
 
 ```{r figure_setup, include=FALSE}
 ############### Site Color Assignments ###############
-viridis(4)
-Site_colors <- c("San Rafael" = "#440154FF",
-                 "Morro Bay" = "#31688EFF",
-                 "Shellmaker" = "#35B779FF",
-                 "Deanza" = "#FDE725FF")
+# viridis(4)
+# Site_colors <- c("San Rafael" = "#440154FF",
+#                  "Morro Bay" = "#31688EFF",
+#                  "Shellmaker" = "#35B779FF",
+#                  "Deanza" = "#FDE725FF")
+
+site_names <- c("Yaquina", "San Rafel", "Morro Bay", "Shellmaker", "Deanza", "San Diego")
+Site_colors_all <- setNames(viridis(option = "D", n = 6), site_names)
 
 ############### Bivalve Species Color Assignments ###############
 # wes_palettes # lists all current palattes 
@@ -517,15 +520,8 @@ source(file.path("./Publication_Analysis/scripts/03_dtw_shell_height.R"))
 ################# Graph with Deanza, Yaquina & San Diego DTW x Shell length
 
 # order factor levels
-# Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>%
-#   mutate(Site = fct_relevel(Site, "San Diego", "Deanza", "Yaquina"))
-
-# Oly_combo_DTW_SL$Site <- factor(Oly_combo_DTW_SL$Site, levels = c("Yaquina", "Deanza", "San Diego"))
-
 Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>% 
   arrange(Site)
-
-
 
 # graph
 Combo_Oly_shell_DTW_figure <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_weight_g)) +
