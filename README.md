@@ -18,7 +18,7 @@ Co-authors: Dr. Matthew Gray (UMCES), Dr. Kevin Nichols (CSUF), Dr. Danielle Zac
 
 - `Data/` Raw data directory
   - `bibalve_density_community/`data pertaining bivalve DTW, density, and shell height
-  - `gray_data` lurida & gigas partical selection data from co-author Matt Gray
+  - `gray_data/` lurida & gigas partical selection data from co-author Matt Gray
   - `Insitu_Filter_POM_PIM_Data.csv` Particulate organic matter and particulate inorganic matter data from HCR trials
   - `Insitu_Filter_sbs_FR_variables_All_data.csv` observations about each HCR field trial
   - `Insitu_Filter_velocity_all_data.csv` water velocity for all HCR field trials
