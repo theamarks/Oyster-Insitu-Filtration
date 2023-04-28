@@ -251,6 +251,11 @@ PIM_Label <- c('Particulate Inorganic Matter mg/L')
 
 ```
 
+```{r map_figre}
+source(file.path("./Publication_Analysis/scripts/04_map_sites.R"))
+```
+
+
 # Results
 
 Twenty-one filtration trials, across the four study sites, were included in the analyses. 
