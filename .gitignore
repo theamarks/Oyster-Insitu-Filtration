@@ -20,3 +20,4 @@ renv.lock
 output/
 **/NA/
 Publication_Analysis/figures/*
+Data/map_rnaturalearth/GRAY_HR_SR_OB/*
