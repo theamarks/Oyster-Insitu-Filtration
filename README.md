@@ -17,9 +17,13 @@ Co-authors: Dr. Matthew Gray (UMCES), Dr. Kevin Nichols (CSUF), Dr. Danielle Zac
 ## File Details:
 
 - `Data/` Raw data
+  - `Data/map_rnaturalearth/` raster data downloaded from rnaturalearth
 - `manual_Corrections/` contains a .csv with field notes and observations used to cut disturbed data from raw data (e.g. major boat wake)
 - `Thesis_Manuscript/` contains scripts used to construct CSUF thesis
-- `Publication_Analysis/` contains scripts used to analyze data for publication
+- `Publication_Analysis/` directory used to analyze data for publication
+  - `Publication_Analysis/Pub_Results.Rmd` Rmarkdown file with all analyses, sources scripts, text is incomplete
+  - `Publication_Analysis/scripts` contains individual analysis scripts sourced from `Pub_Results.Rmd`
+  - `Publication_Analysis/figures` folder containing figure outputs from `Pub_Results.Rmd`
 - `output/` will be populated by 10 sub-directories when `01_Data_wrangling.Rmd` is run
 - `functions.R` contains wrangling and analysis functions. sourced by other `.Rmd` scripts
 - `01_Data_wrangling.Rmd` cleans up raw data, pairs upstream and downstream measurements based on water velocity, corrects instrument measurements based on side-by-side trials and compiles summary tables used in further analysis. When knit, this file produces a html dashboard `Insitu_Filtration_Data_wrangling.html` displaying time series plots of filtration and side-by-side before and after trials for each field experiment. Tabs show raw data, data corrected by `manual_Corrections`, and Chlorophyll drawdown over time of paired instrument measurements. 
