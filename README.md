@@ -16,8 +16,14 @@ Co-authors: Dr. Matthew Gray (UMCES), Dr. Kevin Nichols (CSUF), Dr. Danielle Zac
 
 ## File Details:
 
-- `Data/` Raw data
+- `Data/` Raw data directory
+  - `Data/bibalve_density_community/`data pertaining bivalve DTW, density, and shell height
+  - `Data/gray_data` lurida & gigas partical selection data from co-author Matt Gray
+  - `Data/Insitu_Filter_POM_PIM_Data.csv` Particulate organic matter and particulate inorganic matter data from HCR trials
+  - `Data/Insitu_Filter_sbs_FR_variables_All_data.csv` observations about each HCR field trial
+  - `Data/Insitu_Filter_velocity_all_data.csv` water velocity for all HCR field trials
   - `Data/map_rnaturalearth/` raster data downloaded from rnaturalearth
+  - `Data/sonde_time_series/` directory containing raw water quality sonde data for all HCR trials
 - `manual_Corrections/` contains a .csv with field notes and observations used to cut disturbed data from raw data (e.g. major boat wake)
 - `Thesis_Manuscript/` contains scripts used to construct CSUF thesis
 - `Publication_Analysis/` directory used to analyze data for publication
