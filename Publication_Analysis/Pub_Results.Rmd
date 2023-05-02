@@ -532,9 +532,11 @@ Oly_combo_DTW_SL <- full_join(NPD_Oly_SL_DTW,Gray_Oly_SL_DTW) %>%
 ```
 
 ```{r Oly_DTW_SH_analysis_figure}
-################ Statistical Analysis 
-
+################ Builds models for each O. lurida population 
 source(file.path("./Publication_Analysis/scripts/03_dtw_shell_height.R"))
+
+############### Statistical comparison between each model
+source(file.path("./Publication_Analysis/scripts/dtw_model_comp.R"))
 
 ################# Graph with Deanza, Yaquina & San Diego DTW x Shell length
 
