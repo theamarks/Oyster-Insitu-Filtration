@@ -119,7 +119,7 @@ pval = 1-pchisq(chi.sq,3)
 #Analysis of data3.
 
 data3 = data3[data3$Level!="Total",]
-data3$mass = as.numeric(data3$Level)*data3$Count
+data3$mass = (4/3)*pi*(as.numeric(data3$Level)/2)^3*data3$Count*(750*1000*1000000/(1000000^3))
 data3a = sqldf("select Species, Individual, sum(mass) as mass from data3 group by Species, Individual")
 
 
