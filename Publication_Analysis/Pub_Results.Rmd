@@ -531,18 +531,21 @@ Oly_combo_DTW_SL <- full_join(NPD_Oly_SL_DTW,Gray_Oly_SL_DTW) %>%
 
 ```
 
-```{r Oly_DTW_SH_analysis_figure}
+```{r Oly_DTW_SH_analysis}
 ################ Builds models for each O. lurida population 
 source(file.path("./Publication_Analysis/scripts/03_dtw_shell_height.R"))
 
 ############### Statistical comparison between each model
 source(file.path("./Publication_Analysis/scripts/dtw_model_comp.R"))
+```
 
+```{r Oly_DTW_SH_figure}
 ################# Graph with Deanza, Yaquina & San Diego DTW x Shell length
 
 # order factor levels
 Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>% 
-  arrange(Site)
+  #arrange(Site)
+  arrange(factor(Site, levels = c("San Diego","Deanza","Yaquina")))
 
 # graph
 Combo_Oly_shell_DTW_figure <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_weight_g)) +
@@ -551,16 +554,13 @@ Combo_Oly_shell_DTW_figure <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry
                                 "Deanza, Newport Bay, CA",
                                 "Yaquina Bay, OR"),
                      values = dtw_colors,
-                     # values = c("San Diego" = "#FCA636FF",
-                     #            "Deanza" = "#440154FF",
-                     #            "Yaquina" = "#26828EFF"), #9986A5
                      na.translate = TRUE, drop = FALSE) + 
   scale_shape_manual(labels = c("San Diego Bay, CA",
                                 "Deanza, Newport Bay, CA",
                                 "Yaquina Bay, OR"),
-                     values = c("San Diego" = 6,
+                     values = c("Yaquina" = 3, 
                                 "Deanza" = 16,
-                                "Yaquina" = 3
+                                "San Diego" = 6
                                 ),
                      na.translate = TRUE, drop = FALSE) + 
   theme_classic() +
@@ -572,7 +572,7 @@ Combo_Oly_shell_DTW_figure <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry
         text = element_text(size = 10)) +
   ylim(0,1)+
   xlim(0,80) +
-  labs(x = 'Shell Length (mm)',
+  labs(x = 'Shell Height (mm)',
        y = 'Dry Tissue Weight (g)')+
   geom_line(data=temp1,aes(x.seq,y.seq1), color = dtw_colors[1]) + #9986A5
   geom_line(data=temp2,aes(x.seq,y.seq2), color = dtw_colors[2]) +
@@ -1317,13 +1317,19 @@ gray_dry_cr_oly <- 0.78 # Dry season
 gray_wet_cr_oly <- 0.19 # Wet season
 
 # O. lurida all season model insitu - as selected by stepwise regression analysis of temp, salinity, total particulate matter, organic content. Per 1 g of biomass DTW
-estimate_oly_cr_gray <- function (temp, OC, biomass_g){
-  clearance = (-0.95 + 2.49*OC + 0.06*temp)*biomass_g
+estimate_oly_cr_gray <- function (temp, OC){
+  clearance = (-0.95 + 2.49*OC + 0.06*temp)
   return(clearance)
   }
 
 ## Deanza mean O.lurida grams biomass per m^2 of habitat
 npd_dtw_oly <- as.numeric(NPD_species_DTW[NPD_species_DTW$Species=="Ostrea lurida","mean_DTW_g_m2"])
+
+# area m^2 of deanza oyster bed (20m x 1m)
+npd_area <- 20
+
+# convert biomass from g/m^2 to g
+npd_dtw_oly_g <- npd_dtw_oly*npd_area
 
 # Mean Seston Organic Content - Deanza
 npd_OC <- mean(NPD_TPM_OC$Avg_OC_Ratio)
@@ -1331,8 +1337,14 @@ npd_OC <- mean(NPD_TPM_OC$Avg_OC_Ratio)
 # Mean Temperature - Deanza
 npd_temp <- mean(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Deanza", "Temp_C_Up"])
 
-# estimate clearance rate with NPD biomass & Gray's model L/hr/g/m^2
-NPD_oly_cr_est <- estimate_oly_cr_gray(npd_temp, npd_OC, npd_dtw_oly) / npd_dtw_oly
+# estimate specific/standardized clearance rate with NPD biomass & Gray's model (L/hr/g)
+NPD_oly_cr_est <- estimate_oly_cr_gray(npd_temp, npd_OC)
+
+# estimate total clearance rate for all oysters (L/hr)
+NPD_oly_cr_total <- estimate_oly_cr_gray(npd_temp, npd_OC)*npd_dtw_oly_g
+
+# estimate L/hr/m^2
+NPD_oly_lhrm2 <- estimate_oly_cr_gray(npd_temp, npd_OC)*npd_dtw_oly
 
 #### 
 # M. gigas clearance rate mean L/hr/g (DTW)
