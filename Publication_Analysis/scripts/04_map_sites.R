@@ -51,7 +51,7 @@ map_site_colors <- setNames(map_palette, map_sites)
 # Create ggplot base map
 base_map <- ggplot(data = points, aes(x = lon, y = lat)) +
   geom_raster(data = df_grayearth_cropped, aes(x = x, y = y, fill = GRAY_HR_SR_OB)) +
-  scale_fill_gradient(low = "grey40", high = "grey90") +
+  scale_fill_gradient(low = "grey45", high = "grey90") +
   # scale_color_manual(values = c("#39568CFF", "#73D055FF"),
   #                     labels = c(expression(italic("M. gigas")),
   #                                 expression(italic("O. lurida")))) +
