@@ -18,7 +18,8 @@ pkgs <- c("missForest",
          "randomForest",
          "adabag",
          "magrittr",
-         "xtable")
+         "xtable",
+         "dplyr")
 groundhog.library(pkgs, "2020-03-01")
 
 # Import data
