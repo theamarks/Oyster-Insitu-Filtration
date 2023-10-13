@@ -264,8 +264,9 @@ Filtration trials across sites were not distributed equally (Table 4), Deanza ha
 
 ## Habitat Clearance Rates 
 
-```{r Random_Forest_DrNichols, include=FALSE}
-source(file.path("./Publication_Analysis/scripts/01_random_forest.R"))
+```{r Random_Forest_DrNichols, include=FALSE, eval=F}
+# -AM I think this is the old random forest script. The loop Kevin Wrote is 01_random_forest_loop.R. Need to verify
+#source(file.path("./Publication_Analysis/scripts/01_random_forest.R"))
 ```
 
 ```{r FR_Site_stats}
@@ -340,8 +341,8 @@ FR_box
 
  ggsave(FR_box, 
         height=3.09, width=5, dpi = 600, 
-        device = "png",
-        filename = file.path("./Publication_Analysis/figures/", paste0("HCR_boxplot_",Sys.Date() ,".png")))
+        device = "eps",
+        filename = file.path("./Publication_Analysis/figures/", paste0("HCR_boxplot_",Sys.Date() ,".eps")))
 
 ```
 
@@ -401,9 +402,6 @@ source(file.path("./Publication_Analysis/scripts/02_particle_selection.R"))
 ```
 
 
-Final particle selection mosaic plots are in file "Mosaic plots and Rgooglemaps.R" in publication dropbox folder. Move code to this project eventually
-
-
 ```{r Particle_conc_mosaic_plot, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Caption Needed From Matt", eval= F}
 
 # select columns for mosaic plot
@@ -444,6 +442,11 @@ moasic_plot3 <- ggplot(mosaic_table3) +
         legend.text = element_text(face = "italic")
         )
 moasic_plot3
+
+ # ggsave(FR_box, 
+ #        height=3.09, width=5, dpi = 600, 
+ #        device = "eps",
+ #        filename = file.path("./Publication_Analysis/figures/", paste0("HCR_boxplot_",Sys.Date() ,".eps")))
 ```
 
 
@@ -584,9 +587,9 @@ Combo_Oly_shell_DTW_figure
 
  ggsave(Combo_Oly_shell_DTW_figure, 
         height=3.09, width=5, dpi = 600, 
-        device = "png",
+        device = "eps",
         filename = file.path("./Publication_Analysis/figures/",
-                             paste0("Oly_DTW_SL_allsites_",Sys.Date() ,".png")))
+                             paste0("Oly_DTW_SL_allsites_",Sys.Date() ,".eps")))
 #fig.asp=0.618
 # height=3.708, width=6
 
