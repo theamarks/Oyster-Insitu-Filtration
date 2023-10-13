@@ -1,7 +1,6 @@
 
-# packages with version control
-library(groundhog)
-groundhog.library("sqldf", "2020-03-01")
+# packages 
+library(sqldf)
 #Read in data
 
 #1. Gill Area Measurements.csv
@@ -178,3 +177,4 @@ for(i in 1:2){
 chi.sq = sum((observed - expected)^2/expected)
 pval = 1-pchisq(chi.sq,3)
 #pval is 0.0169.  Pellet selection habits appear to be different.
+
