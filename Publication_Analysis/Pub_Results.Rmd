@@ -40,40 +40,6 @@ knitr::opts_chunk$set(echo = FALSE,
 
 ```
 
-```{r, message=TRUE, warning=TRUE, include=FALSE}
-library(groundhog)
-pkgs <- c("dplyr",
-          "tidyr",
-          "readr",
-          "magrittr",
-          "data.table",
-          "lubridate",
-          "ggplot2",
-          "ggthemes",
-          "stringr",
-          "hms",
-          "forcats",
-          "gridExtra",
-          "ggpmisc",
-          "viridis",
-          "scales",
-          "cowplot",
-          "wesanderson",
-          "knitr",
-          "tinytex",
-          "broom",
-          "agricolae",
-          "multcompView",
-          "quantreg",
-          "grid",
-          "pwr",
-          "sqldf",
-          "ggmosaic"
-          )
-groundhog.library(pkgs, "2020-03-01")
-```
-
-
 ```{r load_packages, include=FALSE, eval=FALSE}
 ################### Packages ###########################
 library(dplyr)
@@ -260,12 +226,13 @@ source(file.path("./Publication_Analysis/scripts/04_map_sites.R"))
 
 Twenty-one filtration trials, across the four study sites, were included in the analyses. 
 A single filtration trial at Deanza (2019-4-17; Table 4) was removed from the analysis because the mean upstream Chl $\alpha$ (*M* = `r round(mean(NPD_2019_4_17$Chl_ug_L_up),1)`, *SD* = `r round(sd(NPD_2019_4_17$Chl_ug_L_up),2)`) was within the detection limit of the sensor (± 0.1 μg/L). 
-Filtration trials across sites were not distributed equally (Table 4), Deanza had more than twice the amount filtration trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4).
+Filtration trials across sites were not distributed equally (Table), Deanza had more than twice the amount filtration trials (*N* = 9) as San Rafael (*N* = 4), Morro Bay (*N* = 4), and Shellmaker (*N* = 4).
 
 ## Habitat Clearance Rates 
 
-```{r Random_Forest_DrNichols, include=FALSE, eval=F}
+```{r Random_Forest_DrNichols, include=T, eval=T}
 source(file.path("./Publication_Analysis/scripts/01_random_forest.R"))
+output_table
 ```
 
 ```{r FR_Site_stats}
@@ -317,7 +284,7 @@ x <- Filter_only_outRmd_data %>%
 
 # K-W test - tidy converts to clean dataframe
 KW_HCR_site <- broom::tidy(kruskal.test(L_Hr_m2 ~ Site, data = Filter_only_outRmd_data))
-
+KW_HCR_site
 
 ```
 
