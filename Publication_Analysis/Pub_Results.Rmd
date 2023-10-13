@@ -418,15 +418,6 @@ moasic_plot3
 
 ## Allometric Predictor of Biomass
 
-Pairwise parameter comparison of models relating allometric predictors of biomass
-reveal that there are statistically significant differences between each of the
-three observed O. lurida populations (San Diego, CA, Deanza, CA, Yaquina
-Bay, OR). Most notably, evidence supports that animals observed in Yaquina
-Bay, in general, are longer and proportionally support higher dry tissue weight
-than species found at the Deanza and San Diego sites. Though there are less
-notable yet still significant differences between the populations sampled at the
-two Southern California sites.
-
 ```{r Oly_DTW_Shell_height_setup, include=FALSE}
 ############ Olympia DTW and Shell Length #####################
 # Determine what quadrat samples have missing data (NAs)
