@@ -1,18 +1,12 @@
 # Map for Olympia Oyster Insitu Filtration Publication
 # Date created: 2022-12-02
 
-library(groundhog)
-
-packages <- c(#"rnaturalearth",
-              "sf",
-              "grid",
-              #"patchwork",
-              "ggrepel",
-              "viridis",
-              "ggplot2",
-              "raster")
-
-groundhog.library(packages, date = "2020-03-01")
+library(sf)
+library(grid)
+library(ggrepel)
+library(viridis)
+library(ggplot2)
+library(raster)
 
 # Set file path to the downloaded raster file
 # filepath <- file.path("GRAY_50M_SR_OB", "GRAY_50M_SR_OB.tif")
