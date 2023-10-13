@@ -102,10 +102,10 @@ base_map
 
 ggsave(file.path(paste0("./Publication_Analysis/figures/Map_", 
                         Sys.Date(), 
-                        ".png")), 
+                        ".eps")), 
        plot = base_map,  
        dpi = 600, 
        width = 6, 
        height = 6, 
-       device = "png")
+       device = "eps")
 
