@@ -265,8 +265,7 @@ Filtration trials across sites were not distributed equally (Table 4), Deanza ha
 ## Habitat Clearance Rates 
 
 ```{r Random_Forest_DrNichols, include=FALSE, eval=F}
-# -AM I think this is the old random forest script. The loop Kevin Wrote is 01_random_forest_loop.R. Need to verify
-#source(file.path("./Publication_Analysis/scripts/01_random_forest.R"))
+source(file.path("./Publication_Analysis/scripts/01_random_forest.R"))
 ```
 
 ```{r FR_Site_stats}
