@@ -91,7 +91,7 @@ base_map <- ggplot(data = points, aes(x = lon, y = lat)) +
                                                       text_col = "grey10"
     ))
 
-quartz(w = 5, h = 6)
+#quartz(w = 5, h = 6)
 base_map
 
 ggsave(file.path(paste0("./Publication_Analysis/figures/Map_", 
