@@ -23,4 +23,7 @@ output/
 **/NA/
 Publication_Analysis/figures/*
 !Publication_Analysis/figures/.gitkeep
+!Publication_Analysis/figures/Map_2023-09-01.png
+!Publication_Analysis/figures/HCR_boxplot_2023-08-18.png
+!Publication_Analysis/figures/Oly_DTW_SL_allsites_2023-09-01.png
 Data/map_rnaturalearth/GRAY_HR_SR_OB/*
