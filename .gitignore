@@ -22,4 +22,5 @@ renv/cache/
 output/
 **/NA/
 Publication_Analysis/figures/*
+!Publication_Analysis/figures/.gitkeep
 Data/map_rnaturalearth/GRAY_HR_SR_OB/*
