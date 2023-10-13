@@ -40,8 +40,10 @@ knitr::opts_chunk$set(echo = FALSE,
 
 ```
 
-```{r load_packages, include=FALSE, eval=FALSE}
+```{r load_packages, include=FALSE, eval=T}
 ################### Packages ###########################
+library(data.table)
+library(magrittr)
 library(dplyr)
 library(tidyr)
 library(readr) # reading in files 
@@ -84,11 +86,11 @@ createOutputDirectories()
 
 ```{r read_in_data, include=FALSE}
 ##################### Read in Data from  project output ##########################
-All_data <- fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
-Avg_TPM_summary_table <- fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
+All_data <- data.table::fread(file.path('./output/4_Filtration_Calculations/Filtration_Summary', "Master_Filtration_analysis_table.csv"))
+Avg_TPM_summary_table <- data.table::fread(file.path('./output/5_TPM_OC_Summary', "Avg_TPM_summary_table.csv"))
 Density_directory = "./Data/bivalve_density_community"
-NPD_bivalves = fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
-Sbs_correction_data = fread(file.path('./output/6_Sbs_Corrections_Summary', "sbs_correction_summary.csv"))
+NPD_bivalves = data.table::fread(file.path(Density_directory, "Insitu_Filter_NPD_bivalve_biomass_data.csv"))
+Sbs_correction_data = data.table::fread(file.path('./output/6_Sbs_Corrections_Summary', "sbs_correction_summary.csv"))
 ```
 
 ```{r setup_data_wrangling, include=FALSE}
@@ -176,11 +178,6 @@ find_outlier <- function(data){
 
 ```{r figure_setup, include=FALSE}
 ############### Site Color Assignments ###############
-# viridis(4)
-# Site_colors <- c("San Rafael" = "#440154FF",
-#                  "Morro Bay" = "#31688EFF",
-#                  "Shellmaker" = "#35B779FF",
-#                  "Deanza" = "#FDE725FF")
 
 # values for map
 site_names_all <- c("Yaquina", "San Rafael", "Morro Bay", 
@@ -217,8 +214,9 @@ PIM_Label <- c('Particulate Inorganic Matter mg/L')
 
 ```
 
-```{r map_figre}
+```{r map_figre, include=TRUE, fig.width = 6, fig.height= 6, fig.asp=1}
 source(file.path("./Publication_Analysis/scripts/04_map_sites.R"))
+base_map
 ```
 
 
@@ -230,9 +228,14 @@ Filtration trials across sites were not distributed equally (Table), Deanza had 
 
 ## Habitat Clearance Rates 
 
-```{r Random_Forest_DrNichols, include=T, eval=T}
+```{r Random_Forest_DrNichols, include=F, eval=T}
 source(file.path("./Publication_Analysis/scripts/01_random_forest.R"))
-output_table
+```
+
+
+```{r Random_Forest_Table, include=T, eval=T}
+print.xtable(output_table)
+
 ```
 
 ```{r FR_Site_stats}
@@ -289,7 +292,7 @@ KW_HCR_site
 ```
 
 
-```{r FR_Site_boxplot, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", fig.width=6,  message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials; control trials are listed in Table 1. Each data point is the mean of a single filtration trial. HCR was not statistically different among sites (one-way Kruskal-Wallis). Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
+```{r FR_Site_boxplot, include=T, echo=FALSE, fig.keep = 'all', dev = 'pdf', fig.align= "center", fig.asp=0.618, out.width="70%", fig.width=6,  message= F, fig.cap="Box plots of habitat clearance rates (HCR) during filtration trials; control trials are listed in Table 1. Each data point is the mean of a single filtration trial. HCR was not statistically different among sites (one-way Kruskal-Wallis). Filtration trials were conducted between February 2018 to June 2019 at San Rafael, CA (restored \\textit{O. lurida} reefs); Morro Bay, CA (Morro Bay Oyster Company \\textit{C. gigas} aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{FR_Site_boxplot}"}
 
 ### Filtration by site (Filtration Trials only)
 FR_box <- ggplot((Filter_only_outRmd_data), aes(Site, L_Hr_m2)) +
@@ -367,6 +370,7 @@ Final_table <- arrange(transform(Final_table, Site = factor(Site,levels = site_b
 source(file.path("./Publication_Analysis/scripts/02_particle_selection.R"))
 ```
 
+mosaic plot code not up to date with publication version. 
 
 ```{r Particle_conc_mosaic_plot, echo=FALSE, fig.align="center", fig.asp=0.618, fig.width=6, warning= F, message= F, fig.keep='all', dev='pdf', out.width="70%", fig.cap="Caption Needed From Matt", eval= F}
 
@@ -499,7 +503,7 @@ source(file.path("./Publication_Analysis/scripts/03_dtw_shell_height.R"))
 source(file.path("./Publication_Analysis/scripts/dtw_model_comp.R"))
 ```
 
-```{r Oly_DTW_SH_figure}
+```{r Oly_DTW_SH_figure, include=T}
 ################# Graph with Deanza, Yaquina & San Diego DTW x Shell length
 
 # order factor levels
@@ -539,7 +543,7 @@ Combo_Oly_shell_DTW_figure <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry
   geom_line(data=temp3,aes(x.seq,y.seq3), color = dtw_colors[3]) #20A386FF
 
 # test export proportions
-quartz(h = 3.09, w = 5)
+#quartz(h = 3.09, w = 5)
 Combo_Oly_shell_DTW_figure
 
  ggsave(Combo_Oly_shell_DTW_figure, 
@@ -557,6 +561,12 @@ Combo_Oly_shell_DTW_figure
 # Supplemental / Repository 
 
 ```{r Site WQ ANOVA, fig.width=7, fig.asp=1.2, fig.cap="Box plots of ambient (upstream) A) temperature, B) salinity, C) turbidity, D) total particulate matter, E) organic content, and F) chlorophyll $\\alpha$ from filtration trials. One-way ANOVAs compared the difference between water quality variables and site. Significantly different results were grouped by a post-hoc Tukey's HSD; significantly different sites do not share a common letter, and non-significant differences share letters. Site effects on OC were significant, and a Newman-Keuls post-hoc analysis determined a significant difference between San Rafael and Deanza undetected by Tukey's HSD. Trials were conducted from February 2018 to June 2019 at San Rafael, CA (restored reefs); Morro Bay, CA (Morro Bay Oyster Company, aquaculture); and Newport Bay, CA (Shellmaker and Deanza, restored beds). \\label{Site_WQ_boxplot}" }
+
+viridis(4)
+Site_colors <- c("San Rafael" = "#440154FF",
+                 "Morro Bay" = "#31688EFF",
+                 "Shellmaker" = "#35B779FF",
+                 "Deanza" = "#FDE725FF")
 
 ###### Temperature 
 #hist(Filter_only_outRmd_data$Temp_C_Up)
