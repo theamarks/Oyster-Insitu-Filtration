@@ -15,8 +15,10 @@ Test Graph Code for DZ.R
 .DS_Store
 THESIS.log
 THESIS_cache/
-renv/
-renv.lock
+# Ignore renv cache and library
+renv/library/
+renv/cache/
+
 output/
 **/NA/
 Publication_Analysis/figures/*
