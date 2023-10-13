@@ -10,17 +10,13 @@
 #For imputation we are doing a non parametric random forest imputation.  See missForest documentation for details/references.  
 #Stekhoven, D.J. and Buehlmann, P. (2012), "missForest - nonparametric missing value imputation for mixed-type data', Bioinformatics, 28(1) 2012, 112-118, doi: 10.1093/bioinformatics/btr597
 
-# Packages with version control
-
-library(groundhog)
-pkgs <- c("missForest",
-         "rpart",
-         "randomForest",
-         "adabag",
-         "magrittr",
-         "xtable",
-         "dplyr")
-groundhog.library(pkgs, "2020-03-01")
+library(missForest)
+library(rpart)
+library(randomForest)
+library(adabag)
+library(magrittr)
+library(xtable)
+library(dplyr)
 
 # Import data
 Analysis_data <- Master_analysis_table %>% 
@@ -71,33 +67,35 @@ test1 = test %>%
 #Note, I'm manually playing around with these to find a sweet spot, not going to document progression.
 #Goal isn't to find best model, goal is to find competitive model.
 
-trees=200
-try = 1
-split=5
-cp.par = .08
 
-SSR.sim = rep(0,200)
-seed.vec = 2001:2200 # giving same numbers
-for(k in 1:200){
-  
-  SSR = 0
-  set.seed = seed.vec[k]
-  test.ind.matrix = matrix(sample(1:25),5,5)
-  for(j in 1:5){
-    test.subset = test1[test.ind.matrix[j,],]
-    control.subset = test1[-test.ind.matrix[j,],]
-    
-    control.model.rf = 			randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site	,
-                                       data=control.subset, # use data	with extreme values removed 
-                                       ntree=trees,
-                                       mtry=try,
-                                       control=rpart.control(minsplit=		split,cp=cp.par))
-    residuals = test1$Clearance[test.ind.matrix[j,]] - 		predict(control.model.rf,newdata=test.subset)
-    SSR = SSR + sum(residuals^2)
-  }
-  SSR.sim[k] = SSR
-}
-mean(SSR.sim)
+### NOT used in publication - contains all trials (Filtration and "Control")
+# trees=200
+# try = 1
+# split=5
+# cp.par = .08
+# 
+# SSR.sim = rep(0,200)
+# seed.vec = 2001:2200 # giving same numbers
+# for(k in 1:200){
+#   
+#   SSR = 0
+#   set.seed = seed.vec[k]
+#   test.ind.matrix = matrix(sample(1:25),5,5)
+#   for(j in 1:5){
+#     test.subset = test1[test.ind.matrix[j,],]
+#     control.subset = test1[-test.ind.matrix[j,],]
+#     
+#     control.model.rf = 			randomForest(Clearance~Temp+Salinity+Turbidity+TPM+OC+Site	,
+#                                        data=control.subset, # use data	with extreme values removed 
+#                                        ntree=trees,
+#                                        mtry=try,
+#                                        control=rpart.control(minsplit=		split,cp=cp.par))
+#     residuals = test1$Clearance[test.ind.matrix[j,]] - 		predict(control.model.rf,newdata=test.subset)
+#     SSR = SSR + sum(residuals^2)
+#   }
+#   SSR.sim[k] = SSR
+# }
+# mean(SSR.sim)
 
 #mean SSR Value (cursory search only, not systematic).
 #(trees,try,minsplit,cp) , mean(SSR)
