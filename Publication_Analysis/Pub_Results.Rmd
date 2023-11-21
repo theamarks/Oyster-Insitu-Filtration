@@ -324,7 +324,7 @@ A random forest regression containing only filtration trials (*R*^2^ = `r round(
 
 ```{r Final_Summary_table, include=FALSE, results='asis', echo=F}
 
-# code to construct summary table. table refined in Overleaf. 
+# code to construct summary table. table refined in Overleaf. Does not include standard deviation used in publication. SD is in Master_anaysis_table
 
 # Organize & clean summary table data
 Final_table <- Master_analysis_table %>%
