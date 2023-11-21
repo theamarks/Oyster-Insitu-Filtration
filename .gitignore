@@ -18,8 +18,9 @@ THESIS_cache/
 # Ignore renv cache and library
 renv/library/
 renv/cache/
-
-output/
+#ignore everything in output folder - except gitignore
+/output/*
+!/output/.gitkeep
 **/NA/
 Publication_Analysis/figures/*
 !Publication_Analysis/figures/.gitkeep
