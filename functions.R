@@ -606,7 +606,7 @@ createFiltrationSummary = function(aFiltrationFile, aFileName, one_water_vel_sum
   filtration_sub_df_sum = filtration_sub_df %>%
     dplyr::filter_if(~is.numeric(.), all_vars(!is.infinite(.))) %>%
     dplyr::group_by(Experiment, Date, Site) %>%
-    dplyr::summarise(Temp_C_Up = mean(Temp_C_Up),
+    dplyr::summarise(Temp_C_up = mean(Temp_C_Up),
                      Temp_C_Up_sd = sd(Temp_C_Up),
                      SpCond_mS_cm_Up = mean(SpCond_mS_cm_Up),
                      SpCond_mS_cm_Up_sd = sd(SpCond_mS_cm_Up),
