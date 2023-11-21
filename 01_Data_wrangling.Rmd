@@ -8,51 +8,29 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r load_packages}
-library(groundhog)
-pkgs <- c(
-  "flexdashboard",
-  "dplyr",
-  "tidyr",
-  "data.table",
-  "magrittr",
-  "lubridate",
-  "ggplot2",
-  "stringr",
-  "hms",
-  "wesanderson",
-  "ggpubr",
-  "cowplot",
-  "ggthemes"
-)
-
-groundhog.library(pkgs, "2020-03-01")
-```
-
-
 ```{r setup}
 
 ## Import the libraries and functions
-# library(flexdashboard) # knit html dashboard output template
-# library(dplyr) # data manipulation 
-# library(tidyr) # data rearranging
-# library(data.table)
-# library(magrittr) # pipe function
-# library(lubridate) # dealing with dates
-# library(ggplot2) # graphing
-# library(ggthemes) # theme_gdocs() in graphs
-# library(stringr) # dealing with strings
-# library(hms) # dealing with time & date
-# library(wesanderson) # color palette
-# library(ggpubr) # figures
-# library(cowplot) # arrange multiple plots or objects in single plot
+library(flexdashboard) # knit html dashboard output template
+library(dplyr) # data manipulation
+library(tidyr) # data rearranging
+library(data.table)
+library(magrittr) # pipe function
+library(lubridate) # dealing with dates
+library(ggplot2) # graphing
+library(ggthemes) # theme_gdocs() in graphs
+library(stringr) # dealing with strings
+library(hms) # dealing with time & date
+library(wesanderson) # color palette
+library(ggpubr) # figures
+library(cowplot) # arrange multiple plots or objects in single plot
 
 ######################################################################
 ## Directories: 
 #1) data_directory: Keep only the input csv time series data in this directory
 #2) velocity_data_directory : Additional files required to pair filtration time stamps by Velocity to be kept here
 #3) manual_correction_directory: Put the manual correction files here. Can be the same as velocity_data_directory
-#4) output_directory: This is the directory where the output will be created 
+
 #5) code_directory : The directory where this code and the functions file are stored
 ######################################################################
 
