@@ -27,7 +27,7 @@ Co-authors: Dr. Matthew Gray (UMCES), Dr. Kevin Nichols (CSUF), Dr. Danielle Zac
 - `manual_Corrections/` contains a .csv with field notes and observations used to cut disturbed data from raw data (e.g. major boat wake)
 - `Thesis_Manuscript/` contains scripts used to construct CSUF thesis
 - `Publication_Analysis/` directory used to analyze data for publication
-  - `Pub_Results.Rmd` Rmarkdown file with all analyses, sources scripts, text is incomplete
+  - `Pub_Results.Rmd` Rmarkdown file with all analyses, sources scripts, text was not used in manuscript
   - `scripts/` contains individual analysis scripts sourced from `Pub_Results.Rmd`
   - `figures/` folder containing figure outputs from `Pub_Results.Rmd`
 - `output/` will be populated by 10 sub-directories when `01_Data_wrangling.Rmd` is run
