@@ -1,4 +1,4 @@
-# *In situ* Clearance Rates of Olympia Oyster (*Ostrea lurida*) Habitat and Japanese Oyster (*Magallana gigas*) Aquaculture in California
+# *In situ* Habitat Clearance Rates and Particle Size Preference of Indigenous Olympia Oysters (*Ostrea lurida*) and Non-native Pacific Oysters (*Magallana gigas*) in the North American Pacific Coast Estuaries
 
 This repository holds the wrangling, analysis, and document building code for two versions of this research: 1) `Publication_Analysis` and 2) `Thesis_Manuscript`
 
@@ -44,6 +44,7 @@ Not sure this is working at the moment. I've learned a lot about reproducible pr
 2) Knit `Thesis_Manuscript/THESIS.Rmd` which will knit and compile children documents into single final document `THESIS.pdf` (`Thesis_Acknowledgments.Rmd`, `Thesis_Abstract.Rmd`, `Thesis_Introduction.Rmd`, `Thesis_Methods.Rmd`, `Thesis_Results.Rmd`, and `Thesis_Discussion.Rmd`)
 
 ### Thesis Details
+#### *In situ* Clearance Rates of Olympia Oyster (*Ostrea lurida*) Habitat and Japanese Oyster (*Magallana gigas*) Aquaculture in California
 
 M.S. completed 2021 with this version --> [![DOI](https://zenodo.org/badge/211166776.svg)](https://zenodo.org/badge/latestdoi/211166776)
 
