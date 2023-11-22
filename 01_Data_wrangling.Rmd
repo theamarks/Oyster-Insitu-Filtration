@@ -420,8 +420,8 @@ filtration_summary_table <- fread("output/4_Filtration_Calculations/Filtration_S
 Master_analysis_table <- filtration_summary_table %>% 
   left_join(Avg_TPM_summary_table, by = c("Date", "Site")) %>% 
   # Exclude downstream average WQ values and unneeded single tail t-test results
-  dplyr::select(-c("Temp_C_Down", "SpCond_mS_cm_Down",
-            "Cond_mS_cm_Down", "TDS_g_L_Down", "Sal_ppt_Down", "Turbidity_NTU_Down"))  %>% 
+  dplyr::select(-c("Temp_C_down", "SpCond_mS_cm_down",
+            "Cond_mS_cm_down", "TDS_g_L_down", "Sal_ppt_down", "Turbidity_NTU_down"))  %>% 
   left_join(Species_density_summary, by = c("Site")) %>% 
   dplyr::select(-c("Date.y")) %>% 
   rename(Date = Date.x)

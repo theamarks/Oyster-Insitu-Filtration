@@ -148,7 +148,7 @@ Deanza_Filter_data <- Master_analysis_table %>%
          Experiment %in% c("Filtration"))
 # Deanza only- Positive Filtration only
 Deanza_PosFilter_data <- Deanza_Filter_data %>% 
-  filter(pcnt_Chl_rmvd > 0)
+  filter(pcnt_Chl_Rmvd > 0)
 
 ### Average TPM Data ######################
 Avg_TPM_summary_table <- arrange(transform(Avg_TPM_summary_table, Site = factor(Site, levels = site_by_lat)), Site)
@@ -340,21 +340,21 @@ Final_table <- Master_analysis_table %>%
                              "Fltr"),
          L_hr_m2 = round(L_Hr_m2, digits = 2),
          L_hr_m2_sd = round(L_Hr_m2_sd, digits = 2),
-       #  pcnt_Chl_rmvd = signif(pcnt_Chl_rmvd, digits = 3), 
-         Temp_C_Up = round(Temp_C_Up, digits = 2),
-         Sal_ppt_Up = round(Sal_ppt_Up, digits = 2),
-         Turbidity_NTU_Up = round(Turbidity_NTU_Up, digits = 2),
+       #  pcnt_Chl_Rmvd = signif(pcnt_Chl_Rmvd, digits = 3), 
+         Temp_C_up = round(Temp_C_up, digits = 2),
+         Sal_ppt_up = round(Sal_ppt_up, digits = 2),
+         Turbidity_NTU_up = round(Turbidity_NTU_up, digits = 2),
          Avg_TPM_mg_L = round(Avg_TPM_mg_L, digits = 2),
          Avg_OC_Ratio = round(Avg_OC_Ratio, digits = 2),
-         Chl_ug_L_Up = round(Chl_ug_L_up, digits = 2),
-         Chl_ug_L_Down = round(Chl_ug_L_down, digits = 1),
+         Chl_ug_L_up = round(Chl_ug_L_up, digits = 2),
+         Chl_ug_L_down = round(Chl_ug_L_down, digits = 1),
          avg_depth_m = round(avg_depth_m, digits = 2),
          d_bw_sondes_m = round(d_bw_sondes_m, digits = 2),
          avg_m_sec = round(avg_m_hr/3600, 2)) %>%
   filter(Experiment == "Fltr") %>% 
-  dplyr::select(Site, Date, Tide, L_hr_m2, L_hr_m2_sd, Chl_ug_L_Up, 
-                Chl_ug_L_Down, Temp_C_Up, Sal_ppt_Up, 
-                Turbidity_NTU_Up, Avg_TPM_mg_L, Avg_OC_Ratio, 
+  dplyr::select(Site, Date, Tide, L_hr_m2, L_hr_m2_sd, Chl_ug_L_up, 
+                Chl_ug_L_down, Temp_C_up, Sal_ppt_up, 
+                Turbidity_NTU_up, Avg_TPM_mg_L, Avg_OC_Ratio, 
                 avg_depth_m, d_bw_sondes_m, avg_m_sec) %>% 
  dplyr::arrange(Site, Date)
 
@@ -568,8 +568,8 @@ Site_colors <- c("San Rafael" = "#440154FF",
                  "Deanza" = "#FDE725FF")
 
 ###### Temperature 
-#hist(Filter_only_outRmd_data$Temp_C_Up)
-site_temp_aov <- aov(Temp_C_Up ~ Site, data = Filter_only_outRmd_data)
+#hist(Filter_only_outRmd_data$Temp_C_up)
+site_temp_aov <- aov(Temp_C_up ~ Site, data = Filter_only_outRmd_data)
 #summary(site_temp_aov)
 temp_aov_values <- broom::tidy(site_temp_aov) # put ANOVA model into tibble to extract individual values
 # Post-Hoc Tukey test
@@ -581,7 +581,7 @@ tukey_temp <- TukeyHSD(site_temp_aov)
 hds_temp <- HSD.test(site_temp_aov, trt = "Site")
 #hds_temp
 
-Temp_box <- ggplot(Filter_only_outRmd_data, aes(Site, Temp_C_Up)) +
+Temp_box <- ggplot(Filter_only_outRmd_data, aes(Site, Temp_C_up)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
@@ -592,8 +592,8 @@ Temp_box <- ggplot(Filter_only_outRmd_data, aes(Site, Temp_C_Up)) +
        title = "A)")
 
 ####### Salinity
-#hist(site_data_outrmd$Sal_ppt_Up)
-site_sal_aov <- aov(Sal_ppt_Up ~ Site, data = Filter_only_outRmd_data)
+#hist(site_data_outrmd$Sal_ppt_up)
+site_sal_aov <- aov(Sal_ppt_up ~ Site, data = Filter_only_outRmd_data)
 sal_aov_values <- broom::tidy(site_sal_aov)
 
 # Post-Hoc Tukey test
@@ -605,7 +605,7 @@ tukey_sal <- TukeyHSD(site_sal_aov)
 hds_sal <- HSD.test(site_sal_aov, trt = "Site")
 #hds_sal
 
-Sal_box <- ggplot(Filter_only_outRmd_data, aes(Site, Sal_ppt_Up)) +
+Sal_box <- ggplot(Filter_only_outRmd_data, aes(Site, Sal_ppt_up)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
@@ -616,20 +616,20 @@ Sal_box <- ggplot(Filter_only_outRmd_data, aes(Site, Sal_ppt_Up)) +
        title = "B)") +
   annotate("text", "San Rafael", 
            max((site_data_outrmd %>% 
-                  filter(Site == "San Rafael"))$Sal_ppt_Up) + 0.75, label = "a") +
+                  filter(Site == "San Rafael"))$Sal_ppt_up) + 0.75, label = "a") +
   annotate("text", "Morro Bay", 
            max((site_data_outrmd %>% 
-                  filter(Site == "Morro Bay"))$Sal_ppt_Up) + 0.75, label = "b") +
+                  filter(Site == "Morro Bay"))$Sal_ppt_up) + 0.75, label = "b") +
   annotate("text", "Shellmaker", 
            max((site_data_outrmd %>% 
-                  filter(Site == "Shellmaker"))$Sal_ppt_Up) + 0.75, label = "b") +
+                  filter(Site == "Shellmaker"))$Sal_ppt_up) + 0.75, label = "b") +
   annotate("text", "Deanza", 
            max((site_data_outrmd %>% 
-                  filter(Site == "Deanza"))$Sal_ppt_Up) + 0.75, label = "b") 
+                  filter(Site == "Deanza"))$Sal_ppt_up) + 0.75, label = "b") 
 
 ######### Turbidity
-#hist(site_data_outrmd$Turbidity_NTU_Up)
-site_turb_aov <- aov(Turbidity_NTU_Up ~ Site, data = Filter_only_outRmd_data)
+#hist(site_data_outrmd$Turbidity_NTU_up)
+site_turb_aov <- aov(Turbidity_NTU_up ~ Site, data = Filter_only_outRmd_data)
 turb_aov_values <- broom::tidy(site_turb_aov)
 
 # Post-Hoc Tukey test
@@ -641,7 +641,7 @@ tukey_turb <- TukeyHSD(site_turb_aov)
 hds_turb <- HSD.test(site_turb_aov, trt = "Site")
 #hds_turb
 
-Turb_box <- ggplot(Filter_only_outRmd_data, aes(Site, Turbidity_NTU_Up)) +
+Turb_box <- ggplot(Filter_only_outRmd_data, aes(Site, Turbidity_NTU_up)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.65, show.legend = FALSE) +
@@ -652,19 +652,19 @@ Turb_box <- ggplot(Filter_only_outRmd_data, aes(Site, Turbidity_NTU_Up)) +
        title = "C)") +
   annotate("text", "San Rafael", 
            max((site_data_outrmd %>% 
-                  filter(Site == "San Rafael"))$Turbidity_NTU_Up) + 2, 
+                  filter(Site == "San Rafael"))$Turbidity_NTU_up) + 2, 
            label = "a") +
   annotate("text", "Morro Bay", 
            max((site_data_outrmd %>% 
-                  filter(Site == "Morro Bay"))$Turbidity_NTU_Up) + 2, 
+                  filter(Site == "Morro Bay"))$Turbidity_NTU_up) + 2, 
            label = "b") +
   annotate("text", "Shellmaker", 
            max((site_data_outrmd %>% 
-                  filter(Site == "Shellmaker"))$Turbidity_NTU_Up) + 2, 
+                  filter(Site == "Shellmaker"))$Turbidity_NTU_up) + 2, 
            label = "c") +
   annotate("text", "Deanza", 
            max((site_data_outrmd %>% 
-                  filter(Site == "Deanza"))$Turbidity_NTU_Up) + 2, 
+                  filter(Site == "Deanza"))$Turbidity_NTU_up) + 2, 
            label = "c") 
 
 ####### TPM
@@ -771,11 +771,11 @@ Therefore, I use a less conservative post-hoc analysis, the Newman-Keuls method,
 ### Chl removed summary - filtration trials only
 Chlrmd_Site <- Filter_only_outRmd_data %>% 
   group_by(Site) %>% 
-  summarize(avg_Chlrmd = mean(pcnt_Chl_rmvd),
-            SD = sd(pcnt_Chl_rmvd),
-            n_samples = length(pcnt_Chl_rmvd))
+  summarize(avg_Chlrmd = mean(pcnt_Chl_Rmvd),
+            SD = sd(pcnt_Chl_Rmvd),
+            n_samples = length(pcnt_Chl_Rmvd))
 
-Chlrmd_site_aov <- aov(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data)
+Chlrmd_site_aov <- aov(pcnt_Chl_Rmvd ~ Site, data = Filter_only_outRmd_data)
 #summary(HCR_site_aov)
 Chlrmd_aov_values <- broom::tidy(Chlrmd_site_aov)
 
@@ -789,7 +789,7 @@ hds_Chlrmd <- HSD.test(Chlrmd_site_aov, trt = "Site")
 
 #### exteme Shellmaker may violate ANOVA equal variance assumption
 ## more suited for Kruskal-Wallis
-KW_Chlrmd_site <- broom::tidy(kruskal.test(pcnt_Chl_rmvd ~ Site, data = Filter_only_outRmd_data))
+KW_Chlrmd_site <- broom::tidy(kruskal.test(pcnt_Chl_Rmvd ~ Site, data = Filter_only_outRmd_data))
 
 
 ########### Power analysis - sensitivity power analysis 
@@ -804,7 +804,7 @@ Chlrmd_site_power <- pwr.anova.test(f = d_Chlrmd_site,
                                  sig.level = 0.05,
                                  power = NULL) # solve for this
 
-Chl_Rmd_box <- ggplot(Filter_only_outRmd_data, aes(Site, pcnt_Chl_rmvd)) +
+Chl_Rmd_box <- ggplot(Filter_only_outRmd_data, aes(Site, pcnt_Chl_Rmvd)) +
   geom_boxplot(color = Site_colors) + 
   geom_dotplot(binaxis = "y", stackdir = "center", aes(fill = Site),
                alpha = 0.5, dotsize = 0.5, show.legend = FALSE) +
@@ -819,16 +819,16 @@ plot(Chl_Rmd_box)
 
 ## Percent Chlorophyll $\alpha$ Removal
 
-The mean percent Chl $\alpha$ removal at the San Rafael site was `r round(mean(SR_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}). 
-Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(MB_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_rmvd),1)`). 
-At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_rmvd),1)`).
-Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}).
+The mean percent Chl $\alpha$ removal at the San Rafael site was `r round(mean(SR_filter_sum$pcnt_Chl_Rmvd),1)`\% (*N* = `r nrow(SR_filter_sum)`, *SD* = `r round(sd(SR_filter_sum$pcnt_Chl_Rmvd),2)`) (Figure \ref{ChlRmd_Site_boxplot}). 
+Filtration trials at Morro Bay had a mean Chl $\alpha$ removal of `r round(mean(MB_filter_sum$pcnt_Chl_Rmvd),1)`\% (*N* = `r nrow(MB_filter_sum)`, *SD* = `r round(sd(MB_filter_sum$pcnt_Chl_Rmvd),1)`). 
+At Deanza, mean Chl $\alpha$ removal was `r round(mean(NPD_filter_sum$pcnt_Chl_Rmvd),1)`\% (*N* = `r nrow(NPD_filter_sum)`, *SD* =  `r round(sd(NPD_filter_sum$pcnt_Chl_Rmvd),1)`).
+Mean Shellmaker Chl $\alpha$ removal was `r round(mean(NPSM_filter_sum$pcnt_Chl_Rmvd),1)` \% (*N* = `r nrow(NPSM_filter_sum)`, *SD* = `r round(sd(NPSM_filter_sum$pcnt_Chl_Rmvd),1)`) (Figure \ref{ChlRmd_Site_boxplot}).
 Chl $\alpha$ removal in filtration trials did not differ significantly between sites (one-way Kruskal-Wallis, *p* = `r round(KW_Chlrmd_site$p.value,2)`).
 
 ```{r HCR_Quantile_Regression, eval=FALSE, fig.width=7, fig.asp=1.2, warning=F, message = F, fig.cap="The relationship between water quality variables and habitat clearance rate (HCR). For all oyster habitat filtration trials, quantile regression with $\\tau$ = 0.5 and $\\tau$ = 0.9 was used to test wheather HCR changed with A) temperature, B) salinity, C) turbidity, D) total particulate matter, or E) organic content; slopes that are not significantly different from zero are indicated by red dashed lines. Dotted gray lines are the mean value of HCR. \\label{Quantile_Reg}"}
 #create model variables
 attach(Filter_only_outRmd_data)
-qr_x <- cbind(Temp_C_Up, Sal_ppt_Up, Turbidity_NTU_Up, Avg_TPM_mg_L, Avg_OC_Ratio, Site)
+qr_x <- cbind(Temp_C_up, Sal_ppt_up, Turbidity_NTU_up, Avg_TPM_mg_L, Avg_OC_Ratio, Site)
 #summary(qr_x)
 qr_y <- cbind(L_Hr_m2)
 #summary(qr_y)
@@ -848,7 +848,7 @@ HCR_lm <- lm(qr_y ~ qr_x)
 library(quantreg) # Quantile Rregression package
 
 #### Look at change over most Quantiles
-qr_temp <- rq(L_Hr_m2 ~ Temp_C_Up,
+qr_temp <- rq(L_Hr_m2 ~ Temp_C_up,
              tau = seq(0.05,0.95, by = 0.05),
              na.action = na.omit,
              data = Filter_only_outRmd_data)
@@ -857,7 +857,7 @@ qr_temp <- rq(L_Hr_m2 ~ Temp_C_Up,
 
 #### Temperature
 ## Looking at .5 and .9 quantiles of Habitat Clearance Rates - Filtration most likely on
-qr_5_9_temp <- rq(L_Hr_m2 ~ Temp_C_Up,
+qr_5_9_temp <- rq(L_Hr_m2 ~ Temp_C_up,
                 tau = c(0.5,0.9),
                 data = Filter_only_outRmd_data)
 
@@ -867,7 +867,7 @@ sumQRtemp <- summary(qr_5_9_temp, se = "boot", R = 1000)
 
 ## Graph
 # if statements choose linetype - solid (significant) or dashed (not significant)
-qrplot_temp <- ggplot(Filter_only_outRmd_data, aes(Temp_C_Up, L_Hr_m2)) +
+qrplot_temp <- ggplot(Filter_only_outRmd_data, aes(Temp_C_up, L_Hr_m2)) +
   geom_point(aes(color = Site)) +
   # gray line indicating mean of HCR
   geom_hline(yintercept = mean(Filter_only_outRmd_data$L_Hr_m2),
@@ -889,7 +889,7 @@ qrplot_temp <- ggplot(Filter_only_outRmd_data, aes(Temp_C_Up, L_Hr_m2)) +
               geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
 
 ### Salinity 
-qr_5_9_sal <- rq(L_Hr_m2 ~ Sal_ppt_Up,
+qr_5_9_sal <- rq(L_Hr_m2 ~ Sal_ppt_up,
                 tau = c(0.5,0.9),
                 data = Filter_only_outRmd_data)
 
@@ -898,7 +898,7 @@ sumQRsal <- summary(qr_5_9_sal, se = "boot", R = 1000)
 #sumQRsal
 
 # Graph
-qrplot_sal <- ggplot(Filter_only_outRmd_data, aes(Sal_ppt_Up, L_Hr_m2)) +
+qrplot_sal <- ggplot(Filter_only_outRmd_data, aes(Sal_ppt_up, L_Hr_m2)) +
   geom_point(aes(color = Site)) +
   geom_hline(yintercept = mean(Filter_only_outRmd_data$L_Hr_m2),
              linetype = "dotted", 
@@ -919,7 +919,7 @@ qrplot_sal <- ggplot(Filter_only_outRmd_data, aes(Sal_ppt_Up, L_Hr_m2)) +
               geom_quantile(quantiles = 0.9, color = 'red', linetype = "solid")}
 
 ### Turbidity
-qr_5_9_turb <- rq(L_Hr_m2 ~ Turbidity_NTU_Up,
+qr_5_9_turb <- rq(L_Hr_m2 ~ Turbidity_NTU_up,
                 tau = c(0.5,0.9),
                 data = Filter_only_outRmd_data)
 
@@ -928,7 +928,7 @@ sumQRturb <- summary(qr_5_9_turb, se = "boot", R = 1000)
 #sumQRturb
 
 # Graph
-qrplot_turb <- ggplot(Filter_only_outRmd_data, aes(Turbidity_NTU_Up, L_Hr_m2)) +
+qrplot_turb <- ggplot(Filter_only_outRmd_data, aes(Turbidity_NTU_up, L_Hr_m2)) +
   geom_point(aes(color = Site)) +
   geom_hline(yintercept = mean(Filter_only_outRmd_data$L_Hr_m2),
              linetype = "dotted", 
@@ -1304,7 +1304,7 @@ npd_dtw_oly_g <- npd_dtw_oly*npd_area
 npd_OC <- mean(NPD_TPM_OC$Avg_OC_Ratio)
 
 # Mean Temperature - Deanza
-npd_temp <- mean(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Deanza", "Temp_C_Up"])
+npd_temp <- mean(Filter_only_outRmd_data[Filter_only_outRmd_data$Site == "Deanza", "Temp_C_up"])
 
 # estimate specific/standardized clearance rate with NPD biomass & Gray's model (L/hr/g)
 NPD_oly_cr_est <- estimate_oly_cr_gray(npd_temp, npd_OC)
