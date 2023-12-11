@@ -4,8 +4,9 @@ This repository holds the wrangling, analysis, and document building code for tw
 
 ## Instructions to Reproduce Publication Analysis:
 
-1) Run `01_Data_wrangling.Rmd` 
-2) Run `Publication_Analysis/Pub_Results.Rmd` 
+1) Run `renv::activate()` and then `renv::restore()`
+2) Run `01_Data_wrangling.Rmd` 
+3) Run `Publication_Analysis/Pub_Results.Rmd` 
 Note: not all code chunks will run by design
 
 ### Publication Status
