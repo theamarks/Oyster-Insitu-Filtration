@@ -11,7 +11,9 @@ Note: not all code chunks will run by design
 
 ### Publication Status
 
-In prep for publication 2023
+In prep for publication 2023.
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10358370.svg)](https://doi.org/10.5281/zenodo.10358370)
 
 Co-authors: Dr. Matthew Gray (UMCES), Dr. Kevin Nichols (CSUF), Dr. Danielle Zacherl (CSUF)
 
