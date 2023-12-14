@@ -514,17 +514,17 @@ Oly_combo_DTW_SL <- Oly_combo_DTW_SL %>%
 # graph
 Combo_Oly_shell_DTW_figure <- ggplot(Oly_combo_DTW_SL, aes(length_mm, tissue_dry_weight_g)) +
   geom_point(aes(color = Site, shape = Site)) +
-  scale_color_manual(labels = c("San Diego Bay, CA",
-                                "Deanza, Newport Bay, CA",
+  scale_color_manual(labels = c("Deanza, Newport Bay, CA",
+                                "San Diego Bay, CA",
                                 "Yaquina Bay, OR"),
                      values = dtw_colors,
                      na.translate = TRUE, drop = FALSE) + 
-  scale_shape_manual(labels = c("San Diego Bay, CA",
-                                "Deanza, Newport Bay, CA",
+  scale_shape_manual(labels = c("Deanza, Newport Bay, CA",
+                                "San Diego Bay, CA",
                                 "Yaquina Bay, OR"),
-                     values = c("Yaquina" = 3, 
-                                "Deanza" = 16,
-                                "San Diego" = 6
+                     values = c("Deanza" = 16,
+                                "San Diego" = 6,
+                                "Yaquina" = 3
                                 ),
                      na.translate = TRUE, drop = FALSE) + 
   theme_classic() +
